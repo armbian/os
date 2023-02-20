@@ -1,0 +1,107 @@
+name: Reusable
+
+on:
+
+  workflow_call:
+    inputs:
+      minimal:
+       required: true
+       type: string
+      desktop:
+       required: true
+       type: string
+      variant:
+       required: false
+       type: string
+
+jobs:
+
+  prepare:
+
+    name: "Make JSON"
+    if: ${{ github.repository_owner == 'armbian' }}
+    runs-on: qemu
+    outputs:
+      matrix:  ${{steps.json.outputs.JSON_CONTENT}}
+    steps:
+
+      - name: Checkout Armbian Framework
+        uses: actions/checkout@v3.3.0
+        with:
+          repository: armbian/build
+          ref:  main
+          fetch-depth: 1
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      - name: "Make JSON"
+        id: json
+        run: |
+        
+          # Make a list of valid pairs from our config
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT          
+          releases=($(grep -rw config/distributions/*/support -ve 'eos' | cut -d"/" -f3 | grep -Ev "focal|buster|kinetic"))
+          arch=("amd64" "armhf" "arm64" "riscv64")
+          desktops=("none")
+          for i in ${releases[@]}; do
+          
+              # Cycle desktops
+              [[ "${{ inputs.desktop }}" == yes ]] && desktops=($(find -L config/desktop/sid/environments/ -name support -exec grep -l 'supported' {} \; | rev | cut -d '/' -f 2 | rev))
+              for j in ${arch[@]}; do
+                 runner_tags=qemu
+                 
+                 # runners optimisations
+                 [[ ${{ inputs.desktop }} == no ]]  && runner_tags=small
+                 [[ ${{ inputs.minimal }} == yes ]] && runner_tags=ubuntu-latest
+                 [[ $j == arm64 ]]                   && runner_tags=aarch64
+                 
+                 
+                 for k in ${desktops[@]}; do
+                 if ! grep -q $j config/distributions/${i}/arhitectures; then continue; fi
+                 echo "{\"release\":\"${i}\",\"desktop\":\"$k\",\"minimal\":\"${{ inputs.minimal }}\",\"variant\":\"${{ inputs.variant }}\",\"arch\":\"$j\",\"runner_tags\":\"$runner_tags\"}"
+                 done
+              done
+          done | jq -s >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+  Docker:
+
+    name: "B"
+    needs: [ prepare ]
+    strategy:
+      fail-fast: false # let other jobs try to complete if one fails
+      matrix:
+        include: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+
+    env:
+      RELEASE:         "${{ matrix.release }}"
+      MINIMAL:         "${{ matrix.minimal }}"
+      DESKTOP:         "${{ matrix.desktop }}"
+      VARIANT:         "${{ matrix.variant }}"
+      ARCH:            "${{ matrix.arch }}"
+      RUNNER_TAG:      "${{ matrix.runner_tag }}"
+      OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
+      
+    runs-on: [ "${{ matrix.runner_tags }}" ]
+
+    steps:
+
+        # Login to ghcr.io, for later uploading rootfs to ghcr.io
+      - name: Docker Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }} # GitHub username or org
+          password: ${{ secrets.GITHUB_TOKEN }}            # GitHub actions builtin token. repo has to have pkg access.
+
+      - name: Checkout build repo
+        uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
+        with:
+          repository: armbian/build #${{ github.repository_owner }}/armbian-build
+          ref: main
+          fetch-depth: 1
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      - name: Create rootfs ${{env.RELEASE}}:${{env.ARCH}} (variant ${{env.VARIANT}}) (desktop ${{env.DESKTOP}})
+        id: rootfs
+        run: |
+         
+          bash ./compile.sh rootfs BUILD_MINIMAL="${{ inputs.minimal }}" RELEASE="${{env.RELEASE}}" ARCH="${{env.ARCH}}" BUILD_DESKTOP="${{ matrix.desktop }}" DESKTOP_APPGROUPS_SELECTED="${{env.VARIANT}}" DESKTOP_ENVIRONMENT="${{env.DESKTOP}}" DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base SKIP_ARMBIAN_REPO=yes
