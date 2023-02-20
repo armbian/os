@@ -52,7 +52,7 @@ jobs:
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | \
           awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' |\
-          jq -s '.[] | select(.branch=="edge") | select(.board=="udoo")' >> $GITHUB_OUTPUT
+          jq -s '.[] | select(.branch=="edge") | select(.board=="udoo")' | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
