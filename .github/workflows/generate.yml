@@ -9,7 +9,7 @@ jobs:
 
   prepare:
     runs-on: ubuntu-latest
-    if: ${{ github.repository_owner == 'rpardini' }}
+    if: ${{ github.repository_owner == 'armbian' }}
     outputs:
       tagName: ${{ steps.tagName.outputs.tag }}
     steps:
