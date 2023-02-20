@@ -115,12 +115,14 @@ jobs:
         
            cd build
            bash ./compile.sh armbian-images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}" BUILD_DESKTOP=no BUILD_MINIMAL=no 
-
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        if: startsWith(github.ref, 'refs/tags/') # only for tags. GitHub requires tags for releases.
+           
+      - name: "Upload artefacts"
+        uses: ncipollo/release-action@v1
         with:
-          files: |
-            output/images/*.xz
+          artifacts: "output/images/*.xz"
+          tag: "latest"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
