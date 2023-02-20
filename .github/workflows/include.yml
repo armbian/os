@@ -16,6 +16,9 @@ on:
       variant:
        required: false
        type: string
+      version:
+       required: false
+       type: string
 
 jobs:
 
@@ -119,8 +122,8 @@ jobs:
       - name: "Upload artefacts"
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*.xz"
-          tag: "latest"
+          artifacts: "build/output/images/*.*"
+          tag: "${{ inputs.version }}"
           omitBody: true
           replacesArtifacts: true
           omitName: true
