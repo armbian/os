@@ -114,12 +114,12 @@ jobs:
         run: |
         
            cd build
-           bash ./compile.sh armbian-images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}" BUILD_DESKTOP=no BUILD_MINIMAL=no 
+           bash ./compile.sh armbian-images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}" BUILD_DESKTOP=no BUILD_MINIMAL=no COMPRESS_OUTPUTIMAGE=sha,img,xz
            
       - name: "Upload artefacts"
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "output/images/*.xz"
+          artifacts: "build/output/images/*.xz"
           tag: "latest"
           omitBody: true
           replacesArtifacts: true
