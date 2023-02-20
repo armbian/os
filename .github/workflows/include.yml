@@ -92,12 +92,28 @@ jobs:
           repository: armbian/build #${{ github.repository_owner }}/armbian-build
           ref: main
           fetch-depth: 1
-          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+          clean: false
+          path: build
+
+      - name: Checkout Armbian OS Config
+        uses: actions/checkout@v3.3.0
+        with:
+          repository: armbian/os
+          ref:  main
+          fetch-depth: 1
+          clean: false
+          path: os
+
+      - name: "Rsync"
+        run: |
+
+          rsync -av os/userpatches/. build/userpatches/
 
       - name: Create rootfs ${{env.RELEASE}}:${{env.ARCH}} (variant ${{env.VARIANT}}) (desktop ${{env.DESKTOP}})
         id: rootfs
         run: |
         
+           cd build
            bash ./compile.sh armbian-images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}" BUILD_DESKTOP=no BUILD_MINIMAL=no 
 
       - name: Release ${{ matrix.board }}
