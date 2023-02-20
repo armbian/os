@@ -58,8 +58,7 @@ jobs:
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           cat os/targets/"${{ inputs.config }}" | grep -v "^$" | grep -v "^#" | \
-          awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' |\
-          jq -s | jq -s >> $GITHUB_OUTPUT
+          awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
