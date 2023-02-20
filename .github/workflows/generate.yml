@@ -76,7 +76,7 @@ jobs:
       - name: Checkout build repo
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.repository_owner }}/armbian-build
+          repository: ${{ github.repository_owner }}/build
           ref: extensions # branch to build from.
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
