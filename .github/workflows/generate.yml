@@ -2,7 +2,7 @@ name: image-simple
 on:
   push:
     tags:
-      - "Armbian*" # any tag. GH releases (containing binaries for download) require tags
+      - "armbian*" # any tag. GH releases (containing binaries for download) require tags
   workflow_dispatch:
 
 jobs:
