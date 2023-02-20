@@ -48,9 +48,10 @@ jobs:
         id: json
         run: |
         
+          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq -s
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tags\":\"qemu\"}"}' | jq -s >> $GITHUB_OUTPUT
+          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
@@ -66,6 +67,7 @@ jobs:
       BRANCH:          "${{ matrix.branch }}"      
       RELEASE:         "${{ matrix.release }}"
       VARIANT:         "${{ matrix.variant }}"
+      RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
     runs-on: ubuntu-latest
