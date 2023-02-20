@@ -48,10 +48,11 @@ jobs:
         id: json
         run: |
         
-          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq -s
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq -s >> $GITHUB_OUTPUT
+          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | \
+          awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' |\
+          jq -s '.[] | select(.branch=="edge") | select(.board=="udoo")' >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
