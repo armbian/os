@@ -113,7 +113,7 @@ jobs:
             sed -E 's/.*"([^"]+)".*/\1/'
           }
 
-          PREFIX=$(echo $(get_latest_release "armbian/os" | sed "s/-trunk.*//"))
+          PREFIX=$(echo $(cat build/VERSION | sed "s/-trunk.*//"))
           RELE=$(printf "%04d\n" $(($(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev) + 1 )))
           echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT          
 
