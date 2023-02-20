@@ -183,6 +183,7 @@ jobs:
       branch: ''
       release: ''
       variant: ''
+      version: "${{ needs.fake.outputs.version }}"
 
   jobsend:
 
