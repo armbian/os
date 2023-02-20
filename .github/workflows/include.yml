@@ -39,7 +39,7 @@ jobs:
       - name: Checkout Armbian OS Config
         uses: actions/checkout@v3.3.0
         with:
-          repository: armbian/build
+          repository: armbian/os
           ref:  main
           fetch-depth: 1
           path: os
