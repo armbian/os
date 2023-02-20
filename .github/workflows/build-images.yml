@@ -92,6 +92,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
+          repository: armbian/scripts
           path: build
           clean: false
           ref: main
