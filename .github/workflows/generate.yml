@@ -84,7 +84,8 @@ jobs:
         id: buildBoard
         run: |
           echo "${{needs.prepare.outputs.tagName}}-${{ github.repository_owner }}" > userpatches/VERSION
-          bash ./compile.sh rpardini-generic "BOARD=${{env.BOARD}}" ${{env.VARIANT}} ${{env.EXTRA}}
+          bash ./compile.sh "BOARD=${{env.BOARD}}" ${{env.VARIANT}} ${{env.EXTRA}}
+          
       - name: Release ${{ matrix.board }}
         id: release1
         continue-on-error: true
