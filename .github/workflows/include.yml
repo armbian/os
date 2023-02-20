@@ -4,11 +4,14 @@ on:
 
   workflow_call:
     inputs:
-      minimal:
+      config:
        required: true
        type: string
-      desktop:
-       required: true
+      branch:
+       required: false
+       type: string
+      release:
+       required: false
        type: string
       variant:
        required: false
@@ -31,36 +34,24 @@ jobs:
           repository: armbian/build
           ref:  main
           fetch-depth: 1
-          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+          path: build
+
+      - name: Checkout Armbian OS Config
+        uses: actions/checkout@v3.3.0
+        with:
+          repository: armbian/build
+          ref:  main
+          fetch-depth: 1
+          path: os
 
       - name: "Make JSON"
         id: json
         run: |
         
           # Make a list of valid pairs from our config
-          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT          
-          releases=($(grep -rw config/distributions/*/support -ve 'eos' | cut -d"/" -f3 | grep -Ev "focal|buster|kinetic"))
-          arch=("amd64" "armhf" "arm64" "riscv64")
-          desktops=("none")
-          for i in ${releases[@]}; do
-          
-              # Cycle desktops
-              [[ "${{ inputs.desktop }}" == yes ]] && desktops=($(find -L config/desktop/sid/environments/ -name support -exec grep -l 'supported' {} \; | rev | cut -d '/' -f 2 | rev))
-              for j in ${arch[@]}; do
-                 runner_tags=qemu
-                 
-                 # runners optimisations
-                 [[ ${{ inputs.desktop }} == no ]]  && runner_tags=small
-                 [[ ${{ inputs.minimal }} == yes ]] && runner_tags=ubuntu-latest
-                 [[ $j == arm64 ]]                   && runner_tags=aarch64
-                 
-                 
-                 for k in ${desktops[@]}; do
-                 if ! grep -q $j config/distributions/${i}/arhitectures; then continue; fi
-                 echo "{\"release\":\"${i}\",\"desktop\":\"$k\",\"minimal\":\"${{ inputs.minimal }}\",\"variant\":\"${{ inputs.variant }}\",\"arch\":\"$j\",\"runner_tags\":\"$runner_tags\"}"
-                 done
-              done
-          done | jq -s >> $GITHUB_OUTPUT
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | grep udoo  | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\"}"}' \
+          | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
@@ -72,11 +63,10 @@ jobs:
         include: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     env:
+      BOARD:           "${{ matrix.board }}"
+      BRANCH:          "${{ matrix.branch }}"      
       RELEASE:         "${{ matrix.release }}"
-      MINIMAL:         "${{ matrix.minimal }}"
-      DESKTOP:         "${{ matrix.desktop }}"
       VARIANT:         "${{ matrix.variant }}"
-      ARCH:            "${{ matrix.arch }}"
       RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
@@ -104,4 +94,4 @@ jobs:
         id: rootfs
         run: |
          
-          bash ./compile.sh rootfs BUILD_MINIMAL="${{ inputs.minimal }}" RELEASE="${{env.RELEASE}}" ARCH="${{env.ARCH}}" BUILD_DESKTOP="${{ matrix.desktop }}" DESKTOP_APPGROUPS_SELECTED="${{env.VARIANT}}" DESKTOP_ENVIRONMENT="${{env.DESKTOP}}" DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base SKIP_ARMBIAN_REPO=yes
+#          bash ./compile.sh rootfs BUILD_MINIMAL="${{ inputs.minimal }}" RELEASE="${{env.RELEASE}}" ARCH="${{env.ARCH}}" BUILD_DESKTOP="${{ matrix.desktop }}" DESKTOP_APPGROUPS_SELECTED="${{env.VARIANT}}" DESKTOP_ENVIRONMENT="${{env.DESKTOP}}" DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base SKIP_ARMBIAN_REPO=yes
