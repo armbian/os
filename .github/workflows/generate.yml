@@ -3,7 +3,8 @@ on:
   push:
     tags:
       - "Armbian*" # any tag. GH releases (containing binaries for download) require tags
-      
+  workflow_dispatch:
+
 jobs:
 
   prepare:
