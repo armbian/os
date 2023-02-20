@@ -129,7 +129,9 @@ jobs:
           VER=$(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev | sed 's/^0*//')
           PREFIX=$(echo $(cat VERSION | sed "s/-trunk.*//"))
           RELE=$(printf "%04d\n" $((VER+1)))
-          echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT          
+          echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
+          echo "version=${PREFIX}.${RELE}"
+
 
       - uses: actions/upload-artifact@v3
         with:
