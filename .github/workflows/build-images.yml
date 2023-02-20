@@ -57,9 +57,22 @@ env:
 
 jobs:
 
+  Cancel:
+    name: "Cancel currently active"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: [ubuntu-latest]
+    timeout-minutes: 3
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+        if: ${{ github.event.schedule == '' }}
+        with:
+          all_but_latest: true
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
   clean:
 
     if: ${{ github.repository_owner == 'Armbian' }}
+    needs: Cancel
     name: Purge older releases
     runs-on: [ubuntu-latest]
     steps:
