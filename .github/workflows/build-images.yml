@@ -64,6 +64,11 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
     
+      - name: ver
+        run: |
+        
+          echo "${{ github.event.release.tag_name }}"
+    
       - name: Purge old releases of trunk build
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
@@ -101,6 +106,8 @@ jobs:
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
         id: list_releases
         run: |
+
+          echo "${{ github.event.release.tag_name }}"
 
           RELE=$(curl -ks https://api.github.com/repos/armbian/os/releases/latest ^| grep "browser_download_url" | grep -o -P '(?<=Armbian.).*(?=_)' | cut -d"_" -f1 | sort | uniq | head -1)
           SOUR=$(cat build/VERSION)
