@@ -50,19 +50,19 @@ jobs:
           - aa: 0112
             board: bananapim2s
             desc: BananaPi M2S, edge, regular CLI
-            runner_tags: [ self-hosted, Linux, 'armbian', 'image-arm64' ]
+            runner_tags: qemu
             variant: "CLOUD_IMAGE=no BRANCH=edge"
 
           - aa: 0113
             board: bananapim2pro
             desc: BananaPi M2Pro, edge, regular CLI
-            runner_tags: [ self-hosted, Linux, 'armbian', 'image-arm64' ]
+            runner_tags: qemu
             variant: "CLOUD_IMAGE=no BRANCH=edge"
 
           - aa: 0115
             board: odroidn2
             desc: ODROID N2+, edge, regular CLI
-            runner_tags: [ self-hosted, Linux, 'armbian', 'image-arm64' ]
+            runner_tags: qemu
             variant: "CLOUD_IMAGE=no BRANCH=edge"
 
     runs-on: "${{ matrix.runner_tags }}"
