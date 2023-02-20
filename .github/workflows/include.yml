@@ -66,10 +66,9 @@ jobs:
       BRANCH:          "${{ matrix.branch }}"      
       RELEASE:         "${{ matrix.release }}"
       VARIANT:         "${{ matrix.variant }}"
-      RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
-    runs-on: [ "${{ matrix.runner_tags }}" ]
+    runs-on: ubuntu-latest
 
     steps:
 
