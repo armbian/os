@@ -6,11 +6,6 @@ name: Build Images
 
 on:
 
-#  workflow_run:
-#    workflows: ["Build train"]
-#    types:
-#      - completed
-
 #  schedule:
 #    - cron: "30 0 * * *"
 
@@ -72,7 +67,7 @@ jobs:
       - name: Purge old releases of trunk build
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          keep_latest: 32
+          keep_latest: 2
           delete_tag_pattern: trunk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -101,14 +96,14 @@ jobs:
           fetch-depth: 1
           path: build
           clean: false
-          ref: nightly
+          ref: main
 
       - name: "Get latest release version"
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
         id: list_releases
         run: |
 
-          RELE=$(curl -ks https://api.github.com/repos/armbian/build/releases/latest ^| grep "browser_download_url" | grep -o -P '(?<=Armbian.).*(?=_)' | cut -d"_" -f1 | sort | uniq | head -1)
+          RELE=$(curl -ks https://api.github.com/repos/armbian/os/releases/latest ^| grep "browser_download_url" | grep -o -P '(?<=Armbian.).*(?=_)' | cut -d"_" -f1 | sort | uniq | head -1)
           SOUR=$(cat build/VERSION)
 
           # skip if version in git is the same as at release
@@ -172,19 +167,6 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  merge:
-
-    needs: [ generaterelease ]
-    uses: armbian/scripts/.github/workflows/merge-from-branch.yml@master
-
-    with:
-      branch: 'nightly'
-      runner: small
-
-    secrets:
-      GPG_KEY2: ${{ secrets.GPG_KEY2 }}
-      GPG_PASSPHRASE2: ${{ secrets.GPG_PASSPHRASE2 }}
-
   Minimal:
 
     needs: generaterelease
@@ -213,7 +195,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
-          ref: nightly
+          ref: main
 
       - name: Get releases
         uses: armbian/actions/make-json@main
