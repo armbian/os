@@ -106,18 +106,16 @@ jobs:
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
         id: list_releases
         run: |
+        
+          get_latest_release() {
+            curl --silent "https://api.github.com/repos/$1/releases/latest" |
+            grep '"tag_name":' |
+            sed -E 's/.*"([^"]+)".*/\1/'
+          }
 
-          echo "${{ github.event.release.tag_name }}"
-
-          RELE=$(curl -ks https://api.github.com/repos/armbian/os/releases/latest ^| grep "browser_download_url" | grep -o -P '(?<=Armbian.).*(?=_)' | cut -d"_" -f1 | sort | uniq | head -1)
-          SOUR=$(cat build/VERSION)
-
-          # skip if version in git is the same as at release
-          if [[ "$RELE" == "$SOUR" ]]; then
-              echo "changes=true" >> $GITHUB_OUTPUT
-          fi
-          # output version
-          echo "version=${SOUR}" >> $GITHUB_OUTPUT          
+          PREFIX=$(echo $(get_latest_release "armbian/os" | sed "s/-trunk.*//"))
+          RELE=$(printf "%04d\n" $(($(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev) + 1 )))
+          echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT          
 
       - uses: actions/upload-artifact@v3
         with:
