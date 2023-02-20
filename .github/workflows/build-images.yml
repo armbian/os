@@ -175,9 +175,9 @@ jobs:
     with:
 
       config: 'nighly-cli.conf'
-      branch: 'current'
-      release: 'jammy'
-      variant: 'cli'
+      branch: ''
+      release: ''
+      variant: ''
 
   jobsend:
 
