@@ -1,5 +1,5 @@
 # os 
 
 - versioning
-- build configurations
-- branding
+- [build configurations](targets)
+- [default configs](userpatches)
