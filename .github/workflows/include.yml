@@ -50,8 +50,7 @@ jobs:
         
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | grep udoo  | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\"}"}' \
-          | jq -s >> $GITHUB_OUTPUT
+          cat os/targets/stable.conf | grep -v "^$" | grep -v "^#" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tags\":\"qemu\"}"}' | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
