@@ -47,18 +47,6 @@ jobs:
             runner_tags: qemu
             variant: "CLOUD_IMAGE=no BRANCH=edge"
 
-          - aa: 0112
-            board: bananapim2s
-            desc: BananaPi M2S, edge, regular CLI
-            runner_tags: qemu
-            variant: "CLOUD_IMAGE=no BRANCH=edge"
-
-          - aa: 0113
-            board: bananapim2pro
-            desc: BananaPi M2Pro, edge, regular CLI
-            runner_tags: qemu
-            variant: "CLOUD_IMAGE=no BRANCH=edge"
-
           - aa: 0115
             board: odroidn2
             desc: ODROID N2+, edge, regular CLI
@@ -83,8 +71,8 @@ jobs:
       - name: Build board ${{ matrix.board }}
         id: buildBoard
         run: |
-          mkdir -p userpatches
-          echo "${{needs.prepare.outputs.tagName}}-${{ github.repository_owner }}" > userpatches/VERSION                    
+          #mkdir -p userpatches
+          #echo "${{needs.prepare.outputs.tagName}}-${{ github.repository_owner }}" > userpatches/VERSION                    
           bash ./compile.sh BOARD=${{env.BOARD}} BRANCH=edge RELEASE=jammy KERNEL_CONFIGURE=no KERNEL_ONLY=no BUILD_DESKTOP=no BUILD_MINIMAL=yes
           
       - name: Release ${{ matrix.board }}
