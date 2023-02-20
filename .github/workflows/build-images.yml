@@ -126,8 +126,9 @@ jobs:
             sed -E 's/.*"([^"]+)".*/\1/'
           }
 
-          PREFIX=$(echo $(cat build/VERSION | sed "s/-trunk.*//"))
-          RELE=$(printf "%04d\n" $(($(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev) + 1 )))
+          VER=$(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev | sed 's/^0*//')
+          PREFIX=$(echo $(cat VERSION | sed "s/-trunk.*//"))
+          RELE=$(printf "%04d\n" $((VER+1)))
           echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT          
 
       - uses: actions/upload-artifact@v3
