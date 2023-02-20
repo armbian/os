@@ -83,8 +83,8 @@ jobs:
         id: buildBoard
         run: |
           mkdir -p userpatches
-          echo "${{needs.prepare.outputs.tagName}}-${{ github.repository_owner }}" > userpatches/VERSION          
-          bash ./compile.sh "BOARD=${{env.BOARD}}" CLOUD_IMAGE=no BRANCH=edge 'DONT_BUILD_ARTIFACTS=kernel,firmware,full_firmware,rootfs' COMPRESS_OUTPUTIMAGE=xz
+          echo "${{needs.prepare.outputs.tagName}}-${{ github.repository_owner }}" > userpatches/VERSION                    
+          bash ./compile.sh BOARD=${{env.BOARD}} BRANCH=edge RELEASE=jammy KERNEL_CONFIGURE=no KERNEL_ONLY=no BUILD_DESKTOP=no BUILD_MINIMAL=yes
           
       - name: Release ${{ matrix.board }}
         id: release1
