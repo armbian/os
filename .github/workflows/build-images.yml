@@ -174,9 +174,10 @@ jobs:
 
     with:
 
-      minimal: 'yes'
-      desktop: 'no'
-      variant: ''
+      config: 'nighly-cli.conf'
+      branch: 'current'
+      release: 'jammy'
+      variant: 'cli'
 
   jobsend:
 
