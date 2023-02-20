@@ -48,12 +48,12 @@ jobs:
         id: json
         run: |
         
-          FILTER='.[]'
-          [[ -n ${{ inputs.branch }}" ]]  && FILTER=' | select(.branch=="${{ inputs.branch }}")'
-          [[ -n ${{ inputs.release }}" ]] && FILTER=' | select(.release=="${{ inputs.release }}")'
-          [[ -n ${{ inputs.variant }}" ]] && FILTER=' | select(.variant=="${{ inputs.variant }}")'
+          #FILTER='.[]'
+          #[[ -n ${{ inputs.branch }}" ]]  && FILTER=' | select(.branch=="${{ inputs.branch }}")'
+          #[[ -n ${{ inputs.release }}" ]] && FILTER=' | select(.release=="${{ inputs.release }}")'
+          #[[ -n ${{ inputs.variant }}" ]] && FILTER=' | select(.variant=="${{ inputs.variant }}")'
           
-          echo $FILTER
+          #echo $FILTER
          
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
