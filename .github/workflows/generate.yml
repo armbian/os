@@ -82,6 +82,7 @@ jobs:
       - name: Build board ${{ matrix.board }}
         id: buildBoard
         run: |
+          mkdir -p userpatches
           echo "${{needs.prepare.outputs.tagName}}-${{ github.repository_owner }}" > userpatches/VERSION
           bash ./compile.sh "BOARD=${{env.BOARD}}" ${{env.VARIANT}} ${{env.EXTRA}}
           
