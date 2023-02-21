@@ -71,7 +71,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
-    name: ":"
+    name: "*"
     needs: [ prepare ]
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -86,7 +86,7 @@ jobs:
       RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
-    runs-on: qemu
+    runs-on: ubuntu-latest
 
     steps:
 
