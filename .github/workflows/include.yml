@@ -56,6 +56,8 @@ jobs:
         id: json
         run: |
           
+          echo "Version: ${{ inputs.version }}"
+          
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           cat os/targets/${{ inputs.config }} | grep -v "^$" | grep -v "^#" | grep "${{ inputs.branch }}" | grep "${{ inputs.release }}" | grep "${{ inputs.variant }}" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq $FILTER | jq -s >> $GITHUB_OUTPUT
