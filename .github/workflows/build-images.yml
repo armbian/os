@@ -85,8 +85,8 @@ jobs:
         with:
           artifacts: "LICENSE"
           tag: "${{ needs.Prepare.outputs.version }}"
-          name: "Build in progress"
-          bodyFile: ".github/Releases-wip.md"
+          name: "Armbian ${{ needs.Prepare.outputs.version }}"
+          bodyFile: ".github/Releases.md"
           allowUpdates: true
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -104,63 +104,3 @@ jobs:
       release: ''
       variant: ''
       version: "${{ needs.generaterelease.outputs.version }}"
-
-  jobsend:
-
-    name: finish
-    needs: [Minimal]
-    runs-on: [self-hosted, Linux, local]
-    if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
-    steps:
-
-
-      - name: Runner prepare
-        uses: armbian/actions/runner-prepare@main
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          ref: main
-
-      - name: Get releases
-        uses: armbian/actions/make-json@main
-        with:
-          repository: "build"
-          key: ${{ secrets.KEY_TORRENTS }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
-
-      - name: Make build list
-        run: |
-
-          echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
-          cat ".github/Releases.md" >> README.tmp
-          echo -en "&nbsp;\n\n" >> README.tmp
-          echo "| Image &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | GPG | SHA | Release | Branch | &nbsp;&nbsp;&nbsp; Variant | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Size | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Kernel |" >> README.tmp
-          echo "| --- | :--: | :--: | --: | --: | --: | --: | --: |" >> README.tmp
-          cat json/build.md >> README.tmp
-          echo -en "\n &nbsp;\n" >> README.tmp
-
-      - uses: ncipollo/release-action@v1
-        with:
-          tag: "${{ env.VERSION }}"
-          bodyFile: "README.tmp"
-          name: "Armbian ${{ env.VERSION }}"
-          allowUpdates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update mirrors
-        uses: armbian/actions/triggers@main
-        with:
-          KEY: ${{ secrets.KEY_SYNC_MIRRORS }}
-          USER: ${{ secrets.USER_REPOSITORY }}
-          HOST: ${{ secrets.HOST_REPOSITORY }}
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
-
-      - name: Sync images & recreate torrents
-        uses: armbian/actions/triggers@main
-        with:
-          KEY: ${{ secrets.KEY_RECREATE_TORRENT }}
-          USER: ${{ secrets.USER_REPOSITORY }}
-          HOST: ${{ secrets.HOST_REPOSITORY }}
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
