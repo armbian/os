@@ -1,123 +1,44 @@
-name: Build Images
-#
-# Generates beta, stable or RC images. You can select build runners. By default it generates all images, but you can build images only for one target
-# Images are placed at www.arnmbian.com and nighly beta also at https://github.com/armbian/build/releases/tag/latest
+name: Build Nighly Images
 #
 
 on:
 
-#  schedule:
-#    - cron: "30 0 * * *"
-
+  schedule:
+    - cron: "30 0 * * *"
   workflow_dispatch:
-
-    inputs:
-
-      choice:
-        type: choice
-        description: Build targets
-        options:
-        - beta
-        - stable
-        - rc
-
-      runner:
-        type: choice
-        description: Build runners for CLI
-        options:
-        - small
-        - ubuntu-latest
-
-      sourcerepo:
-        description: Source repository
-        required: false
-        default: 'nightly'
-
-      packagesrepo:
-        type: choice
-        description: Beta packages repository
-        options:
-        - "yes"
-        - "no"
-
-      fromsources:
-        type: choice
-        description: Build from sources
-        options:
-        - "no"
-        - "yes"
-
-      advanced:
-        description: 'Single board (grep -w tinkerboard |)'
-        required: false
-        default: ''
-
-env:
-   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
 
-  Cancel:
-    name: "Cancel currently active"
+  # In case we have a currently active build, cancel it
+  Prepare:
+    name: "Generate version"
     if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: [ubuntu-latest]
-    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{steps.releases.outputs.version}}
     steps:
-      - uses: styfle/cancel-workflow-action@0.11.0
-        if: ${{ github.event.schedule == '' }}
+
+      - name: "Cancel active workflow"
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
-  clean:
-
-    if: ${{ github.repository_owner == 'Armbian' }}
-    needs: Cancel
-    name: Purge older releases
-    runs-on: [ubuntu-latest]
-    steps:
-    
-      - name: ver
-        run: |
-        
-          echo "${{ github.event.release.tag_name }}"
-    
-      - name: Purge old releases of trunk build
+      - name: "Purge old releases of trunk build"
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          keep_latest: 2
-          delete_tag_pattern: trunk
+          keep_latest: 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
-      - name: Purge action workflow logs
+      - name: "Purge action workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 14
-
-  fake:
-    if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: [ubuntu-latest]
-    needs: [ clean ]
-    name: Source changes
-    outputs:
-      changes: ${{steps.list_releases.outputs.changes}}
-      version: ${{steps.list_releases.outputs.version}}
-      
-    steps:
-
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          repository: armbian/build
-          path: build
-          clean: false
-          ref: main
+          days_old: 10
 
       - name: "Get latest release version"
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
-        id: list_releases
+        id: releases
         run: |
         
           get_latest_release() {
@@ -127,60 +48,43 @@ jobs:
           }
 
           VER=$(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev | sed 's/^0*//')
-          PREFIX=$(echo $(cat build/VERSION | sed "s/-trunk.*//"))
+          PREFIX=$(echo $(curl https://raw.githubusercontent.com/armbian/build/main/VERSION | sed "s/-trunk.*//"))
           RELE=$(printf "%04d\n" $((VER+1)))
           echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
           echo "version=${PREFIX}.${RELE}"
 
-
-      - uses: actions/upload-artifact@v3
-        with:
-          path: changes
-          name: changes
-          if-no-files-found: ignore
-
-      - uses: actions/upload-artifact@v3
-        with:
-          path: changes
-          name: changes
-          if-no-files-found: ignore
-
-
   generaterelease:
 
-    needs: [ fake ]
-    if: ${{ github.repository_owner == 'Armbian' && needs.fake.outputs.changes != 'true' }}
+    needs: [ Prepare ]
+    if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
-    name: "Update latest release"
+    name: "Generate release"
+    outputs:
+      version: ${{steps.releases.outputs.version}}
     steps:
 
-      - run: |
+      - name: "Get latest release version"
+        id: releases
+        run: |
+        
+          echo "version=${{ needs.Prepare.outputs.version }}" >> $GITHUB_OUTPUT
 
+      - run: |        
           echo "Env: ${{ github.event.inputs.choice }}"
           echo "Env: ${{ github.event.inputs.runner }}"
           echo "Env: ${{ github.event.inputs.sourcerepo }}"
           echo "Branch: ${{ github.event.inputs.branch }}"
-          echo "Version: ${{ needs.fake.outputs.version }}"
+          echo "Version: ${{ needs.Prepare.outputs.version }}"
 
       - uses: actions/checkout@v3
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
         with:
           fetch-depth: 1
-
-      - uses: ClementTsang/delete-tag-and-release@v0.3.1
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
-        with:
-          delete_release: true
-          tag_name: latest
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: ncipollo/release-action@v1
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
         with:
           artifacts: "LICENSE"
-          tag: "${{ needs.fake.outputs.version }}"
+          tag: "${{ needs.Prepare.outputs.version }}"
           name: "Build in progress"
           bodyFile: ".github/Releases-wip.md"
           allowUpdates: true
@@ -199,7 +103,7 @@ jobs:
       branch: ''
       release: ''
       variant: ''
-      version: "${{ needs.fake.outputs.version }}"
+      version: "${{ needs.generaterelease.outputs.version }}"
 
   jobsend:
 

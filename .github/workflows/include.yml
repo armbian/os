@@ -24,12 +24,17 @@ jobs:
 
   prepare:
 
-    name: "Make JSON"
+    name: "JSON"
     if: ${{ github.repository_owner == 'armbian' }}
     runs-on: qemu
     outputs:
       matrix:  ${{steps.json.outputs.JSON_CONTENT}}
     steps:
+
+      - name: "Fix permissions"
+        run: |
+
+          sudo chown -R $USER.$USER .
 
       - name: Checkout Armbian Framework
         uses: actions/checkout@v3.3.0
@@ -37,6 +42,7 @@ jobs:
           repository: armbian/build
           ref:  main
           fetch-depth: 1
+          clean: false
           path: build
 
       - name: Checkout Armbian OS Config
@@ -44,10 +50,11 @@ jobs:
         with:
           repository: armbian/os
           ref:  main
+          clean: false
           fetch-depth: 1
           path: os
 
-      - name: "Rsync"
+      - name: "Rsync userpatches"
         run: |
 
           rsync -av os/userpatches/. build/userpatches/
@@ -64,7 +71,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
   Docker:
 
-    name: "B"
+    name: ":"
     needs: [ prepare ]
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -79,7 +86,7 @@ jobs:
       RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
-    runs-on: ubuntu-latest
+    runs-on: qemu
 
     steps:
 
@@ -91,7 +98,7 @@ jobs:
           username: ${{ github.repository_owner }} # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}            # GitHub actions builtin token. repo has to have pkg access.
 
-      - name: Checkout build repo
+      - name: Checkout Armbian build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
           repository: armbian/build #${{ github.repository_owner }}/armbian-build
@@ -109,25 +116,32 @@ jobs:
           clean: false
           path: os
 
-      - name: "Rsync"
+      - name: "Rsync userpatches"
         run: |
 
           rsync -av os/userpatches/. build/userpatches/
 
-      - name: Create rootfs ${{env.RELEASE}}:${{env.ARCH}} (variant ${{env.VARIANT}}) (desktop ${{env.DESKTOP}})
+      - name: Create images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}"
         id: rootfs
         run: |
         
            cd build
+           echo "${{ inputs.version }}" > userpatches/VERSION
            bash ./compile.sh armbian-images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}" BUILD_DESKTOP=no BUILD_MINIMAL=no COMPRESS_OUTPUTIMAGE=sha,img,xz
            
       - name: "Upload artefacts"
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*.*"
+          artifacts: "build/output/images/Armbian_${{ inputs.version }}*.*"
           tag: "${{ inputs.version }}"
           omitBody: true
           replacesArtifacts: true
           omitName: true
           allowUpdates: true
+          artifactErrorsFailBuild: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup
+        run: |
+
+          rm -f build/output/images/*
