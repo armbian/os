@@ -5,7 +5,7 @@
 
 -  Images below are built on every Linux kernel code, config or patches changes,
 -  We provide here only a small selection of images that are currently interested for developers,
--  If you want to enable more build targets in this list, edit <a href="https://github.com/armbian/build/blob/master/config/targets-cli-beta.conf">CLI</a> or <a href="https://github.com/armbian/build/blob/master/config/targets-desktop-beta.conf">desktop</a> build config files.</p>
+-  If you want to enable more build targets in this list, edit <a href="https://github.com/armbian/os/tree/main/targets">build config files</a>.</p>
 
 <br>
 If you don't find what you are looking for, check those images:
