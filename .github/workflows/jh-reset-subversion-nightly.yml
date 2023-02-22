@@ -1,0 +1,71 @@
+name: JH Reset jethome nightly version on version bump
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - nightly.json
+
+jobs:
+  resetversion:
+    name: Reset subversion
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: true
+        ref: main
+
+    - name: Zero minor version
+      uses: jethome-iot/actions/armbian-jethome-version@master
+      id: fixversion
+      with:
+        file: 'nightly-jethome.json'
+        type: 'minor'
+        do: 'zero'
+
+
+    - name: Check version
+      id: checkversion
+      run: |
+        CURRENT_VERSION=$(jq -r '.version' nightly.json)
+        CURRENT_HIGH_VERSION=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 )
+        PREVIOUS_VERSION=$(git show HEAD~1:nightly.json | jq -r '.version')
+        PREVIOUS_HIGH_VERSION=$(echo "$PREVIOUS_VERSION" | cut -d'.' -f1)
+
+        if [ "$CURRENT_HIGH_VERSION" != "$PREVIOUS_HIGH_VERSION" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Inc major version
+      if: steps.checkversion.outputs.changed == 'true'
+      uses: jethome-iot/actions/armbian-jethome-version@master
+      id: zeroversion
+      with:
+        file: 'nightly-jethome.json'
+        type: 'major'
+        do: 'zero'
+
+    - name: Inc major version
+      if: steps.checkversion.outputs.changed != 'true'
+      uses: jethome-iot/actions/armbian-jethome-version@master
+      id: incversion
+      with:
+        file: 'nightly-jethome.json'
+        type: 'major'
+        do: 'inc'
+
+    - shell: bash
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name  "GitHub Actions"
+        git add nightly-jethome.json
+        git commit -am "Clean jethome-version"
+        git pull
+        git push
+

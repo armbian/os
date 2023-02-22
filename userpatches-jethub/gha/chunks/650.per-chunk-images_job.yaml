@@ -1,0 +1,292 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
+    needs: [ "matrix_prep", "all-artifacts-ready" ]
+    timeout-minutes: 240
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
+    strategy:
+      fail-fast: false # let other jobs try to complete if one fails
+      matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-[[chunk]]) }} # <-- HERE: Chunk number.
+    name: ${{ matrix.desc || 'Empty I[[chunk]]' }} # <-- HERE: Chunk number.
+    runs-on: ${{ matrix.runs_on }}
+    steps:
+
+      # cleaning self hosted runners
+      #- name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
+      #  uses: armbian/actions/runner-clean@main
+
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: sudo rm -rf userpatches.repo
+
+      - name: Checkout build repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v4
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: ${{ matrix.fdepth }}
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: Checkout jethome-tools repository
+        uses: actions/checkout@v4
+        with:
+          repository: jethome-ru/jethome-tools
+          path: tools
+          ref: convert_jhos
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rf userpatches.repo
+          echo ${{ needs.matrix_prep.outputs.version }} > userpatches/VERSION
+
+      - name: "Cleanup leftover output"
+        run: |
+          sudo rm -f userpatches/VERSION
+
+      - name: ${{matrix.desc}}
+        id: build-one-image
+        timeout-minutes: 300
+        run: |
+          # calculate loop from runner name
+          if [ -z "${ImageOS}" ]; then
+            USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          fi
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Check API rate limits
+        run: |
+
+          # install dependencies
+          if ! command -v "gh" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install gh
+          fi
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( $PERCENT > 20 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 20%, sleping 10m"
+            sleep 10m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
+
+      #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+      - name: Check filelist
+        run: |
+          find output
+
+      - name: "Convert image to burn"
+        id: convertburn
+        run: |
+          if ! command -v "dtc" > /dev/null 2>&1; then
+             sudo apt update \
+             && sudo apt install device-tree-compiler -y
+          fi
+          if ! command -v "cc" > /dev/null 2>&1; then
+             sudo apt update \
+             && sudo apt install build-essential cpp -y
+          fi
+          if ! command -v "zip" > /dev/null 2>&1; then
+             sudo apt update \
+             && sudo apt install zip -y
+          fi
+
+
+          UBOOTDEB=$(find output | grep linux-u-boot | head -n 1)
+          IMG=$(find output | grep  -e  ".*images.*Armbian.*img.xz$" | head -n 1)
+          # Armbian_23.8.0-trunk.52.jh.3.5_Jethubj80_bookworm_current_6.1.32.burn.img
+
+          cd tools
+
+          DEB="../${UBOOTDEB}"
+          dpkg -x "$DEB" output
+          UBOOT=$(find output/usr/lib -name u-boot.nosd.bin | head -n 1)
+          echo UBOOT: ${UBOOT}
+          find ../output
+
+          ### 'BETA=yes' 'BOARD=jethubj80' 'BRANCH=current' 'BUILD_DESKTOP=no' 'BUILD_MINIMAL=no' 'RELEASE=bookworm'
+          EVALCMD=$(echo ${{ matrix.invocation }} | sed 's/jethome-images//')
+          eval ${EVALCMD}
+          echo ${EVALCMD}
+          case ${BOARD} in
+            jethubj100)
+              ./convert.sh ../${IMG} d1 armbian compress output/usr/lib/linux*/u-boot.nosd.bin
+              SUPPORTED="D1,D1P"
+              ;;
+            jethubj200)
+              ./convert.sh ../${IMG} d2 armbian compress output/usr/lib/linux*/u-boot.nosd.bin
+              SUPPORTED="D2"
+              ;;
+            jethubj80)
+              ./convert.sh ../${IMG} h1 armbian compress output/usr/lib/linux*/u-boot.nosd.bin
+              SUPPORTED="H1"
+              ;;
+            *)
+              echo "Unsupported board" ${BOARD}
+              echo "Error in convert: Unsupported board" ${BOARD} >> GITHUB_STEP_SUMMARY
+              exit 200
+              ;;
+          esac
+          rm -rf output/usr
+
+          IMGBURN=$(find output | grep  -e  "Armbian.*burn.img.zip$" | head -n 1)
+          echo IMGBURN: ${IMGBURN}
+          [ -z "${IMGBURN}" ] && exit 50
+
+          if [ "${BETA}" == "yes" ]; then
+            case "${{ env.BUILD_REF }}" in
+              main*)
+                CHANNEL="nightly"
+                ;;
+              v2*)
+                CHANNEL="rc"
+                ;;
+              *)
+                CHANNEL="${BUILD_REF}"
+                ;;
+            esac
+
+          else
+            CHANNEL="release"
+          fi
+
+          echo "board=${BOARD}" >> $GITHUB_OUTPUT
+          echo "brd=${BOARD:6}"  >> $GITHUB_OUTPUT
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "channel=${CHANNEL}" >> $GITHUB_OUTPUT
+          echo "release=${RELEASE}" >> $GITHUB_OUTPUT
+          echo "supported=${SUPPORTED}" >> $GITHUB_OUTPUT
+          echo "image=${IMG}" >> $GITHUB_OUTPUT
+          echo "imageburn=tools/${IMGBURN}" >> $GITHUB_OUTPUT
+
+      - name: Sign burn
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes ${{ steps.convertburn.outputs.imageburn }}
+
+      - name: "Upload artefacts"
+        if: ${{ github.event.inputs.uploadtoserver == 'github' || github.event.inputs.uploadtoserver == 'both' }}
+        uses: ncipollo/release-action@v1
+        with:
+          repo: "${{ env.RELEASE_REPOSITORY }}"
+          artifacts: "output/images/*/*/Armbian_*.*"
+          tag: "${{ needs.matrix_prep.outputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: "${{ env.GH_TOKEN }}"
+
+      - name: "Upload artefacts"
+        if: ${{ github.event.inputs.uploadtoserver == 'github' || github.event.inputs.uploadtoserver == 'both' }}
+        uses: ncipollo/release-action@v1
+        with:
+          repo: "${{ env.RELEASE_REPOSITORY }}"
+          artifacts: "${{ steps.convertburn.outputs.imageburn }}*"
+          tag: "${{ needs.matrix_prep.outputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: "${{ env.GH_TOKEN }}"
+
+      - name: Deploy to fw.jethome.ru (sdcard)
+        if: ${{ github.event.inputs.uploadtoserver == 'both' || github.event.inputs.uploadtoserver == 'jethome' }}
+        id: upload-sdcard
+        uses: jethome-iot/actions/firmware-upload@master
+        with:
+          url: https://fw.jethome.ru
+          fullslug: "JetHome.${{ steps.convertburn.outputs.brd }}.Armbian.${{ steps.convertburn.outputs.channel }}.${{ steps.convertburn.outputs.release }}.${{ steps.convertburn.outputs.branch }}"
+          image_type: "sdcard"
+          firmware_file: "${{ steps.convertburn.outputs.image }}"
+          hashpgp_file: "${{ steps.convertburn.outputs.image }}.asc"
+          version: "${{ needs.matrix_prep.outputs.version }}"
+          force_overwrite: "true"
+          generatefirmwareslot: "true"
+          update_latest: "true"
+          supported_devices: "${{ steps.convertburn.outputs.supported }}"
+          FWUPLOAD: ${{ secrets.FWUPLOAD }}
+
+      - name: Deploy to fw.jethome.ru (burn)
+        if: ${{ github.event.inputs.uploadtoserver == 'both' || github.event.inputs.uploadtoserver == 'jethome' }}
+        id: upload-burn
+        uses: jethome-iot/actions/firmware-upload@master
+        with:
+          url: https://fw.jethome.ru
+          fullslug: "JetHome.${{ steps.convertburn.outputs.brd }}.Armbian.${{ steps.convertburn.outputs.channel }}.${{ steps.convertburn.outputs.release }}.${{ steps.convertburn.outputs.branch }}"
+          image_type: "burn"
+          firmware_file: "${{ steps.convertburn.outputs.imageburn }}"
+          hashpgp_file: "${{ steps.convertburn.outputs.imageburn }}.asc"
+          version: "${{ needs.matrix_prep.outputs.version }}"
+          generatefirmwareslot: "false"
+          force_overwrite: "true"
+          update_latest: "true"
+          supported_devices: "${{ steps.convertburn.outputs.supported }}"
+          FWUPLOAD: ${{ secrets.FWUPLOAD }}
+
+      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
+        if: always()
+        run: sudo rm -rfv output/images userpatches/VERSION

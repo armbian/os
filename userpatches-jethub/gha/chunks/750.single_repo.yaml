@@ -1,0 +1,129 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  # ------ publish packages to repository -------
+
+  publish-debs-to-repo:
+    name: "publish debs to repo"
+    runs-on: [[repository_runner]]
+    if: ${{ !failure() && !cancelled() && (github.event.inputs.targetsFilterInclude == '') }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
+    needs: [ "version_prep", "matrix_prep", "all-artifacts-ready" ]
+    steps:
+
+      #- name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
+      #  uses: armbian/actions/runner-clean@main
+
+      # Prepare dependencies.
+      # If no /usr/bin/gpg, install gnupg2
+      # If no /usr/bin/reprepro, install reprepro
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/gpg ]; then
+            sudo apt-get update
+            sudo apt-get install -y gnupg2
+          fi
+
+      # Login to ghcr.io, for later uploading rootfs to ghcr.io
+      - name: Docker Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: "[[ghcr_user]]" # GitHub username or org
+          password: "${{ secrets.GITHUB_TOKEN }}"    # GitHub actions builtin token. repo has to have pkg access.
+
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: sudo rm -rf userpatches.repo
+
+      - name: Checkout build repo
+        uses: actions/checkout@v4 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: 1
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v4
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          #rm -rf userpatches.repo
+          echo ${{ needs.matrix_prep.outputs.version }} > userpatches/VERSION
+
+      # Clean off output/info, if any
+      - name: Cleanup output/info
+        run: |
+          sudo rm -rfv output/info output/debs output/debs-beta
+          mkdir -pv output
+
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
+      # List the artifacts we downloaded
+      - name: List artifacts
+        run: |
+          ls -laht output/info
+
+      - name: Download the debs
+        id: download-debs
+        run: |
+          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+
+
+      - name: Show GPG user IDs
+        run: |
+          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
+          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
+          echo "name:        ${{ steps.import_gpg.outputs.name }}"
+          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+
+      - name: List loaded keys keys
+        run: gpg -K || true
+
+      - name: Prepare the reprepro scripts
+        id: prepare-scripts-reprepro
+        run: |
+          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || 'yes' }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+          find output
+
+      - name: Push debs to repository
+        id: push-debs
+        uses: jethome-iot/actions/repo-upload-json@master
+        with:
+          target: ${{ needs.version_prep.outputs.repoupload }}
+          nightly: ${{ github.event.inputs.nightlybuild || 'yes' }}
+          json: output/info/debs-to-repo-info.json
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWNHOSTS_UPLOAD: ${{ secrets.SSH_KNOWNHOSTS_UPLOAD }}
+

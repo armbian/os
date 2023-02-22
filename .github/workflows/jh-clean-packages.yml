@@ -1,0 +1,103 @@
+name: JH Clean Packages
+
+on:
+  schedule:
+   - cron: '0 */3 * * *'
+  workflow_dispatch:
+    inputs:
+      skip_days:
+        description: 'Number of days to skip before removing packages'
+        required: true
+        default: '7'
+      keep_num:
+        description: 'Number of latest packages to keep'
+        required: true
+        default: '10'
+
+jobs:
+  clean_packages:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        packagename:
+          - armbian-os/armbian-firmware
+          - armbian-os/armbian-zsh
+          - armbian-os/armbian-plymouth-theme
+          - armbian-os/armbian-config
+          - armbian-os/kernel-meson64-current
+          - armbian-os/kernel-meson64-edge
+          - armbian-os/armbian-bsp-cli-jethubj80-current
+          - armbian-os/armbian-bsp-cli-jethubj100-edge
+          - armbian-os/uboot-jethubj80-current
+          - armbian-os/fake-ubuntu-advantage-tools
+          - armbian-os/armbian-bsp-cli-jethubj80-edge
+          - armbian-os/armbian-bsp-cli-jethubj100-current
+          - armbian-os/uboot-jethubj80-edge
+          - armbian-os/uboot-jethubj100-edge
+          - armbian-os/uboot-jethubj100-current
+          - armbian-os/armbian-base-files-bookworm-arm64
+          - armbian-os/armbian-base-files-jammy-arm64
+          - armbian-os/armbian-base-files-sid-arm64
+          - armbian-os/armbian-base-files-bullseye-arm64
+          - armbian-os/armbian-base-files-lunar-arm64
+          - armbian-os/rootfs-arm64-jammy-cli
+          - armbian-os/rootfs-arm64-bookworm-cli
+          - armbian-os/rootfs-arm64-bullseye-cli
+          - armbian-os/rootfs-arm64-lunar-cli
+          - armbian-os/rootfs-arm64-sid-cli
+          - armbian-os/armbian-base-files-trixie-arm64
+          - armbian-os/rootfs-arm64-trixie-cli
+          - armbian-os/armbian-base-files-focal-arm64
+          - armbian-os/rootfs-arm64-focal-cli
+          
+
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          # Name of the package.
+          # Required
+          package-name: ${{ matrix.packagename }}
+
+          # Type of the package. Can be one of container, maven, npm, nuget, or rubygems.
+          # Required
+          package-type: container
+
+          # The number of old versions to delete starting from the oldest version.
+          # Defaults to 1.
+          #num-old-versions-to-delete:
+
+          # The number of latest versions to keep.
+          # This cannot be specified with `num-old-versions-to-delete`. By default, `min-versions-to-keep` takes precedence over `num-old-versions-to-delete`.
+          # When set to 0, all deletable versions will be deleted.
+          # When set greater than 0, all deletable package versions except the specified number will be deleted.
+          min-versions-to-keep: 0
+
+          # The package versions to exclude from deletion.
+          # Takes regex for the version name as input.
+          # By default nothing is ignored. This is ignored when `delete-only-pre-release-versions` is true
+          #ignore-versions:
+
+          # If true it will delete only the pre-release versions.
+          # The number of pre-release versions to keep can be set by using `min-versions-to-keep` value with this.
+          # When `min-versions-to-keep` is 0, all pre-release versions get deleted.
+          # Defaults to false.
+          # Cannot be used with `num-old-versions-to-delete` and `ignore-versions`.
+          #delete-only-pre-release-versions:
+
+          # If true it will delete only the untagged versions in case of container package.
+          # Does not work for other package types and will be ignored.
+          # The number of untagged versions to keep can be set by using `min-versions-to-keep` value with this.
+          # When `min-versions-to-keep` is 0, all untagged versions get deleted.
+          # Defaults to false.
+          # Cannot be used with `num-old-versions-to-delete`.
+          #delete-only-untagged-versions:
+
+          # The token used to authenticate with GitHub Packages.
+          # Defaults to github.token.
+          # Required if the repo running the workflow does not have access to delete the package.
+          #   For rubygems and maven package, repo has access if package is hosted in the same repo as the workflow.
+          #   For container, npm and nuget package, repo has access if assigned **Admin** role under Package Settings > Manage Actions Access.
+          #   If `package-version-ids` is given the token only needs the delete packages scope.
+          #   If `package-version-ids` is not given the token needs the delete packages scope and the read packages scope
+          #token:

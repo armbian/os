@@ -1,0 +1,56 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  # ------ aggregate all artifact chunks into a single dependency -------
+
+  closing:
+    name: "Footer"
+    runs-on: ubuntu-latest
+    if: ${{ !failure() && !cancelled() }}
+    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
+    steps:
+      - name: "Download all workflow run artifacts"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: assets-for-download-[[repository_ref]]
+          path: downloads
+
+      - name: "Read version"
+        run: |
+
+          echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
+
+      # Delete artifact
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: assets-for-download-[[repository_ref]]
+          failOnError: false
+
+      # Cleaning releases
+      - uses: dev-drprasad/delete-older-releases@v0.3.4
+        with:
+          repo: jethome-iot/armbian-os
+          keep_latest: 16
+        env:
+          GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+
+      # Cleaning logs
+      - name: "Keep only 14 days of workflow logs"
+        uses: igorjs/gh-actions-clean-workflow@v6
+        with:
+          token: "${{ env.GH_TOKEN }}"
+          runs_older_than: 14 # optional
+          runs_to_keep: 0 # optional
+
+      # Switch pre-release to release
+      - uses: ncipollo/release-action@v1
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
+        with:
+          repo: "${{ env.RELEASE_REPOSITORY }}"
+          tag: "${{ needs.matrix_prep.outputs.version }}"
+          omitBody: true
+          omitName: true
+          allowUpdates: true
+          makeLatest: true
+          token: "${{ env.GH_TOKEN }}"

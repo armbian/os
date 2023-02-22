@@ -1,0 +1,7 @@
+ignore: # <TEMPLATE-IGNORE>
+  ignore: # <TEMPLATE-IGNORE>
+    ignore: # <TEMPLATE-IGNORE>
+      # artifacts-[[chunk]] of [[num_chunks_artifacts]]
+      artifacts-chunk-json-[[chunk]]: ${{ steps.prepare-matrix.outputs.artifacts-chunk-json-[[chunk]] }}
+      artifacts-chunk-not-empty-[[chunk]]: ${{ steps.prepare-matrix.outputs.artifacts-chunk-not-empty-[[chunk]] }}
+      artifacts-chunk-size-[[chunk]]: ${{ steps.prepare-matrix.outputs.artifacts-chunk-size-[[chunk]] }}

@@ -1,0 +1,71 @@
+common-gha-configs:
+  armbian-gha: &armbian-gha
+    runners:
+      default: "ubuntu-latest" # or a ["tag", "list"]
+      by-name:
+        kernel: [ "ubuntu-24.04-arm" ]
+        #uboot: [ "self-hosted", "Linux" ]
+        uboot: [ "ubuntu-24.04-arm" ]
+        armbian-bsp-cli: [ "ubuntu-24.04-arm" ]
+      by-name-and-arch:
+        rootfs-arm64: [ "self-hosted", "Linux" ]
+        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
+        image-arm64: [ "self-hosted", "Linux" ]
+        image-amd64: [ "self-hosted", "Linux", "X64" ]
+
+lists:
+
+  headless: &headless
+
+    - { BOARD: jethubj100, BRANCH: current }
+    - { BOARD: jethubj80, BRANCH: current }
+    - { BOARD: jethubj100, BRANCH: edge }
+    - { BOARD: jethubj80, BRANCH: edge }
+
+  fast-hdmi: &fast-hdmi
+    - { BOARD: jethubj200, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: jethubj200, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
+
+targets:
+
+  full-cli-stable-debian:
+    enabled: yes
+    configs: [ jethome-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *headless
+      - *fast-hdmi
+
+  full-cli-oldstable-ubuntu:
+    enabled: yes
+    configs: [ jethome-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *headless
+
+  full-cli-stable-ubuntu:
+    enabled: yes
+    configs: [ jethome-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *headless
+      - *fast-hdmi
+

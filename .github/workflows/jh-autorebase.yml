@@ -1,0 +1,137 @@
+name: JH Autorebase
+
+on:
+  schedule:
+    - cron:  '30 2 * * *'
+  workflow_call:
+    secrets:
+      token:
+        required: true
+  workflow_dispatch:
+
+concurrency: armbian-build-rebase
+
+jobs:
+  doupdate:
+    name: Sync repository with upstream
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'jethome-iot' }}
+    permissions:
+      contents: write
+      packages: write
+
+    strategy:
+      matrix: 
+        branch: [main, v23.02]
+    steps:
+      - name: Clean git
+        run: |
+          mkdir -p rebase
+          cd rebase
+          git remote remove upstream || true
+      - name: Checkout armbian repository (${{ matrix.branch }})
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: jethome-iot/armbian-build
+          path: rebase
+          ref: ${{ matrix.branch }}
+          token: ${{ secrets.token == null && secrets.JETHOME_TOKEN || secrets.token }}
+
+      - name: Rebase armbian repository (${{ matrix.branch }})
+        run: |
+          cd rebase
+          UPSTREAM=https://github.com/armbian/build.git
+          git remote add upstream $UPSTREAM  || true
+          git fetch upstream ${{ matrix.branch }}
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name  "GitHub Actions"
+          git rebase upstream/${{ matrix.branch }}
+          if [ "$(git status | grep diverged)" ]; then
+            git push origin $(git branch --show-current) --force-with-lease;
+          else
+            git push origin $(git branch --show-current)
+          fi;
+          git remote remove upstream || true
+
+  dorebase:
+    name: Rebase repository
+    needs: doupdate
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'jethome-iot' }}
+    permissions:
+      contents: write
+      packages: write
+
+    strategy:
+      matrix: 
+        branch: [main]
+    steps:
+      - name: Clean git
+        run: |
+          mkdir -p rebase
+          cd rebase
+          git remote remove upstream || true
+      - name: Checkout armbian repository (${{ matrix.branch }})
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          repository: jethome-iot/armbian-build
+          path: rebase
+          ref: ${{ matrix.branch }}-jethub
+          token: ${{ secrets.token == null && secrets.JETHOME_TOKEN || secrets.token }}
+
+      - name: Rebase armbian repository (${{ matrix.branch }})
+        run: |
+          cd rebase
+          git pull --all
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name  "GitHub Actions"
+          git rebase origin/${{ matrix.branch }}
+          if [ "$(git status | grep diverged)" ]; then
+            git push origin $(git branch --show-current) --force-with-lease;
+          else
+            git push origin $(git branch --show-current)
+          fi;
+
+  dorebaseos:
+    name: Rebase repository
+    needs: doupdate
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'jethome-iot' }}
+    permissions:
+      contents: write
+      packages: write
+    strategy:
+      matrix: 
+        branch: [main]
+    steps:
+      - name: Clean git
+        run: |
+          mkdir -p rebaseos
+          cd rebaseos
+          git remote remove upstream || true
+      - name: Checkout os repository (${{ matrix.branch }})
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: rebaseos
+          ref: ${{ matrix.branch }}
+          token: ${{ secrets.token == null && secrets.JETHOME_TOKEN || secrets.token }}
+
+      - name: Rebase os repository (${{ matrix.branch }})
+        run: |
+          cd rebaseos
+          UPSTREAM=https://github.com/armbian/os.git
+          git remote add upstream $UPSTREAM  || true
+          git fetch upstream ${{ matrix.branch }}
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name  "GitHub Actions"
+          git rebase upstream/${{ matrix.branch }}
+          if [ "$(git status | grep diverged)" ]; then
+            git push origin $(git branch --show-current) --force-with-lease;
+          else
+            git push origin $(git branch --show-current)
+          fi;
+          git remote remove upstream || true
+

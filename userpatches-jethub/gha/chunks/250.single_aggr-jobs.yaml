@@ -1,0 +1,32 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  # ------ aggregate all artifact chunks into a single dependency -------
+
+  all-artifacts-ready:
+    name: "[[num_chunks_artifacts]] artifacts chunks ready"
+    runs-on: ubuntu-latest # not going to run, anyway, but is required.
+    if: ${{ !cancelled() && ( 1 == 2 ) }} # eg: never run.
+    needs: [ "matrix_prep", "[[ quoted_comma_list_artifact_chunk_jobs ]]" ] # <-- HERE: all artifact chunk numbers.
+    steps:
+      - name: fake step
+        run: uptime
+
+  all-images-ready:
+    name: "[[num_chunks_images]] image chunks ready"
+    runs-on: ubuntu-latest # not going to run, anyway, but is required.
+    if: ${{ !cancelled() && ( 1 == 2 ) }} # eg: never run.
+    needs: [ "matrix_prep", "[[ quoted_comma_list_image_chunk_jobs ]]" ] # <-- HERE: all image chunk numbers.
+    steps:
+      - name: fake step
+        run: uptime
+
+  all-artifacts-and-images-ready:
+    name: "[[num_chunks_artifacts]] artifacts and [[num_chunks_images]] image chunks ready"
+    runs-on: ubuntu-latest # not going to run, anyway, but is required.
+    if: ${{ !cancelled() && ( 1 == 2 ) }} # eg: never run.
+    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
+    steps:
+      - name: fake step
+        run: uptime
+

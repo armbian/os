@@ -1,0 +1,31 @@
+org: "jethome-iot" # can't be an expression, only string.
+
+# armbian/build coordinates
+org_and_build_repo: "jethome-iot/armbian-build"
+release_repo: "armbian-os"
+build_ref: "main-jethub"
+repository_ref: "nightly"
+script_name: "JH Nightly Build Artifacts and Images"
+concurrency_group: "${{ github.run_id }}-pipeline-nightly"
+
+# menu defaults
+skipImagesDefaults: "'no'"
+checkOciDefaults: "'yes'"
+nightlybuildDefaults: "'yes'"
+uploadtoserverDefaults: "'both'"
+
+# armbian/os coordinates. set all to empty to not use userpatches.
+org_and_userpatches_repo: "jethome-iot/armbian-os"
+userpatches_ref: "main"
+userpatches_dir: "userpatches-jethub" # folder inside the userpatches repo; use "." if stuff is in the root of the repo
+targets_filename: "targets-full.yaml"
+
+ghcr_user: "${{ github.repository_owner }}"
+userpatches_config_for_prepare_job: "jethome-images" # use "" for no config file
+
+# repository runner
+repository_runner: "[ \"self-hosted\", \"Linux\", \"vm\" ]"
+#repository_runner: "[ \"ubuntu-latest\" ]"
+
+# when this should run
+cron_job: "schedule:\n   - cron: '0 6 * * *'"

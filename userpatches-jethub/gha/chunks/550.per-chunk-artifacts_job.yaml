@@ -1,0 +1,77 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
+    if: ${{ github.repository_owner == '[[org]]' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-[[chunk]] == 'yes' }}  # <-- HERE: Chunk number.
+    needs: [ "matrix_prep" ]
+    strategy:
+      fail-fast: false # let other jobs try to complete if one fails
+      matrix: ${{ fromJSON(needs.matrix_prep.outputs.artifacts-chunk-json-[[chunk]]) }} # <-- HERE: Chunk number.
+    name: ${{ matrix.desc || 'Empty A[[chunk]]' }} # <-- HERE: Chunk number.
+    runs-on: ${{ matrix.runs_on }}
+    steps:
+
+      #- name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
+      #  uses: armbian/actions/runner-clean@main
+
+      # Login to ghcr.io, for later uploading rootfs to ghcr.io
+      - name: Docker Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: "[[ghcr_user]]" # GitHub username or org
+          password: "${{ secrets.GITHUB_TOKEN }}"    # GitHub actions builtin token. repo has to have pkg access.
+
+      - name: Docker Login to CR
+        env:
+          CR_REGISTRY: ${{ secrets.CR_REGISTRY }}
+        if: env.CR_REGISTRY != null
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.CR_REGISTRY }}
+          username: ${{ secrets.CR_USERNAME }}
+          password: ${{ secrets.CR_PAT }}
+
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: sudo rm -rf userpatches.repo
+
+      - name: Checkout build repo
+        uses: actions/checkout@v4 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v4
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: ${{ matrix.fdepth }}
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          sudo rm -rf userpatches.repo
+          echo ${{ needs.matrix_prep.outputs.version }} > userpatches/VERSION
+
+
+      - name: Build  ${{matrix.desc}}
+        timeout-minutes: 300
+        id: build
+        run: |
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
