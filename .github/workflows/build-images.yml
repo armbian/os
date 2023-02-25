@@ -1,4 +1,4 @@
-name: Build Nighly Images
+name: Build Images
 #
 
 on:
@@ -6,6 +6,22 @@ on:
   schedule:
     - cron: "30 0 * * *"
   workflow_dispatch:
+    inputs:
+      release:
+        type: choice
+        description: 'Release'
+        options:
+        - nightly
+        - stable
+      board:
+        description: 'Board'
+        required: false
+        default: ''
+      version:
+        description: 'Version'
+        required: false
+        default: ''
+
 
 jobs:
 
@@ -51,7 +67,7 @@ jobs:
           PREFIX=$(echo $(curl https://raw.githubusercontent.com/armbian/build/main/VERSION | sed "s/-trunk.*//"))
           RELE=$(printf "%04d\n" $((VER+1)))
           echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
-          echo "version=${PREFIX}.${RELE}"
+          [[ -n "${{ inputs.version }}" ]] && echo "version=\"${{ inputs.version }}\"" >> $GITHUB_OUTPUT || true
 
   generaterelease:
 
@@ -91,7 +107,7 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  Minimal:
+  Legacy_cli:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
@@ -99,8 +115,165 @@ jobs:
 
     with:
 
-      config: 'nighly-cli.conf'
-      branch: ''
-      release: ''
-      variant: ''
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'legacy'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'cli'
       version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Legacy_desktop:
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'legacy'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'desktop'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Legacy_minimal:
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'legacy'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'minimal'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Current_cli:
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'current'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'cli'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Current_desktop:
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'current'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'desktop'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Current_minimal:
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'current'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'minimal'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Edge_cli:  
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'edge'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'cli'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Edge_desktop:  
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'edge'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'desktop'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  Edge_minimal:  
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'edge'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'minimal'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}

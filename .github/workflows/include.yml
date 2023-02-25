@@ -19,6 +19,14 @@ on:
       version:
        required: false
        type: string
+      board:
+       required: false
+       type: string
+    secrets:
+      SSH_KEY_TORRENTS:
+        required: true
+      KNOWN_HOSTS_UPLOAD:
+        required: true
 
 jobs:
 
@@ -63,16 +71,22 @@ jobs:
         id: json
         run: |
           
-          echo "Version: ${{ inputs.version }}"
-          
-          # Make a list of valid pairs from our config
+          # Make a list of valid pairs from our config          
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat os/targets/${{ inputs.config }} | grep -v "^$" | grep -v "^#" | grep "${{ inputs.branch }}" | grep "${{ inputs.release }}" | grep "${{ inputs.variant }}" | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"runner_tag\":\"qemu\"}"}' | jq $FILTER | jq -s >> $GITHUB_OUTPUT
+          cat os/targets/${{ inputs.config }} \
+          | grep -v "^$\|^#" \
+          | grep "${{ inputs.branch }}" \
+          | grep "${{ inputs.release }}" \
+          | grep "${{ inputs.variant }}" \
+          | grep "${{ inputs.board }}" \
+          | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"desktop\":\""$7"\",\"app_group\":\""$9"\",\"runner_tag\":\"qemu\"}"}' | jq $FILTER | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
+
   Docker:
 
     name: "*"
     needs: [ prepare ]
+    if: ${{ needs.prepare.outputs.matrix != '[]' && needs.prepare.outputs.matrix != '' }}
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix:
@@ -83,12 +97,18 @@ jobs:
       BRANCH:          "${{ matrix.branch }}"      
       RELEASE:         "${{ matrix.release }}"
       VARIANT:         "${{ matrix.variant }}"
+      DESKTOP:         "${{ matrix.desktop }}"
+      APP_GROUP:       "${{ matrix.app_group }}"
       RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
-    runs-on: ubuntu-latest
+    runs-on:  [ "${{ matrix.runner_tags }}" ]
 
     steps:
+
+      - name: "Generate key id" # We need this in case we run multiple runners on one machine
+        run: echo "RANDOM=ID_$((RANDOM%1000000))" >> $GITHUB_ENV
+        shell: bash
 
         # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
@@ -116,6 +136,14 @@ jobs:
           clean: false
           path: os
 
+      - name: Install SSH key for storage
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY_TORRENTS }}
+          name: ${{ env.RANDOM }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+          if_key_exists: replace
+
       - name: "Rsync userpatches"
         run: |
 
@@ -125,23 +153,45 @@ jobs:
         id: rootfs
         run: |
         
+           DESKTOP_ENVIRONMENT="${{env.DESKTOP}}"
+           BUILD_DESKTOP="yes"
+           BUILD_MINIMAL="no"
+           [[ "${{env.VARIANT}}" == minimal ]] && BUILD_MINIMAL="yes"
+           [[ -z "${{env.DESKTOP}}" ]] && DESKTOP_ENVIRONMENT="" && BUILD_DESKTOP="no"
            cd build
            echo "${{ inputs.version }}" > userpatches/VERSION
-           bash ./compile.sh armbian-images BOARD="${{env.BOARD}}" BRANCH="${{env.BRANCH}}" RELEASE="${{env.RELEASE}}" BUILD_DESKTOP=no BUILD_MINIMAL=no COMPRESS_OUTPUTIMAGE=sha,img,xz
+           bash ./compile.sh armbian-images \
+           BOARD="${{env.BOARD}}" \
+           BRANCH="${{env.BRANCH}}" \
+           RELEASE="${{env.RELEASE}}" \
+           BUILD_MINIMAL="${BUILD_MINIMAL}" \
+           MAKE_FOLDERS="archive" \
+           BUILD_DESKTOP="${BUILD_DESKTOP}" \
+           DESKTOP_APPGROUPS_SELECTED="${{env.APP_GROUP}}" \
+           DESKTOP_ENVIRONMENT="${{ env.DESKTOP }}" \
+           DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base
            
       - name: "Upload artefacts"
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/Armbian_${{ inputs.version }}*.*"
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
           tag: "${{ inputs.version }}"
           omitBody: true
           replacesArtifacts: true
           omitName: true
           allowUpdates: true
-          artifactErrorsFailBuild: true
+          artifactErrorsFailBuild: false
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to server
+        if: ${{ github.repository_owner == 'Armbian' }}
+        run: |          
+          sudo apt-get -y -qq install lftp
+          lftp -u upload, -e "set sftp:connect-program ssh -ax -i $HOME/.ssh/${{ env.RANDOM }}; set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ images/ ;bye" sftp://users.armbian.com
 
       - name: Cleanup
         run: |
 
-          rm -f build/output/images/*
+          rm -rf build/output/images/*
+
+
