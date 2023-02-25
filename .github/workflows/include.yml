@@ -102,7 +102,7 @@ jobs:
       RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
       
-    runs-on: ubuntu-latest
+    runs-on:  [ "${{ matrix.runner_tags }}" ]
 
     steps:
 
