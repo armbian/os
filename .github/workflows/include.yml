@@ -71,7 +71,7 @@ jobs:
       - name: "Make JSON"
         id: json
         run: |
-          
+
           # lets mix github runners and ours, 1:2
           array=(ubuntu-latest qemu qemu)
           echo runner=$(index=$(shuf -i 1-2 -n 1);echo ${array[$index]}) >> $GITHUB_OUTPUT
@@ -92,7 +92,7 @@ jobs:
     name: "*"
     needs: [ prepare ]
     if: ${{ needs.prepare.outputs.matrix != '[]' && needs.prepare.outputs.matrix != '' }}
-    timeout-minutes: 60    
+    timeout-minutes: 60
     strategy:
       max-parallel: 16
       fail-fast: false # let other jobs try to complete if one fails
@@ -101,14 +101,14 @@ jobs:
 
     env:
       BOARD:           "${{ matrix.board }}"
-      BRANCH:          "${{ matrix.branch }}"      
+      BRANCH:          "${{ matrix.branch }}"
       RELEASE:         "${{ matrix.release }}"
       VARIANT:         "${{ matrix.variant }}"
       DESKTOP:         "${{ matrix.desktop }}"
       APP_GROUP:       "${{ matrix.app_group }}"
       RUNNER_TAG:      "${{ matrix.runner_tag }}"
       OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically
-      
+
     runs-on:  [ "${{ needs.prepare.outputs.runner }}" ]
 
     steps:
@@ -160,7 +160,7 @@ jobs:
         if: ${{ github.repository_owner == 'Armbian' }}
         id: rootfs
         run: |
-        
+
            DESKTOP_ENVIRONMENT="${{env.DESKTOP}}"
            BUILD_DESKTOP="yes"
            BUILD_MINIMAL="no"
@@ -178,9 +178,9 @@ jobs:
            DESKTOP_APPGROUPS_SELECTED="${{env.APP_GROUP}}" \
            DESKTOP_ENVIRONMENT="${{ env.DESKTOP }}" \
            DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base
-           
+
       - name: "Upload artefacts"
-        if: ${{ github.repository_owner == 'Armbian' }}
+        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
@@ -193,7 +193,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
-        if: ${{ github.repository_owner == 'Armbian' }}
+        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release == 'stable' }}
         run: |
           if ! command -v "lftp" > /dev/null 2>&1; then
              sudo apt-get -y -qq install lftp
@@ -204,5 +204,3 @@ jobs:
         run: |
 
           rm -rf build/output/images/*
-
-

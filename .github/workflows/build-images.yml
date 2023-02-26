@@ -46,7 +46,7 @@ jobs:
           keep_latest: 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+
       - name: "Purge action workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
@@ -56,7 +56,7 @@ jobs:
       - name: "Get latest release version"
         id: releases
         run: |
-        
+
           get_latest_release() {
             curl --silent "https://api.github.com/repos/$1/releases/latest" |
             grep '"tag_name":' |
@@ -82,10 +82,10 @@ jobs:
       - name: "Get latest release version"
         id: releases
         run: |
-        
+
           echo "version=${{ needs.Prepare.outputs.version }}" >> $GITHUB_OUTPUT
 
-      - run: |        
+      - run: |
           echo "Release: ${{ github.event.inputs.release }}"
           echo "Board: ${{ github.event.inputs.board }}"
           echo "Version: ${{ needs.Prepare.outputs.version }}"
@@ -219,7 +219,7 @@ jobs:
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-  Edge_cli:  
+  Edge_cli:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
@@ -238,7 +238,7 @@ jobs:
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-  Edge_desktop:  
+  Edge_desktop:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
@@ -257,7 +257,7 @@ jobs:
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-  Edge_minimal:  
+  Edge_minimal:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
