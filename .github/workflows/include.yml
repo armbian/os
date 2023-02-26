@@ -34,7 +34,7 @@ jobs:
 
     name: "JSON"
     if: ${{ github.repository_owner == 'armbian' }}
-    runs-on: qemu
+    runs-on: ubuntu-latest
     outputs:
       matrix:  ${{steps.json.outputs.JSON_CONTENT}}
       runner:  ${{steps.json.outputs.runner}}
@@ -73,9 +73,9 @@ jobs:
         run: |
 
           # lets mix github runners and ours, 1:2
-          array=(ubuntu-latest qemu qemu)
+          # array=(ubuntu-latest qemu qemu)
 
-          array=(ubuntu-latest) # need to resolve self-hosted runner problems
+          array=(ubuntu-latest ubuntu-latest) # need to resolve self-hosted runner problems
           echo runner=$(index=$(shuf -i 1-2 -n 1);echo ${array[$index]}) >> $GITHUB_OUTPUT
 
           # Make a list of valid pairs from our config          
