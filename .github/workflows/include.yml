@@ -74,6 +74,8 @@ jobs:
 
           # lets mix github runners and ours, 1:2
           array=(ubuntu-latest qemu qemu)
+
+          array=(ubuntu-latest) # need to resolve self-hosted runner problems
           echo runner=$(index=$(shuf -i 1-2 -n 1);echo ${array[$index]}) >> $GITHUB_OUTPUT
 
           # Make a list of valid pairs from our config          
