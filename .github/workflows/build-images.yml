@@ -67,14 +67,14 @@ jobs:
           PREFIX=$(echo $(curl https://raw.githubusercontent.com/armbian/build/main/VERSION | sed "s/-trunk.*//"))
           RELE=$(printf "%04d\n" $((VER+1)))
           echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
-          [[ -n "${{ inputs.version }}" ]] && echo "version=\"${{ inputs.version }}\"" >> $GITHUB_OUTPUT || true
+          [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT || true
 
   generaterelease:
 
     needs: [ Prepare ]
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
-    name: "Generate release"
+    name: "Generate ${{ inputs.release }} release"
     outputs:
       version: ${{steps.releases.outputs.version}}
     steps:
@@ -86,10 +86,8 @@ jobs:
           echo "version=${{ needs.Prepare.outputs.version }}" >> $GITHUB_OUTPUT
 
       - run: |        
-          echo "Env: ${{ github.event.inputs.choice }}"
-          echo "Env: ${{ github.event.inputs.runner }}"
-          echo "Env: ${{ github.event.inputs.sourcerepo }}"
-          echo "Branch: ${{ github.event.inputs.branch }}"
+          echo "Release: ${{ github.event.inputs.release }}"
+          echo "Board: ${{ github.event.inputs.board }}"
           echo "Version: ${{ needs.Prepare.outputs.version }}"
 
       - uses: actions/checkout@v3
@@ -97,7 +95,7 @@ jobs:
           fetch-depth: 1
 
       - uses: ncipollo/release-action@v1
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.choice != 'stable'  && github.event.inputs.choice != 'rc' }}
+        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           artifacts: "LICENSE"
           tag: "${{ needs.Prepare.outputs.version }}"
