@@ -169,6 +169,7 @@ jobs:
            cd build
            echo "${{ inputs.version }}" > userpatches/VERSION
            bash ./compile.sh armbian-images \
+           SHARE_LOG="yes" \
            BOARD="${{env.BOARD}}" \
            BRANCH="${{env.BRANCH}}" \
            RELEASE="${{env.RELEASE}}" \
