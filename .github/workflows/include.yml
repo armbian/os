@@ -83,7 +83,7 @@ jobs:
           cat os/targets/${{ inputs.config }} \
           | grep -v "^$\|^#" \
           | grep " ${{ inputs.branch }} " \
-          | grep " ${{ inputs.release }} " \
+          | grep "${{ inputs.release }} " \
           | grep "${{ inputs.variant }}" \
           | grep "${{ inputs.board }}" \
           | awk '{print  "{\"board\":\""$1"\",\"branch\":\""$2"\",\"release\":\""$3"\",\"variant\":\""$4"\",\"desktop\":\""$7"\",\"app_group\":\""$9"\",\"runner_tags\":\"qemu\"}"}' | jq $FILTER | jq -s >> $GITHUB_OUTPUT

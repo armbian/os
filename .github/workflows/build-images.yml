@@ -40,10 +40,10 @@ jobs:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Purge old releases of trunk build"
+      - name: "Keep only 32 nightly releases"
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          keep_latest: 1
+          keep_latest: 32
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
