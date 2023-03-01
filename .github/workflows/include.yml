@@ -94,7 +94,7 @@ jobs:
     name: "*"
     needs: [ prepare ]
     if: ${{ needs.prepare.outputs.matrix != '[]' && needs.prepare.outputs.matrix != '' }}
-    timeout-minutes: 60
+    timeout-minutes: 120
     strategy:
       max-parallel: 16
       fail-fast: false # let other jobs try to complete if one fails
