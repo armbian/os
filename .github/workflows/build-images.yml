@@ -4,7 +4,7 @@ name: Build Images
 on:
   push:
   schedule:
-    - cron: "30 0 * * *"
+    - cron: "30 3 * * *"
   workflow_dispatch:
     inputs:
       release:
