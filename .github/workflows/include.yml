@@ -155,8 +155,6 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
 
       - name: Install SSH key for storage
         uses: shimataro/ssh-key-action@v2
