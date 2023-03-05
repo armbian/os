@@ -158,6 +158,14 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
           if_key_exists: replace
 
+      - name: Cleanup
+        run: |
+          rm -rf build/output/images/*
+          rm -rf build/cache/rootfs/*
+          # remove other projects
+          PROJECT=$(echo ${{ github.workspace }} | rev | cut -d'/' -f 1 | rev)
+          find $(echo ${{ github.workspace }} | rev | cut -d"/" -f3- | rev) -mindepth 1 -maxdepth 1 ! -name "_*" ! -name ${PROJECT} -exec sudo rm -rf {} + || true
+
       - name: "Rsync userpatches"
         run: |
 
@@ -223,6 +231,7 @@ jobs:
         run: |
 
           rm -rf build/output/images/*
+          rm -rf build/cache/rootfs/*
           # remove other projects
           PROJECT=$(echo ${{ github.workspace }} | rev | cut -d'/' -f 1 | rev)
-          find $(echo ${{ github.workspace }} | rev | cut -d"/" -f3- | rev) -mindepth 1 -maxdepth 1 ! -name "_*" ! -name ${PROJECT}
+          find $(echo ${{ github.workspace }} | rev | cut -d"/" -f3- | rev) -mindepth 1 -maxdepth 1 ! -name "_*" ! -name ${PROJECT} -exec sudo rm -rf {} + || true
