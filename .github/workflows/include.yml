@@ -155,6 +155,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+          workdir: ${{ env.RANDOM }}
 
       - name: Install SSH key for storage
         uses: shimataro/ssh-key-action@v2
