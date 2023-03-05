@@ -150,13 +150,6 @@ jobs:
           clean: false
           path: os
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.GPG_KEY1 }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
-          workdir: ${{ env.RANDOM }}
-
       - name: Install SSH key for storage
         uses: shimataro/ssh-key-action@v2
         with:
@@ -193,6 +186,12 @@ jobs:
            DESKTOP_APPGROUPS_SELECTED="${{env.APP_GROUP}}" \
            DESKTOP_ENVIRONMENT="${{ env.DESKTOP }}" \
            DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: Sign
         run: |
