@@ -160,8 +160,8 @@ jobs:
 
       - name: Cleanup
         run: |
-          rm -rf build/output/images/*
-          rm -rf build/cache/rootfs/*
+          sudo rm -rf build/output/images/* || true
+          sudo rm -rf build/cache/rootfs/* || true
           # remove other projects
           PROJECT=$(echo ${{ github.workspace }} | rev | cut -d'/' -f 1 | rev)
           find $(echo ${{ github.workspace }} | rev | cut -d"/" -f3- | rev) -mindepth 1 -maxdepth 1 ! -name "_*" ! -name ${PROJECT} -exec sudo rm -rf {} + || true
@@ -230,8 +230,8 @@ jobs:
       - name: Cleanup
         run: |
 
-          rm -rf build/output/images/*
-          rm -rf build/cache/rootfs/*
+          sudo rm -rf build/output/images/* || true
+          sudo rm -rf build/cache/rootfs/* || true
           # remove other projects
           PROJECT=$(echo ${{ github.workspace }} | rev | cut -d'/' -f 1 | rev)
           find $(echo ${{ github.workspace }} | rev | cut -d"/" -f3- | rev) -mindepth 1 -maxdepth 1 ! -name "_*" ! -name ${PROJECT} -exec sudo rm -rf {} + || true
