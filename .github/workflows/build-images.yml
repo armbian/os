@@ -293,3 +293,24 @@ jobs:
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Midstream:
+
+    needs: generaterelease
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'midstream'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: ''
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
