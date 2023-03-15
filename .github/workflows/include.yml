@@ -86,6 +86,7 @@ jobs:
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           cat os/targets/${{ inputs.config }} \
           | grep -v "^$\|^#" \
+          | awk '$6 != "no"' \
           | grep " ${{ inputs.branch }} " \
           | grep "${{ inputs.release }} " \
           | grep "${{ inputs.variant }}" \
