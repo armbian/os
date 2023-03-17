@@ -183,13 +183,14 @@ jobs:
            [[ "${{env.VARIANT}}" == minimal ]] && BUILD_MINIMAL="yes"
            [[ -z "${{env.DESKTOP}}" ]] && DESKTOP_ENVIRONMENT="" && BUILD_DESKTOP="no"
            cd build
-           #disable versioning
-           #echo "${{ inputs.version }}" > userpatches/VERSION
+           # disable versioning
+           # echo "${{ inputs.version }}" > userpatches/VERSION
            bash ./compile.sh armbian-images \
            SHARE_LOG="yes" \
            BOARD="${{env.BOARD}}" \
            BRANCH="${{env.BRANCH}}" \
            RELEASE="${{env.RELEASE}}" \
+           BUILDING_IMAGE="yes" \
            BUILD_MINIMAL="${BUILD_MINIMAL}" \
            MAKE_FOLDERS="archive" \
            BUILD_DESKTOP="${BUILD_DESKTOP}" \
