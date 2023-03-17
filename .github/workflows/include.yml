@@ -183,8 +183,8 @@ jobs:
            [[ "${{env.VARIANT}}" == minimal ]] && BUILD_MINIMAL="yes"
            [[ -z "${{env.DESKTOP}}" ]] && DESKTOP_ENVIRONMENT="" && BUILD_DESKTOP="no"
            cd build
+           # IMAGE_VERSION="${{ inputs.version }}"
            bash ./compile.sh armbian-images \
-           IMAGE_VERSION="${{ inputs.version }}" \
            SHARE_LOG="yes" \
            BOARD="${{env.BOARD}}" \
            BRANCH="${{env.BRANCH}}" \
