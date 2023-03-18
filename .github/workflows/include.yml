@@ -185,6 +185,7 @@ jobs:
            cd build
            # IMAGE_VERSION="${{ inputs.version }}"
            bash ./compile.sh armbian-images \
+           IMAGE_VERSION="${{ inputs.version }}" \
            SHARE_LOG="yes" \
            BOARD="${{env.BOARD}}" \
            BRANCH="${{env.BRANCH}}" \
