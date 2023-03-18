@@ -137,7 +137,7 @@ jobs:
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
           repository: armbian/build #${{ github.repository_owner }}/armbian-build
-          ref: 4e6fd3a507f4305a24fd5406cc99f40da13ef7e5
+          ref: 91b7b35fa3c43cb844ebb52ec076c00034bc9957
           fetch-depth: 1
           clean: false
           path: build
