@@ -1,0 +1,71 @@
+name: Build train
+on:
+  workflow_dispatch:
+    inputs:
+      BUILD_BRANCH:
+        description: Build branch
+        required: false
+        default: main
+        type: string
+
+jobs:
+
+  ##########################################################################################
+  #                                                                                        #
+  #                cancels previous runs associated with a workflow                        #
+  #                                                                                        #
+  ##########################################################################################
+
+  Cancel:
+    name: "Cancel currently active"
+#    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+        if: ${{ github.event.schedule == '' }}
+        with:
+          all_but_latest: true
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+  Kernel:
+    name: "Build kernel cache"
+    needs: Cancel
+    
+#    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: armbian
+      BUILD_BRANCH: ${{ input.BUILD_BRANCH }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  U-boot:
+    name: "Build u-boot cache"
+    needs: Cancel
+    
+#    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
+    with:
+      ACCESS_NAME: armbian
+      BUILD_BRANCH: ${{ input.BUILD_BRANCH }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+#  Rootfs:
+#    name: "Build rootfs cache"
+#    needs: Cancel
+#    
+#    if: ${{ success() && github.repository_owner == 'Armbian' }}
+#    uses: armbian/scripts/.github/workflows/build-rootfs-cache.yml@main
+#    with:
+#      ACCESS_NAME: armbian
+#      BUILD_BRANCH: ${{ input.BUILD_BRANCH }}
+#    secrets:
+#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
