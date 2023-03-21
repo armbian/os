@@ -7,6 +7,12 @@ on:
         required: false
         default: main
         type: string
+      BUILD_RUNNER:
+        description: Build runner
+        required: false
+        default: ubuntu-latest
+        type: string
+
 
 jobs:
 
@@ -37,6 +43,7 @@ jobs:
     with:
       ACCESS_NAME: armbian
       BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
@@ -51,6 +58,7 @@ jobs:
     with:
       ACCESS_NAME: armbian
       BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
@@ -65,6 +73,7 @@ jobs:
 #    with:
 #      ACCESS_NAME: armbian
 #      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
 #    secrets:
 #      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 #      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
