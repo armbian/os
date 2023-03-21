@@ -29,6 +29,8 @@ jobs:
   Cancel:
     name: "Cancel currently active"
     if: ${{ github.repository_owner == 'Armbian' }}
+    env:
+      KERNEL_ONLY: ${{inputs.KERNEL_ONLY}}
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -40,7 +42,7 @@ jobs:
           
       - name: called is-valid   
         run: |
-          echo "Yes ${{ inputs.KERNEL_ONLY }}"
+          echo "Yes ${{ inputs.KERNEL_ONLY }} ${{ fromJSON(env.KERNEL_ONLY) }}"
 
   kernel:
     name: "Build kernel cache"
@@ -61,7 +63,7 @@ jobs:
     name: "Build u-boot cache"
     needs: Cancel
     
-    if: ${{ inputs.KERNEL_ONLY }} == 'true' && ${{ github.repository_owner }} == 'Armbian'
+    if: ${{ fromJSON(env.KERNEL_ONLY) }} == 'true'
     uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
     with:
       ACCESS_NAME: armbian
