@@ -37,6 +37,10 @@ jobs:
         with:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: called is-valid   
+        run: |
+          echo "Yes ${{ inputs.KERNEL_ONLY }}"
 
   kernel:
     name: "Build kernel cache"
@@ -57,7 +61,7 @@ jobs:
     name: "Build u-boot cache"
     needs: Cancel
     
-    if: ${{ github.event.inputs.KERNEL_ONLY == true && github.repository_owner == 'Armbian' }}
+    if: ${{ inputs.KERNEL_ONLY == 'true' && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
     with:
       ACCESS_NAME: armbian
