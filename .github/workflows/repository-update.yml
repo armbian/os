@@ -84,10 +84,15 @@ jobs:
 #      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
 
+  repository:
+    if: ${{ always() }}
+    needs: [kernel,uboot]
+    runs-on: ubuntu-latest
+
   apt-armbian-com:
   
     name: "Update stable"
-    needs: [kernel,uboot]
+    needs: [repository]
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
@@ -101,7 +106,7 @@ jobs:
   beta-armbian-com:
   
     name: "Update beta"
-    needs: [kernel,uboot]
+    needs: [repository]
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
