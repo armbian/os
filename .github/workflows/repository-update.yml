@@ -12,6 +12,10 @@ on:
         required: false
         default: ubuntu-latest
         type: string
+      KERNEL_ONLY:
+        type: boolean
+        description: True or False
+        
 
 
 jobs:
@@ -53,7 +57,7 @@ jobs:
     name: "Build u-boot cache"
     needs: Cancel
     
-#    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    if: ${{ github.event.inputs.KERNEL_ONLY && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
     with:
       ACCESS_NAME: armbian
