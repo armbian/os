@@ -63,7 +63,7 @@ jobs:
     name: "Build u-boot cache"
     needs: Cancel
     
-    if: ${{ fromJSON(env.KERNEL_ONLY) }} == 'true'
+    if: ${{ fromJSON(inputs.KERNEL_ONLY) }} == 'true'
     uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
     with:
       ACCESS_NAME: armbian
