@@ -36,7 +36,7 @@ jobs:
     uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
     with:
       ACCESS_NAME: armbian
-      BUILD_BRANCH: ${{ input.BUILD_BRANCH }}
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
@@ -50,7 +50,7 @@ jobs:
     uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
     with:
       ACCESS_NAME: armbian
-      BUILD_BRANCH: ${{ input.BUILD_BRANCH }}
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
@@ -64,7 +64,7 @@ jobs:
 #    uses: armbian/scripts/.github/workflows/build-rootfs-cache.yml@main
 #    with:
 #      ACCESS_NAME: armbian
-#      BUILD_BRANCH: ${{ input.BUILD_BRANCH }}
+#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
 #    secrets:
 #      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 #      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
