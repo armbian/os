@@ -34,7 +34,7 @@ jobs:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
-  Kernel:
+  kernel:
     name: "Build kernel cache"
     needs: Cancel
     
@@ -49,7 +49,7 @@ jobs:
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-  U-boot:
+  uboot:
     name: "Build u-boot cache"
     needs: Cancel
     
@@ -78,3 +78,46 @@ jobs:
 #      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 #      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
 #      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+
+  apt-armbian-com:
+  
+    name: "Update stable"
+    needs: [kernel,uboot]
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: [self-hosted, Linux, local]
+    steps:
+      - uses: armbian/actions/triggers@main
+        with:
+          KEY: ${{ secrets.KEY_REPOSITORY }}
+          USER: ${{ secrets.USER_REPOSITORY }}
+          HOST: ${{ secrets.HOST_REPOSITORY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
+
+  beta-armbian-com:
+  
+    name: "Update beta"
+    needs: [kernel,uboot]
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: [self-hosted, Linux, local]
+    steps:
+      - uses: armbian/actions/triggers@main
+        with:
+          KEY: ${{ secrets.KEY_REPOSITORY_BETA }}
+          USER: ${{ secrets.USER_REPOSITORY }}
+          HOST: ${{ secrets.HOST_REPOSITORY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
+
+  sync-servers:
+  
+    name: "Sync servers"
+    needs: [apt-armbian-com,beta-armbian-com]
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: [self-hosted, Linux, local]
+    steps:
+      - uses: armbian/actions/triggers@main
+        with:
+          KEY: ${{ secrets.KEY_SYNC_MIRRORS }}
+          USER: ${{ secrets.USER_REPOSITORY }}
+          HOST: ${{ secrets.HOST_REPOSITORY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
