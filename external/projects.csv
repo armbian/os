@@ -1,34 +1,26 @@
 Project name,URL,Source component,Release,Target location,Method,Search parameter,Arhitectures
 thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,thunderbird,armhf:arm64:amd64
-thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,kinetic,kinetic,desktop,aptly,thunderbird,armhf:arm64:amd64
 thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,thunderbird,armhf:arm64:amd64
-firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,firefox,armhf:arm64:amd64
-firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,kinetic,kinetic,desktop,aptly,firefox,armhf:arm64:amd64
-firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,firefox,armhf:arm64:amd64
-chrome,http://dl.google.com/linux/chrome/deb/ stable,main,all,utils,aptly,stable,amd64
-chromium,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,focal,focal,desktop,aptly,chromium,armhf:arm64:amd64
-chromium,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,jammy,jammy,desktop,aptly,chromium,armhf:arm64:amd64
-chromium,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,kinetic,kinetic,desktop,aptly,chromium,armhf:arm64:amd64
-chromium,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,kinetic,lunar,desktop,aptly,chromium,armhf:arm64:amd64
-box86,http://ryanfortner.github.io/box64-debs/debian,./,all,utils,aptly,box,armhf:arm64
-box64,https://itai-nelken.github.io/weekly-box86-debs/debian/,./,all,utils,aptly,box,armhf:arm64
-zfs,http://ppa.launchpad.net/jonathonf/zfs/ubuntu,focal,focal,utils,aptly,,armhf:arm64:amd64
-zfs,http://ppa.launchpad.net/jonathonf/zfs/ubuntu,jammy,jammy,utils,aptly,,armhf:arm64:amd64
-zfs,http://ppa.launchpad.net/jonathonf/zfs/ubuntu,jammy,lunar,utils,aptly,,armhf:arm64:amd64
-nala,http://deb.volian.org/volian scar,main,focal,utils,aptly,nala_,armhf:arm64:amd64
-nala,http://deb.volian.org/volian scar,main,jammy,utils,aptly,nala_,armhf:arm64:amd64
-nala,http://deb.volian.org/volian scar,main,kinetic,utils,aptly,nala_,armhf:arm64:amd64
-nala,http://deb.volian.org/volian scar,main,lunar,utils,aptly,nala_,armhf:arm64:amd64
-nala,http://deb.volian.org/volian scar,main,bullseye,utils,aptly,nala_,armhf:arm64:amd64
+firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,Name (% firefox-*),armhf:arm64:amd64
+firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,Name (% firefox-*),armhf:arm64:amd64
+google-chrome-stable,http://dl.google.com/linux/chrome/deb/ stable,main,all,utils,aptly,google-chrome-stable,amd64
+chromium-browser,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,jammy,jammy,desktop,aptly,chromium-browser,armhf:arm64:amd64
+chromium-browser,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,kinetic,lunar,desktop,aptly,chromium-browser,armhf:arm64:amd64
+box86,http://ryanfortner.github.io/box64-debs/debian,./,all,utils,aptly,Name (% box86-*),armhf:arm64
+box64,https://itai-nelken.github.io/weekly-box86-debs/debian/,./,all,utils,aptly,Name (% box64-*),armhf:arm64
+zfsutils-linux,http://deb.debian.org/debian,bullseye-backports contrib non-free,all,utils,aptly,zfsutils-linux,armhf:arm64:amd64
+zfs-dkms,http://deb.debian.org/debian,bullseye-backports contrib non-free,all,utils,aptly,zfs-dkms,armhf:arm64:amd64
+nala,http://deb.volian.org/volian scar,main,jammy,utils,aptly,Name (% nala*),armhf:arm64:amd64
+nala,http://deb.volian.org/volian scar,main,kinetic,utils,aptly,Name (% nala*),armhf:arm64:amd64
+nala,http://deb.volian.org/volian scar,main,lunar,utils,aptly,Name (% nala*),armhf:arm64:amd64
 aptly,https://github.com/aptly-dev/aptly,focal,all,utils,gh,amd64,armhf:arm64:amd64
-ghcli,https://github.com/cli/cli,jammy,all,utils,gh,gh,armhf:arm64:amd64
-etcher,https://github.com/balena-io/etcher,jammy,all,utils,gh,amd64,armhf:arm64:amd64
+gh,https://github.com/cli/cli,jammy,all,utils,gh,gh,armhf:arm64:amd64
+balena-etcher,https://github.com/balena-io/etcher,jammy,all,utils,gh,balena-etcher,armhf:arm64:amd64
 zoom,http://mirror.mwt.me/my/deb,any,all,desktop,aptly,zoom,amd64
-sysmoncenter,https://github.com/hakandundar34coding/system-monitoring-center,jammy,jammy,utils,gh,,armhf:arm64:amd64
-sysmoncenter,https://github.com/hakandundar34coding/system-monitoring-center,jammy,kinetic,utils,gh,,armhf:arm64:amd64
-sysmoncenter,https://github.com/hakandundar34coding/system-monitoring-center,jammy,lunar,utils,gh,,armhf:arm64:amd64
-sysmoncenter,https://github.com/hakandundar34coding/system-monitoring-center,jammy,sid,utils,gh,,armhf:arm64:amd64
-numix,https://ppa.launchpadcontent.net/numix/ppa/ubuntu/,jammy,all,desktop,aptly,,
+system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,jammy,utils,gh,,armhf:arm64:amd64
+system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,lunar,utils,gh,,armhf:arm64:amd64
+system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,bullseye,utils,gh,,armhf:arm64:amd64
+system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,sid,utils,gh,,armhf:arm64:amd64
 howdy,https://ppa.launchpadcontent.net/boltgolt/howdy/ubuntu,jammy,all,desktop,aptly,,armhf:arm64:amd64
-urbackup,https://ppa.launchpadcontent.net/uroni/urbackup/ubuntu,jammy,jammy,utils,aptly,,armhf:arm64:amd64
-vscodium,http://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium,main,all,desktop,aptly,,armhf:arm64:amd64
+urbackup-server,https://ppa.launchpadcontent.net/uroni/urbackup/ubuntu,jammy,jammy,utils,aptly,,armhf:arm64:amd64
+codium,http://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium,main,all,desktop,aptly,codium,armhf:arm64:amd64

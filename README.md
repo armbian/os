@@ -14,6 +14,10 @@
 - [build configurations](targets)
 - [default configs](userpatches)
 
+# importing external packages
+
+- [Configure](external)
+
 # stable images
 
 - [Download](https://www.armbian.com/download/)

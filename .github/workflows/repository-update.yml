@@ -1,5 +1,7 @@
-name: Build train
+name: Repository update
 on:
+#  schedule:
+#    - cron: "*/15 * * * *"
   workflow_dispatch:
     inputs:
       BUILD_BRANCH:
@@ -30,15 +32,15 @@ jobs:
         with:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
-          
+
   kernel:
     name: "Build kernel cache"
     needs: Cancel
-    
+
     if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
     with:
-      ACCESS_NAME: armbian
+      ACCESS_NAME: igorpecovnik
       BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
       BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
     secrets:
@@ -63,7 +65,7 @@ jobs:
   external:
     name: "Download external"
     needs: Cancel
-    
+
     if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/download-external.yml@main
     with:
@@ -92,7 +94,7 @@ jobs:
 #      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   apt-armbian-com:
-  
+
     name: "Update stable"
     needs: [kernel,external]
     if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
@@ -106,7 +108,7 @@ jobs:
           KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
 
   beta-armbian-com:
-  
+
     name: "Update beta"
     needs: [kernel,external]
     if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
@@ -120,7 +122,7 @@ jobs:
           KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
 
   sync-servers:
-  
+
     name: "Sync servers"
     needs: [apt-armbian-com,beta-armbian-com]
     if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
