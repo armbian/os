@@ -12,19 +12,13 @@ on:
         required: false
         default: ubuntu-latest
         type: string
-      KERNEL_ONLY:
+      UPDATE_REPOSITORY:
         type: boolean
-        description: True or False
+        description: Update repository
         
 
 
 jobs:
-
-  ##########################################################################################
-  #                                                                                        #
-  #                cancels previous runs associated with a workflow                        #
-  #                                                                                        #
-  ##########################################################################################
 
   Cancel:
     name: "Cancel currently active"
@@ -53,20 +47,19 @@ jobs:
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-  uboot:
-    name: "Build u-boot cache"
-    needs: Cancel
-    
-    if: ${{ inputs.KERNEL_ONLY }}
-    uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
-    with:
-      ACCESS_NAME: armbian
-      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+#  uboot:
+#    name: "Build u-boot cache"
+#    needs: Cancel
+#
+#    uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
+#    with:
+#      ACCESS_NAME: armbian
+#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+#    secrets:
+#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   external:
     name: "Download external"
@@ -99,20 +92,11 @@ jobs:
 #      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
 #      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-
-  repository:
-    if: ${{ always() }}
-    needs: [kernel,uboot]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print a greeting
-        run: |
-
   apt-armbian-com:
   
     name: "Update stable"
-    needs: [repository]
-    if: ${{ always() && github.repository_owner == 'Armbian' }}
+    needs: [kernel,external]
+    if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
       - uses: armbian/actions/triggers@main
@@ -125,8 +109,8 @@ jobs:
   beta-armbian-com:
   
     name: "Update beta"
-    needs: [repository]
-    if: ${{ always() && github.repository_owner == 'Armbian' }}
+    needs: [kernel,external]
+    if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
       - uses: armbian/actions/triggers@main
@@ -140,7 +124,7 @@ jobs:
   
     name: "Sync servers"
     needs: [apt-armbian-com,beta-armbian-com]
-    if: ${{ always() && github.repository_owner == 'Armbian' }}
+    if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
       - uses: armbian/actions/triggers@main
