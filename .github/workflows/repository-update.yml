@@ -68,6 +68,22 @@ jobs:
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
+  external:
+    name: "Download external"
+    needs: Cancel
+    
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/download-external.yml@main
+    with:
+      ACCESS_NAME: armbian
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
 #  Rootfs:
 #    name: "Build rootfs cache"
 #    needs: Cancel
