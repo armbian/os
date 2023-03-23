@@ -110,7 +110,7 @@ jobs:
   beta-armbian-com:
 
     name: "Update beta"
-    needs: [kernel,external]
+    needs: [apt-armbian-com]
     if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
