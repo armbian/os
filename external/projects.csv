@@ -1,15 +1,17 @@
 Project name,URL,Source component,Release,Target location,Method,Search parameter,Arhitectures
-thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,thunderbird,armhf:arm64:amd64
-thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,thunderbird,armhf:arm64:amd64
+thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,Name (% thunderbird*),armhf:arm64:amd64
+thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,Name (% thunderbird*),armhf:arm64:amd64
 firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,Name (% firefox-*),armhf:arm64:amd64
 firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,Name (% firefox-*),armhf:arm64:amd64
-google-chrome-stable,http://dl.google.com/linux/chrome/deb/ stable,main,all,utils,aptly,google-chrome-stable,amd64
+google-chrome-stable,http://dl.google.com/linux/chrome/deb/ stable,main,all,utils,aptly,Name (% google-chrome*),amd64
 chromium-browser,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,jammy,jammy,desktop,aptly,chromium-browser,armhf:arm64:amd64
 chromium-browser,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,kinetic,lunar,desktop,aptly,chromium-browser,armhf:arm64:amd64
-box86,http://ryanfortner.github.io/box64-debs/debian,./,all,utils,aptly,Name (% box86-*),armhf:arm64
-box64,https://itai-nelken.github.io/weekly-box86-debs/debian/,./,all,utils,aptly,Name (% box64-*),armhf:arm64
-zfsutils-linux,http://deb.debian.org/debian,bullseye-backports contrib non-free,all,utils,aptly,zfsutils-linux,armhf:arm64:amd64
-zfs-dkms,http://deb.debian.org/debian,bullseye-backports contrib non-free,all,utils,aptly,zfs-dkms,armhf:arm64:amd64
+box86-generic-arm,http://ryanfortner.github.io/box86-debs/debian,./,all,utils,aptly,Name (% box86*),armhf
+box64-generic-arm,http://ryanfortner.github.io/box64-debs/debian,./,all,utils,aptly,Name (% box64*),arm64
+zfsutils-linux,http://deb.debian.org/debian,bullseye-backports contrib non-free,bullseye,utils,aptly,zfsutils-linux,armhf:arm64:amd64
+zfsutils-linux,http://deb.debian.org/debian,bullseye-backports contrib non-free,lunar,utils,aptly,zfsutils-linux,armhf:arm64:amd64
+zfs-dkms,http://deb.debian.org/debian,bullseye-backports contrib non-free,bullseye,utils,aptly,zfs-dkms,armhf:arm64:amd64
+zfs-dkms,http://deb.debian.org/debian,bullseye-backports contrib non-free,lunar,utils,aptly,zfs-dkms,armhf:arm64:amd64
 nala,http://deb.volian.org/volian scar,main,jammy,utils,aptly,Name (% nala*),armhf:arm64:amd64
 nala,http://deb.volian.org/volian scar,main,kinetic,utils,aptly,Name (% nala*),armhf:arm64:amd64
 nala,http://deb.volian.org/volian scar,main,lunar,utils,aptly,Name (% nala*),armhf:arm64:amd64
