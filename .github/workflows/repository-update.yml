@@ -95,7 +95,7 @@ jobs:
 
   apt-armbian-com:
 
-    name: "Update stable"
+    name: "Update https://apt.armbian.com"
     needs: [kernel,external]
     if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
@@ -109,7 +109,7 @@ jobs:
 
   beta-armbian-com:
 
-    name: "Update beta"
+    name: "Update https://beta.armbian.com"
     needs: [apt-armbian-com]
     if: ${{ inputs.UPDATE_REPOSITORY && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
