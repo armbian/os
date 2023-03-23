@@ -14,6 +14,12 @@ on:
         required: false
         default: ubuntu-latest
         type: string
+      TARGET_REPOSITORY:
+        type: choice
+        description: Select repository
+        options:
+        - beta.armbian.com
+        - apt.armbian.com
       UPDATE_REPOSITORY:
         type: boolean
         description: Update repository
@@ -134,3 +140,11 @@ jobs:
           USER: ${{ secrets.USER_REPOSITORY }}
           HOST: ${{ secrets.HOST_REPOSITORY }}
           KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
+
+  test-install:
+    name: "Test install"
+    needs: [sync-servers]
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/testing-packages.yml@main
+    with:
+      url: "${{ github.event.inputs.TARGET_REPOSITORY || 'beta.armbian.com' }}"

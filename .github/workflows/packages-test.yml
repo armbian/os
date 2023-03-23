@@ -1,0 +1,35 @@
+name: Tesing packages
+on:
+#  schedule:
+#    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      BUILD_BRANCH:
+        description: Build branch
+        required: false
+        default: main
+        type: string
+      BUILD_RUNNER:
+        description: Build runner
+        required: false
+        default: ubuntu-latest
+        type: string
+      TARGET_REPOSITORY:
+        type: choice
+        description: Select repository
+        options:
+        - beta.armbian.com
+        - apt.armbian.com
+      UPDATE_REPOSITORY:
+        type: boolean
+        description: Update repository
+        default: true
+
+jobs:
+
+  install:
+    name: "Test install"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/testing-packages.yml@main
+    with:
+      url: beta.armbian.com
