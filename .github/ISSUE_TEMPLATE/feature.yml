@@ -1,0 +1,19 @@
+name: Armbian Linux Software Package Import Request
+description: "Suggest software package which is released on GitHub or have their own Debian / PPA repositories."
+title: "Mozilla Firefox exists only as SNAP package :("
+labels: ["feature"]
+assignees: "igorpecovnik"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out a feature reqest. A request does not guarantee consideration.
+  - type: textarea
+    id: what
+    attributes:
+      label: Which software package would you like that is mirrored?
+      description: "<br>Tell us what is missing!<br>"
+      placeholder: Tell us what is missing!
+      value: "Please include package X from repository Y in all Ubuntu builds ..."
+    validations:
+      required: true
