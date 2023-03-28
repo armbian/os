@@ -14,3 +14,4 @@ In order to add a package into auto-sync, you need to add it to the configuratii
 - Method = aptly (for debian based repo), gh (download package from GitHub releases)
 - Search parameter = `Name (% http-*)` packages that starts with http. [Other variants](https://www.aptly.info/doc/feature/query/)
 - Arhitectures = limit mirror to arhitecture
+- Repository. B = beta.armbian.com, S = apt.armbian.com
