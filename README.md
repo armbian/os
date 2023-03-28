@@ -18,6 +18,12 @@
 
 - [Configure](external)
 
+# development
+
+- [Pull request](https://github.com/armbian/build/pulls)
+- [Weekly developers meetings](https://forum.armbian.com/events/)
+- [Forums for developers](https://forum.armbian.com/forum/4-advanced-users-development/)
+
 # stable images
 
 - [Download](https://www.armbian.com/download/)
