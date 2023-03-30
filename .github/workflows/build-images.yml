@@ -121,22 +121,20 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  Legacy_minimal_1:
+  Cluster_1:
 
     needs: generaterelease
-    name: "CLI minimal legacy 1/2"
+    name: "Cluster 1/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@dev
 
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      branch: 'legacy'
       release: "${{ github.event.inputs.release || 'nightly' }}"
       board: '${{ github.event.inputs.board }}'
-      variant: 'minimal'
       part: 1
-      of: 2
+      of: 6
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
@@ -146,22 +144,112 @@ jobs:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
-  Legacy_minimal_2:
+  Cluster_2:
 
     needs: generaterelease
-    name: "CLI minimal legacy 2/2"
+    name: "Cluster 2/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@dev
 
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      branch: 'legacy'
       release: "${{ github.event.inputs.release || 'nightly' }}"
       board: '${{ github.event.inputs.board }}'
-      variant: 'minimal'
       part: 2
-      of: 2
+      of: 6
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Cluster_3:
+
+    needs: generaterelease
+    name: "Cluster 3/6"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@dev
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      part: 3
+      of: 6
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Cluster_4:
+
+    needs: generaterelease
+    name: "Cluster 4/6"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@dev
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      part: 4
+      of: 6
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Cluster_5:
+
+    needs: generaterelease
+    name: "Cluster 5/6"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@dev
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      part: 5
+      of: 6
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Cluster_6:
+
+    needs: generaterelease
+    name: "Cluster 6/6"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@dev
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      part: 6
+      of: 6
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
