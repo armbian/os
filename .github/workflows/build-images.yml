@@ -25,13 +25,12 @@ on:
 
 jobs:
 
-  # In case we have a currently active build, cancel it
   Prepare:
-    name: "Generate version"
+  
+    name: "Preparing Actions" # In case we have a currently active build, cancel it
+    
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{steps.releases.outputs.version}}
     steps:
 
       - name: "Cancel active workflow"
@@ -46,61 +45,77 @@ jobs:
           keep_latest: 32
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
       - name: "Purge action workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 10
+          days_old: 14
 
-      - name: "Get latest release version"
-        id: releases
-        run: |
+  kernel:
+    name: "Update kernel cache"
+    needs: Prepare
 
-          get_latest_release() {
-            curl --silent "https://api.github.com/repos/$1/releases/latest" |
-            grep '"tag_name":' |
-            sed -E 's/.*"([^"]+)".*/\1/'
-          }
-
-          VER=$(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev | sed 's/^0*//')
-          PREFIX=$(echo $(curl https://raw.githubusercontent.com/armbian/build/main/VERSION | sed "s/-trunk.*//"))
-          RELE=$(printf "%04d\n" $((VER+1)))
-          echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
-          [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT || true
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: igorpecovnik
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   generaterelease:
 
-    needs: [ Prepare ]
+    needs: kernel
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
+    
     name: "Generate ${{ inputs.release }} release"
     outputs:
       version: ${{steps.releases.outputs.version}}
     steps:
 
-      - name: "Get latest release version"
+      - name: "Get version and commit hash"
         id: releases
         run: |
+        
+          VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"-"$(git ls-remote -h https://github.com/armbian/build main | cut -c1-9)
+          [[ -n "${{ inputs.version }}" ]] && VERSION="${{ inputs.version }}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-          echo "version=${{ needs.Prepare.outputs.version }}" >> $GITHUB_OUTPUT
+      - name: "Generate body file"
+        run: |
+          echo "
+            <p align='center'>
+            <a href='https://www.armbian.com'>
+            <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400' height='226' alt='Armbian Linux'></a>
+            <br>
+            
+            -  Images below are built on every Linux kernel code, config or patches changes,
+            -  We provide here only a small selection of images that are currently interested for developers,
+            -  If you want to enable more build targets in this list, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>.</p>
+            
+            <br>
+            If you don't find what you are looking for, check those images:
+            <p>
+            
+            - <a href=https://www.armbian.com/download/ target=_blanks>officially supported</a> (known support status and suitable for production deployments),
+            - <a href=https://github.com/armbian/community/>community supported</a> (unknown support status),
+            - <a href=https://archive.armbian.com target=_blank>archived</a> (old builds with unknown support status),
+            
+            <br>
+            &nbsp;
+            </p>" > body.html
 
-      - run: |
-          echo "Release: ${{ github.event.inputs.release }}"
-          echo "Board: ${{ github.event.inputs.board }}"
-          echo "Version: ${{ needs.Prepare.outputs.version }}"
-
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-
-      - uses: ncipollo/release-action@v1
+      - uses: ncipollo/release-action@v1      
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
-          artifacts: "LICENSE"
-          tag: "${{ needs.Prepare.outputs.version }}"
-          name: "Armbian ${{ needs.Prepare.outputs.version }}"
-          bodyFile: ".github/Releases.md"
+          tag: "${{ steps.releases.outputs.version }}"
+          name: "${{ steps.releases.outputs.version }}"
+          bodyFile: "body.html"
           allowUpdates: true
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -108,8 +123,9 @@ jobs:
   Legacy_cli:
 
     needs: generaterelease
+    name: "CLI legacy"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -121,6 +137,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -129,8 +146,9 @@ jobs:
   Legacy_desktop:
 
     needs: generaterelease
+    name: "Desktop legacy"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -142,6 +160,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -150,8 +169,9 @@ jobs:
   Legacy_minimal:
 
     needs: generaterelease
+    name: "CLI minimal legacy"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -163,6 +183,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -171,8 +192,9 @@ jobs:
   Current_cli:
 
     needs: generaterelease
+    name: "CLI current"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -184,6 +206,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -192,8 +215,9 @@ jobs:
   Current_desktop:
 
     needs: generaterelease
+    name: "Desktop current"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -205,6 +229,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -213,8 +238,9 @@ jobs:
   Current_minimal:
 
     needs: generaterelease
+    name: "CLI minimal current"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -226,6 +252,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -234,8 +261,9 @@ jobs:
   Edge_cli:
 
     needs: generaterelease
+    name: "CLI edge"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -247,6 +275,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -255,8 +284,9 @@ jobs:
   Edge_desktop:
 
     needs: generaterelease
+    name: "Desktop edge"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -268,6 +298,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -276,8 +307,9 @@ jobs:
   Edge_minimal:
 
     needs: generaterelease
+    name: "CLI minimal edge"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -289,6 +321,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -297,8 +330,9 @@ jobs:
   Midstream:
 
     needs: generaterelease
+    name: "Midstream specials"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -310,6 +344,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
