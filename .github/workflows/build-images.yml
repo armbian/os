@@ -63,20 +63,13 @@ jobs:
       version: ${{steps.releases.outputs.version}}
     steps:
 
-      - name: Checkout Armbian Framework
-        uses: actions/checkout@v3.3.0
-        with:
-          repository: armbian/build
-          ref:  main
-          fetch-depth: 1
-          clean: false
-          path: build
-
       - name: "Get latest release version"
         id: releases
         run: |
 
-          echo "VERSION=$(cat build/VERSION)"-"$(git --git-dir=build/.git --work-tree=build rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"\
+          -"$(git --git-dir=build/.git --work-tree=build rev-parse --short HEAD)" >> $GITHUB_ENV
+          
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
 
       - run: |
@@ -88,7 +81,6 @@ jobs:
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           artifacts: "LICENSE"
-          repo: armbian/os
           tag: "${{ env.VERSION }}"
           name: "Armbian ${{ env.VERSION }}"
           bodyFile: ".github/Releases.md"
