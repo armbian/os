@@ -126,7 +126,7 @@ jobs:
     needs: generaterelease
     name: "CLI minimal legacy 1/2"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/build-images.yml@main
+    uses: armbian/scripts/.github/workflows/build-images.yml@dev
 
     with:
 
@@ -151,7 +151,7 @@ jobs:
     needs: generaterelease
     name: "CLI minimal legacy 2/2"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/build-images.yml@main
+    uses: armbian/scripts/.github/workflows/build-images.yml@dev
 
     with:
 
