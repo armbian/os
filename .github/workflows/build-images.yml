@@ -87,7 +87,7 @@ jobs:
           
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
 
-          echo "version=${{ env.VERSION }}" >> $GITHUB_OUTPUT
+          echo "version=1234" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v3
         with:
