@@ -81,13 +81,11 @@ jobs:
       - name: "Get latest release version"
         id: releases
         run: |
-
-          echo "VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"\
-          -"$(git ls-remote -h https://github.com/armbian/build main | cut -c1-9)" >> $GITHUB_ENV
-          
-          [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
-
-          echo "version=1234" >> $GITHUB_OUTPUT
+        
+          VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"-"$(git ls-remote -h https://github.com/armbian/build main | cut -c1-9)
+          [[ -n "${{ inputs.version }}" ]] && VERSION="${{ inputs.version }}"
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v3
         with:
