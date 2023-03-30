@@ -30,7 +30,7 @@ for board in ${boards[@]}
             [[ $board == rpi4b && $release == sid ]] && continue
             [[ $board == uefi-riscv64 && $release == sid ]] && continue
             [[ $board == uefi-riscv64 && $desktop == desktop ]] && continue
-            printf "%-25s %-8s %-6s %-8s %-8s %-30s\n" "$board" "$branch" "$release" "$desktop" "stable  yes" "$variant"
+            printf "%-25s %-8s %-6s %-8s %-8s %-30s\n" "$board" "$branch" "$release" "$desktop" "nightly  yes" "$variant"
             done
         done
     done
