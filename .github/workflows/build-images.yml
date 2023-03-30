@@ -48,7 +48,7 @@ jobs:
 
       - uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
-          tag_name: 23.05
+          tag_name: 23.05*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
