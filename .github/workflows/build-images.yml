@@ -88,7 +88,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   kernel:
-    name: "Build kernel cache"
+    name: "Update kernel cache"
     needs: generaterelease
 
     if: ${{ github.repository_owner == 'Armbian' }}
