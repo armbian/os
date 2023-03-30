@@ -76,21 +76,21 @@ jobs:
         id: releases
         run: |
 
-          echo "BUILD_VERSION=$(cat build/VERSION)"-"$(git --git-dir=build/.git --work-tree=build rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          #[[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT || true
+          echo "VERSION=$(cat build/VERSION)"-"$(git --git-dir=build/.git --work-tree=build rev-parse --short HEAD)" >> $GITHUB_ENV
+          [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
 
       - run: |
           echo "Release: ${{ github.event.inputs.release }}"
           echo "Board: ${{ github.event.inputs.board }}"
-          echo "Version: ${{ env.BUILD_VERSION }}"
+          echo "Version: ${{ env.VERSION }}"
 
       - uses: ncipollo/release-action@v1      
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           artifacts: "LICENSE"
           repo: armbian/os
-          tag: "${{ env.BUILD_VERSION }}"
-          name: "Armbian ${{ env.BUILD_VERSION }}"
+          tag: "${{ env.VERSION }}"
+          name: "Armbian ${{ env.VERSION }}"
           bodyFile: ".github/Releases.md"
           allowUpdates: true
           removeArtifacts: true
