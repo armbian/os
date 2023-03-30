@@ -72,10 +72,9 @@ jobs:
           
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
 
-      - run: |
-          echo "Release: ${{ github.event.inputs.release }}"
-          echo "Board: ${{ github.event.inputs.board }}"
-          echo "Version: ${{ env.VERSION }}"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       - uses: ncipollo/release-action@v1      
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
