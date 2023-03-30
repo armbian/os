@@ -27,7 +27,7 @@ jobs:
 
   Prepare:
   
-    name: "Preparing GH Actions" # In case we have a currently active build, cancel it
+    name: "Preparing Actions" # In case we have a currently active build, cancel it
     
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
@@ -42,13 +42,13 @@ jobs:
       - name: "Keep only 32 nightly releases"
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          keep_latest: 1
+          keep_latest: 32
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
-          tag_name: "*trunk*"
+          tag_name: 23.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
