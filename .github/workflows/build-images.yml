@@ -105,9 +105,24 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+  kernel:
+    name: "Build kernel cache"
+    needs: generaterelease
+
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: igorpecovnik
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
   Legacy_cli:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -129,7 +144,7 @@ jobs:
 
   Legacy_desktop:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -151,7 +166,7 @@ jobs:
 
   Legacy_minimal:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -173,7 +188,7 @@ jobs:
 
   Current_cli:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -195,7 +210,7 @@ jobs:
 
   Current_desktop:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -217,7 +232,7 @@ jobs:
 
   Current_minimal:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -239,7 +254,7 @@ jobs:
 
   Edge_cli:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -261,7 +276,7 @@ jobs:
 
   Edge_desktop:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -283,7 +298,7 @@ jobs:
 
   Edge_minimal:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -305,7 +320,7 @@ jobs:
 
   Midstream:
 
-    needs: generaterelease
+    needs: kernel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
