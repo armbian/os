@@ -63,36 +63,33 @@ jobs:
       version: ${{steps.releases.outputs.version}}
     steps:
 
+      - name: Checkout Armbian Framework
+        uses: actions/checkout@v3.3.0
+        with:
+          repository: armbian/build
+          ref:  main
+          fetch-depth: 1
+          clean: false
+          path: build
+
       - name: "Get latest release version"
         id: releases
         run: |
 
-          get_latest_release() {
-            curl --silent "https://api.github.com/repos/$1/releases/latest" |
-            grep '"tag_name":' |
-            sed -E 's/.*"([^"]+)".*/\1/'
-          }
-
-          VER=$(echo $(get_latest_release "armbian/os") | rev | cut -d'.' -f 1 | rev | sed 's/^0*//')
-          PREFIX=$(echo $(curl https://raw.githubusercontent.com/armbian/build/main/VERSION | sed "s/-trunk.*//"))
-          RELE=$(printf "%04d\n" $((VER+1)))
-          echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
+          echo "VERSION=$(cat build/VERSION)"-"$(git --git-dir=build/.git --work-tree=build rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT || true
 
       - run: |
           echo "Release: ${{ github.event.inputs.release }}"
           echo "Board: ${{ github.event.inputs.board }}"
-          echo "Version: ${{ needs.Prepare.outputs.version }}"
-
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
+          echo "Version: ${{ env.VERSION }}"
 
       - uses: ncipollo/release-action@v1      
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           artifacts: "LICENSE"
-          tag: "${{ env.version }}"
+          repo: armbian/os
+          tag: "${{ env.VERSION }}"
           name: "Armbian ${{ env.version }}"
           bodyFile: ".github/Releases.md"
           allowUpdates: true
