@@ -68,7 +68,7 @@ jobs:
         run: |
 
           echo "VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"\
-          -"$(git --git-dir=build/.git --work-tree=build rev-parse --short HEAD)" >> $GITHUB_ENV
+          -"$(git ls-remote -h https://github.com/armbian/build main | cut -c1-9)" >> $GITHUB_ENV
           
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
 
