@@ -116,7 +116,7 @@ jobs:
       release: "${{ github.event.inputs.release || 'nightly' }}"
       board: '${{ github.event.inputs.board }}'
       variant: 'minimal'
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ env.VERSION }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
