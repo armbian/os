@@ -123,7 +123,53 @@ jobs:
   Legacy_cli:
 
     needs: generaterelease
-    name: "CLI mininal Legacy"
+    name: "CLI legacy"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'legacy'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'cli'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Legacy_desktop:
+
+    needs: generaterelease
+    name: "Desktop legacy"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'legacy'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'desktop'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Legacy_minimal:
+
+    needs: generaterelease
+    name: "CLI minimal legacy"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -134,6 +180,167 @@ jobs:
       release: "${{ github.event.inputs.release || 'nightly' }}"
       board: '${{ github.event.inputs.board }}'
       variant: 'minimal'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Current_cli:
+
+    needs: generaterelease
+    name: "CLI current"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'current'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'cli'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Current_desktop:
+
+    needs: generaterelease
+    name: "Desktop current"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'current'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'desktop'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Current_minimal:
+
+    needs: generaterelease
+    name: "CLI minimal current"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'current'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'minimal'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Edge_cli:
+
+    needs: generaterelease
+    name: "CLI edge"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'edge'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'cli'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Edge_desktop:
+
+    needs: generaterelease
+    name: "Desktop edge"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'edge'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'desktop'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Edge_minimal:
+
+    needs: generaterelease
+    name: "CLI minimal edge"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'edge'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: 'minimal'
+      version: "${{ needs.generaterelease.outputs.version }}"
+
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Midstream:
+
+    needs: generaterelease
+    name: "Midstream specials"
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
+
+    with:
+
+      config: "${{ github.event.inputs.config || 'default.conf' }}"
+      branch: 'midstream'
+      release: "${{ github.event.inputs.release || 'nightly' }}"
+      board: '${{ github.event.inputs.board }}'
+      variant: ''
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
