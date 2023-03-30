@@ -25,13 +25,12 @@ on:
 
 jobs:
 
-  # In case we have a currently active build, cancel it
   Prepare:
-    name: "Generate version"
+  
+    name: "Preparing" # In case we have a currently active build, cancel it
+    
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{steps.releases.outputs.version}}
     steps:
 
       - name: "Cancel active workflow"
@@ -53,6 +52,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           days_old: 10
 
+  generaterelease:
+
+    needs: [ Prepare ]
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    
+    name: "Generate ${{ inputs.release }} release"
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    steps:
+
       - name: "Get latest release version"
         id: releases
         run: |
@@ -68,22 +78,6 @@ jobs:
           RELE=$(printf "%04d\n" $((VER+1)))
           echo "version=${PREFIX}.${RELE}" >> $GITHUB_OUTPUT
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT || true
-
-  generaterelease:
-
-    needs: [ Prepare ]
-    if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: ubuntu-latest
-    name: "Generate ${{ inputs.release }} release"
-    outputs:
-      version: ${{steps.releases.outputs.version}}
-    steps:
-
-      - name: "Get latest release version"
-        id: releases
-        run: |
-
-          echo "version=${{ needs.Prepare.outputs.version }}" >> $GITHUB_OUTPUT
 
       - run: |
           echo "Release: ${{ github.event.inputs.release }}"
