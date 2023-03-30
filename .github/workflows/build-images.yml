@@ -52,9 +52,24 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           days_old: 10
 
+  kernel:
+    name: "Update kernel cache"
+    needs: Prepare
+
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: igorpecovnik
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
   generaterelease:
 
-    needs: [ Prepare ]
+    needs: kernel
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     
@@ -72,6 +87,8 @@ jobs:
           
           [[ -n "${{ inputs.version }}" ]] && echo "version=${{ inputs.version }}" >> $GITHUB_ENV || true
 
+          echo "version=${{ env.VERSION }}" >> $GITHUB_OUTPUT
+
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
@@ -87,25 +104,9 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-  kernel:
-    name: "Update kernel cache"
-    needs: generaterelease
-
-    if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-    with:
-      ACCESS_NAME: igorpecovnik
-      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
-      
   Legacy_cli:
 
-    needs: kernel
-#    needs: generaterelease
+    needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
@@ -116,7 +117,7 @@ jobs:
       release: "${{ github.event.inputs.release || 'nightly' }}"
       board: '${{ github.event.inputs.board }}'
       variant: 'minimal'
-      version: "${{ env.VERSION }}"
+      version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
