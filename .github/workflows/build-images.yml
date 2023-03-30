@@ -42,15 +42,20 @@ jobs:
       - name: "Keep only 32 nightly releases"
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          keep_latest: 32
+          keep_latest: 1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: dev-drprasad/delete-tag-and-release@v0.2.1
+        with:
+          tag_name: "*trunk*"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Purge action workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 10
+          days_old: 1
 
   kernel:
     name: "Update kernel cache"
