@@ -45,18 +45,12 @@ jobs:
           keep_latest: 32
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: dev-drprasad/delete-tag-and-release@v0.2.1
-        with:
-          tag_name: "*"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
       - name: "Purge action workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 1
+          days_old: 14
 
   kernel:
     name: "Update kernel cache"
@@ -120,7 +114,7 @@ jobs:
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           tag: "${{ steps.releases.outputs.version }}"
-          name: "Armbian ${{ steps.releases.outputs.version }}"
+          name: "${{ steps.releases.outputs.version }}"
           bodyFile: "body.html"
           allowUpdates: true
           removeArtifacts: true
@@ -129,6 +123,7 @@ jobs:
   Legacy_cli:
 
     needs: generaterelease
+    name: "CLI mininal Legacy"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
 
