@@ -48,7 +48,7 @@ jobs:
 
       - uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
-          tag_name: "*trunk*"
+          tag_name: trunk
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Purge action workflow logs"
