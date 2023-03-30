@@ -92,8 +92,8 @@ jobs:
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           artifacts: "LICENSE"
-          tag: "${{ needs.Prepare.outputs.version }}"
-          name: "Armbian ${{ needs.Prepare.outputs.version }}"
+          tag: "${{ env.version }}"
+          name: "Armbian ${{ env.version }}"
           bodyFile: ".github/Releases.md"
           allowUpdates: true
           removeArtifacts: true
