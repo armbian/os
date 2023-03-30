@@ -27,7 +27,7 @@ jobs:
 
   Prepare:
   
-    name: "Preparing" # In case we have a currently active build, cancel it
+    name: "Preparing GH Actions" # In case we have a currently active build, cancel it
     
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
