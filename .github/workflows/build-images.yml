@@ -94,7 +94,7 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: ncipollo/release-action@v1
+      - uses: ncipollo/release-action@v1      
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
           artifacts: "LICENSE"
@@ -109,7 +109,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -121,6 +121,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -130,7 +131,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -142,6 +143,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -151,7 +153,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -163,6 +165,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -172,7 +175,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -184,6 +187,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -193,7 +197,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -205,6 +209,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -214,7 +219,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -226,6 +231,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -235,7 +241,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -247,6 +253,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -256,7 +263,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -268,6 +275,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -277,7 +285,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -289,6 +297,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -298,7 +307,7 @@ jobs:
 
     needs: generaterelease
     if: ${{ success() && github.repository_owner == 'Armbian' }}
-    uses: ./.github/workflows/include.yml
+    uses: armbian/scripts/.github/workflows/build-images.yml@main
 
     with:
 
@@ -310,6 +319,7 @@ jobs:
       version: "${{ needs.generaterelease.outputs.version }}"
 
     secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       SSH_KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
