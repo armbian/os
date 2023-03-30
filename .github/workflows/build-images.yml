@@ -78,26 +78,44 @@ jobs:
       version: ${{steps.releases.outputs.version}}
     steps:
 
-      - name: "Get latest release version"
+      - name: "Get version and commit hash"
         id: releases
         run: |
         
           VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"-"$(git ls-remote -h https://github.com/armbian/build main | cut -c1-9)
           [[ -n "${{ inputs.version }}" ]] && VERSION="${{ inputs.version }}"
-          echo "version=$VERSION" >> $GITHUB_ENV
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
+      - name: "Generate body file"
+        run: |
+          echo "
+            <p align='center'>
+            <a href='https://www.armbian.com'>
+            <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400' height='226' alt='Armbian Linux'></a>
+            <br>
+            
+            -  Images below are built on every Linux kernel code, config or patches changes,
+            -  We provide here only a small selection of images that are currently interested for developers,
+            -  If you want to enable more build targets in this list, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>.</p>
+            
+            <br>
+            If you don't find what you are looking for, check those images:
+            <p>
+            
+            - <a href=https://www.armbian.com/download/ target=_blanks>officially supported</a> (known support status and suitable for production deployments),
+            - <a href=https://github.com/armbian/community/>community supported</a> (unknown support status),
+            - <a href=https://archive.armbian.com target=_blank>archived</a> (old builds with unknown support status),
+            
+            <br>
+            &nbsp;
+            </p>" > body.html
 
       - uses: ncipollo/release-action@v1      
         if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         with:
-          artifacts: "LICENSE"
-          tag: "${{ env.VERSION }}"
-          name: "Armbian ${{ env.VERSION }}"
-          bodyFile: ".github/Releases.md"
+          tag: "${{ steps.releases.outputs.version }}"
+          name: "Armbian ${{ steps.releases.outputs.version }}"
+          bodyFile: "body.html"
           allowUpdates: true
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
