@@ -15,7 +15,7 @@ for board in ${boards[@]}
             for desktop in ${desktops[@]}
                 do
                     if [[ $desktop == desktop ]]; then
-                        variant=" xfce     config_base    3dsupport browsers chat desktop_tools editors email internet multimedia office programming remote_desktop"
+                        variant=" xfce     config_base"
                     elif [[ $desktop == minimal ]]; then
                         variant=""
                         desktop="minimal"
@@ -30,7 +30,7 @@ for board in ${boards[@]}
             [[ $board == rpi4b && $release == sid ]] && continue
             [[ $board == uefi-riscv64 && $release == sid ]] && continue
             [[ $board == uefi-riscv64 && $desktop == desktop ]] && continue
-            printf "%-25s %-8s %-6s %-8s %-8s %-30s\n" "$board" "$branch" "$release" "$desktop" "nightly  yes" "$variant"
+            printf "%-25s %-8s %-6s %-8s %-8s %-20s\n" "$board" "$branch" "$release" "$desktop" "nightly  yes" "$variant"
             done
         done
     done
