@@ -10,9 +10,10 @@
 
 # What this project does?
 
-- Keeps [build framework](https://github.com/armbian/build) packages artifacts cache up to date
+- Keeps build framework [packages artifacts](https://github.com/orgs/armbian/packages) cache up to date
+- Keeps stable [apt.armbian.com](https://apt.armbian.com) and nightly [beta.armbian.com](https://beta.armbian.com) packages repository up to date
 - Builds [nighly](https://github.com/armbian/os/releases) and [stable images](https://www.armbian.com/download/) and upload them to Armbian CDN
-- Synhronise selection of [3rd party](external) applications with Armbian repositories ([apt.armbian.com](https://apt.armbian.com) / [beta.armbian.com](https://beta.armbian.com))
+- Keep synhronising selection of [3rd party](external) applications with Armbian repositories
 - Tests install of all packages that are added on stable and testing Debian and Ubuntu releases
 
 # When this is happening?
@@ -21,10 +22,11 @@
 - repository update is updating once per day, at 3:00 AM UTC
 - manually, when Armbian member executes build action
 
-# Getting started
+# Missing stable or nightly images for your board?
 
-- [build configurations](targets) (Which images to build - this system is going to be replaced soon)
-- [default configs](userpatches) (Default OS settings)
+Armbian build system includes large number of build configurations, but we are not producing all possible build options for all images. Only most popular ones gets everything, while others gets bare minimum, some nothing at all. Primary reason for lack of images is lack of human resources - [maintainers](https://docs.armbian.com/Board_Maintainers_Procedures_and_Guidelines/) - who can help keeping them operational. 
+
+In order to enable board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [this file](targets/default.conf) and send a pull request. Configuration file is self explanatory.
 
 ## Importing external packages
 
