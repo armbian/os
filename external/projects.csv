@@ -1,29 +1,2 @@
 Project name,URL,Source component,Release,Target location,Method,Search parameter,Arhitectures,Repository
 thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,Name (% thunderbird*),armhf:arm64:amd64,B
-thunderbird,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,Name (% thunderbird*),armhf:arm64:amd64,B
-firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,jammy,jammy,desktop,aptly,Name (% firefox-*),armhf:arm64:amd64,B
-firefox,http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu,lunar,lunar,desktop,aptly,Name (% firefox-*),armhf:arm64:amd64,B
-google-chrome-stable,http://dl.google.com/linux/chrome/deb/ stable,main,all,utils,aptly,Name (% google-chrome-stable),amd64,BS
-chromium-browser,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,jammy,jammy,desktop,aptly,chromium-browser,armhf:arm64:amd64,B
-chromium-browser,http://ppa.launchpadcontent.net/saiarcot895/chromium-beta/ubuntu,kinetic,lunar,desktop,aptly,chromium-browser,armhf:arm64:amd64,B
-box86-generic-arm,http://ryanfortner.github.io/box86-debs/debian,./,all,utils,aptly,Name (% box86*),armhf,BS
-box64-generic-arm,http://ryanfortner.github.io/box64-debs/debian,./,all,utils,aptly,Name (% box64*),arm64,BS
-zfsutils-linux,http://deb.debian.org/debian,bullseye-backports contrib non-free,bullseye,utils,aptly,zfsutils-linux,armhf:arm64:amd64,B
-zfsutils-linux,http://deb.debian.org/debian,bullseye-backports contrib non-free,lunar,utils,aptly,zfsutils-linux,armhf:arm64:amd64,B
-zfs-dkms,http://deb.debian.org/debian,bullseye-backports contrib non-free,bullseye,utils,aptly,zfs-dkms,armhf:arm64:amd64,B
-zfs-dkms,http://deb.debian.org/debian,bullseye-backports contrib non-free,lunar,utils,aptly,zfs-dkms,armhf:arm64:amd64,B
-nala,http://deb.volian.org/volian scar,main,jammy,utils,aptly,Name (% nala*),armhf:arm64:amd64,B
-nala,http://deb.volian.org/volian scar,main,kinetic,utils,aptly,Name (% nala*),armhf:arm64:amd64,B
-nala,http://deb.volian.org/volian scar,main,lunar,utils,aptly,Name (% nala*),armhf:arm64:amd64,B
-aptly,https://github.com/aptly-dev/aptly,focal,all,utils,gh,amd64,armhf:arm64:amd64,B
-gh,https://github.com/cli/cli,jammy,all,utils,gh,gh,armhf:arm64:amd64,BS
-balena-etcher,https://github.com/balena-io/etcher,jammy,all,utils,gh,balena-etcher,armhf:arm64:amd64,BS
-zoom,http://mirror.mwt.me/my/deb,any,all,desktop,aptly,zoom,amd64,B
-system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,jammy,utils,gh,,armhf:arm64:amd64,B
-system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,lunar,utils,gh,,armhf:arm64:amd64,B
-system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,bullseye,utils,gh,,armhf:arm64:amd64,B
-system-monitoring-center,https://github.com/hakandundar34coding/system-monitoring-center,jammy,sid,utils,gh,,armhf:arm64:amd64,B
-howdy,https://ppa.launchpadcontent.net/boltgolt/howdy/ubuntu,jammy,all,desktop,aptly,,armhf:arm64:amd64,B
-urbackup-server,https://ppa.launchpadcontent.net/uroni/urbackup/ubuntu,jammy,jammy,utils,aptly,,armhf:arm64:amd64,B
-codium,http://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium,main,all,desktop,aptly,codium,armhf:arm64:amd64,B
-code,https://packages.microsoft.com/repos/code stable main,main,all,desktop,aptly,"$Version (> 1.76.2), Name (% code)",armhf:arm64:amd64,B
