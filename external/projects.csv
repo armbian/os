@@ -1,9 +1,9 @@
 Project name,URL,Source component,Release,Target location,Method,Search parameter,Arhitectures,Repository
 #zfs-dkms,http://ports.ubuntu.com/ubuntu-ports,lunar main restricted universe multiverse,jammy,utils,aptly,Name (% zfs-dkms),armhf:arm64,B
-zfs-from-lunar-amd64,http://archive.ubuntu.com/ubuntu,lunar main restricted universe multiverse,jammy,utils,aptly,"Name (% zfsutils-linux) | Name (% libnvpair3linux) | Name (% libzfs4linux) | Name (% libzpool5linux) | Name (% libuutil3linux) | Name (% zfs-dkms)",amd64,B
-zfs-from-lunar,http://ports.ubuntu.com/ubuntu-ports,lunar main restricted universe multiverse,jammy,utils,aptly,"Name (% zfsutils-linux) | Name (% libnvpair3linux) | Name (% libzfs4linux) | Name (% libzpool5linux) | Name (% libuutil3linux) | Name (% zfs-dkms)",armhf:arm64,B
+zfs-from-lunar-amd64,http://archive.ubuntu.com/ubuntu,lunar main restricted universe multiverse,jammy,utils,aptly,zfs-dkms,"Name (% zfsutils-linux) | Name (% libnvpair3linux) | Name (% libzfs4linux) | Name (% libzpool5linux) | Name (% libuutil3linux) | Name (% zfs-dkms)",amd64,B
+zfs-from-lunar,http://ports.ubuntu.com/ubuntu-ports,lunar main restricted universe multiverse,jammy,utils,aptly,zfs-dkms,"Name (% zfsutils-linux) | Name (% libnvpair3linux) | Name (% libzfs4linux) | Name (% libzpool5linux) | Name (% libuutil3linux) | Name (% zfs-dkms)",armhf:arm64,B
 #zfs-from-sid,http://deb.debian.org/debian,bullseye-backports contrib non-free,lunar,utils,aptly,"Name (% zfsutils-linux) | Name (% libnvpair3linux) | Name (% libzfs4linux) | Name (% libzpool5linux) | Name (% libuutil3linux) | Name (% zfs-dkms)",armhf:arm64:amd64,B
-zulu20,https://repos.azul.com/zulu/deb,stable main,all,utils,aptly,Name (% zulu20*),arm64:amd64,B
-openhab,https://openhab.jfrog.io/artifactory/openhab-linuxpkg stable,main,all,utils,aptly,"$Version (> 3.4.2), Name (% openhab*)",arm64:amd64,B
-cockpit-file-sharing,https://github.com/45Drives/cockpit-file-sharing,jammy,all,utils,gh,cockpit-file-sharing,armhf:arm64:amd64,BS
-pacstall,https://github.com/pacstall/pacstall,jammy,all,utils,gh,cockpit-file-sharing,armhf:arm64:amd64,BS
+zulu20,https://repos.azul.com/zulu/deb,stable main,all,utils,aptly,zulu20,Name (% zulu20*),arm64:amd64,B
+openhab,https://openhab.jfrog.io/artifactory/openhab-linuxpkg stable,main,all,utils,aptly,openhab,"$Version (> 3.4.2), Name (% openhab*)",arm64:amd64,B
+cockpit-file-sharing,https://github.com/45Drives/cockpit-file-sharing,jammy,all,utils,gh,cockpit-file-sharing,cockpit-file-sharing,armhf:arm64:amd64,BS
+pacstall,https://github.com/pacstall/pacstall,jammy,all,utils,gh,pacstall,pacstall,armhf:arm64:amd64,BS

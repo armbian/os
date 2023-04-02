@@ -25,7 +25,24 @@ jobs:
     needs: Cancel
 
     if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/download-external.yml@main
+    uses: armbian/scripts/.github/workflows/download-external.yml@devel3
+    with:
+      ACCESS_NAME: armbian
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }} || "ubuntu-latest"
+      REFERENCE: ${{ github.event.pull_request.head.sha }}
+    secrets:
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  repository:
+    name: "Generate repository"
+    needs: external
+
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/generate-repository.yml@devel3
     with:
       ACCESS_NAME: armbian
       BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }} || "ubuntu-latest"
