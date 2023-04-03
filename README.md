@@ -28,9 +28,37 @@ Armbian build system includes large number of build configurations, but we are n
 
 In order to enable board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [this file](targets/default.conf) and send a pull request. Configuration file is self explanatory.
 
-## Importing external packages
+# Import 3rd party package into Armbian
 
-- [Documentation](external)
+We don't want to include 3rd party and Personal Package Archives (PPAs) repository components within official release but 
+in some cases more recent or different versions can be added from private or testing repisotories. For security and features reasons.
+
+Automation at Pull Request will:
+
+- download packages from repository, direct or from GitHub releases
+- place package into specific release or component, or everywhere
+- execute **test install on all distributions** where it can be installed
+
+In order to add a package into auto-sync, you need to add GPG formated repository key (when you mirror from repository) to `externel/keys` generate configuration file in folder `external`
+
+    URL="http://dl.google.com/linux/chrome/deb/ stable"
+    KEY="main"
+    RELEASE=all
+    TARGET=desktop
+    METHOD=aptly
+    INSTALL=google-chrome-stable
+    GLOB="Name (% google-chrome-stable), \$Version (>= 111.0)"
+    ARCH=amd64
+    REPOSITORY=BS
+
+- *URL* = repository URL (http://dl.google.com/linux/chrome/deb/ stable)
+- *KEY* = Source component = main
+- *RELEASE* = all|jammy|lunar|bullseye|sid
+- *TARGET* = Armbian repository component (utils, desktop)
+- *METHOD* = aptly (for debian based repo), gh (download package from GitHub releases)
+- *GLOB* = `Name (% http-*)` packages that starts with http. [Other variants](https://www.aptly.info/doc/feature/query/)
+- *ARCH* = limit mirroing to arhitecture
+- *REPOSITORY* = B = beta.armbian.com, S = apt.armbian.com
 
 ## Development
 
