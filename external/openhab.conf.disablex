@@ -1,0 +1,9 @@
+URL="https://openhab.jfrog.io/artifactory/openhab-linuxpkg"
+KEY=stable
+RELEASE=all
+TARGET=utils
+METHOD=aptly
+INSTALL=openhab
+GLOB="$Version (> 3.4.2), Name (% openhab*)"
+ARCH=arm64:amd64
+REPOSITORY=B
