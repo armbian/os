@@ -73,7 +73,7 @@ jobs:
     needs: Cancel
 
     if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/download-external.yml@main
+    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
       BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
