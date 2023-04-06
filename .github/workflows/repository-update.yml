@@ -1,5 +1,7 @@
 name: Repository update
 on:
+  repository_dispatch:
+    types: ["Repository update"]
   schedule:
     - cron: "00 3 * * *"
   workflow_dispatch:
