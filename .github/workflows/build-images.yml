@@ -2,7 +2,7 @@ name: Build Images
 on:
 
   schedule:
-    - cron: "*/20 * * * *"
+    - cron: "00 0 * * *"
 
   workflow_dispatch:
     inputs:
@@ -20,27 +20,27 @@ on:
         description: 'Version'
         required: false
         default: ''
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - "external/**"
-      - "targets/**"
-      - "userpatches/**"
 
 jobs:
 
   Prepare:
   
-    #if: ${{ github.repository_owner == 'Armbian' }}
+    if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Cancel active workflow"
-        uses: styfle/cancel-workflow-action@0.11.0
+      - name: "Keep only 32 nightly releases"
+        uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          all_but_latest: true
-          access_token: ${{ secrets.GITHUB_TOKEN }}
+          keep_latest: 32
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Purge action workflow logs"
+        uses: igorjs/gh-actions-clean-workflow@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          days_old: 14
 
 #  kernel:
 #    name: "Update kernel cache"
@@ -62,6 +62,7 @@ jobs:
 
     needs: Prepare
     name: "Generate release"
+    if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     outputs:
       version: ${{steps.releases.outputs.version}}
@@ -142,6 +143,7 @@ jobs:
         retention-days: 5
 
   dispatch:
+    if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
     needs: generaterelease
