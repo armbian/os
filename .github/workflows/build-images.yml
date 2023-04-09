@@ -142,11 +142,13 @@ jobs:
         retention-days: 5
 
   dispatch:
+    outputs:
+      version: ${{steps.releases.outputs.version}}
     needs: generaterelease
     strategy:
       matrix:
 #        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os','armbian-epsilon/os','armbian-zeta/os','armbian-eta/os','armbian-theta/os','armbian-jota/os','armbian-kappa/os']
-        repo: ['armbian-alpha/os']
+        repo: ['armbian-alpha/os', 'x86bian/os']
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
@@ -155,6 +157,11 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
           event-type: "Dispatched jobs"
+      - name: Save
+        id: releases
+        run: |
+
+          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
 
   Cluster_1:
 
@@ -170,7 +177,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 1
       of: 6
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ needs.dispatch.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -193,7 +200,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 2
       of: 6
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ needs.dispatch.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -216,7 +223,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 3
       of: 6
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ needs.dispatch.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -239,7 +246,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 4
       of: 6
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ needs.dispatch.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -262,7 +269,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 5
       of: 6
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ needs.dispatch.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -285,7 +292,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 6
       of: 6
-      version: "${{ needs.generaterelease.outputs.version }}"
+      version: "${{ needs.dispatch.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
