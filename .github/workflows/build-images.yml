@@ -145,7 +145,8 @@ jobs:
     needs: generaterelease
     strategy:
       matrix:
-        repo: ['x86bian/os', 'riscvbian/os', 'armbian-alpha/os']
+#        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os','armbian-epsilon/os','armbian-zeta/os','armbian-eta/os','armbian-theta/os','armbian-jota/os','armbian-kappa/os']
+        repo: ['armbian-alpha/os']
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
