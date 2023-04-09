@@ -120,7 +120,7 @@ jobs:
       #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
       with:
         tag: ${{ steps.changelog.outputs.tag }}
-        name: "Community ${{ steps.changelog.outputs.tag }}"
+        name: "${{ steps.changelog.outputs.tag }}"
         bodyFile: "body.html"
         draft: "true"
         allowUpdates: true
