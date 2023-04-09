@@ -1,10 +1,9 @@
 name: Build Images
-#
-
 on:
-#  push:
+
   schedule:
-    - cron: "00 0 * * *"
+    - cron: "*/20 * * * *"
+
   workflow_dispatch:
     inputs:
       release:
@@ -21,15 +20,19 @@ on:
         description: 'Version'
         required: false
         default: ''
-
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "external/**"
+      - "targets/**"
+      - "userpatches/**"
 
 jobs:
 
   Prepare:
   
-    name: "Preparing Actions" # In case we have a currently active build, cancel it
-    
-    if: ${{ github.repository_owner == 'Armbian' }}
+    #if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     steps:
 
@@ -39,56 +42,58 @@ jobs:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Keep only 32 nightly releases"
-        uses: Vucko130/delete-older-releases@v0.2.2
-        with:
-          keep_latest: 32
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: "Purge action workflow logs"
-        uses: igorjs/gh-actions-clean-workflow@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 14
+#  kernel:
+#    name: "Update kernel cache"
+#    needs: Prepare
+#
+#    if: ${{ github.repository_owner == 'Armbian' }}
+#    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+#    with:
+#      ACCESS_NAME: igorpecovnik
+#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+#    secrets:
+#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
-  kernel:
-    name: "Update kernel cache"
-    needs: Prepare
-
-    if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-    with:
-      ACCESS_NAME: igorpecovnik
-      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   generaterelease:
 
-    needs: kernel
-
-    if: ${{ github.repository_owner == 'Armbian' }}
+    needs: Prepare
+    name: "Generate release"
     runs-on: ubuntu-latest
-    
-    name: "Generate ${{ inputs.release }} release"
     outputs:
       version: ${{steps.releases.outputs.version}}
     steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v3.4.0
+      with:
+        clean: false
+    
+    - name: Generate changelog
+      if: ${{ github.event.inputs.version == '' }}
+      id: changelog
+      uses: TriPSs/conventional-changelog-action@v3.18.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        git-message: 'Bump release to {version}'
+        git-user-name: armbianworker
+        git-user-email: info@armbian.com
+        output-file: 'false'
+        skip-version-file: 'false'
+        skip-on-empty: 'false'
+        skip-commit: 'false'
+        skip-ci: 'false'
+        pre-release: 'true'
+        git-branch: 'versioning'
+        tag-prefix: ''
+        pre-release-identifier: 'trunk'
 
-      - name: "Get version and commit hash"
-        id: releases
-        run: |
-        
-          VERSION=$(curl -s https://raw.githubusercontent.com/armbian/build/main/VERSION)"-"$(git ls-remote -h https://github.com/armbian/build main | cut -c1-9)
-          [[ -n "${{ inputs.version }}" ]] && VERSION="${{ inputs.version }}"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
-      - name: "Generate body file"
-        run: |
+    - name: "Generate body file"
+      if: ${{ github.event.inputs.version == '' }}
+      run: |
           echo "
             <p align='center'>
             <a href='https://www.armbian.com'>
@@ -110,20 +115,49 @@ jobs:
             <br>
             &nbsp;
             </p>" > body.html
+    - uses: ncipollo/release-action@v1
+      if: ${{ github.event.inputs.version == '' }}
+      #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+      with:
+        tag: ${{ steps.changelog.outputs.tag }}
+        name: "Community ${{ steps.changelog.outputs.tag }}"
+        bodyFile: "body.html"
+        draft: "true"
+        allowUpdates: true
+        removeArtifacts: true
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: ncipollo/release-action@v1      
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+    - name: Save
+      id: releases
+      run: |
+
+        echo "${{ steps.changelog.outputs.tag }}" > tag
+        echo "version=${{ steps.changelog.outputs.tag }}" >> $GITHUB_OUTPUT
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: assets-for-download
+        path: tag
+        retention-days: 5
+
+  dispatch:
+    needs: generaterelease
+    strategy:
+      matrix:
+        repo: ['x86bian/os', 'riscvbian/os', 'armbian-alpha/os']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
         with:
-          tag: "${{ steps.releases.outputs.version }}"
-          name: "${{ steps.releases.outputs.version }}"
-          bodyFile: "body.html"
-          allowUpdates: true
-          removeArtifacts: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DISPATCH }}
+          repository: ${{ matrix.repo }}
+          event-type: "Dispatched jobs"
 
   Cluster_1:
 
-    needs: generaterelease
+    needs: dispatch
     name: "Cluster 1/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -146,7 +180,7 @@ jobs:
 
   Cluster_2:
 
-    needs: generaterelease
+    needs: dispatch
     name: "Cluster 2/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -169,7 +203,7 @@ jobs:
 
   Cluster_3:
 
-    needs: generaterelease
+    needs: dispatch
     name: "Cluster 3/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -192,7 +226,7 @@ jobs:
 
   Cluster_4:
 
-    needs: generaterelease
+    needs: dispatch
     name: "Cluster 4/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -215,7 +249,7 @@ jobs:
 
   Cluster_5:
 
-    needs: generaterelease
+    needs: dispatch
     name: "Cluster 5/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -238,7 +272,7 @@ jobs:
 
   Cluster_6:
 
-    needs: generaterelease
+    needs: dispatch
     name: "Cluster 6/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -258,3 +292,49 @@ jobs:
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+
+
+  Closing:
+
+    name: "Closing"
+    needs: [Cluster_1,Cluster_2,Cluster_3,Cluster_4,Cluster_5,Cluster_6]
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Download a single artifact
+      uses: actions/download-artifact@v3
+      with:
+         name: assets-for-download
+         path: tag
+
+    - name: "Generate key id" # We need this in case we run multiple runners on one machine
+      run: echo "TAG=$(cat tag/tag)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: "Keep only 3 releases"
+      uses: Vucko130/delete-older-releases@v0.2.2
+      with:
+        keep_latest: 3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+    - name: "Purge action workflow logs"
+      uses: igorjs/gh-actions-clean-workflow@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        days_old: 14
+
+    - uses: ncipollo/release-action@v1
+      if: ${{ github.event.inputs.version == '' }}
+      #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+      with:
+        tag: ${{ env.TAG }}
+        omitBody: true
+        omitName: true
+        allowUpdates: true
+        makeLatest: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - uses: geekyeggo/delete-artifact@v2
+      with:
+         name: assets-for-download
