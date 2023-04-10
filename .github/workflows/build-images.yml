@@ -141,15 +141,14 @@ jobs:
         path: tag
         retention-days: 5
 
-  dispatch:
+  dispatch_1:
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
     needs: generaterelease
     strategy:
       matrix:
-#        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os','armbian-epsilon/os','armbian-zeta/os','armbian-eta/os','armbian-theta/os','armbian-jota/os','armbian-kappa/os']
-        repo: ['armbian-alpha/os', 'x86bian/os']
+        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os']
     runs-on: ubuntu-latest
     steps:
 
@@ -157,6 +156,24 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.DISPATCH }}
+          repository: ${{ matrix.repo }}
+          event-type: "Dispatched jobs"
+
+  dispatch_2:
+    if: ${{ github.repository_owner == 'Armbian' }}
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    needs: generaterelease
+    strategy:
+      matrix:
+        repo: ['armbianzeta/os','armbianeta/os','armbiantheta/os','armbianjota/os']
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH_2 }}
           repository: ${{ matrix.repo }}
           event-type: "Dispatched jobs"
 
@@ -168,7 +185,7 @@ jobs:
 
   Cluster_1:
 
-    needs: dispatch
+    needs: [dispatch_1,dispatch_2]
     name: "Cluster 1/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -191,7 +208,7 @@ jobs:
 
   Cluster_2:
 
-    needs: dispatch
+    needs: [dispatch_1,dispatch_2]
     name: "Cluster 2/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -214,7 +231,7 @@ jobs:
 
   Cluster_3:
 
-    needs: dispatch
+    needs: [dispatch_1,dispatch_2]
     name: "Cluster 3/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -237,7 +254,7 @@ jobs:
 
   Cluster_4:
 
-    needs: dispatch
+    needs: [dispatch_1,dispatch_2]
     name: "Cluster 4/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -260,7 +277,7 @@ jobs:
 
   Cluster_5:
 
-    needs: dispatch
+    needs: [dispatch_1,dispatch_2]
     name: "Cluster 5/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
@@ -283,7 +300,7 @@ jobs:
 
   Cluster_6:
 
-    needs: dispatch
+    needs: [dispatch_1,dispatch_2]
     name: "Cluster 6/6"
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-images.yml@main
