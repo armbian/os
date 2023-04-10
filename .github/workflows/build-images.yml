@@ -115,14 +115,14 @@ jobs:
             <br>
             &nbsp;
             </p>" > body.html
+
     - uses: ncipollo/release-action@v1
-      if: ${{ github.event.inputs.version == '' }}
-      #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+      if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
       with:
         tag: ${{ steps.changelog.outputs.tag }}
         name: "${{ steps.changelog.outputs.tag }}"
         bodyFile: "body.html"
-        draft: "true"
+        prerelease: "true"
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -152,12 +152,14 @@ jobs:
         repo: ['armbian-alpha/os', 'x86bian/os']
     runs-on: ubuntu-latest
     steps:
+
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
           event-type: "Dispatched jobs"
+
       - name: Save
         id: releases
         run: |
@@ -334,8 +336,7 @@ jobs:
         days_old: 14
 
     - uses: ncipollo/release-action@v1
-      if: ${{ github.event.inputs.version == '' }}
-      #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+      if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
       with:
         tag: ${{ env.TAG }}
         omitBody: true
