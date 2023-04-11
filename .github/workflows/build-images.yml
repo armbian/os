@@ -159,6 +159,11 @@ jobs:
           repository: ${{ matrix.repo }}
           event-type: "Dispatched jobs"
 
+      - name: Save
+        id: releases
+        run: |
+          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
+
   dispatch_2:
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
