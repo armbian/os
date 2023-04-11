@@ -197,7 +197,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 1
       of: 6
-      version: "${{ needs.dispatch.outputs.version }}"
+      version: "${{ needs.dispatch_1.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -220,7 +220,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 2
       of: 6
-      version: "${{ needs.dispatch.outputs.version }}"
+      version: "${{ needs.dispatch_1.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -243,7 +243,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 3
       of: 6
-      version: "${{ needs.dispatch.outputs.version }}"
+      version: "${{ needs.dispatch_1.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -266,7 +266,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 4
       of: 6
-      version: "${{ needs.dispatch.outputs.version }}"
+      version: "${{ needs.dispatch_1.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -289,7 +289,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 5
       of: 6
-      version: "${{ needs.dispatch.outputs.version }}"
+      version: "${{ needs.dispatch_1.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -312,7 +312,7 @@ jobs:
       board: '${{ github.event.inputs.board }}'
       part: 6
       of: 6
-      version: "${{ needs.dispatch.outputs.version }}"
+      version: "${{ needs.dispatch_1.outputs.version }}"
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
