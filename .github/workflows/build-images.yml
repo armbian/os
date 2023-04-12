@@ -12,6 +12,7 @@ on:
         options:
         - nightly
         - stable
+        default: nightly
       board:
         description: 'Board'
         required: false
@@ -29,14 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Keep only 32 nightly releases"
+      - name: "Keep only 32 releases"
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
           keep_latest: 32
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Purge action workflow logs"
+      - name: "Keep only 14 days of workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +46,6 @@ jobs:
   Kernel:
     name: "Update kernel cache"
     needs: Prepare
-
     if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
     with:
@@ -65,12 +65,26 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{steps.releases.outputs.version}}
+      build_config: ${{steps.switch.outputs.build_config}}
     steps:
     
     - name: Checkout
       uses: actions/checkout@v3.4.0
       with:
         clean: false
+
+    - name: "Switch release configs"
+      id: switch
+      run: |
+
+        echo "pre_release=true" >> $GITHUB_ENV
+        echo "build_config=all.conf" >> $GITHUB_ENV
+        echo "build_config=all.conf" >> $GITHUB_OUTPUT
+        if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
+            echo "pre_release=false" >> $GITHUB_ENV
+            echo "build_config=default.conf" >> $GITHUB_ENV
+            echo "build_config=default.conf" >> $GITHUB_OUTPUT
+        fi
     
     - name: Generate changelog
       if: ${{ github.event.inputs.version == '' }}
@@ -86,8 +100,9 @@ jobs:
         skip-on-empty: 'false'
         skip-commit: 'false'
         skip-ci: 'false'
-        pre-release: 'true'
-        git-branch: 'main'
+        version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
+        pre-release: "${{ env.pre_release }}"
+        git-branch: 'stable-ver'
         tag-prefix: ''
         pre-release-identifier: 'trunk'
 
@@ -132,7 +147,7 @@ jobs:
       run: |
 
         echo "${{ steps.changelog.outputs.tag }}" > tag
-        echo "version=${{ steps.changelog.outputs.tag }}" >> $GITHUB_OUTPUT
+        echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v3
@@ -142,6 +157,7 @@ jobs:
         retention-days: 5
 
   dispatch_1:
+    name: "Dispatch"
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
@@ -157,7 +173,8 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
-          event-type: "Dispatched jobs"
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
 
       - name: Save
         id: releases
@@ -165,6 +182,7 @@ jobs:
           echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
 
   dispatch_2:
+    name: "Dispatch"
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
@@ -180,7 +198,8 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH_2 }}
           repository: ${{ matrix.repo }}
-          event-type: "Dispatched jobs"
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
 
       - name: Save
         id: releases
