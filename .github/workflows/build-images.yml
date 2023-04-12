@@ -66,6 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{steps.releases.outputs.version}}
+      build_config: ${{steps.switch.outputs.build_config}}
     steps:
     
     - name: Checkout
@@ -74,6 +75,7 @@ jobs:
         clean: false
 
     - name: "Switch release configs"
+      id: switch
       run: |
 
         echo "pre_release=true" >> $GITHUB_ENV
@@ -171,7 +173,7 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
           event-type: "Build"
-          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.releases.outputs.version }}"}'
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
 
       - name: Save
         id: releases
@@ -196,7 +198,7 @@ jobs:
           token: ${{ secrets.DISPATCH_2 }}
           repository: ${{ matrix.repo }}
           event-type: "Build"
-          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
 
       - name: Save
         id: releases
