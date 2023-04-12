@@ -171,7 +171,7 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
           event-type: "Build"
-          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.releases.outputs.version }}"}'
 
       - name: Save
         id: releases
