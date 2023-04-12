@@ -154,6 +154,7 @@ jobs:
         retention-days: 5
 
   dispatch_1:
+    name: "Dispatch"
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
@@ -177,7 +178,8 @@ jobs:
         run: |
           echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
 
-  dispatch_2:  
+  dispatch_2:
+    name: "Dispatch"
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
