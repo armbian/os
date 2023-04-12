@@ -102,7 +102,7 @@ jobs:
         skip-ci: 'false'
         version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
         pre-release: "${{ env.pre_release }}"
-        git-branch: 'stable-ver'
+        git-branch: 'main'
         tag-prefix: ''
         pre-release-identifier: 'trunk'
 
