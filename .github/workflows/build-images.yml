@@ -88,7 +88,7 @@ jobs:
         skip-commit: 'false'
         skip-ci: 'false'
         version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
-        pre-release: 'true'
+        #pre-release: 'true'
         git-branch: 'stable-ver'
         tag-prefix: ''
         #pre-release-identifier: 'trunk'
