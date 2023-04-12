@@ -91,7 +91,7 @@ jobs:
         pre-release: 'true'
         git-branch: 'stable-ver'
         tag-prefix: ''
-        pre-release-identifier: 'trunk'
+        #pre-release-identifier: 'trunk'
 
     - name: "Generate body file"
       if: ${{ github.event.inputs.version == '' }}
