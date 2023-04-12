@@ -80,9 +80,11 @@ jobs:
 
         echo "pre_release=true" >> $GITHUB_ENV
         echo "build_config=all.conf" >> $GITHUB_ENV
+        echo "build_config=all.conf" >> $GITHUB_OUTPUT
         if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
             echo "pre_release=false" >> $GITHUB_ENV
             echo "build_config=default.conf" >> $GITHUB_ENV
+            echo "build_config=default.conf" >> $GITHUB_OUTPUT
         fi
     
     - name: Generate changelog
