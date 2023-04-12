@@ -72,6 +72,14 @@ jobs:
       uses: actions/checkout@v3.4.0
       with:
         clean: false
+
+    - name: "Switch release configs"
+      run: |
+
+        echo "pre_release=true" >> $GITHUB_ENV
+        if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
+            echo "pre_elease=false" >> $GITHUB_ENV
+        fi
     
     - name: Generate changelog
       if: ${{ github.event.inputs.version == '' }}
@@ -88,10 +96,10 @@ jobs:
         skip-commit: 'false'
         skip-ci: 'false'
         version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
-        #pre-release: 'true'
+        pre-release: "${{ env.pre_release }}"
         git-branch: 'stable-ver'
         tag-prefix: ''
-        #pre-release-identifier: 'trunk'
+        pre-release-identifier: 'trunk'
 
     - name: "Generate body file"
       if: ${{ github.event.inputs.version == '' }}
