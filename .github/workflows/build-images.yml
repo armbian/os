@@ -153,16 +153,8 @@ jobs:
         path: tag
         retention-days: 5
 
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v2
-      with:
-        token: ${{ secrets.DISPATCH }}
-        repository: armbian-alpha/os
-        event-type: my-event
-        client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
-
   dispatch_1:
-    if: ${{ github.event.inputs.release != 'stable' && github.repository_owner == 'AAArmbian' }}
+    if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
     needs: generaterelease
@@ -177,7 +169,8 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
-          event-type: "Dispatched jobs"
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
 
       - name: Save
         id: releases
@@ -185,7 +178,7 @@ jobs:
           echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
 
   dispatch_2:  
-    if: ${{ github.event.inputs.release != 'stable' && github.repository_owner == 'AAArmbian' }}
+    if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
     needs: generaterelease
@@ -200,7 +193,8 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH_2 }}
           repository: ${{ matrix.repo }}
-          event-type: "Dispatched jobs"
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
 
       - name: Save
         id: releases
