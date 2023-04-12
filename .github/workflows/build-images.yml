@@ -142,7 +142,7 @@ jobs:
       run: |
 
         echo "${{ steps.changelog.outputs.tag }}" > tag
-        echo "version=${{ steps.changelog.outputs.tag }}" >> $GITHUB_OUTPUT
+        echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v3
@@ -150,6 +150,14 @@ jobs:
         name: assets-for-download
         path: tag
         retention-days: 5
+
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.DISPATCH }}
+        repository: armbian-alpha/os
+        event-type: my-event
+        client-payload: '{"ref": "${{ github.ref }}", "ver": "${{ github.event.inputs.version }}"}'
 
   dispatch_1:
     if: ${{ github.event.inputs.release != 'stable' && github.repository_owner == 'AAArmbian' }}
