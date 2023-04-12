@@ -77,8 +77,10 @@ jobs:
       run: |
 
         echo "pre_release=true" >> $GITHUB_ENV
+        echo "build_config=all.conf" >> $GITHUB_ENV
         if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
             echo "pre_release=false" >> $GITHUB_ENV
+            echo "build_config=default.conf" >> $GITHUB_ENV
         fi
     
     - name: Generate changelog
@@ -157,7 +159,7 @@ jobs:
         token: ${{ secrets.DISPATCH }}
         repository: armbian-alpha/os
         event-type: my-event
-        client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
+        client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ env.build_config }}", "version": "${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}"}'
 
   dispatch_1:
     if: ${{ github.event.inputs.release != 'stable' && github.repository_owner == 'AAArmbian' }}
