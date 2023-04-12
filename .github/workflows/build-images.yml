@@ -78,7 +78,7 @@ jobs:
 
         echo "pre_release=true" >> $GITHUB_ENV
         if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
-            echo "pre_elease=false" >> $GITHUB_ENV
+            echo "pre_release=false" >> $GITHUB_ENV
         fi
     
     - name: Generate changelog
