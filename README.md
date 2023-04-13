@@ -6,6 +6,18 @@
 <br>
 <a href=https://github.com/armbian/os/actions/workflows/build-images.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/build-images.yml?logo=githubactions&label=Build%20Nighlty%20Images&style=for-the-badge&branch=main"></a> <a href=https://github.com/armbian/os/actions/workflows/repository-update.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/repository-update.yml?logo=githubactions&label=Repository%20update&style=for-the-badge&branch=main"></a>
 <a href=https://github.com/armbian/os/actions/workflows/smoke-tests.yml><img alt="Smoke test success ratio" src="https://img.shields.io/badge/dynamic/json?logo=speedtest&label=Smoke%20tests%20success&query=SMOKE&color=44cc11&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
+<br><br>
+<strong>Build Clusters Health</strong><br>
+<br>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-alpha/os/build.yml?label=1&style=for-the-badge&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-beta/os/build.yml?label=2&style=for-the-badge&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-gama/os/build.yml?label=3&style=for-the-badge&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-alpha/os/build.yml?label=4&style=for-the-badge&branch=main"></a>
+<br>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianjota/os/build.yml?label=5&style=for-the-badge&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbiantheta/os/build.yml?label=6&style=for-the-badge&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianzeta/os/build.yml?label=7&style=for-the-badge&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianeta/os/build.yml?label=8&style=for-the-badge&branch=main"></a>
 </p>
 
 
