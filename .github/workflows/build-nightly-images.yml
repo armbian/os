@@ -1,0 +1,218 @@
+name: Build Nightly Images
+on:
+
+  schedule:
+    - cron: "00 0 * * *"
+
+  workflow_dispatch:
+
+jobs:
+
+  Prepare:
+
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Keep only 32 releases"
+        uses: Vucko130/delete-older-releases@v0.2.2
+        with:
+          keep_latest: 32
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Keep only 14 days of workflow logs"
+        uses: igorjs/gh-actions-clean-workflow@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          days_old: 14
+
+  Kernel:
+    name: "Update kernel cache"
+    needs: Prepare
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: igorpecovnik
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+
+  generaterelease:
+
+    needs: Kernel
+    name: "Generate release"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+      build_config: ${{steps.switch.outputs.build_config}}
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3.4.0
+      with:
+        clean: false
+
+    - name: "Switch release configs"
+      id: switch
+      run: |
+
+        echo "pre_release=true" >> $GITHUB_ENV
+        echo "build_config=all.conf" >> $GITHUB_ENV
+        echo "build_config=all.conf" >> $GITHUB_OUTPUT
+        if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
+            echo "pre_release=false" >> $GITHUB_ENV
+            echo "build_config=default.conf" >> $GITHUB_ENV
+            echo "build_config=default.conf" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Generate changelog
+      if: ${{ github.event.inputs.version == '' }}
+      id: changelog
+      uses: TriPSs/conventional-changelog-action@v3.18.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        git-message: 'Bump release to {version}'
+        git-user-name: armbianworker
+        git-user-email: info@armbian.com
+        output-file: 'false'
+        skip-version-file: 'false'
+        skip-on-empty: 'false'
+        skip-commit: 'false'
+        skip-ci: 'false'
+        version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
+        pre-release: "${{ env.pre_release }}"
+        git-branch: 'main'
+        tag-prefix: ''
+        pre-release-identifier: 'trunk'
+
+    - name: "Generate body file"
+      if: ${{ github.event.inputs.version == '' }}
+      run: |
+          echo "
+            <p align='center'>
+            <a href='https://www.armbian.com'>
+            <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400' height='226' alt='Armbian Linux'></a>
+            <br>
+
+            -  Images below are built on every Linux kernel code, config or patches changes,
+            -  We provide here only a small selection of images that are currently interested for developers,
+            -  If you want to enable more build targets in this list, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>.</p>
+
+            <br>
+            If you don't find what you are looking for, check those images:
+            <p>
+
+            - <a href=https://www.armbian.com/download/ target=_blanks>officially supported</a> (known support status and suitable for production deployments),
+            - <a href=https://github.com/armbian/community/>community supported</a> (unknown support status),
+            - <a href=https://archive.armbian.com target=_blank>archived</a> (old builds with unknown support status),
+
+            <br>
+            &nbsp;
+            </p>" > body.html
+
+    - uses: ncipollo/release-action@v1
+      if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
+      with:
+        tag: ${{ steps.changelog.outputs.tag }}
+        name: "${{ steps.changelog.outputs.tag }}"
+        bodyFile: "body.html"
+        prerelease: "true"
+        allowUpdates: true
+        removeArtifacts: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Save
+      id: releases
+      run: |
+
+        echo "${{ steps.changelog.outputs.tag }}" > tag
+        echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@v3
+      with:
+        name: assets-for-download
+        path: tag
+        retention-days: 5
+
+  dispatch_1:
+    name: "Dispatch 1"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    needs: generaterelease
+    strategy:
+      matrix:
+        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os']
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: ${{ matrix.repo }}
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
+
+      - name: Save
+        id: releases
+        run: |
+          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
+
+  dispatch_2:
+    name: "Dispatch 2"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    needs: generaterelease
+    strategy:
+      matrix:
+        repo: ['armbianzeta/os','armbianeta/os','armbiantheta/os','armbianjota/os']
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH_2 }}
+          repository: ${{ matrix.repo }}
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
+
+      - name: Save
+        id: releases
+        run: |
+
+          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
+
+  dispatch_3:
+    name: "Dispatch 3"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    needs: generaterelease
+    strategy:
+      matrix:
+        repo: ['armbian-lambda/os','armbian-mi/os']
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH_3 }}
+          repository: ${{ matrix.repo }}
+          event-type: "Build"
+          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
+
+      - name: Save
+        id: releases
+        run: |
+
+          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
