@@ -99,18 +99,10 @@ jobs:
             <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400>
             <br>
 
-            -  Images below are built on every Linux kernel code, config or patches changes,
-            -  We provide here only a small selection of images that are currently interested for developers,
-            -  If you want to enable more build targets in this list, edit <a href='https://github.com/armbian>
-
-            <br>
-            If you don't find what you are looking for, check those images:
-            <p>
-
-            - <a href=https://www.armbian.com/download/ target=_blanks>officially supported</a> (known support>
-            - <a href=https://github.com/armbian/community/>community supported</a> (unknown support status),
-            - <a href=https://archive.armbian.com target=_blank>archived</a> (old builds with unknown support >
-
+            - all images are available <a href=https://www.armbian.com/download/ target=_blanks>on official download pages</a>
+            - if you want to change automated builds variants, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>
+            - for old builds with unknown support status check <a href=https://archive.armbian.com target=_blank>archives</a>
+            
             <br>
             &nbsp;
             </p>" > body.html
