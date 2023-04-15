@@ -94,19 +94,19 @@ jobs:
     - name: "Generate body file"
       if: ${{ github.event.inputs.version == '' }}
       run: |
-          echo "
-          <p align='center'>
-          <a href='https://www.armbian.com'>
-          <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400' height='226' alt='Armbian Linux'></a>
-          </p>
-          <p align='center'>
-          <a href=https://armbian.com/download><img alt="Armbian Linux stable" src="https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
-          <a href=https://github.com/armbian/community><img alt="Armbian Linux rolling" src="https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
+        echo "
+        <p align='center'>
+        <a href='https://www.armbian.com'>
+        <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400' height='226' alt='Armbian Linux'></a>
+        </p>
+        <p align='center'>
+        <a href=https://armbian.com/download><img alt="Armbian Linux stable" src="https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
+        <a href=https://github.com/armbian/community><img alt="Armbian Linux rolling" src="https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
           
-            - all images are available <a href=https://www.armbian.com/download/ target=_blanks>on official download pages</a>
-            - if you want to change automated builds variants, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>
-            - for old builds with unknown support status check <a href=https://archive.armbian.com target=_blank>archives</a>
-            </p>" > body.html
+          - all images are available <a href=https://www.armbian.com/download/ target=_blanks>on official download pages</a>
+          - if you want to change automated builds variants, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>
+          - for old builds with unknown support status check <a href=https://archive.armbian.com target=_blank>archives</a>
+        </p>" > body.html
 
     - uses: ncipollo/release-action@v1
       if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
