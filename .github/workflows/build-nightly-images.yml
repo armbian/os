@@ -158,7 +158,7 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: ${{ matrix.repo }}
           event-type: "Build"
-          client-payload: '{"release": "${{ github.event.inputs.release }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
+          client-payload: '{"release": "${{ github.event.inputs.release || 'nightly' }}","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
 
       - name: Save
         id: releases
