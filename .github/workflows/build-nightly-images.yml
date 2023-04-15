@@ -121,7 +121,7 @@ jobs:
         tag: ${{ steps.changelog.outputs.tag }}
         name: "${{ steps.changelog.outputs.tag }}"
         bodyFile: "body.html"
-        prerelease: "true"
+        prerelease: "false"
         allowUpdates: true
         removeArtifacts: true
         token: ${{ secrets.GITHUB_TOKEN }}
