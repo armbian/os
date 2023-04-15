@@ -14,37 +14,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Keep only 32 releases"
+      - name: "Keep only 7 releases"
         uses: Vucko130/delete-older-releases@v0.2.2
         with:
-          keep_latest: 32
+          keep_latest: 7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Keep only 14 days of workflow logs"
+      - name: "Keep only 7 days of workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 14
+          days_old: 7
 
-#  Kernel:
-#    name: "Update kernel cache"
-#    needs: Prepare
-#    if: ${{ github.repository_owner == 'Armbian' }}
-#    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-#    with:
-#      ACCESS_NAME: igorpecovnik
-#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-#    secrets:
-#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+  Kernel:
+    name: "Update kernel cache"
+    needs: Prepare
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: igorpecovnik
+      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   generaterelease:
 
-    #needs: Kernel
-    needs: Prepare
+    needs: Kernel
     name: "Generate release"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
@@ -98,8 +97,8 @@ jobs:
             <a href='https://www.armbian.com'>
             <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400'></a></p>
             <p align=center>
-            <img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'>
-            <img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'>
+            <a href='https://www.armbian.com'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+            <a href='https://www.armbian.com'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
             </p>
             <br>
 
