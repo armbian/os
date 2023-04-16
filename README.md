@@ -29,7 +29,7 @@ Build Clusters Health<br>
 
 # When this is happening?
 
-- artifacts cache and images are updating every 8th hour, starting at 0:00 AM UTC
+- artifacts cache and images are updating every 8th hours, starting at 0:00 AM UTC
 - repository update is updating once per day, at 3:00 AM UTC
 - manually, when Armbian member executes build action
 
