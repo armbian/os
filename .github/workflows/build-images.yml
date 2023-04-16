@@ -8,7 +8,7 @@ on:
         options:
         - public
         - private
-        default: public
+        default: private
       board:
         description: 'Board config (uefi-arm64)'
         required: false
