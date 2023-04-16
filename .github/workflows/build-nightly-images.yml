@@ -38,8 +38,8 @@ jobs:
       BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      KEY_TORRENTS: ''
+      KNOWN_HOSTS_UPLOAD: ''
 
   generaterelease:
 
