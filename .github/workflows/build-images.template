@@ -1,92 +1,53 @@
-name: Build Images
+name: Official Images
 on:
-
-#  schedule:
-#    - cron: "00 0 * * *"
-
   workflow_dispatch:
     inputs:
-      release:
+      runner:
         type: choice
-        description: 'Release'
+        description: 'Build Infrastructure'
         options:
-        - nightly
-        - stable
-        default: nightly
+        - public
+        - private
+        default: private
       board:
+        type: choice
         description: 'Board'
-        required: false
-        default: ''
-      version:
-        description: 'Version'
-        required: false
-        default: ''
+        options:
+        # boards
+        - all
+        default: 'all'
 
 jobs:
 
-  Prepare:
-  
-    if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: "Keep only 32 releases"
-        uses: Vucko130/delete-older-releases@v0.2.2
-        with:
-          keep_latest: 32
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: "Keep only 14 days of workflow logs"
-        uses: igorjs/gh-actions-clean-workflow@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 14
-
-  Kernel:
-    name: "Update kernel cache"
-    needs: Prepare
-    if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-    with:
-      ACCESS_NAME: igorpecovnik
-      BUILD_BRANCH: ""
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+#  Kernel:
+#    name: "Update kernel cache"
+#    if: ${{ github.repository_owner == 'Armbian' }}
+#    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+#    with:
+#      ACCESS_NAME: igorpecovnik
+#      BUILD_BRANCH: ""
+#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+#    secrets:
+#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   generaterelease:
 
-    needs: Kernel
+#    needs: Kernel
     name: "Generate release"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     outputs:
       version: ${{steps.releases.outputs.version}}
-      build_config: ${{steps.switch.outputs.build_config}}
     steps:
     
     - name: Checkout
       uses: actions/checkout@v3.5.2
       with:
         clean: false
-
-    - name: "Switch release configs"
-      id: switch
-      run: |
-
-        echo "pre_release=true" >> $GITHUB_ENV
-        echo "build_config=all.conf" >> $GITHUB_ENV
-        echo "build_config=all.conf" >> $GITHUB_OUTPUT
-        if [[ "${{ github.event.inputs.release }}" == "stable" ]]; then
-            echo "pre_release=false" >> $GITHUB_ENV
-            echo "build_config=default.conf" >> $GITHUB_ENV
-            echo "build_config=default.conf" >> $GITHUB_OUTPUT
-        fi
     
-    - name: Generate changelog
+    - name: "Generate version"
       if: ${{ github.event.inputs.version == '' }}
       id: changelog
       uses: TriPSs/conventional-changelog-action@v3.18.0
@@ -100,47 +61,11 @@ jobs:
         skip-on-empty: 'false'
         skip-commit: 'false'
         skip-ci: 'false'
-        version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
-        pre-release: "${{ env.pre_release }}"
+        version-file: "stable.json"
+        pre-release: "false"
         git-branch: 'main'
         tag-prefix: ''
         pre-release-identifier: 'trunk'
-
-    - name: "Generate body file"
-      if: ${{ github.event.inputs.version == '' }}
-      run: |
-          echo "
-            <p align='center'>
-            <a href='https://www.armbian.com'>
-            <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400' height='226' alt='Armbian Linux'></a>
-            <br>
-            
-            -  Images below are built on every Linux kernel code, config or patches changes,
-            -  We provide here only a small selection of images that are currently interested for developers,
-            -  If you want to enable more build targets in this list, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>.</p>
-            
-            <br>
-            If you don't find what you are looking for, check those images:
-            <p>
-            
-            - <a href=https://www.armbian.com/download/ target=_blanks>officially supported</a> (known support status and suitable for production deployments),
-            - <a href=https://github.com/armbian/community/>community supported</a> (unknown support status),
-            - <a href=https://archive.armbian.com target=_blank>archived</a> (old builds with unknown support status),
-            
-            <br>
-            &nbsp;
-            </p>" > body.html
-
-    - uses: ncipollo/release-action@v1
-      if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
-      with:
-        tag: ${{ steps.changelog.outputs.tag }}
-        name: "${{ steps.changelog.outputs.tag }}"
-        bodyFile: "body.html"
-        prerelease: "true"
-        allowUpdates: true
-        removeArtifacts: true
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Save
       id: releases
@@ -166,7 +91,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      release: "${{ github.event.inputs.release || 'nightly' }}"
+      release: "stable"
       board: '${{ github.event.inputs.board }}'
       part: 1
       of: 6
@@ -189,7 +114,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      release: "${{ github.event.inputs.release || 'nightly' }}"
+      release: "stable"
       board: '${{ github.event.inputs.board }}'
       part: 2
       of: 6
@@ -212,7 +137,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      release: "${{ github.event.inputs.release || 'nightly' }}"
+      release: "stable"
       board: '${{ github.event.inputs.board }}'
       part: 3
       of: 6
@@ -235,7 +160,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      release: "${{ github.event.inputs.release || 'nightly' }}"
+      release: "stable"
       board: '${{ github.event.inputs.board }}'
       part: 4
       of: 6
@@ -258,7 +183,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      release: "${{ github.event.inputs.release || 'nightly' }}"
+      release: "stable"
       board: '${{ github.event.inputs.board }}'
       part: 5
       of: 6
@@ -281,7 +206,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
-      release: "${{ github.event.inputs.release || 'nightly' }}"
+      release: "stable"
       board: '${{ github.event.inputs.board }}'
       part: 6
       of: 6
