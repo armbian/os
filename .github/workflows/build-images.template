@@ -63,7 +63,7 @@ jobs:
         skip-ci: 'false'
         version-file: "stable.json"
         pre-release: "false"
-#        git-branch: 'main'
+        git-branch: 'main'
         tag-prefix: ''
         pre-release-identifier: 'trunk'
 
