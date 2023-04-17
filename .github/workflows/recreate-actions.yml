@@ -1,6 +1,8 @@
+#
+# This action recreate action for building stable images
+#
 name: Recreate action
 on:
-  workflow_dispatch:
   repository_dispatch:
     types: [Refresh board list]
 
