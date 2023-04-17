@@ -10,9 +10,12 @@ on:
         - private
         default: private
       board:
-        description: 'Board config (uefi-arm64)'
-        required: false
-        default: ''
+        type: choice
+        description: 'Board'
+        options:
+        # boards
+        - all
+        default: 'all'
 
 jobs:
 
