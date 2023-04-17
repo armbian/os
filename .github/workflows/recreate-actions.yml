@@ -12,6 +12,7 @@ jobs:
 
   build:
     name: Recreate action
+    if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     steps:
     
