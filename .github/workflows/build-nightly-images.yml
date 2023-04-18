@@ -143,7 +143,7 @@ jobs:
     needs: generaterelease
     strategy:
       matrix:
-        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os','armbiankappa/os']
+        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os']
     runs-on: ubuntu-latest
     steps:
 
