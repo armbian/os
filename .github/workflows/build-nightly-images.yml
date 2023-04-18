@@ -136,15 +136,15 @@ jobs:
         path: tag
         retention-days: 5
 
-  dispatch_1:
-    name: "Dispatch 1"
+  dispatch:
+    name: "Dispatch"
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
     needs: generaterelease
     strategy:
       matrix:
-        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os']
+        repo: ['armbian-alpha/os','armbian-beta/os','armbian-gama/os','armbian-delta/os','armbiankappa/os']
     runs-on: ubuntu-latest
     steps:
 
@@ -159,56 +159,4 @@ jobs:
       - name: Save
         id: releases
         run: |
-          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
-
-  dispatch_2:
-    name: "Dispatch 2"
-    if: ${{ github.repository_owner == 'Armbian' }}
-    outputs:
-      version: ${{steps.releases.outputs.version}}
-    needs: generaterelease
-    strategy:
-      matrix:
-        repo: ['armbianzeta/os','armbianeta/os','armbiantheta/os','armbianjota/os']
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.DISPATCH_2 }}
-          repository: ${{ matrix.repo }}
-          event-type: "Build"
-          client-payload: '{"release": "nightly","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
-
-      - name: Save
-        id: releases
-        run: |
-
-          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
-
-  dispatch_3:
-    name: "Dispatch 3"
-    if: ${{ github.repository_owner == 'Armbian' }}
-    outputs:
-      version: ${{steps.releases.outputs.version}}
-    needs: generaterelease
-    strategy:
-      matrix:
-        repo: ['armbian-lambda/os','armbian-mi/os']
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.DISPATCH_3 }}
-          repository: ${{ matrix.repo }}
-          event-type: "Build"
-          client-payload: '{"release": "nightly","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
-
-      - name: Save
-        id: releases
-        run: |
-
           echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
