@@ -22,7 +22,7 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.DISPATCH_3 }}
+          token: ${{ secrets.DISPATCH_2 }}
           repository: ${{ matrix.repo }}
           event-type: "Build"
           client-payload: '{"release": "nightly","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
