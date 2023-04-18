@@ -13,7 +13,6 @@ jobs:
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
-    needs: generaterelease
     strategy:
       matrix:
         repo: ['armbiankappa/os']
