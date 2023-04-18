@@ -11,13 +11,8 @@ Build Clusters Health<br>
 <a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-alpha/os/build.yml?label=01&style=flat-square&branch=main"></a>
 <a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-beta/os/build.yml?label=02&style=flat-square&branch=main"></a>
 <a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-gama/os/build.yml?label=03&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-alpha/os/build.yml?label=04&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianjota/os/build.yml?label=05&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbiantheta/os/build.yml?label=06&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianzeta/os/build.yml?label=07&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianeta/os/build.yml?label=08&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-lambda/os/build.yml?label=09&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-mi/os/build.yml?label=10&style=flat-square&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-delta/os/build.yml?label=04&style=flat-square&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbiankappa/os/build.yml?label=05&style=flat-square&branch=main"></a>
 </p>
 
 
