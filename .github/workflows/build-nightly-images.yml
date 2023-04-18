@@ -2,8 +2,7 @@ name: Build Nightly Images
 on:
 
   schedule:
-#    - cron: "00 0 * * *"
-    - cron: "0 */8 * * *"
+    - cron: "0 0 */3 * *"
   workflow_dispatch:
 
 jobs:
