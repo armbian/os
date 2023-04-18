@@ -136,8 +136,8 @@ jobs:
         path: tag
         retention-days: 5
 
-  dispatch:
-    name: "Dispatch"
+  dispatch_1:
+    name: "Dispatch 1"
     if: ${{ github.repository_owner == 'Armbian' }}
     outputs:
       version: ${{steps.releases.outputs.version}}
@@ -152,6 +152,31 @@ jobs:
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.DISPATCH }}
+          repository: ${{ matrix.repo }}
+          event-type: "Build"
+          client-payload: '{"release": "nightly","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
+
+      - name: Save
+        id: releases
+        run: |
+          echo "version=${{ needs.generaterelease.outputs.version }}" >> $GITHUB_OUTPUT
+
+  dispatch_2:
+    name: "Dispatch 2"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    needs: generaterelease
+    strategy:
+      matrix:
+        repo: ['armbiankappa/os']
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH_2 }}
           repository: ${{ matrix.repo }}
           event-type: "Build"
           client-payload: '{"release": "nightly","board": "${{ github.event.inputs.board }}","config": "${{ needs.generaterelease.outputs.build_config }}", "version": "${{ needs.generaterelease.outputs.version }}"}'
