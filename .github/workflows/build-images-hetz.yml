@@ -296,4 +296,4 @@ jobs:
           key: ${{ secrets.KEY_TORRENTS }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
           hetzner_id: ${{ secrets.HETZNER_ONE }}
-          github_token: ${{ secrets.TEST }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
