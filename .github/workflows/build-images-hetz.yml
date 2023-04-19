@@ -15,9 +15,26 @@ on:
         options:
         # boards
         - all
+        - uefi
         default: 'all'
 
 jobs:
+
+  start:
+    name: "Power On"
+    runs-on: ubuntu-latest
+    steps:
+     
+      - name: Enable Hetzner Virtual Machines
+        uses: armbian/actions/hetzner_on@main
+        with:
+          machine-type: cax11
+          runners-count: 3
+          machine-count: 2
+          key: ${{ secrets.KEY_TORRENTS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
+          hetzner_id: ${{ secrets.HETZNER_ONE }}
+          github_token: ${{ secrets.TEST }}
 
 #  Kernel:
 #    name: "Update kernel cache"
@@ -223,7 +240,7 @@ jobs:
   Closing:
 
     name: "Closing"
-    needs: [Cluster_1,Cluster_2,Cluster_3,Cluster_4,Cluster_5,Cluster_6]
+    needs: [start,Cluster_1,Cluster_2,Cluster_3,Cluster_4,Cluster_5,Cluster_6]
     runs-on: ubuntu-latest
     steps:
     
@@ -263,3 +280,20 @@ jobs:
     - uses: geekyeggo/delete-artifact@v2
       with:
          name: assets-for-download
+
+  stop:
+    name: "Power Off"
+    needs: Closing
+    runs-on: ubuntu-latest
+    steps:
+     
+      - name: Enable Hetzner Virtual Machines
+        uses: armbian/actions/hetzner_off@main
+        with:
+          machine-type: cax11
+          runners-count: 3
+          machine-count: 2
+          key: ${{ secrets.KEY_TORRENTS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
+          hetzner_id: ${{ secrets.HETZNER_ONE }}
+          github_token: ${{ secrets.TEST }}
