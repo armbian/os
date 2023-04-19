@@ -21,7 +21,7 @@ on:
         default: 'cax21'
       machine_count:
         type: choice
-        description: 'Machine type'
+        description: 'Number of machines'
         options:
         - 2
         - 4
