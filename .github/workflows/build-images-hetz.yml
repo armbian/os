@@ -6,7 +6,6 @@ on:
         type: choice
         description: 'Availability time'
         options:
-        - 5m
         - 50m
         - 170m
         - 350m
@@ -65,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      
-      - name: Sleeping
+      - name: Sleeping "${{ github.event.inputs.period }}"
         run: sleep "${{ github.event.inputs.period || '5m' }}"
  
   stop:
