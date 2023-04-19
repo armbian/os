@@ -16,38 +16,37 @@ Build Clusters Health<br>
 </p>
 
 
-# What this project does?
+# What does this project do?
 
 - Keeps build framework [packages artifacts](https://github.com/orgs/armbian/packages) cache up to date
 - Keeps stable [apt.armbian.com](https://apt.armbian.com) and nightly [beta.armbian.com](https://beta.armbian.com) packages repository up to date
-- Builds [nighly](https://github.com/armbian/os/releases) and [stable images](https://www.armbian.com/download/) and upload them to Armbian CDN
-- Keep synhronising selection of [3rd party](external) applications with Armbian repositories
-- Tests install of all packages that are added on stable and testing Debian and Ubuntu releases
+- Builds [nightly](https://github.com/armbian/os/releases) and [stable images](https://www.armbian.com/download/) and uploads them to Armbian CDN
+- Keep synchronizing the  selection of [3rd party](external) applications with Armbian repositories
+- Tests install of all packages added onto stable and testing Debian and Ubuntu releases
 
-# When this is happening?
+# When is this happening?
 
-- artifacts cache and images are updating every eight hours, starting at 0:00 AM UTC
-- repository update is updating once per day, at 3:00 AM UTC
-- manually, when Armbian member executes build action
+- Artifacts cache and images update every eight hours, starting at 0:00 AM UTC
+- Repository update is updated once per day, at 3:00 AM UTC
+- Manually, when an Armbian member executes a build action
 
-# Missing stable or nightly images for your board?
+# Need to include stable or nightly images for your board?
 
-Armbian build system includes large number of build configurations, but we are not producing all possible build options for all images. Only most popular ones gets everything, while others gets bare minimum, some nothing at all. Primary reason for lack of images is lack of human resources - [maintainers](https://docs.armbian.com/Board_Maintainers_Procedures_and_Guidelines/) - who can help keeping them operational. 
+Armbian build system includes many build configurations, but we are producing only some possible build options for all images. Only the most popular ones get everything, while others get the bare minimum, some nothing. The primary reason for the lack of images is a need for more human resources - [maintainers](https://docs.armbian.com/Board_Maintainers_Procedures_and_Guidelines/) - who can help keep them operational. 
 
-In order to enable board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [this file](targets/default.conf) and send a pull request. Configuration file is self explanatory.
+To enable a board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [this file](targets/default.conf) and send a pull request. The configuration file is self-explanatory.
 
 # Import 3rd party package into Armbian
 
-We don't want to include 3rd party and Personal Package Archives (PPAs) repository components within official release but 
-in some cases more recent or different versions can be added from private or testing repisotories. For security and features reasons.
+We don't want to include 3rd party and Personal Package Archives (PPAs) repository components within the official release. However, adding a more recent or different version may occur for security and feature purposes. 
 
 Automation at Pull Request will:
 
-- download packages from repository, direct or from GitHub releases
-- place package into specific release or component, or everywhere
-- execute **test install on all distributions** where it can be installed
+- Download packages from repository directly or from GitHub releases
+- Place package into specific release or component, or everywhere
+- Execute **test install on all distributions** where it can be installed
 
-In order to add a package into auto-sync, you need to add GPG formated repository key (when you mirror from repository) to `externel/keys` generate configuration file in folder `external`
+To add a package into auto-sync, you need to add GPG formatted repository key (when you mirror from repository) to the `external/keys` generated configuration file in folder `external`
 
     URL="http://dl.google.com/linux/chrome/deb/ stable"
     KEY="main"
@@ -63,9 +62,9 @@ In order to add a package into auto-sync, you need to add GPG formated repositor
 - *KEY* = Source component = main
 - *RELEASE* = all|jammy|lunar|bullseye|sid
 - *TARGET* = Armbian repository component (utils, desktop)
-- *METHOD* = aptly (for debian based repo), gh (download package from GitHub releases)
+- *METHOD* = aptly (for Debian-based repo), gh (download package from GitHub releases)
 - *GLOB* = `Name (% http-*)` packages that starts with http. [Other variants](https://www.aptly.info/doc/feature/query/)
-- *ARCH* = limit mirroing to arhitecture
+- *ARCH* = limit mirroring to architecture
 - *REPOSITORY* = B = beta.armbian.com, S = apt.armbian.com
 
 ## Development
