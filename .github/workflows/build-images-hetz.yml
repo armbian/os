@@ -23,19 +23,19 @@ on:
         type: choice
         description: 'Number of machines'
         options:
-        - 2
-        - 4
-        - 8
+        - "2"
+        - "4"
+        - "8"
         default: '2'
       runners_count:
         type: choice
         description: 'Runners per machine'
         options:
-        - 2
-        - 4
-        - 8
-        - 16
-        default: '2'
+        - "2"
+        - "4"
+        - "8"
+        - "16"
+        default: '4'
 
 jobs:
 
