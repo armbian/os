@@ -4,7 +4,7 @@ on:
     inputs:
       period:
         type: choice
-        description: 'Build Infrastructure'
+        description: 'Availability time'
         options:
         - 5m
         - 50m
@@ -65,12 +65,14 @@ jobs:
         run: sleep "${{ github.event.inputs.period || '5m' }}"
  
   stop:
+    if: always()
     name: "Power Off"
     needs: sleeping
     runs-on: ubuntu-latest
     steps:
      
       - name: Enable Hetzner Virtual Machines
+        if: always()
         uses: armbian/actions/hetzner_off@main
         with:
           machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
