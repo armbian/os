@@ -238,6 +238,7 @@ jobs:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
       release: "stable"
+      parallel: 64
       board: '${{ github.event.inputs.board }}'
       part: 1
       of: 6
@@ -262,6 +263,7 @@ jobs:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
       release: "stable"
+      parallel: 64
       board: '${{ github.event.inputs.board }}'
       part: 2
       of: 6
@@ -286,6 +288,7 @@ jobs:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
       release: "stable"
+      parallel: 64
       board: '${{ github.event.inputs.board }}'
       part: 3
       of: 6
@@ -310,6 +313,7 @@ jobs:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
       release: "stable"
+      parallel: 64
       board: '${{ github.event.inputs.board }}'
       part: 4
       of: 6
@@ -334,6 +338,7 @@ jobs:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
       release: "stable"
+      parallel: 64
       board: '${{ github.event.inputs.board }}'
       part: 5
       of: 6
@@ -358,6 +363,7 @@ jobs:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
       release: "stable"
+      parallel: 64
       board: '${{ github.event.inputs.board }}'
       part: 6
       of: 6
