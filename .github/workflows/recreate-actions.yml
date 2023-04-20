@@ -3,6 +3,9 @@
 #
 name: Recreate action
 on:
+  push:
+    paths:
+      - ".github/workflows/build-images.template"
   workflow_dispatch:
   repository_dispatch:
     types: [Refresh board list]
