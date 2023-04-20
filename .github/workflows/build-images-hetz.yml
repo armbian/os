@@ -54,22 +54,19 @@ jobs:
         run: |
           echo "matrix=$(for x in $(seq -w 1 ${{ github.event.inputs.machine_count }}); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
   Test:
-    name: "DUT"
-    runs-on: [igor]
+    name: "Cloud VM"
+    runs-on: ubuntu-latest
     needs: Prepare
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
-    timeout-minutes: 60
+    timeout-minutes: 10
     strategy:
-      # max-parallel: 32
       fail-fast: false
       matrix:
-
         node: ${{fromJson(needs.Prepare.outputs.matrix)}}
-
     steps:
 
       - name: Runner clean
-        run: echo "test"
+        run: echo ${{ matrix.node }}
 
 
 
