@@ -53,7 +53,7 @@ jobs:
       - name: Determine changed kernels
         id: machine-number
         run: |
-          echo "matrix=$(for x in $(seq -w 0 $(( {{ github.event.inputs.machine_count }} - 1 )); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
+          echo "matrix=$(for x in $(seq -w 0 $(( ${{ github.event.inputs.machine_count }} - 1 )); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
   Enable:
     name: "Cloud VM"
     runs-on: ubuntu-latest
