@@ -20,10 +20,6 @@ on:
         type: boolean
         description: Bump version
         default: true
-      kernel:
-        type: boolean
-        description: Artifacts rebuild
-        default: true
       version:
         description: 'Version override'
         required: false
@@ -32,8 +28,7 @@ on:
 jobs:
 
   Kernel:
-    name: "Update kernel cache"
-    if: ${{ inputs.kernel || 'true' && github.repository_owner == 'Armbian' }}
+    name: "Update kernel cache"    
     uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
     with:
       ACCESS_NAME: igorpecovnik
@@ -60,7 +55,7 @@ jobs:
         clean: false
     
     - name: "Generate version"
-      if: ${{ inputs.kernel || 'true' && github.event.inputs.version == '' }}
+      if: ${{ github.event.inputs.bump == 'true' && github.event.inputs.version == '' }}
       id: changelog
       uses: TriPSs/conventional-changelog-action@v3.18.0
       with:
@@ -83,11 +78,14 @@ jobs:
       id: releases
       run: |
         
-        # in case we don't bump or input, here we read it from
-        cat stable.json | jq -r '.version'
-        
         echo "${{ steps.changelog.outputs.tag }}" > tag
         echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+
+        if [[ "${{ github.event.inputs.bump }}" != 'true' ]]; then
+            # in case we don't bump or input, here we read it from
+            echo "$(cat stable.json | jq -r '.version')" > tag
+            echo "version=$(cat stable.json | jq -r '.version')" >> $GITHUB_OUTPUT
+        fi
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v3
