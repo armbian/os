@@ -42,8 +42,47 @@ concurrency:
 
 jobs:
 
+  Prepare:
+    name: "Power cloud runners"
+    outputs:
+      matrix: ${{steps.machine-number.outputs.matrix}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Determine changed kernels
+        id: machine-number
+        run: |
+          echo "matrix=$(for x in $(seq -w 1 $i); do echo ${{ github.event.inputs.machine }}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
+  Test:
+    name: "DUT"
+    runs-on: [igor]
+    needs: Prepare
+    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      # max-parallel: 32
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+
+    steps:
+
+      - name: Runner clean
+        run: echo "test"
+
+
+
+
+
+
+
+
+
+
   start:
     name: "Power On"
+    needs: Test
     runs-on: ubuntu-latest
     steps:
 
