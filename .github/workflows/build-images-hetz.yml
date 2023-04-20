@@ -44,7 +44,7 @@ concurrency:
 jobs:
 
   Prepare:
-    name: "Power cloud runners"
+    name: "Enable cloud runners"
     outputs:
       matrix: ${{steps.machine-number.outputs.matrix}}
     runs-on: ubuntu-latest
@@ -91,7 +91,7 @@ jobs:
  
   stop:
     if: always()
-    name: "Power Off"
+    name: "Disable cloud runners"
     needs: sleeping
     runs-on: ubuntu-latest
     steps:
