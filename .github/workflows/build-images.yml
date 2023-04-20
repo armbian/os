@@ -149,8 +149,12 @@ on:
         - zeropi
         - all
         default: 'all'
+      bump:
+        type: boolean
+        description: Bump version
+        default: true
       version:
-        description: 'Version (empty = auto bump)'
+        description: 'Version override'
         required: false
         default: ''
 
@@ -207,7 +211,10 @@ jobs:
     - name: Save
       id: releases
       run: |
-
+        
+        # in case we don't bump or input, here we read it from
+        cat stable.json | jq -r '.version'
+        
         echo "${{ steps.changelog.outputs.tag }}" > tag
         echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
 
