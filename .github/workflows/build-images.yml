@@ -215,8 +215,9 @@ jobs:
         echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
 
         if [[ "${{ github.event.inputs.bump }}" != 'true' ]]; then
-        # in case we don't bump or input, here we read it from
-        echo "version=$(cat stable.json | jq -r '.version')" >> $GITHUB_OUTPUT
+            # in case we don't bump or input, here we read it from
+            echo "$(cat stable.json | jq -r '.version')" > tag
+            echo "version=$(cat stable.json | jq -r '.version')" >> $GITHUB_OUTPUT
         fi
 
     - name: 'Upload Artifact'
