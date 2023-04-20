@@ -99,7 +99,7 @@ jobs:
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      SSH_KEY_TORRENTS: ${{ secrets.KEY_REPOSITORY }}
+      KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -123,7 +123,7 @@ jobs:
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      SSH_KEY_TORRENTS: ${{ secrets.KEY_REPOSITORY }}
+      KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -147,7 +147,7 @@ jobs:
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      SSH_KEY_TORRENTS: ${{ secrets.KEY_REPOSITORY }}
+      KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -171,7 +171,7 @@ jobs:
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      SSH_KEY_TORRENTS: ${{ secrets.KEY_REPOSITORY }}
+      KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -195,7 +195,7 @@ jobs:
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      SSH_KEY_TORRENTS: ${{ secrets.KEY_REPOSITORY }}
+      KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
@@ -219,7 +219,7 @@ jobs:
 
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      SSH_KEY_TORRENTS: ${{ secrets.KEY_REPOSITORY }}
+      KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
