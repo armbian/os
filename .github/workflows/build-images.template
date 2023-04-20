@@ -17,7 +17,7 @@ on:
         - all
         default: 'all'
       version:
-        description: 'Version'
+        description: 'Version (empty = auto bump)'
         required: false
         default: ''
 
