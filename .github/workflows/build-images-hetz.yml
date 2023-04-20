@@ -48,6 +48,7 @@ jobs:
     steps:
 
       - name: Enable Hetzner Virtual Machines
+        if: ${{ github.repository_owner == 'Armbian' }}
         uses: armbian/actions/hetzner@test
         with:
           action-type: enable
@@ -76,7 +77,7 @@ jobs:
     steps:
      
       - name: Enable Hetzner Virtual Machines
-        if: always()
+        if: ${{ always() && github.repository_owner == 'Armbian' }}
         uses: armbian/actions/hetzner@test
         with:
           action-type: disable
