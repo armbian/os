@@ -52,7 +52,7 @@ jobs:
       - name: Determine changed kernels
         id: machine-number
         run: |
-          echo "matrix=$(for x in $(seq -w 1 $i); do echo ${{ github.event.inputs.machine }}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
+          echo "matrix=$(for x in $(seq -w 1 ${{ github.event.inputs.machine_count }}); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
   Test:
     name: "DUT"
     runs-on: [igor]
