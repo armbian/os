@@ -166,7 +166,7 @@ jobs:
 
   Kernel:
     name: "Update kernel cache"
-    if: ${{ inputs.kernel || 'true' && github.repository_owner == 'Armbian' }}
+    if: ${{ inputs.kernel == 'true' && github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
     with:
       ACCESS_NAME: igorpecovnik
