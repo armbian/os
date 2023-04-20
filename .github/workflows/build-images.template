@@ -20,6 +20,10 @@ on:
         type: boolean
         description: Bump version
         default: true
+      kernel:
+        type: boolean
+        description: Artifacts rebuild
+        default: true
       version:
         description: 'Version override'
         required: false
@@ -27,22 +31,22 @@ on:
 
 jobs:
 
-#  Kernel:
-#    name: "Update kernel cache"
-#    if: ${{ github.repository_owner == 'Armbian' }}
-#    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-#    with:
-#      ACCESS_NAME: igorpecovnik
-#      BUILD_BRANCH: ""
-#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-#    secrets:
-#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+  Kernel:
+    name: "Update kernel cache"
+    if: ${{ inputs.kernel || 'true' && github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+    with:
+      ACCESS_NAME: igorpecovnik
+      BUILD_BRANCH: ""
+      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+    secrets:
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   generaterelease:
 
-#    needs: Kernel
+    needs: Kernel
     name: "Generate release"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
@@ -56,7 +60,7 @@ jobs:
         clean: false
     
     - name: "Generate version"
-      if: ${{ github.event.inputs.version == '' }}
+      if: ${{ inputs.kernel || 'true' && github.event.inputs.version == '' }}
       id: changelog
       uses: TriPSs/conventional-changelog-action@v3.18.0
       with:
