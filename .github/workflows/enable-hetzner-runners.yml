@@ -90,7 +90,7 @@ jobs:
         run: sleep "${{ github.event.inputs.period || '5m' }}"
  
   stop:
-    if: always()
+    #if: always()
     name: "Disable cloud runners"
     needs: sleeping
     runs-on: ubuntu-latest
