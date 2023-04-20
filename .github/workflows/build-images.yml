@@ -233,8 +233,8 @@ jobs:
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
@@ -257,8 +257,8 @@ jobs:
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
@@ -281,8 +281,8 @@ jobs:
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
@@ -305,8 +305,8 @@ jobs:
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
@@ -329,8 +329,8 @@ jobs:
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
@@ -353,8 +353,8 @@ jobs:
     secrets:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
 
