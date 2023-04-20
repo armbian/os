@@ -6,10 +6,10 @@ on:
         type: choice
         description: 'Availability time'
         options:
-        - 5m
         - 50m
+        - 110m
         - 170m
-        - 350m
+        - 230m
         default: 50m
       machine:
         type: choice
