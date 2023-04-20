@@ -16,6 +16,10 @@ on:
         # boards
         - all
         default: 'all'
+      version:
+        description: 'Version'
+        required: false
+        default: ''
 
 jobs:
 
