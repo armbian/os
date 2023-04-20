@@ -48,8 +48,9 @@ jobs:
     steps:
 
       - name: Enable Hetzner Virtual Machines
-        uses: armbian/actions/hetzner_on@main
+        uses: armbian/actions/hetzner@test
         with:
+          action-type: enable
           machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
           runners-count: "${{ github.event.inputs.runners_count || '4' }}"
           machine-count: "${{ github.event.inputs.machine_count || '2' }}"
@@ -76,8 +77,9 @@ jobs:
      
       - name: Enable Hetzner Virtual Machines
         if: always()
-        uses: armbian/actions/hetzner_off@main
+        uses: armbian/actions/hetzner@test
         with:
+          action-type: disable
           machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
           runners-count: "${{ github.event.inputs.runners_count || '2' }}"
           machine-count: "${{ github.event.inputs.machine_count || '2' }}"
