@@ -168,7 +168,7 @@ jobs:
     needs: generaterelease
     strategy:
       matrix:
-        repo: ['armbiankappa/os']
+        repo: ['armbiankappa/os', 'armbianro/os']
     runs-on: ubuntu-latest
     steps:
 
