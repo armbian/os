@@ -13,6 +13,7 @@ Build Clusters Health<br>
 <a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-gama/os/build.yml?label=03&style=flat-square&branch=main"></a>
 <a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-delta/os/build.yml?label=04&style=flat-square&branch=main"></a>
 <a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbiankappa/os/build.yml?label=05&style=flat-square&branch=main"></a>
+<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianro/os/build.yml?label=06&style=flat-square&branch=main"></a>
 </p>
 
 
