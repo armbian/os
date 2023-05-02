@@ -1,66 +1,29 @@
 lists:
 
-  desktop-boards: &desktop-boards
-    - { BOARD: mekotronics-r58x, BRANCH: legacy, RELEASE: jammy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy, RELEASE: jammy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy, RELEASE: jammy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: nanopi-r6s, BRANCH: legacy, RELEASE: jammy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: uefi-x86, BRANCH: edge, RELEASE: bookworm }
+  my-boards: &my-boards
+    # Actual Physical boards
+    - { BOARD: odroidn2, BRANCH: edge }
+    - { BOARD: odroidhc4, BRANCH: edge }
 
 targets:
-
-  cli-lunar:
-    vars:
-      BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "no"
-      RELEASE: lunar
-
-    items-from-inventory:
-      not-eos: yes
-
-  cli-jammy:
-    vars:
-      BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "no"
-      RELEASE: jammy
-
-    items-from-inventory:
-      not-eos: yes
-
-  minimal-lunar:
-    vars:
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-      RELEASE: lunar
-
-    items-from-inventory:
-      not-eos: yes
-
-  minimal-jammy:
-    vars:
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-      RELEASE: jammy
-
-    items-from-inventory:
-      not-eos: yes
-
-  xfce-lunar:
+  all:
+    pipeline:
+      build-image: "yes"
     vars:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "yes"
-      RELEASE: lunar
       DESKTOP_ENVIRONMENT: "xfce"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers"
-    items: *desktop-boards
+      RELEASE: "jammy"
+    items-from-inventory:
+      not-eos: "yes"
 
-  xfce-jammy:
+  cli-debian:
+    build-image: "yes"
+    enabled: yes
     vars:
+      RELEASE: bookworm
       BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "yes"
-      RELEASE: jammy
-      DESKTOP_ENVIRONMENT: "xfce"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers"
-    items: *desktop-boards
+      BUILD_DESKTOP: "no"
+    items: # list of reference-lists
+      - *my-boards

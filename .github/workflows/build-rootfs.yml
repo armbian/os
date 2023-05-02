@@ -1,0 +1,118 @@
+name: Rootfs
+on:
+  repository_dispatch:
+    types: ["armbian"]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch'
+        default: 'main'
+
+  workflow_call:
+  schedule:
+    - cron: '0 3 * * *' # Scheduled runs every day at 3am UTC
+    
+jobs:
+
+  Cancel:
+    name: "Cancel currently active"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: qemu
+    timeout-minutes: 3
+    steps:
+      - uses: styfle/cancel-workflow-action@0.11.0
+        if: ${{ github.event.schedule == '' }}
+        with:
+          all_but_latest: true
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+  Minimal:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'yes'
+      desktop: 'no'
+      variant: ''
+      branch: "${{ github.event.inputs.branch || 'main' }}"
+
+  Server:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'no'
+      desktop: 'no'
+      variant: ''
+      branch: "${{ github.event.inputs.branch || 'main' }}"
+
+  GUI1:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'no'
+      desktop: 'yes'
+      variant: ''
+      branch: "${{ github.event.inputs.branch || 'main' }}"
+      
+  GUI2:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'no'
+      desktop: 'yes'
+      variant: '3dsupport'
+      branch: "${{ github.event.inputs.branch || 'main' }}"
+
+  GUI3:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'no'
+      desktop: 'yes'
+      variant: '3dsupport browsers'
+      branch: "${{ github.event.inputs.branch || 'main' }}"
+
+  GUI4:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'no'
+      desktop: 'yes'
+      variant: '3dsupport browsers chat desktop_tools editors email internet multimedia office programming remote_desktop'    
+      branch: "${{ github.event.inputs.branch || 'main' }}"
+      
+  GUI5:
+
+    needs: Cancel
+    if: ${{ success() && github.repository_owner == 'Armbian' }}
+    uses: ./.github/workflows/include.yml
+
+    with:
+
+      minimal: 'no'
+      desktop: 'yes'
+      variant: 'browsers chat desktop_tools editors email internet multimedia office programming remote_desktop'
+      branch: "${{ github.event.inputs.branch || 'main' }}"

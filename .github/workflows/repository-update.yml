@@ -2,8 +2,8 @@ name: Repository update
 on:
   repository_dispatch:
     types: ["Repository update"]
-  schedule:
-    - cron: "00 3 * * *"
+#  schedule:
+#    - cron: "00 3 * * *"
   workflow_dispatch:
     inputs:
       BUILD_BRANCH:
@@ -32,7 +32,7 @@ env:
   # For easier reuse across the multiple chunks
   BUILD_REPOSITORY: ${{ github.repository_owner }}/build
   ACCESS_NAME: ${{ github.repository_owner }}
-  BUILD_REF: "json" # branch or tag or sha1
+  BUILD_REF: "main" # branch or tag or sha1
 
   # Armbian envs. Adjust to your needs.
   OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
