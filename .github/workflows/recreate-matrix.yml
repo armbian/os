@@ -5,11 +5,13 @@ name: Recreate Matrix
 on:
   push:
     paths:
-      - "userpatches/*/gha"
+      - "userpatches/*"
+      - "userpatches/gha/**"
+      - "userpatches/gha/chunks/**"
 
   workflow_dispatch:
   repository_dispatch:
-    types: [Refresh matrix]
+    types: [Recreate Matrix]
 
 concurrency:
   group: ${{ github.ref }}
@@ -59,7 +61,7 @@ jobs:
         git add .github/workflows/artifact-image-complete-matrix.yml
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
-        git commit --allow-empty -m "Update board list within actions" -a
+        git commit --allow-empty -m "Update Build List" -a
 
     - name: Push changes
       uses: ad-m/github-push-action@master
