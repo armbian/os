@@ -1,0 +1,5 @@
+org: "armbian" # can't be an expression, only string.
+org_and_build_repo: "rpardini/armbian-build"
+build_ref: "pr/rpardini-more-gha-pipeline-stuff"
+ghcr_user: "${{ github.repository_owner }}"
+userpatches_config_for_prepare_job: "" # use "" for no config file

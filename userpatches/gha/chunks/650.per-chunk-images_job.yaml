@@ -1,0 +1,54 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
+    needs: [ "matrix_prep", "all-artifacts-ready" ]
+    timeout-minutes: 15
+    if: ${{ always() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
+    strategy:
+      fail-fast: false # let other jobs try to complete if one fails
+      matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-[[chunk]]) }} # <-- HERE: Chunk number.
+    name: ${{ matrix.desc || 'Empty I[[chunk]]' }} # <-- HERE: Chunk number.
+    runs-on: ${{ matrix.runs_on }}
+    steps:
+
+      - name: Checkout build repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      - name: Cleanup leftover output images
+        run: |
+          rm -rfv output/images userpatches/VERSION
+
+      - name: ${{matrix.desc}}
+        id: build-one-image
+        run: |
+          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+
+      # @TODO lets upload to GHR release ourselves instead of this shit
+      - name: Release ${{ matrix.board }}
+        id: release1
+        continue-on-error: true
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+        with:
+          tag_name: latest-images
+          files: |
+            output/images/*.xz
+
+      - name: Release ${{ matrix.board }} (retry if 1st failed)
+        id: release2
+        if: ${{ steps.release1.outcome == 'failure'}}
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+        with:
+          tag_name: latest-images
+          files: |
+            output/images/*.xz
+
+      - name: Cleanup output images
+        if: always()
+        run: |
+          rm -rfv output/images userpatches/VERSION
+

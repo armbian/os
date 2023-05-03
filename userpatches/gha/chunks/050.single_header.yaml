@@ -1,0 +1,93 @@
+name: artifact-image-complete-matrix
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # Scheduled runs every day at 2am UTC
+  workflow_dispatch:
+    inputs:
+      skipImages:
+        description: 'Skip building images? no = build images, yes = skip images'
+        required: true
+        options: [ 'no', 'yes' ]
+        type: choice
+      checkOci:
+        description: 'Check OCI for existing artifacts? yes = check OCI, no = always build everything'
+        required: true
+        options: [ 'yes', 'no' ]
+        type: choice
+
+env:
+
+  # For easier reuse across the multiple chunks
+  BUILD_REPOSITORY: "[[org_and_build_repo]]"
+  BUILD_REF: "[[build_ref]]" # branch or tag or sha1
+
+  # Armbian envs. Adjust to your needs.
+  OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
+  DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX: "ghcr.io/armbian/docker-armbian-build:armbian-" # Use Docker image in same repo
+  DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX's images are up-to-date
+
+  # Added to every image build arguments.
+  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-${{ github.repository_owner }}' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
+
+jobs:
+
+  matrix_prep:
+    name: "JSON matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
+    if: ${{ github.repository_owner == '[[org]]' }}
+    runs-on: [ "self-hosted", "Linux", 'fast' ]
+    steps:
+      - name: Checkout build repo
+        uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ env.BUILD_REF }}
+          fetch-depth: 1
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      - name: grab the sha1 of the latest commit
+        id: latest-commit
+        run: echo "sha1=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: GitHub cache
+        id: cache-restore
+        uses: actions/cache@v3
+        with:
+          path: |
+            cache/memoize
+            cache/oci/positive
+          key: ${{ runner.os }}-matrix-cache-${{ github.sha }}-${{ steps.latest-commit.outputs.sha1 }}"
+          restore-keys: |
+            ${{ runner.os }}-matrix-cache-
+
+      # Login to ghcr.io, we're gonna do a lot of OCI lookups.
+      - name: Docker Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "[[ghcr_user]]" # GitHub username or org
+          password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
+
+      - name: Prepare Info JSON and Matrices
+        id: prepare-matrix
+        run: |
+          # this sets outputs "artifact-matrix" #and "image-matrix"
+          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} # DEBUG=yes IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+
+      - name: chown cache memoize/oci back to normal user
+        run: |
+          sudo chown -R $USER:$USER cache/memoize cache/oci/positive
+
+      - name: Prepare GH Release
+        uses: "marvinpinto/action-automatic-releases@latest" # @TODO this is outdated, needs replacement. Also it deletes the release if it already exists, which is not what we want. Might be necessary to move the tag.
+        if: ${{ github.event.inputs.skipImages == 'no' }} # this action deletes the release, so if skipping images, skip this too
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-images"
+          prerelease: false
+          title: "Latest images"
+
+    outputs:
+      # not related to matrix
+      build-sha1: ${{ steps.latest-commit.outputs.sha1 }}
+
