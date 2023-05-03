@@ -74,7 +74,7 @@ jobs: # <TEMPLATE-IGNORE>
             API_CALLS_TOTAL=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if [[ $PERCENT =~ ^[0-9]+$ ]]; then
+            if [[ $PERCENT =~ "^[0-9]+$" ]]; then
                     if [[ $PERCENT -gt 50 ]]; then
                             echo "API rate in good shape $PERCENT % free"
                     exit 0
