@@ -119,6 +119,11 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+    outputs:
+
+      # not related to matrix
+      version: ${{ steps.changelog.outputs.version }}
+
   matrix_prep:
     name: "JSON matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
     if: ${{ github.repository_owner == '[[org]]' }}
@@ -198,4 +203,3 @@ jobs:
 
       # not related to matrix
       build-sha1: ${{ steps.latest-commit.outputs.sha1 }}
-      IMAGE_VERSION: ${{ steps.changelog.outputs.version }}
