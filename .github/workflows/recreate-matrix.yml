@@ -1,0 +1,65 @@
+#
+# This action recreate action for building stable images
+#
+name: Recreate Matrix
+on:
+  push:
+    paths:
+      - "userpatches/*/gha"
+
+  workflow_dispatch:
+  repository_dispatch:
+    types: [Refresh matrix]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    name: Recreate action
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Armbian Framework
+      uses: actions/checkout@v3.5.2
+      with:
+        persist-credentials: false
+        repository: armbian/build
+        ref:  main
+        fetch-depth: 1
+        clean: false
+        path: build
+
+    - name: Checkout Armbian OS Config
+      uses: actions/checkout@v3.5.2
+      with:
+        persist-credentials: false
+        repository: armbian/os
+        ref:  main
+        clean: false
+        fetch-depth: 0
+        path: os
+
+    - name: Create local changes
+      run: |
+
+        cd build
+        bash ./compile.sh gha-template
+        cd ..
+        cp build/output/info/artifact-image-complete-matrix.yml os/.github/workflows/
+        cd os
+        git add .github/workflows/artifact-image-complete-matrix.yml
+        git config --local user.email "info@armbian.com"
+        git config --local user.name "Armbianworker"
+        git commit --allow-empty -m "Update board list within actions" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.ACCESS_TOKEN }}
+        repository: armbian/os
+        branch: ${{ github.ref }}
+        directory: os
