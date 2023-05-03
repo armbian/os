@@ -3,7 +3,6 @@ lists:
   my-boards: &my-boards
     # Actual Physical boards
     - { BOARD: odroidn2, BRANCH: edge }
-    - { BOARD: odroidhc4, BRANCH: edge }
 
 targets:
   all:
