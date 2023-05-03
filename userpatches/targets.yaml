@@ -134,7 +134,7 @@ targets:
       - *headless
 
   minimal-cli-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -150,7 +150,7 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
 
   full-cli-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -184,7 +184,7 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
 
   full-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
