@@ -65,20 +65,17 @@ jobs: # <TEMPLATE-IGNORE>
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      # When we are uploading to GitHub, this matters
       - name: Check API rate limits
         run: |
 
           while true
             do
-            API_CALLS_TOTAL=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit | jq -r '.rate.remaining')
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if [[ $PERCENT =~ "^[0-9]+$" ]]; then
-                    if [[ $PERCENT -gt 50 ]]; then
-                            echo "API rate in good shape $PERCENT % free"
-                    exit 0
-                    fi
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
             fi
             echo "API rate lower then 50%, sleping 5m"
             sleep 5m
