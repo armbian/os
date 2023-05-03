@@ -22,8 +22,8 @@ on:
 env:
 
   # For easier reuse across the multiple chunks
-  BUILD_REPOSITORY: "rpardini/armbian-build"
-  BUILD_REF: "pr/rpardini-more-gha-pipeline-stuff" # branch or tag or sha1
+  BUILD_REPOSITORY: "armbian/build"
+  BUILD_REF: "main" # branch or tag or sha1
 
   # Armbian envs. Adjust to your needs.
   OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
