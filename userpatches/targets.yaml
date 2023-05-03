@@ -13,11 +13,8 @@ common-gha-configs:
 
 lists:
 
-  supported: &supported
-    - { BOARD: bananapicm4io, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: current }
-    - { BOARD: bananapim5, BRANCH: current }
-    - { BOARD: bananapir2pro, BRANCH: current }
+  full-desktop: &full-desktop
+ 
     - { BOARD: firefly-rk3399, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: current }
@@ -32,15 +29,10 @@ lists:
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi5, BRANCH: legacy }
-    - { BOARD: orangepiplus2e, BRANCH: current }
-    - { BOARD: pine64, BRANCH: current }
-    - { BOARD: pine64so, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: current }
-    - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5b, BRANCH: legacy }
@@ -54,11 +46,20 @@ lists:
     - { BOARD: station-m3, BRANCH: legacy }
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
+
+  light-desktop: &light-desktop
+
+    - { BOARD: bananapir2pro, BRANCH: current }
+    - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: orangepiplus2e, BRANCH: current }
+    - { BOARD: pine64, BRANCH: current }
+    - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
-    - { BOARD: tritium-h5, BRANCH: current }
-
+ 
   headless: &headless
+
+    - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
@@ -81,6 +82,7 @@ lists:
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: pine64so, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
 
@@ -110,7 +112,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *supported
+      - *full-desktop
+      - *light-desktop
       - *headless
 
   full-cli-stable-debian:
@@ -124,7 +127,8 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *supported
+      - *full-desktop
+      - *light-desktop
       - *headless
 
   minimal-cli-stable-ubuntu:
@@ -138,7 +142,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *supported
+      - *full-desktop
+      - *light-desktop
       - *headless
       - { BOARD: rpi4b, BRANCH: current }
 
@@ -153,7 +158,8 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *supported
+      - *full-desktop
+      - *light-desktop
       - *headless
       - { BOARD: rpi4b, BRANCH: current }
 
@@ -171,7 +177,8 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers"
     items:
-      - *supported
+      - *full-desktop
+      - *light-desktop
       - { BOARD: rpi4b, BRANCH: current }
 
   full-desktop-stable-ubuntu:
@@ -188,5 +195,5 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers"
     items:
-      - *supported
+      - *full-desktop
       - { BOARD: rpi4b, BRANCH: current }
