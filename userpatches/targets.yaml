@@ -17,7 +17,7 @@ common-gha-configs:
 lists:
 
   full-desktop: &full-desktop
- 
+
     - { BOARD: firefly-rk3399, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: current }
@@ -59,7 +59,7 @@ lists:
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
- 
+
   headless: &headless
 
     - { BOARD: bananapicm4io, BRANCH: current }
@@ -120,7 +120,7 @@ targets:
       - *headless
 
   full-cli-stable-debian:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -167,7 +167,7 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
 
   minimal-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
