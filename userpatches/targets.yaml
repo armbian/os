@@ -43,7 +43,7 @@ targets:
       RELEASE: bookworm
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
-      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
+#      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
     items: # simple hardcoded list
       - *supported
 
@@ -57,7 +57,7 @@ targets:
       RELEASE: bookworm
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
-      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
+#      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
     items: # simple hardcoded list
       - *supported
 
