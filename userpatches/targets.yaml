@@ -1,3 +1,13 @@
+common-gha-configs:
+  armbian-gha: &armbian-gha
+    runners:
+      default: "ubuntu-latest" # or a ["tag", "list"]
+      by-name:
+        kernel: [ "self-hosted", "Linux", "fast" ]
+      by-name-and-arch:
+        rootfs-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
+        image-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
+
 lists:
 
   my-boards: &my-boards
@@ -7,7 +17,7 @@ lists:
 targets:
   all:
     pipeline:
-      build-image: "yes"
+      gha: *armbian-gha
     vars:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "yes"
@@ -18,6 +28,8 @@ targets:
       not-eos: "yes"
 
   cli-debian:
+    pipeline:
+      gha: *armbian-gha
     build-image: "yes"
     enabled: yes
     vars:
