@@ -1,4 +1,4 @@
-name: "Build All Artifacts"
+name: "Build All Artifacts/Images"
 
 on:
   #schedule:
@@ -15,6 +15,11 @@ on:
         required: true
         options: [ 'yes', 'no' ]
         type: choice
+      extraParamsAllBuilds:
+        description: 'Extra params for all builds/jobs (prepare/artifact/image) (eg: DEBUG=yes)'
+        required: false
+        default: ''
+        type: string
 
 env:
 
@@ -28,10 +33,11 @@ env:
   USERPATCHES_DIR: "[[userpatches_dir]]" # folder inside USERPATCHES_REPOSITORY
 
   # Armbian envs. Adjust to your needs.
-  # These are mostly for developers which have their own Docker images, not main Armbian.
-  #OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
-  #DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX: "ghcr.io/armbian/docker-armbian-build:armbian-" # Use Docker image in same repo
-  #DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX's images are up-to-date
+  # This makes builds faster, but only if the Docker images are up-to-date with all dependencies, Python, tools, etc. Otherwise it makes it... slower.
+  DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust that Docker images are up-to-date.
+
+  # Added to every build, even the prepare job.
+  EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds }}"
 
   # Added to every image build arguments.
   EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-rc0' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
@@ -50,7 +56,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -80,8 +86,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: GitHub cache
         id: cache-restore
@@ -106,7 +111,7 @@ jobs:
         id: prepare-matrix
         run: |
           # this sets outputs "artifact-matrix" #and "image-matrix"
-          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] DEBUG=yes CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: chown cache memoize/oci back to normal user
         run: |

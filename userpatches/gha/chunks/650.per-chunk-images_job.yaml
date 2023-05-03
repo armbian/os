@@ -14,7 +14,7 @@ jobs: # <TEMPLATE-IGNORE>
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -39,8 +39,7 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -49,7 +48,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
