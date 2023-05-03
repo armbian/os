@@ -120,18 +120,63 @@ jobs:
         run: |
           sudo chown -R $USER:$USER cache/memoize cache/oci/positive
 
-      - name: Prepare GH Release
-        uses: "marvinpinto/action-automatic-releases@latest" # @TODO this is outdated, needs replacement. Also it deletes the release if it already exists, which is not what we want. Might be necessary to move the tag.
-        if: ${{ github.event.inputs.skipImages == 'no' }} # this action deletes the release, so if skipping images, skip this too
+      - name: Generate changelog
+        if: ${{ github.event.inputs.version == '' }}
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest-images"
-          prerelease: false
-          title: "Latest images"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-message: 'Bump release to {version}'
+          git-user-name: armbianworker
+          git-user-email: info@armbian.com
+          output-file: 'false'
+          skip-version-file: 'false'
+          skip-on-empty: 'false'
+          skip-commit: 'false'
+          skip-ci: 'false'
+          version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
+          pre-release: "true"
+          git-branch: 'main'
+          tag-prefix: ''
+          pre-release-identifier: 'trunk'
+
+      - name: "Generate body file"
+        run: |
+            echo "
+              <p align='center'>
+              <a href='https://www.armbian.com'>
+              <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400'></a></p>
+              <h1 align=center>Rolling releases</h1>
+              <p align=center>
+              <a href='https://www.armbian.com'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+              <a href='https://www.armbian.com'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+              </p>
+              <br>
+
+              - rolling releases are available at the bottom of <a href='https://www.armbian.com/download/' target=_blanks>official download pages</a>
+              - if you want to change automated builds variants, edit <a href='https://github.com/armbian/os/tree/main/targets'>build config files</a>
+              - for old builds with unknown support status check <a href='https://archive.armbian.com' target=_blank>archives</a>
+
+              <br>
+              &nbsp;
+              </p>" > body.html
+
+      - uses: ncipollo/release-action@v1
+        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
+        with:
+          tag: ${{ steps.changelog.outputs.tag }}
+          name: "${{ steps.changelog.outputs.tag }}"
+          bodyFile: "body.html"
+          prerelease: "false"
+          allowUpdates: true
+          removeArtifacts: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
     outputs:
+
       # not related to matrix
       build-sha1: ${{ steps.latest-commit.outputs.sha1 }}
+      IMAGE_VERSION: ${{ steps.changelog.outputs.version }}
 
 # template file: 150.per-chunk-artifacts_prep-outputs.yaml
 
