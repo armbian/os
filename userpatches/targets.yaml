@@ -3,10 +3,13 @@ common-gha-configs:
     runners:
       default: "ubuntu-latest" # or a ["tag", "list"]
       by-name:
-        kernel: [ "self-hosted", "Linux", "fast" ]
+        kernel: [ "self-hosted", "Linux", "alfa" ]
+        uboot: [ "self-hosted", "Linux", "fast" ]
       by-name-and-arch:
-        rootfs-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
+        rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         image-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
+        image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
 targets:
   all:
@@ -36,3 +39,5 @@ targets:
     items: # simple hardcoded list
       - { BOARD: odroidn2, BRANCH: edge }
       - { BOARD: uefi-x86, BRANCH: edge }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
+      - { BOARD: uefi-arm64, BRANCH: edge }
