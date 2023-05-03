@@ -86,7 +86,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rf userpatches.repo
+          #rm -rf userpatches.repo
 
       - name: GitHub cache
         id: cache-restore
@@ -132,6 +132,7 @@ jobs:
           skip-commit: 'false'
           skip-ci: 'false'
           version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
+          version-path: 'userpatches.repo'
           pre-release: "true"
           git-branch: 'main'
           tag-prefix: ''

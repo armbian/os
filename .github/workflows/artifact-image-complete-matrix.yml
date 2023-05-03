@@ -1331,6 +1331,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I1' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1368,31 +1373,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-2": # templated "build-images-chunk-2"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1403,6 +1467,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I2' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1440,31 +1509,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-3": # templated "build-images-chunk-3"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1475,6 +1603,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I3' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1512,31 +1645,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-4": # templated "build-images-chunk-4"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1547,6 +1739,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I4' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1584,31 +1781,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-5": # templated "build-images-chunk-5"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1619,6 +1875,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I5' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1656,31 +1917,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-6": # templated "build-images-chunk-6"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1691,6 +2011,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I6' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1728,31 +2053,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-7": # templated "build-images-chunk-7"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1763,6 +2147,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I7' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1800,31 +2189,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-8": # templated "build-images-chunk-8"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1835,6 +2283,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I8' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1872,31 +2325,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-9": # templated "build-images-chunk-9"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1907,6 +2419,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I9' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -1944,31 +2461,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-10": # templated "build-images-chunk-10"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -1979,6 +2555,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I10' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2016,31 +2597,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-11": # templated "build-images-chunk-11"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -2051,6 +2691,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I11' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2088,31 +2733,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-12": # templated "build-images-chunk-12"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -2123,6 +2827,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I12' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2160,31 +2869,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-13": # templated "build-images-chunk-13"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -2195,6 +2963,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I13' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2232,31 +3005,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-14": # templated "build-images-chunk-14"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -2267,6 +3099,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I14' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2304,31 +3141,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-15": # templated "build-images-chunk-15"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -2339,6 +3235,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I15' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2376,31 +3277,90 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-16": # templated "build-images-chunk-16"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 15
@@ -2411,6 +3371,11 @@ jobs:
     name: ${{ matrix.desc || 'Empty I16' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      # cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -2448,28 +3413,87 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      # @TODO lets upload to GHR release ourselves instead of this shit
-      - name: Release ${{ matrix.board }}
-        id: release1
-        continue-on-error: true
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
         with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
-      - name: Release ${{ matrix.board }} (retry if 1st failed)
-        id: release2
-        if: ${{ steps.release1.outcome == 'failure'}}
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # de2c0eb8 = v0.1.5; already with koplo199's node16 fixes
-        with:
-          tag_name: latest-images
-          files: |
-            output/images/*.xz
-
-      - name: Cleanup output images
-        if: always()
+      - name: Check API rate limits
         run: |
-          rm -rfv output/images userpatches/VERSION
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( PERCENT > 50 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 50%, sleping 5m"
+            sleep 5m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Import GPG key
+        env:
+          GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+        if: env.GPG_KEY1 != null
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: Sign
+        env:
+          GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+        if: env.GPG_PASSPHRASE1 != null
+        run: |
+
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+
+      - name: "Upload artefacts"
+        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
+        if: ${{ inputs.release != 'stable' }}
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
+          tag: "${{ inputs.version }}"
+          omitBody: true
+          replacesArtifacts: true
+          omitName: true
+          makeLatest: false
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifactErrorsFailBuild: false
+          token: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Deploy to server
+        timeout-minutes: 30
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # secure upload
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+       
+      - name: "Cleanup output images"
+        if: always()
+        run: rm -rfv output/images userpatches/VERSION
