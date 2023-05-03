@@ -8,14 +8,10 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
         image-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
 
-lists:
-
-  my-boards: &my-boards
-    # Actual Physical boards
-    - { BOARD: odroidn2, BRANCH: edge }
-
 targets:
   all:
+    enabled: no # DISABLED! for now
+    configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
     vars:
@@ -28,13 +24,14 @@ targets:
       not-eos: "yes"
 
   cli-debian:
+    enabled: yes
+    configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
-    build-image: "yes"
-    enabled: yes
+      build-image: "yes"
     vars:
       RELEASE: bookworm
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
-    items: # list of reference-lists
-      - *my-boards
+    items: # simple hardcoded list
+      - { BOARD: odroidn2, BRANCH: edge }
