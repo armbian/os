@@ -1,7 +1,7 @@
 
 # template file: 050.single_header.yaml
 
-name: "Build All Artifacts"
+name: "Build All Artifacts/Images"
 
 on:
   #schedule:
@@ -18,6 +18,11 @@ on:
         required: true
         options: [ 'yes', 'no' ]
         type: choice
+      extraParamsAllBuilds:
+        description: 'Extra params for all builds/jobs (prepare/artifact/image) (eg: DEBUG=yes)'
+        required: false
+        default: ''
+        type: string
 
 env:
 
@@ -31,10 +36,11 @@ env:
   USERPATCHES_DIR: "userpatches" # folder inside USERPATCHES_REPOSITORY
 
   # Armbian envs. Adjust to your needs.
-  # These are mostly for developers which have their own Docker images, not main Armbian.
-  #OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
-  #DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX: "ghcr.io/armbian/docker-armbian-build:armbian-" # Use Docker image in same repo
-  #DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX's images are up-to-date
+  # This makes builds faster, but only if the Docker images are up-to-date with all dependencies, Python, tools, etc. Otherwise it makes it... slower.
+  DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust that Docker images are up-to-date.
+
+  # Added to every build, even the prepare job.
+  EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds }}"
 
   # Added to every image build arguments.
   EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-rc0' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
@@ -53,7 +59,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -83,8 +89,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: GitHub cache
         id: cache-restore
@@ -109,7 +114,7 @@ jobs:
         id: prepare-matrix
         run: |
           # this sets outputs "artifact-matrix" #and "image-matrix"
-          bash ./compile.sh gha-matrix armbian-images DEBUG=yes CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=17 MATRIX_IMAGE_CHUNKS=16 CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+          bash ./compile.sh gha-matrix armbian-images CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=17 MATRIX_IMAGE_CHUNKS=16 CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: chown cache memoize/oci back to normal user
         run: |
@@ -323,7 +328,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -349,13 +354,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-2": # templated "build-artifacts-chunk-2"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-2 == 'yes' }}  # <-- HERE: Chunk number.
@@ -381,7 +385,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -407,13 +411,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-3": # templated "build-artifacts-chunk-3"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-3 == 'yes' }}  # <-- HERE: Chunk number.
@@ -439,7 +442,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -465,13 +468,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-4": # templated "build-artifacts-chunk-4"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-4 == 'yes' }}  # <-- HERE: Chunk number.
@@ -497,7 +499,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -523,13 +525,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-5": # templated "build-artifacts-chunk-5"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-5 == 'yes' }}  # <-- HERE: Chunk number.
@@ -555,7 +556,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -581,13 +582,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-6": # templated "build-artifacts-chunk-6"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-6 == 'yes' }}  # <-- HERE: Chunk number.
@@ -613,7 +613,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -639,13 +639,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-7": # templated "build-artifacts-chunk-7"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-7 == 'yes' }}  # <-- HERE: Chunk number.
@@ -671,7 +670,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -697,13 +696,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-8": # templated "build-artifacts-chunk-8"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-8 == 'yes' }}  # <-- HERE: Chunk number.
@@ -729,7 +727,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -755,13 +753,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-9": # templated "build-artifacts-chunk-9"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-9 == 'yes' }}  # <-- HERE: Chunk number.
@@ -787,7 +784,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -813,13 +810,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-10": # templated "build-artifacts-chunk-10"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-10 == 'yes' }}  # <-- HERE: Chunk number.
@@ -845,7 +841,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -871,13 +867,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-11": # templated "build-artifacts-chunk-11"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-11 == 'yes' }}  # <-- HERE: Chunk number.
@@ -903,7 +898,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -929,13 +924,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-12": # templated "build-artifacts-chunk-12"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-12 == 'yes' }}  # <-- HERE: Chunk number.
@@ -961,7 +955,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -987,13 +981,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-13": # templated "build-artifacts-chunk-13"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-13 == 'yes' }}  # <-- HERE: Chunk number.
@@ -1019,7 +1012,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -1045,13 +1038,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-14": # templated "build-artifacts-chunk-14"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-14 == 'yes' }}  # <-- HERE: Chunk number.
@@ -1077,7 +1069,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -1103,13 +1095,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-15": # templated "build-artifacts-chunk-15"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-15 == 'yes' }}  # <-- HERE: Chunk number.
@@ -1135,7 +1126,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -1161,13 +1152,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-16": # templated "build-artifacts-chunk-16"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-16 == 'yes' }}  # <-- HERE: Chunk number.
@@ -1193,7 +1183,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -1219,13 +1209,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
   "build-artifacts-chunk-17": # templated "build-artifacts-chunk-17"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-17 == 'yes' }}  # <-- HERE: Chunk number.
@@ -1251,7 +1240,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
       
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
@@ -1277,13 +1266,12 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
 
 # template file: 650.per-chunk-images_job.yaml
@@ -1301,7 +1289,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1326,8 +1314,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1336,7 +1323,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1374,7 +1361,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1399,8 +1386,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1409,7 +1395,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1447,7 +1433,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1472,8 +1458,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1482,7 +1467,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1520,7 +1505,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1545,8 +1530,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1555,7 +1539,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1593,7 +1577,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1618,8 +1602,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1628,7 +1611,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1666,7 +1649,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1691,8 +1674,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1701,7 +1683,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1739,7 +1721,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1764,8 +1746,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1774,7 +1755,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1812,7 +1793,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1837,8 +1818,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1847,7 +1827,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1885,7 +1865,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1910,8 +1890,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1920,7 +1899,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -1958,7 +1937,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1983,8 +1962,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -1993,7 +1971,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -2031,7 +2009,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -2056,8 +2034,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -2066,7 +2043,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -2104,7 +2081,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -2129,8 +2106,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -2139,7 +2115,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -2177,7 +2153,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -2202,8 +2178,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -2212,7 +2187,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -2250,7 +2225,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -2275,8 +2250,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -2285,7 +2259,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -2323,7 +2297,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -2348,8 +2322,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -2358,7 +2331,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
@@ -2396,7 +2369,7 @@ jobs:
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rfv userpatches.repo
+        run: rm -rf userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -2421,8 +2394,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rfv userpatches.repo
-          ls -lahR userpatches # debug
+          rm -rf userpatches.repo
 
       - name: Cleanup leftover output images
         run: |
@@ -2431,7 +2403,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} ${{env.EXTRA_PARAMS_IMAGE}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       # @TODO lets upload to GHR release ourselves instead of this shit
       - name: Release ${{ matrix.board }}
