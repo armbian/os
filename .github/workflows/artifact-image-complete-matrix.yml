@@ -274,6 +274,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A1' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -304,6 +308,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A2' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -334,6 +342,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A3' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -364,6 +376,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A4' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -394,6 +410,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A5' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -424,6 +444,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A6' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -454,6 +478,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A7' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -484,6 +512,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A8' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -514,6 +546,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A9' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -544,6 +580,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A10' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -574,6 +614,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A11' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -604,6 +648,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A12' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -634,6 +682,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A13' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -664,6 +716,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A14' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -694,6 +750,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A15' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -724,6 +784,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A16' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -754,6 +818,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty A17' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
         uses: docker/login-action@v2

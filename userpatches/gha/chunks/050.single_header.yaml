@@ -37,6 +37,10 @@ jobs:
     if: ${{ github.repository_owner == '[[org]]' }}
     runs-on: [ "self-hosted", "Linux", 'fast' ]
     steps:
+
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
