@@ -33,23 +33,20 @@ targets:
     items-from-inventory:
       not-eos: "yes"
 
-  cli-debian:
+  minimal-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: boolseye
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items: # simple hardcoded list
-      - { BOARD: odroidn2, BRANCH: edge }
-      - { BOARD: uefi-x86, BRANCH: edge }
-      - { BOARD: uefi-riscv64, BRANCH: edge }
-      - { BOARD: uefi-arm64, BRANCH: edge }
+      - *supported
 
-  minimal-ubuntu:
+  minimal-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -61,3 +58,4 @@ targets:
       BUILD_DESKTOP: "no"
     items: # list of reference-lists
       - *supported
+      - { BOARD: rpi4b, BRANCH: current }
