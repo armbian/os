@@ -31,7 +31,8 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items: # simple hardcoded list
       - { BOARD: odroidn2, BRANCH: edge }
+      - { BOARD: uefi-x86, BRANCH: edge }
