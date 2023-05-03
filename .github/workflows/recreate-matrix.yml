@@ -43,6 +43,11 @@ jobs:
         fetch-depth: 0
         path: os
 
+    - name: "Rsync userpatches"
+      run: |
+
+        rsync -av os/userpatches/. build/userpatches/
+
     - name: Create local changes
       run: |
 
