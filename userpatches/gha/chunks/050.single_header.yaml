@@ -39,37 +39,23 @@ env:
   # Added to every build, even the prepare job.
   EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds }}"
 
+  # To use GitHub CLI in a GitHub Actions workflow
+  GH_TOKEN: ${{ github.token }}
+
   # Added to every image build arguments.
   EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-rc0' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 jobs:
 
-  matrix_prep:
-    name: "JSON matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
-    if: ${{ github.repository_owner == '[[org]]' }}
+  version_prep:
+    name: "Bump version"
     runs-on: [ "self-hosted", "Linux", 'fast' ]
     steps:
 
+      # Cleaning self hosted runners
       - name: Runner clean
         uses: armbian/actions/runner-clean@main
 
-      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
-        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rf userpatches.repo
-
-      - name: Checkout build repo
-        uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
-        with:
-          repository: ${{ env.BUILD_REPOSITORY }}
-          ref: ${{ env.BUILD_REF }}
-          fetch-depth: 1
-          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
-
-      - name: "grab the sha1 of the latest commit of the build repo ${{ env.BUILD_REPOSITORY }}#${{ env.BUILD_REF }}"
-        id: latest-commit
-        run: echo "sha1=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
-      
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v3
@@ -79,45 +65,9 @@ jobs:
           ref: ${{ env.USERPATCHES_REF }}
           fetch-depth: 0
           clean: false # true is default.
-          path: userpatches.repo
 
-      - name: "Put userpatches in place, and remove userpatches repo"
-        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: |
-          mkdir -pv userpatches
-          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          #rm -rf userpatches.repo
-
-      - name: GitHub cache
-        id: cache-restore
-        uses: actions/cache@v3
-        with:
-          path: |
-            cache/memoize
-            cache/oci/positive
-          key: ${{ runner.os }}-matrix-cache-${{ github.sha }}-${{ steps.latest-commit.outputs.sha1 }}"
-          restore-keys: |
-            ${{ runner.os }}-matrix-cache-
-
-      # Login to ghcr.io, we're gonna do a lot of OCI lookups.
-      - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: "[[ghcr_user]]" # GitHub username or org
-          password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
-
-      - name: Prepare Info JSON and Matrices
-        id: prepare-matrix
-        run: |
-          # this sets outputs "artifact-matrix" #and "image-matrix"
-          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
-
-      - name: chown cache memoize/oci back to normal user
-        run: |
-          sudo chown -R $USER:$USER cache/memoize cache/oci/positive
-
-      - name: Generate changelog
+      # bump version automatically
+      - name: Bump version
         if: ${{ github.event.inputs.version == '' }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.18.0
@@ -132,7 +82,6 @@ jobs:
           skip-commit: 'false'
           skip-ci: 'false'
           version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
-          version-path: 'userpatches.repo'
           pre-release: "true"
           git-branch: 'main'
           tag-prefix: ''
@@ -165,10 +114,85 @@ jobs:
           tag: ${{ steps.changelog.outputs.tag }}
           name: "${{ steps.changelog.outputs.tag }}"
           bodyFile: "body.html"
-          prerelease: "false"
+          prerelease: "true"
           allowUpdates: true
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  matrix_prep:
+    name: "JSON matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
+    if: ${{ github.repository_owner == '[[org]]' }}
+    needs: [ version_prep ]
+    runs-on: [ "self-hosted", "Linux", 'fast' ]
+    steps:
+
+      # Cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
+      # clone the build system repo (`armbian/build`)
+      - name: Checkout build repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ env.BUILD_REF }}
+          fetch-depth: 1
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+          path: build
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 0
+          clean: false # true is default.
+          path: userpatches
+
+      - name: "grab the sha1 of the latest commit of the build repo ${{ env.BUILD_REPOSITORY }}#${{ env.BUILD_REF }}"
+        id: latest-commit
+        run: |
+          cd build
+          echo "sha1=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          cd ..
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+
+          mkdir -pv build/userpatches
+          rsync -av userpatches/${{env.USERPATCHES_DIR}}/. build/userpatches/
+
+      - name: GitHub cache
+        id: cache-restore
+        uses: actions/cache@v3
+        with:
+          path: |
+            cache/memoize
+            cache/oci/positive
+          key: ${{ runner.os }}-matrix-cache-${{ github.sha }}-${{ steps.latest-commit.outputs.sha1 }}"
+          restore-keys: |
+            ${{ runner.os }}-matrix-cache-
+
+      # Login to ghcr.io, we're gonna do a lot of OCI lookups.
+      - name: Docker Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "[[ghcr_user]]" # GitHub username or org
+          password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
+
+      - name: Prepare Info JSON and Matrices
+        id: prepare-matrix
+        run: |
+          # this sets outputs "artifact-matrix" #and "image-matrix"
+          cd build
+          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+
+      - name: chown cache memoize/oci back to normal user
+        run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
 
     outputs:
 

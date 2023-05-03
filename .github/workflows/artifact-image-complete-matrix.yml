@@ -80,7 +80,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
