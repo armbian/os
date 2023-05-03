@@ -6,8 +6,10 @@ common-gha-configs:
         kernel: [ "self-hosted", "Linux", "alfa" ]
         uboot: [ "self-hosted", "Linux", "fast" ]
       by-name-and-arch:
+        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
+        image-armhf: [ "self-hosted", "Linux", 'fast', "ARM64" ]
         image-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
         image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
