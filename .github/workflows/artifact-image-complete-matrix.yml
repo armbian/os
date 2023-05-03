@@ -4,8 +4,8 @@
 name: "Build All Artifacts"
 
 on:
-  schedule:
-    - cron: '0 1 * * *' # Scheduled runs every day at 2am UTC
+  #schedule:
+  #  - cron: '0 1 * * *' # Scheduled runs every day at 2am UTC
   workflow_dispatch:
     inputs:
       skipImages:
@@ -21,17 +21,23 @@ on:
 
 env:
 
-  # For easier reuse across the multiple chunks
+  # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
   BUILD_REF: "main" # branch or tag or sha1
 
+  # For easier reuse across the multiple chunks ('armbian/os' repo)
+  USERPATCHES_REPOSITORY: "armbian/os"
+  USERPATCHES_REF: "main" # branch or tag or sha1
+  USERPATCHES_DIR: "userpatches" # folder inside USERPATCHES_REPOSITORY
+
   # Armbian envs. Adjust to your needs.
-  OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
-  DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX: "ghcr.io/armbian/docker-armbian-build:armbian-" # Use Docker image in same repo
-  DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX's images are up-to-date
+  # These are mostly for developers which have their own Docker images, not main Armbian.
+  #OCI_TARGET_BASE: "ghcr.io/${{ github.repository }}/" # This is picked up by the Docker launcher automatically. It does _not_ override the targets.yaml during info resolution.
+  #DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX: "ghcr.io/armbian/docker-armbian-build:armbian-" # Use Docker image in same repo
+  #DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust DOCKER_ARMBIAN_BASE_COORDINATE_PREFIX's images are up-to-date
 
   # Added to every image build arguments.
-  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-${{ github.repository_owner }}' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
+  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-rc0' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 jobs:
 
@@ -44,6 +50,11 @@ jobs:
       - name: Runner clean
         uses: armbian/actions/runner-clean@main
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -52,9 +63,28 @@ jobs:
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      - name: grab the sha1 of the latest commit
+      - name: "grab the sha1 of the latest commit of the build repo ${{ env.BUILD_REPOSITORY }}#${{ env.BUILD_REF }}"
         id: latest-commit
         run: echo "sha1=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+      
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: GitHub cache
         id: cache-restore
@@ -79,7 +109,7 @@ jobs:
         id: prepare-matrix
         run: |
           # this sets outputs "artifact-matrix" #and "image-matrix"
-          bash ./compile.sh gha-matrix  CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=17 MATRIX_IMAGE_CHUNKS=16 CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} # DEBUG=yes IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+          bash ./compile.sh gha-matrix armbian-images CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=17 MATRIX_IMAGE_CHUNKS=16 CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} # DEBUG=yes IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: chown cache memoize/oci back to normal user
         run: |
@@ -290,6 +320,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -297,6 +332,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -324,6 +378,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -331,6 +390,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -358,6 +436,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -365,6 +448,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -392,6 +494,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -399,6 +506,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -426,6 +552,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -433,6 +564,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -460,6 +610,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -467,6 +622,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -494,6 +668,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -501,6 +680,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -528,6 +726,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -535,6 +738,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -562,6 +784,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -569,6 +796,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -596,6 +842,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -603,6 +854,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -630,6 +900,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -637,6 +912,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -664,6 +958,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -671,6 +970,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -698,6 +1016,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -705,6 +1028,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -732,6 +1074,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -739,6 +1086,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -766,6 +1132,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -773,6 +1144,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -800,6 +1190,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -807,6 +1202,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -834,6 +1248,11 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
 
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
+      
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
         with:
@@ -841,6 +1260,25 @@ jobs:
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 1
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Build  ${{matrix.desc}}
         id: build
@@ -860,6 +1298,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I1' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -867,6 +1309,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -910,6 +1371,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I2' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -917,6 +1382,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -960,6 +1444,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I3' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -967,6 +1455,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1010,6 +1517,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I4' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1017,6 +1528,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1060,6 +1590,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I5' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1067,6 +1601,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1110,6 +1663,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I6' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1117,6 +1674,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1160,6 +1736,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I7' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1167,6 +1747,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1210,6 +1809,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I8' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1217,6 +1820,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1260,6 +1882,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I9' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1267,6 +1893,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1310,6 +1955,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I10' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1317,6 +1966,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1360,6 +2028,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I11' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1367,6 +2039,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1410,6 +2101,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I12' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1417,6 +2112,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1460,6 +2174,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I13' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1467,6 +2185,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1510,6 +2247,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I14' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1517,6 +2258,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1560,6 +2320,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I15' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1567,6 +2331,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
@@ -1610,6 +2393,10 @@ jobs:
     name: ${{ matrix.desc || 'Empty I16' }} # <-- HERE: Chunk number.
     runs-on: ${{ matrix.runs_on }}
     steps:
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rfv userpatches.repo
 
       - name: Checkout build repo
         uses: actions/checkout@v3
@@ -1617,6 +2404,25 @@ jobs:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rfv userpatches.repo
+          ls -lahR userpatches # debug
 
       - name: Cleanup leftover output images
         run: |
