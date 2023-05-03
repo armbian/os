@@ -38,7 +38,7 @@ jobs:
   matrix_prep:
     name: "JSON matrix: 17/16 :: 17 artifact chunks, 16 image chunks"
     if: ${{ github.repository_owner == 'armbian' }}
-    runs-on: [ "ubuntu-latest" ]
+    runs-on: [ "self-hosted", "Linux", 'fast' ]
     steps:
       - name: Checkout build repo
         uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
