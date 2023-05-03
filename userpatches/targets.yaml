@@ -118,7 +118,7 @@ targets:
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers chat desktop_tools editors email internet languages multimedia office programming remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers"
     items: # list of reference-lists
       - *supported
       - { BOARD: rpi4b, BRANCH: current }
