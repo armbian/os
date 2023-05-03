@@ -1,0 +1,29 @@
+lists:
+
+  my-boards: &my-boards
+    # Actual Physical boards
+    - { BOARD: odroidn2, BRANCH: edge }
+    - { BOARD: odroidhc4, BRANCH: edge }
+
+targets:
+  all:
+    pipeline:
+      build-image: "yes"
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT: "xfce"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      RELEASE: "jammy"
+    items-from-inventory:
+      not-eos: "yes"
+
+  cli-debian:
+    build-image: "yes"
+    enabled: yes
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items: # list of reference-lists
+      - *my-boards
