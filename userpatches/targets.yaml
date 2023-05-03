@@ -14,9 +14,75 @@ common-gha-configs:
 lists:
 
   supported: &supported
+    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: bananapir2pro, BRANCH: current }
+    - { BOARD: firefly-rk3399, BRANCH: current }
+    - { BOARD: jetson-nano, BRANCH: current }
+    - { BOARD: khadas-vim1, BRANCH: current }
+    - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current }
+    - { BOARD: khadas-vim3l, BRANCH: current }
+    - { BOARD: lafrite, BRANCH: current }
+    - { BOARD: lepotato, BRANCH: current }
+    - { BOARD: nanopct4, BRANCH: current }
+    - { BOARD: nanopim4, BRANCH: current }
+    - { BOARD: odroidc2, BRANCH: current }
+    - { BOARD: odroidc4, BRANCH: current }
+    - { BOARD: odroidhc4, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: orangepi4, BRANCH: current }
+    - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi5, BRANCH: legacy }
+    - { BOARD: orangepiplus2e, BRANCH: current }
+    - { BOARD: pine64, BRANCH: current }
+    - { BOARD: pine64so, BRANCH: current }
+    - { BOARD: pinebook-pro, BRANCH: current }
+    - { BOARD: radxa-zero, BRANCH: current }
+    - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-5b, BRANCH: legacy }
+    - { BOARD: rock64, BRANCH: current }
+    - { BOARD: rockpi-4a, BRANCH: current }
+    - { BOARD: rockpi-4b, BRANCH: current }
+    - { BOARD: rockpi-4c, BRANCH: current }
+    - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: station-m1, BRANCH: current }
+    - { BOARD: station-m2, BRANCH: current }
+    - { BOARD: station-m3, BRANCH: legacy }
+    - { BOARD: station-p1, BRANCH: current }
+    - { BOARD: station-p2, BRANCH: current }
+    - { BOARD: tinkerboard, BRANCH: current }
+    - { BOARD: tritium-h3, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: current }
+
+  headless: &headless
+    - { BOARD: clearfogbase, BRANCH: current }
+    - { BOARD: clearfogpro, BRANCH: current }
+    - { BOARD: cubieboard, BRANCH: current }
+    - { BOARD: espressobin, BRANCH: current }
+    - { BOARD: helios4, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopineo2black, BRANCH: current }
+    - { BOARD: nanopineo2, BRANCH: current }
+    - { BOARD: nanopineo3, BRANCH: current }
+    - { BOARD: nanopineo, BRANCH: current }
+    - { BOARD: nanopineoplus2, BRANCH: current }
+    - { BOARD: nanopi-r1, BRANCH: current }
+    - { BOARD: nanopi-r1s-h5, BRANCH: current }
+    - { BOARD: nanopi-r2c, BRANCH: current }
+    - { BOARD: nanopi-r2s, BRANCH: current }
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: orangepi-r1, BRANCH: current }
+    - { BOARD: orangepi-r1plus, BRANCH: current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
+    - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: orangepizero, BRANCH: current }
+    - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
 
 targets:
   all:
@@ -43,9 +109,9 @@ targets:
       RELEASE: bookworm
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
-#      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
-    items: # simple hardcoded list
+    items:
       - *supported
+      - *headless
 
   full-cli-stable-debian:
     enabled: yes
@@ -57,9 +123,9 @@ targets:
       RELEASE: bookworm
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
-#      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
-    items: # simple hardcoded list
+    items:
       - *supported
+      - *headless
 
   minimal-cli-stable-ubuntu:
     enabled: yes
@@ -71,8 +137,9 @@ targets:
       RELEASE: jammy
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
-    items: # list of reference-lists
+    items:
       - *supported
+      - *headless
       - { BOARD: rpi4b, BRANCH: current }
 
   full-cli-stable-ubuntu:
@@ -85,8 +152,9 @@ targets:
       RELEASE: jammy
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
-    items: # list of reference-lists
+    items:
       - *supported
+      - *headless
       - { BOARD: rpi4b, BRANCH: current }
 
   minimal-desktop-stable-ubuntu:
@@ -102,7 +170,7 @@ targets:
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers"
-    items: # list of reference-lists
+    items:
       - *supported
       - { BOARD: rpi4b, BRANCH: current }
 
@@ -119,6 +187,6 @@ targets:
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers"
-    items: # list of reference-lists
+    items:
       - *supported
       - { BOARD: rpi4b, BRANCH: current }
