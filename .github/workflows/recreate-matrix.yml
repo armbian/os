@@ -4,6 +4,8 @@
 name: Recreate Matrix
 on:
   push:
+    branches:
+      - 'main'
     paths:
       - "userpatches/*"
       - "userpatches/gha/**"
