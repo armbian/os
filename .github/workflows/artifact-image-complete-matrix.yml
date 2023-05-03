@@ -89,7 +89,7 @@ jobs:
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rf userpatches.repo
+          #rm -rf userpatches.repo
 
       - name: GitHub cache
         id: cache-restore
@@ -135,6 +135,7 @@ jobs:
           skip-commit: 'false'
           skip-ci: 'false'
           version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
+          version-path: 'userpatches.repo'
           pre-release: "true"
           git-branch: 'main'
           tag-prefix: ''
@@ -1419,7 +1420,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -1555,7 +1556,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -1691,7 +1692,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -1827,7 +1828,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -1963,7 +1964,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2099,7 +2100,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2235,7 +2236,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2371,7 +2372,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2507,7 +2508,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2643,7 +2644,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2779,7 +2780,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2915,7 +2916,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3051,7 +3052,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3187,7 +3188,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3323,7 +3324,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3459,7 +3460,7 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes build/output/images/${{env.BOARD}}/archive/*.img.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/${{env.BOARD}}/archive/*.img.xz
 
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
