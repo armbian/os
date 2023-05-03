@@ -11,6 +11,13 @@ common-gha-configs:
         image-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
         image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
+lists:
+
+  supported: &supported
+    - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: khadas-vim3, BRANCH: current }
+    - { BOARD: orangepi5, BRANCH: legacy }
+
 targets:
   all:
     enabled: no # DISABLED! for now
@@ -34,10 +41,23 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "yes"
+      BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items: # simple hardcoded list
       - { BOARD: odroidn2, BRANCH: edge }
       - { BOARD: uefi-x86, BRANCH: edge }
       - { BOARD: uefi-riscv64, BRANCH: edge }
       - { BOARD: uefi-arm64, BRANCH: edge }
+
+  minimal-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items: # list of reference-lists
+      - *supported
