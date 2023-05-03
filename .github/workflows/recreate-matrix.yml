@@ -52,17 +52,19 @@ jobs:
 
         rsync -av os/userpatches/. build/userpatches/
 
-    - name: Create local changes
+    - name: "Generate Action Script"
       run: |
 
         cd build
         bash ./compile.sh gha-template
         cd ..
-        cp build/output/info/artifact-image-complete-matrix.yml os/.github/workflows/
         cd os
-        git add .github/workflows/artifact-image-complete-matrix.yml
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
+        git pull --rebase
+        # copy resoulted action
+        cp ../build/output/info/artifact-image-complete-matrix.yml .github/workflows/
+        git add .github/workflows/artifact-image-complete-matrix.yml
         git commit --allow-empty -m "Update Build List" -a
 
     - name: Push changes
