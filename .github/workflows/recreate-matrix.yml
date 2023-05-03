@@ -65,7 +65,7 @@ jobs:
         # copy resoulted action
         cp ../build/output/info/artifact-image-complete-matrix.yml .github/workflows/
         git add .github/workflows/artifact-image-complete-matrix.yml
-        git commit --allow-empty -m "Update Build List" -a
+        git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
 
     - name: Push changes
       uses: ad-m/github-push-action@master
