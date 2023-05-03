@@ -33,20 +33,35 @@ targets:
     items-from-inventory:
       not-eos: "yes"
 
-  minimal-stable-debian:
+  minimal-cli-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: boolseye
-      BUILD_MINIMAL: "no"
+      RELEASE: bookworm
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
+      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
     items: # simple hardcoded list
       - *supported
 
-  minimal-stable-ubuntu:
+  full-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      DOCKER_ARMBIAN_BASE_IMAGE: "debian:bookworm"
+    items: # simple hardcoded list
+      - *supported
+
+  minimal-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -56,6 +71,54 @@ targets:
       RELEASE: jammy
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
+    items: # list of reference-lists
+      - *supported
+      - { BOARD: rpi4b, BRANCH: current }
+
+  full-cli-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items: # list of reference-lists
+      - *supported
+      - { BOARD: rpi4b, BRANCH: current }
+
+  minimal-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers"
+    items: # list of reference-lists
+      - *supported
+      - { BOARD: rpi4b, BRANCH: current }
+
+  full-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers chat desktop_tools editors email internet languages multimedia office programming remote_desktop"
     items: # list of reference-lists
       - *supported
       - { BOARD: rpi4b, BRANCH: current }
