@@ -138,7 +138,7 @@ jobs:
       version: ${{ steps.releases.outputs.version }}
 
   matrix_prep:
-    name: "JSON ${{ needs.version_prep.outputs.version }} matrix: 17/16 :: 17 artifact chunks, 16 image chunks"
+    name: "JSON matrix: 17/16 :: 17 artifact chunks, 16 image chunks"
     if: ${{ github.repository_owner == 'armbian' }}
     needs: [ version_prep ]
     runs-on: [ "self-hosted", "Linux", 'fast' ]
@@ -3566,7 +3566,7 @@ jobs:
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ github.repository_owner == 'Armbian' && needs.matrix_prep.outputs.version == '' }}
+        if: ${{ github.repository_owner == 'Armbian' && needs.matrix_prep.outputs.version != '' }}
         with:
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
