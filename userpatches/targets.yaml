@@ -11,7 +11,7 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-        image-armhf: [ "self-hosted", "Linux", 'fast', "ARM64" ]
+        image-armhf: [ "self-hosted", "Linux", 'fast' ]
         image-arm64: [ "self-hosted", "Linux", 'fast' ]
         image-amd64: [ "ubuntu-latest" ]
         image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
@@ -39,7 +39,7 @@ lists:
     - { BOARD: orangepi5, BRANCH: legacy }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: edge }
     - { BOARD: rock-5b, BRANCH: legacy }
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current }
@@ -107,7 +107,7 @@ targets:
       not-eos: "yes"
 
   minimal-cli-stable-debian:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -122,7 +122,7 @@ targets:
       - *headless
 
   full-cli-stable-debian:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -147,9 +147,9 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-#      - *full-desktop
-#      - *light-desktop
-#      - *headless
+      - *full-desktop
+      - *light-desktop
+      - *headless
       - { BOARD: rpi4b, BRANCH: current }
 
   full-cli-stable-ubuntu:
@@ -187,7 +187,7 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
 
   full-desktop-stable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
