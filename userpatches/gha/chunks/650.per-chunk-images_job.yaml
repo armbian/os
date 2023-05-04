@@ -132,7 +132,7 @@ jobs: # <TEMPLATE-IGNORE>
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ /nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
