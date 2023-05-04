@@ -10,9 +10,11 @@ common-gha-configs:
         rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
+        rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
         image-armhf: [ "self-hosted", "Linux", 'fast', "ARM64" ]
-        image-arm64: [ "self-hosted", "Linux", 'fast', "ARM64" ]
-        image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
+        image-arm64: [ "self-hosted", "Linux", 'fast' ]
+        image-amd64: [ "ubuntu-latest" ]
+        image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
 lists:
 
@@ -167,7 +169,7 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
 
   minimal-desktop-stable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -198,5 +200,5 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-#      - *full-desktop
+      - *full-desktop
       - { BOARD: rpi4b, BRANCH: current }
