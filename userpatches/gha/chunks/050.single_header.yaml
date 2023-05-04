@@ -43,7 +43,7 @@ env:
   GH_TOKEN: ${{ github.token }}
 
   # Added to every image build arguments.
-  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-rc0' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
+  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 jobs:
 
