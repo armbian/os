@@ -27,7 +27,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ github.repository_owner == 'Armbian' && needs.matrix_prep.outputs.version == '' }}
+        if: ${{ github.repository_owner == 'Armbian' && needs.matrix_prep.outputs.version != '' }}
         with:
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
