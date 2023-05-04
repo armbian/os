@@ -105,7 +105,7 @@ targets:
       not-eos: "yes"
 
   minimal-cli-stable-debian:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -135,7 +135,7 @@ targets:
       - *headless
 
   minimal-cli-stable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -145,9 +145,9 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *light-desktop
-      - *headless
+#      - *full-desktop
+#      - *light-desktop
+#      - *headless
       - { BOARD: rpi4b, BRANCH: current }
 
   full-cli-stable-ubuntu:
