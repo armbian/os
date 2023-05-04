@@ -1456,7 +1456,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -1473,7 +1473,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -1592,7 +1592,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -1609,7 +1609,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -1728,7 +1728,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -1745,7 +1745,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -1864,7 +1864,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -1881,7 +1881,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2000,7 +2000,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2017,7 +2017,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2136,7 +2136,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2153,7 +2153,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2272,7 +2272,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2289,7 +2289,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2408,7 +2408,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2425,7 +2425,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2544,7 +2544,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2561,7 +2561,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2680,7 +2680,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2697,7 +2697,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2816,7 +2816,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2833,7 +2833,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -2952,7 +2952,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2969,7 +2969,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -3088,7 +3088,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3105,7 +3105,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -3224,7 +3224,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3241,7 +3241,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -3360,7 +3360,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3377,7 +3377,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
@@ -3496,7 +3496,7 @@ jobs:
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_*.*"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3513,7 +3513,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && inputs.deploy == 'true'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
           # install dependencies
