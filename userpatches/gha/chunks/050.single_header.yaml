@@ -20,6 +20,10 @@ on:
         required: false
         default: ''
         type: string
+      versionOverride:
+        description: 'Version override'
+        required: false
+        default: ''
 
 env:
 
@@ -52,11 +56,26 @@ jobs:
     runs-on: [ "self-hosted", "Linux", 'fast' ]
     steps:
 
+      # Cleaning releases
+      - name: "Keep only 7 releases"
+        uses: Vucko130/delete-older-releases@v0.2.2
+        with:
+          keep_latest: 7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Cleaning logs
+      - name: "Keep only 7 days of workflow logs"
+        uses: igorjs/gh-actions-clean-workflow@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          days_old: 7
+
       # Cleaning self hosted runners
       - name: Runner clean
         uses: armbian/actions/runner-clean@main
 
-      # clone the userpatches repo (`armbian/os`)
+      # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v3
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -66,9 +85,9 @@ jobs:
           fetch-depth: 0
           clean: false # true is default.
 
-      # bump version automatically
+      # Bump version automatically
       - name: Bump version
-        if: ${{ github.event.inputs.version == '' }}
+        if: ${{ github.event.inputs.versionOverride == '' }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
@@ -87,7 +106,7 @@ jobs:
           tag-prefix: ''
           pre-release-identifier: 'trunk'
 
-      - name: "Generate body file for ${{ steps.changelog.outputs.version }}"
+      - name: "Generate body file"
         run: |
             echo "
               <p align='center'>
@@ -109,7 +128,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.version == '' }}
+        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.versionOverride == '' }}
         with:
           tag: ${{ steps.changelog.outputs.tag }}
           name: "${{ steps.changelog.outputs.tag }}"
@@ -119,10 +138,16 @@ jobs:
           removeArtifacts: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Save
+        id: releases
+        run: |
+
+          echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.versionOverride }}" >> $GITHUB_OUTPUT
+
     outputs:
 
       # not related to matrix
-      version: ${{ steps.changelog.outputs.version }}
+      version: ${{ steps.releases.outputs.version }}
 
   matrix_prep:
     name: "JSON ${{ needs.version_prep.outputs.version }} matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
