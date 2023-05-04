@@ -1,0 +1,14 @@
+on: # <TEMPLATE-IGNORE>
+  workflow_dispatch:  # <TEMPLATE-IGNORE>
+jobs: # <TEMPLATE-IGNORE>
+  # ------ aggregate all artifact chunks into a single dependency -------
+
+  closing:
+    name: "Footer"
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
+    steps:
+      - name: fake step
+        run: echo "Version: ${{ needs.matrix_prep.outputs.version }}"
+
