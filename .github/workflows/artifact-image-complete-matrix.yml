@@ -128,7 +128,7 @@ jobs:
       version: ${{ steps.changelog.outputs.version }}
 
   matrix_prep:
-    name: "JSON matrix: 17/16 :: 17 artifact chunks, 16 image chunks"
+    name: "JSON ${{ needs.version_prep.outputs.version }} matrix: 17/16 :: 17 artifact chunks, 16 image chunks"
     if: ${{ github.repository_owner == 'armbian' }}
     needs: [ version_prep ]
     runs-on: [ "self-hosted", "Linux", 'fast' ]
