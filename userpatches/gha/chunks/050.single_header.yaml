@@ -125,7 +125,7 @@ jobs:
       version: ${{ steps.changelog.outputs.version }}
 
   matrix_prep:
-    name: "JSON matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
+    name: "JSON ${{ needs.version_prep.outputs.version }} matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
     if: ${{ github.repository_owner == '[[org]]' }}
     needs: [ version_prep ]
     runs-on: [ "self-hosted", "Linux", 'fast' ]
