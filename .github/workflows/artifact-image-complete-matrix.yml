@@ -1406,9 +1406,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -1491,9 +1491,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -1542,9 +1545,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -1627,9 +1630,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -1678,9 +1684,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -1763,9 +1769,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -1814,9 +1823,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -1899,9 +1908,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -1950,9 +1962,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2035,9 +2047,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2086,9 +2101,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2171,9 +2186,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2222,9 +2240,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2307,9 +2325,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2358,9 +2379,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2443,9 +2464,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2494,9 +2518,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2579,9 +2603,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2630,9 +2657,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2715,9 +2742,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2766,9 +2796,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2851,9 +2881,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -2902,9 +2935,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -2987,9 +3020,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -3038,9 +3074,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -3123,9 +3159,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -3174,9 +3213,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -3259,9 +3298,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -3310,9 +3352,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -3395,9 +3437,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
@@ -3446,9 +3491,9 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output images
+      - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION
+          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -3531,9 +3576,12 @@ jobs:
              sudo apt-get -y -qq install lftp
           fi
 
-          # secure upload
+          # upload image
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-       
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
