@@ -46,7 +46,7 @@ env:
   GH_TOKEN: ${{ github.token }}
 
   # Added to every image build arguments.
-  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' 'IMAGE_VERSION=20230500-rc0' COMPRESS_OUTPUTIMAGE=xz SHOW_DEBIAN=yes SHARE_LOG=yes "
+  EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 jobs:
 
@@ -1403,7 +1403,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -1482,7 +1482,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -1539,7 +1539,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -1618,7 +1618,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -1675,7 +1675,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -1754,7 +1754,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -1811,7 +1811,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -1890,7 +1890,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -1947,7 +1947,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2026,7 +2026,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2083,7 +2083,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2162,7 +2162,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2219,7 +2219,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2298,7 +2298,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2355,7 +2355,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2434,7 +2434,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2491,7 +2491,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2570,7 +2570,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2627,7 +2627,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2706,7 +2706,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2763,7 +2763,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2842,7 +2842,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -2899,7 +2899,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -2978,7 +2978,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -3035,7 +3035,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -3114,7 +3114,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -3171,7 +3171,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -3250,7 +3250,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -3307,7 +3307,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -3386,7 +3386,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
@@ -3443,7 +3443,7 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Install SSH key for storage
         env:
@@ -3522,7 +3522,7 @@ jobs:
           fi
 
           # secure upload
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms build/output/images/ ${{ inputs.release }}/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
        
       - name: "Cleanup output images"
         if: always()
