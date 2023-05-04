@@ -56,21 +56,6 @@ jobs:
     runs-on: [ "self-hosted", "Linux", 'fast' ]
     steps:
 
-      # Cleaning releases
-      - name: "Keep only 7 releases"
-        uses: Vucko130/delete-older-releases@v0.2.2
-        with:
-          keep_latest: 7
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Cleaning logs
-      - name: "Keep only 7 days of workflow logs"
-        uses: igorjs/gh-actions-clean-workflow@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 7
-
       # Cleaning self hosted runners
       - name: Runner clean
         uses: armbian/actions/runner-clean@main
