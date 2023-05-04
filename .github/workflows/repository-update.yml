@@ -41,20 +41,20 @@ jobs:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
-  kernel:
-    name: "Build kernel cache"
-    needs: Cancel
-
-    if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-    with:
-      ACCESS_NAME: igorpecovnik
-      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+#  kernel:
+#    name: "Build kernel cache"
+#    needs: Cancel
+#
+#    if: ${{ github.repository_owner == 'Armbian' }}
+#    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
+#    with:
+#      ACCESS_NAME: igorpecovnik
+#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
+#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+#    secrets:
+#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
 #  uboot:
 #    name: "Build u-boot cache"
@@ -104,7 +104,8 @@ jobs:
   apt-armbian-com:
 
     name: "Update https://apt.armbian.com"
-    needs: [kernel,external]
+    #needs: [kernel,external]
+    needs: [external]
     if: ${{ inputs.UPDATE_REPOSITORY || 'true' && github.repository_owner == 'Armbian' }}
     runs-on: [self-hosted, Linux, local]
     steps:
