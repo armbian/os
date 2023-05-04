@@ -106,8 +106,8 @@ jobs: # <TEMPLATE-IGNORE>
         if: ${{ inputs.release != 'stable' }}
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/output/images/*/*/Armbian_${{ inputs.version }}*.*"
-          tag: "${{ needs.version_prep.outputs.version }}"
+          artifacts: "build/output/images/*/*/Armbian_*.*"
+          tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
           omitName: true
