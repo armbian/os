@@ -18,7 +18,7 @@ common-gha-configs:
 
 lists:
 
-unsupported: &unsupported
+  unsupported: &unsupported
 
     - { BOARD: bananapim3, BRANCH: current }
     - { BOARD: bananapipro, BRANCH: current }
