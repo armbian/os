@@ -64,6 +64,7 @@ lists:
     - { BOARD: unmatched, BRANCH: current }
     - { BOARD: visionfive, BRANCH: current }
     - { BOARD: visionfive2, BRANCH: current }
+    - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: xt-q8l-v10, BRANCH: current }
 
   full-desktop: &full-desktop
@@ -105,7 +106,6 @@ lists:
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
-    - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
