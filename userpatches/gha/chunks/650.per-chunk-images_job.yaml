@@ -13,7 +13,7 @@ jobs: # <TEMPLATE-IGNORE>
     steps:
 
       # cleaning self hosted runners
-      - name: Runner clean
+      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later

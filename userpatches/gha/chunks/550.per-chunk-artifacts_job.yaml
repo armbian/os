@@ -11,7 +11,7 @@ jobs: # <TEMPLATE-IGNORE>
     runs-on: ${{ matrix.runs_on }}
     steps:
 
-      - name: Runner clean
+      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io

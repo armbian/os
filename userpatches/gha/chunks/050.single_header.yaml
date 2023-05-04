@@ -87,7 +87,7 @@ jobs:
           tag-prefix: ''
           pre-release-identifier: 'trunk'
 
-      - name: "Generate body file"
+      - name: "Generate body file for ${{ steps.changelog.outputs.version }}"
         run: |
             echo "
               <p align='center'>
@@ -203,3 +203,4 @@ jobs:
 
       # not related to matrix
       build-sha1: ${{ steps.latest-commit.outputs.sha1 }}
+      version: ${{ needs.version_prep.outputs.version }}
