@@ -68,6 +68,11 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Check API rate limits
         run: |
 
+          # install dependencies
+          if ! command -v "gh" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install gh
+          fi
+
           while true
             do
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
