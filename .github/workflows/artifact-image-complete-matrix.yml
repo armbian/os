@@ -47,7 +47,7 @@ env:
   EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds }}"
 
   # To use GitHub CLI in a GitHub Actions workflow
-  GH_TOKEN: ${{ github.token }}
+  GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
   # Added to every image build arguments.
   EXTRA_PARAMS_IMAGE: "'DONT_BUILD_ARTIFACTS=any,kernel,firmware,full_firmware,rootfs,fake_ubuntu_advantage_tools,armbian-config,armbian-zsh,armbian-plymouth-theme' COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
