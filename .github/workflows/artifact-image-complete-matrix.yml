@@ -1438,11 +1438,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -1582,11 +1582,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -1726,11 +1726,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -1870,11 +1870,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2014,11 +2014,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2158,11 +2158,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2302,11 +2302,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2446,11 +2446,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2590,11 +2590,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2734,11 +2734,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -2878,11 +2878,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -3022,11 +3022,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -3166,11 +3166,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -3310,11 +3310,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -3454,11 +3454,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
@@ -3598,11 +3598,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 40 )); then
+            if (( $PERCENT > 30 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 40%, sleping 10m"
+            echo "API rate lower then 30%, sleping 10m"
             sleep 10m
           done
 
