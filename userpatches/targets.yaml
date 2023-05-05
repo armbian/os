@@ -64,7 +64,6 @@ lists:
     - { BOARD: unmatched, BRANCH: current }
     - { BOARD: visionfive, BRANCH: current }
     - { BOARD: visionfive2, BRANCH: current }
-    - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: xt-q8l-v10, BRANCH: current }
 
   full-desktop: &full-desktop
@@ -86,7 +85,7 @@ lists:
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: odroidm1, BRANCH: edge }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
@@ -112,7 +111,7 @@ lists:
 
     - { BOARD: bananapim2ultra, BRANCH: current }
     - { BOARD: bananapim2zero, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: edge }
     - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapim1plus, BRANCH: current }
@@ -134,7 +133,7 @@ lists:
     - { BOARD: rk322x-box, BRANCH: current }
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: legacy }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: nanopineo4, BRANCH: current }
@@ -143,7 +142,7 @@ lists:
 
   headless: &headless
 
-    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: bananapicm4io, BRANCH: edge }
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
@@ -248,6 +247,7 @@ targets:
       - *light-desktop
       - *headless
       - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
 
   full-cli-stable-ubuntu:
     enabled: no
@@ -264,6 +264,7 @@ targets:
       - *light-desktop
       - *headless
       - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
 
   minimal-desktop-stable-ubuntu:
     enabled: yes
@@ -282,6 +283,7 @@ targets:
       - *full-desktop
       - *light-desktop
       - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
 
   full-desktop-stable-ubuntu:
     enabled: yes
