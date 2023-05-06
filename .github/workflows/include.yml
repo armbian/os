@@ -124,6 +124,6 @@ jobs:
           DESKTOP_ENVIRONMENT="${{env.DESKTOP}}"
           BUILD_DESKTOP="yes"
           [[ "${{env.DESKTOP}}" == none ]] && DESKTOP_ENVIRONMENT="" && BUILD_DESKTOP="no"
-          bash ./compile.sh rootfs BUILD_MINIMAL="${{ inputs.minimal }}" RELEASE="${{env.RELEASE}}" ARCH="${{env.ARCH}}" BUILD_DESKTOP="${BUILD_DESKTOP}" DESKTOP_APPGROUPS_SELECTED="${{env.VARIANT}}" DESKTOP_ENVIRONMENT="${DESKTOP_ENVIRONMENT}" DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base BETA=yes SHARE_LOG=yes 
+          bash ./compile.sh rootfs BUILD_MINIMAL="${{ inputs.minimal }}" RELEASE="${{env.RELEASE}}" ARCH="${{env.ARCH}}" BUILD_DESKTOP="${BUILD_DESKTOP}" DESKTOP_APPGROUPS_SELECTED="${{env.VARIANT}}" DESKTOP_ENVIRONMENT="${DESKTOP_ENVIRONMENT}" DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base BETA=no SHARE_LOG=yes 
           
           # CUSTOM_UBUNTU_MIRROR_PORTS="ftp.tu-chemnitz.de/pub/linux/ubuntu-ports/" CUSTOM_UBUNTU_MIRROR="mirrors.dotsrc.org/ubuntu/"
