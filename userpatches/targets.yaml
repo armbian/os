@@ -1,7 +1,7 @@
 common-gha-configs:
   armbian-gha: &armbian-gha
     runners:
-      default: "fast" # or a ["tag", "list"]
+      default: "ubuntu-latest" # or a ["tag", "list"]
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
         uboot: [ "self-hosted", "Linux", "fast" ]
@@ -201,6 +201,8 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *unsupported
+      - { BOARD: uefi-arm64, BRANCH: edge }
+      - { BOARD: uefi-x86, BRANCH: edge }
 
   minimal-cli-stable-debian:
     enabled: yes
