@@ -200,7 +200,7 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *unsupported
+#      - *unsupported
       - { BOARD: uefi-arm64, BRANCH: edge }
       - { BOARD: uefi-x86, BRANCH: edge }
 
