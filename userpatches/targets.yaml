@@ -176,7 +176,7 @@ lists:
 
 targets:
   all:
-    enabled: no # DISABLED! for now
+    enabled: yes # DISABLED! for now
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha

@@ -58,4 +58,58 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Check API rate limits
+        run: |
+
+          # install dependencies
+          if ! command -v "gh" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install gh
+          fi
+
+          while true
+            do
+            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+            if (( $PERCENT > 30 )); then
+                echo "API rate in good shape $PERCENT % free"
+                exit 0
+            fi
+            echo "API rate lower then 30%, sleping 10m"
+            sleep 10m
+          done
+
+          # show current api rate
+          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+
+      - name: Deploy to server
+        timeout-minutes: 90
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+
+      - name: "Cleanup artefacts"
+        if: always()
+        run: rm -rfv output/debs
 
