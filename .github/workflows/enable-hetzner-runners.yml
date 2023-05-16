@@ -98,7 +98,7 @@ jobs:
      
       - name: Enable Hetzner Virtual Machines
         if: ${{ always() && github.repository_owner == 'Armbian' }}
-        uses: armbian/actions/hetzner@main
+        uses: armbian/actions/hetzner@1.0
         with:
           action-type: disable
           machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
