@@ -209,6 +209,11 @@ jobs:
           cd build
           bash ./compile.sh gha-matrix armbian-images CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=17 MATRIX_IMAGE_CHUNKS=16 CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
+      - name: "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
+
       - name: chown cache memoize/oci back to normal user
         run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
 
@@ -363,7 +368,7 @@ jobs:
   all-artifacts-ready:
     name: "17 artifacts chunks ready"
     runs-on: ubuntu-latest # not going to run, anyway, but is required.
-    if: ${{ always() && ( 1 == 2 ) }} # eg: never run.
+    if: ${{ !cancelled() && ( 1 == 2 ) }} # eg: never run.
     needs: [ "matrix_prep", "build-artifacts-chunk-1","build-artifacts-chunk-2","build-artifacts-chunk-3","build-artifacts-chunk-4","build-artifacts-chunk-5","build-artifacts-chunk-6","build-artifacts-chunk-7","build-artifacts-chunk-8","build-artifacts-chunk-9","build-artifacts-chunk-10","build-artifacts-chunk-11","build-artifacts-chunk-12","build-artifacts-chunk-13","build-artifacts-chunk-14","build-artifacts-chunk-15","build-artifacts-chunk-16","build-artifacts-chunk-17" ] # <-- HERE: all artifact chunk numbers.
     steps:
       - name: fake step
@@ -372,7 +377,7 @@ jobs:
   all-images-ready:
     name: "16 image chunks ready"
     runs-on: ubuntu-latest # not going to run, anyway, but is required.
-    if: ${{ always() && ( 1 == 2 ) }} # eg: never run.
+    if: ${{ !cancelled() && ( 1 == 2 ) }} # eg: never run.
     needs: [ "matrix_prep", "build-images-chunk-1","build-images-chunk-2","build-images-chunk-3","build-images-chunk-4","build-images-chunk-5","build-images-chunk-6","build-images-chunk-7","build-images-chunk-8","build-images-chunk-9","build-images-chunk-10","build-images-chunk-11","build-images-chunk-12","build-images-chunk-13","build-images-chunk-14","build-images-chunk-15","build-images-chunk-16" ] # <-- HERE: all image chunk numbers.
     steps:
       - name: fake step
@@ -381,7 +386,7 @@ jobs:
   all-artifacts-and-images-ready:
     name: "17 artifacts and 16 image chunks ready"
     runs-on: ubuntu-latest # not going to run, anyway, but is required.
-    if: ${{ always() && ( 1 == 2 ) }} # eg: never run.
+    if: ${{ !cancelled() && ( 1 == 2 ) }} # eg: never run.
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
       - name: fake step
@@ -445,6 +450,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -557,6 +567,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -667,6 +682,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -779,6 +799,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -889,6 +914,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -1001,6 +1031,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -1111,6 +1146,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -1223,6 +1263,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -1333,6 +1378,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -1445,6 +1495,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -1555,6 +1610,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -1667,6 +1727,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -1777,6 +1842,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -1889,6 +1959,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -1999,6 +2074,11 @@ jobs:
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -2111,6 +2191,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -2222,6 +2307,11 @@ jobs:
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
@@ -2282,7 +2372,7 @@ jobs:
   "build-images-chunk-1": # templated "build-images-chunk-1"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-1 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-1 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-1) }} # <-- HERE: Chunk number.
@@ -2332,6 +2422,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -2426,7 +2521,7 @@ jobs:
   "build-images-chunk-2": # templated "build-images-chunk-2"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-2 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-2 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-2) }} # <-- HERE: Chunk number.
@@ -2476,6 +2571,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -2570,7 +2670,7 @@ jobs:
   "build-images-chunk-3": # templated "build-images-chunk-3"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-3 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-3 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-3) }} # <-- HERE: Chunk number.
@@ -2620,6 +2720,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -2714,7 +2819,7 @@ jobs:
   "build-images-chunk-4": # templated "build-images-chunk-4"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-4 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-4 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-4) }} # <-- HERE: Chunk number.
@@ -2764,6 +2869,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -2858,7 +2968,7 @@ jobs:
   "build-images-chunk-5": # templated "build-images-chunk-5"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-5 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-5 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-5) }} # <-- HERE: Chunk number.
@@ -2908,6 +3018,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3002,7 +3117,7 @@ jobs:
   "build-images-chunk-6": # templated "build-images-chunk-6"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-6 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-6 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-6) }} # <-- HERE: Chunk number.
@@ -3052,6 +3167,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3146,7 +3266,7 @@ jobs:
   "build-images-chunk-7": # templated "build-images-chunk-7"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-7 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-7 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-7) }} # <-- HERE: Chunk number.
@@ -3196,6 +3316,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3290,7 +3415,7 @@ jobs:
   "build-images-chunk-8": # templated "build-images-chunk-8"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-8 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-8 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-8) }} # <-- HERE: Chunk number.
@@ -3340,6 +3465,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3434,7 +3564,7 @@ jobs:
   "build-images-chunk-9": # templated "build-images-chunk-9"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-9 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-9 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-9) }} # <-- HERE: Chunk number.
@@ -3484,6 +3614,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3578,7 +3713,7 @@ jobs:
   "build-images-chunk-10": # templated "build-images-chunk-10"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-10 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-10 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-10) }} # <-- HERE: Chunk number.
@@ -3628,6 +3763,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3722,7 +3862,7 @@ jobs:
   "build-images-chunk-11": # templated "build-images-chunk-11"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-11 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-11 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-11) }} # <-- HERE: Chunk number.
@@ -3772,6 +3912,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -3866,7 +4011,7 @@ jobs:
   "build-images-chunk-12": # templated "build-images-chunk-12"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-12 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-12 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-12) }} # <-- HERE: Chunk number.
@@ -3916,6 +4061,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -4010,7 +4160,7 @@ jobs:
   "build-images-chunk-13": # templated "build-images-chunk-13"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-13 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-13 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-13) }} # <-- HERE: Chunk number.
@@ -4060,6 +4210,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -4154,7 +4309,7 @@ jobs:
   "build-images-chunk-14": # templated "build-images-chunk-14"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-14 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-14 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-14) }} # <-- HERE: Chunk number.
@@ -4204,6 +4359,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -4298,7 +4458,7 @@ jobs:
   "build-images-chunk-15": # templated "build-images-chunk-15"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-15 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-15 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-15) }} # <-- HERE: Chunk number.
@@ -4348,6 +4508,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
@@ -4442,7 +4607,7 @@ jobs:
   "build-images-chunk-16": # templated "build-images-chunk-16"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-16 == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-16 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-16) }} # <-- HERE: Chunk number.
@@ -4492,6 +4657,11 @@ jobs:
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
