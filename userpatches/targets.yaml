@@ -29,11 +29,10 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       RELEASE: "jammy"
     items-from-inventory:
-      all: "yes"
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
-      #not-eos: yes # not-eos boards, all branches
+      not-eos: yes # not-eos boards, all branches
 
   all-cli:
     enabled: yes
@@ -45,8 +44,7 @@ targets:
       BUILD_DESKTOP: "no"
       RELEASE: "jammy"
     items-from-inventory:
-      all: "yes"
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
-      #not-eos: yes # not-eos boards, all branches
+      not-eos: yes # not-eos boards, all branches
