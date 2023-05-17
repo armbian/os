@@ -4,7 +4,7 @@ jobs: # <TEMPLATE-IGNORE>
   "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     timeout-minutes: 90
-    if: ${{ always() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
+    if: ${{ !failure() && !cancelled() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
       matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-[[chunk]]) }} # <-- HERE: Chunk number.
@@ -54,6 +54,11 @@ jobs: # <TEMPLATE-IGNORE>
         id: build-one-image
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
       - name: Install SSH key for storage
         env:
