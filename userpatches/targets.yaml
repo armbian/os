@@ -17,7 +17,7 @@ common-gha-configs:
         image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
 targets:
-  all:
+  all-desktop:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -29,4 +29,24 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       RELEASE: "jammy"
     items-from-inventory:
-      not-eos: "yes"
+      all: "yes"
+      #wip: yes # includes all work-in-progress boards
+      #all: yes # includes all available BOARD and BRANCH combinations
+      #conf: yes # includes all supported boards
+      #not-eos: yes # not-eos boards, all branches
+
+  all-cli:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      RELEASE: "jammy"
+    items-from-inventory:
+      all: "yes"
+      #wip: yes # includes all work-in-progress boards
+      #all: yes # includes all available BOARD and BRANCH combinations
+      #conf: yes # includes all supported boards
+      #not-eos: yes # not-eos boards, all branches
