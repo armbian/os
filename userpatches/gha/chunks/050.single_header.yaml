@@ -206,6 +206,11 @@ jobs:
           cd build
           bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
+      - name: "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
+
       - name: chown cache memoize/oci back to normal user
         run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
 

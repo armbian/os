@@ -58,6 +58,11 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
+      - name: "Logs: ${{ steps.build.outputs.logs_url }}"
+        if: always()
+        run: |
+          echo "Logs: ${{ steps.build.outputs.logs_url }}"
+
       - name: Install SSH key for storage
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
