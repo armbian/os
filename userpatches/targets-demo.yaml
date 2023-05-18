@@ -35,19 +35,6 @@ lists:
     - { BOARD: bananapicm4io, BRANCH: edge }
 
 targets:
-  all:
-    enabled: yes # DISABLED! for now
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    vars:
-      BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT: "xfce"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      RELEASE: "jammy"
-    items-from-inventory:
-      not-eos: "yes"
 
   minimal-cli-testing-debian:
     enabled: yes
