@@ -78,6 +78,7 @@ lists:
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current }
     - { BOARD: khadas-vim3l, BRANCH: current }
+    - { BOARD: khadas-edge2, BRANCH: legacy }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: nanopct4, BRANCH: current }
@@ -94,7 +95,7 @@ lists:
     - { BOARD: orangepi5, BRANCH: legacy }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: edge }
+    - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5b, BRANCH: legacy }
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current }
@@ -353,7 +354,7 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
 
   minimal-i3-desktop-stable-debian:
-    enabled: yes
+    enabled: no # DISABLED!!!
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
