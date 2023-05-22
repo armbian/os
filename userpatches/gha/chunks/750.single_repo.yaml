@@ -5,7 +5,7 @@ jobs: # <TEMPLATE-IGNORE>
 
   publish-debs-to-repo:
     name: "publish debs to repo"
-    runs-on: [ "self-hosted", "Linux", "fast" ]
+    runs-on: [ "self-hosted", "Linux", "fast", "repo" ]
     if: ${{ !failure() && !cancelled() }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
@@ -97,8 +97,8 @@ jobs: # <TEMPLATE-IGNORE>
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
         with:
-          gpg_private_key: ${{ secrets.REPO_GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.REPO_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: Show GPG user IDs
         run: |
