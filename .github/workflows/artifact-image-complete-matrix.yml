@@ -56,7 +56,7 @@ jobs:
 
   version_prep:
     name: "Bump version"
-    runs-on: [ "self-hosted", "Linux", 'fast' ]
+    runs-on: [ "ubuntu-latest" ]
     steps:
 
       # Cleaning self hosted runners
