@@ -57,8 +57,8 @@ jobs:
     steps:
 
       # Cleaning self hosted runners
-      - name: Runner clean
-        uses: armbian/actions/runner-clean@main
+      #- name: Runner clean
+      #  uses: armbian/actions/runner-clean@main
 
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
