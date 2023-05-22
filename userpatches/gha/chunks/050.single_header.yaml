@@ -216,7 +216,7 @@ jobs:
         name: Upload output/info as GitHub Artifact
         with:
           name: build-info-json
-          path: output/info
+          path: build/output/info
 
       - name: chown cache memoize/oci back to normal user
         run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
