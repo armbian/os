@@ -214,6 +214,13 @@ jobs:
         run: |
           echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
 
+      # Store output/info folder in a GitHub Actions artifact
+      - uses: actions/upload-artifact@v3
+        name: Upload output/info as GitHub Artifact
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: chown cache memoize/oci back to normal user
         run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
 
