@@ -77,7 +77,7 @@ jobs:
       - name: Bump version
         if: ${{ github.event.inputs.versionOverride == '' }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v3.18.1
+        uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           git-message: 'Bump release to {version}'
@@ -4753,6 +4753,134 @@ jobs:
       - name: "Cleanup output images"
         if: always()
         run: rm -rfv output/images userpatches/VERSION
+
+# template file: 750.single_repo.yaml
+
+  # ------ publish packages to repository -------
+
+  publish-debs-to-repo:
+    name: "publish debs to repo"
+    runs-on: [ "self-hosted", "Linux", 'armbian', "debs-to-repo" ]
+    if: ${{ !failure() && !cancelled() }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
+    needs: [ "matrix_prep", "all-artifacts-ready" ]
+    steps:
+      # Prepare dependencies.
+      # If no /usr/bin/gpg, install gnupg2
+      # If no /usr/bin/reprepro, install reprepro
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/gpg ]; then
+            sudo apt-get update
+            sudo apt-get install -y gnupg2
+          fi
+          if [ ! -e /usr/bin/reprepro ]; then
+            sudo apt-get update
+            sudo apt-get install -y reprepro
+          fi
+
+      # Login to ghcr.io, for later uploading rootfs to ghcr.io
+      - name: Docker Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: "${{ github.repository_owner }}" # GitHub username or org
+          password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
+
+      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
+      - name: Cleanup userpatches repo
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: rm -rf userpatches.repo
+
+      - name: Checkout build repo
+        uses: actions/checkout@v3 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: 1
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
+        uses: actions/checkout@v3
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        with:
+          repository: ${{ env.USERPATCHES_REPOSITORY }}
+          ref: ${{ env.USERPATCHES_REF }}
+          fetch-depth: 1
+          clean: false # true is default.
+          path: userpatches.repo
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+        run: |
+          mkdir -pv userpatches
+          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
+          rm -rf userpatches.repo
+
+      # Clean off output/info, if any
+      - name: Cleanup output/info
+        run: |
+          rm -rfv output/info
+          mkdir -pv output
+
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-info-json
+          path: output/info
+
+      # List the artifacts we downloaded
+      - name: List artifacts
+        run: |
+          ls -laht output/info
+
+      - name: Download the debs
+        id: download-debs
+        run: |
+          bash ./compile.sh debs-to-repo-download SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+
+      - name: Import GPG key from GitHub secrets
+        id: import_gpg
+        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
+        with:
+          gpg_private_key: ${{ secrets.REPO_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.REPO_GPG_PASSPHRASE }}
+
+      - name: Show GPG user IDs
+        run: |
+          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
+          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
+          echo "name:        ${{ steps.import_gpg.outputs.name }}"
+          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+
+      - name: List loaded keys keys
+        run: gpg -K || true
+
+      - name: Prepare the reprepro scripts
+        id: prepare-scripts-reprepro
+        run: |
+          bash ./compile.sh debs-to-repo-reprepro REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+
+      - name: Run the reprepro scripts
+        id: run-scripts-reprepro
+        env:
+          REPO_GPG_KEYID: ${{ steps.import_gpg.outputs.keyid }}
+          REPO_LOCATION: /opt/armbian_repo
+          REPO_CONF_LOCATION: /opt/armbian_repo/conf
+        run: |
+          set -x
+          export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
+          export INCOMING_DEBS_DIR="$(pwd)/output/debs"
+          bash -x output/info/reprepro/reprepro.sh
 
 # template file: 950.single_footer.yaml
 
