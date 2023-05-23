@@ -20,6 +20,11 @@ on:
         required: false
         default: ''
         type: string
+      nightlybuild:
+        description: 'yes = nighlty, no = stable'
+        required: false
+        options: [ 'yes', 'no' ]
+        type: choice
       versionOverride:
         description: 'Version override'
         required: false
