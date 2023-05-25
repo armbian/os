@@ -209,7 +209,7 @@ jobs:
         run: |
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
-          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages || 'yes' }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+          bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]]  BETA=${{ github.event.inputs.nightly || 'yes' }} CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] CHECK_OCI=${{ github.event.inputs.checkOci }} TARGETS_FILENAME=targets.yaml SKIP_IMAGES=${{ github.event.inputs.skipImages || 'yes' }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
         if: always()

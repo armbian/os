@@ -87,7 +87,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download BETA=${{ github.event.inputs.nightly || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: |
@@ -113,7 +113,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Prepare the reprepro scripts
         id: prepare-scripts-reprepro
         run: |
-          bash ./compile.sh debs-to-repo-reprepro REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightly || 'yes' }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
         run: |
