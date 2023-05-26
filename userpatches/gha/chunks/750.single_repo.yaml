@@ -87,7 +87,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download BETA=${{ github.event.inputs.nightly || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: |
@@ -113,7 +113,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Prepare the reprepro scripts
         id: prepare-scripts-reprepro
         run: |
-          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightly || 'yes' }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || 'yes' }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
         run: |
@@ -129,7 +129,7 @@ jobs: # <TEMPLATE-IGNORE>
           set -x
           export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
           # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
-          if [% raw %][[ "${{ github.event.inputs.nightly || 'yes' }}" == "yes" ]][% endraw %]; then
+          if [% raw %][[ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "yes" ]][% endraw %]; then
             export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
           else
             export INCOMING_DEBS_DIR="$(pwd)/output/debs"
