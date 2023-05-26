@@ -115,6 +115,30 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: uefi-riscv64, BRANCH: edge }
 
+  all-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      RELEASE: "lunar"
+    items-from-inventory:
+      not-eos: yes
+
+  all-cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      RELEASE: "sid"
+    items-from-inventory:
+      not-eos: yes
+
 ############################## xfce desktop ##############################
 
   minimal-desktop-stable-ubuntu:
