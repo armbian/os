@@ -25,8 +25,13 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
+      uploadtoserver:
+        description: 'yes = upload, no = skip'
+        required: false
+        options: [ 'yes', 'no' ]
+        type: choice
       versionOverride:
-        description: 'Version override'
+        description: 'Version override. Leave empty for automatic bump'
         required: false
         default: ''
 
