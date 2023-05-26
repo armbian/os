@@ -85,7 +85,9 @@ jobs:
         run: |
 
           echo "file=nightly" >> $GITHUB_OUTPUT
-          [[ "${{ github.event.inputs.nightlybuild }}" == no ]] && echo "file=stable" >> $GITHUB_OUTPUT
+          if [ "${{ github.event.inputs.nightlybuild }}" == "no" ]; then
+          echo "file=stable" >> $GITHUB_OUTPUT
+          fi
 
       # Bump version automatically
       - name: Bump version
