@@ -124,8 +124,12 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
       RELEASE: "lunar"
-    items-from-inventory:
-      not-eos: yes
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
+      - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
 
   all-cli-unstable-debian:
     enabled: yes
@@ -168,8 +172,10 @@ targets:
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: ""
-    items-from-inventory:
-      not-eos: yes
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
 
 ############################## xfce desktop ##############################
 
