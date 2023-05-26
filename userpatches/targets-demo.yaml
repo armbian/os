@@ -139,6 +139,38 @@ targets:
     items-from-inventory:
       not-eos: yes
 
+  minimal-desktop-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: lunar
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: ""
+    items-from-inventory:
+      not-eos: yes
+
+  minimal-desktop-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: sid
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: ""
+    items-from-inventory:
+      not-eos: yes
+
 ############################## xfce desktop ##############################
 
   minimal-desktop-stable-ubuntu:
