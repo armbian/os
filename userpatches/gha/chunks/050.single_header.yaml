@@ -1,4 +1,4 @@
-name: "Build All Artifacts/Images"
+name: "Build Artifacts and Images"
 
 on:
   #schedule:
@@ -75,6 +75,13 @@ jobs:
           fetch-depth: 0
           clean: false # true is default.
 
+      - name: Determine version
+        id: versionfile
+        run: |
+
+          echo "file=nightly" >> $GITHUB_OUTPUT
+          [[ "${{ github.event.inputs.nightlybuild }}" == no ]] && echo "file=stable" >> $GITHUB_OUTPUT
+
       # Bump version automatically
       - name: Bump version
         if: ${{ github.event.inputs.versionOverride == '' }}
@@ -90,7 +97,7 @@ jobs:
           skip-on-empty: 'false'
           skip-commit: 'false'
           skip-ci: 'false'
-          version-file: "${{ github.event.inputs.release || 'nightly' }}.json"
+          version-file: "${{ steps.versionfile.outputs.file }}.json"
           pre-release: "true"
           git-branch: 'main'
           tag-prefix: ''
