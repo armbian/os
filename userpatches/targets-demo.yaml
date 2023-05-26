@@ -20,15 +20,15 @@ lists:
 
   unsupported: &unsupported
 
-    - { BOARD: bananapim3, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
 
   full-desktop: &full-desktop
 
-    - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
 
-    - { BOARD: bananapim2ultra, BRANCH: current }
+    - { BOARD: orangepi3-lts, BRANCH: current }
 
   headless: &headless
 
