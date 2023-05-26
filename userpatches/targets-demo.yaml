@@ -129,7 +129,7 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
@@ -147,7 +147,7 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
@@ -203,7 +203,7 @@ targets:
       DESKTOP_ENVIRONMENT: "i3-wm"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
@@ -221,7 +221,7 @@ targets:
       DESKTOP_ENVIRONMENT: "i3-wm"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
