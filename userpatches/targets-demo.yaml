@@ -34,6 +34,10 @@ lists:
 
     - { BOARD: orangepi3-lts, BRANCH: current }
 
+  light-desktop-3: &light-desktop-3
+
+    - { BOARD: bananapi, BRANCH: current }
+
   headless: &headless
 
     - { BOARD: bananapicm4io, BRANCH: edge }
