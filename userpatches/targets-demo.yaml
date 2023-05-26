@@ -140,8 +140,10 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
       RELEASE: "sid"
-    items-from-inventory:
-      not-eos: yes
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
 
   minimal-desktop-unstable-ubuntu:
     enabled: yes
@@ -156,8 +158,12 @@ targets:
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: ""
-    items-from-inventory:
-      not-eos: yes
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
+      - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
 
   minimal-desktop-unstable-debian:
     enabled: yes
