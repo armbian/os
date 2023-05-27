@@ -73,6 +73,7 @@ targets:
       - *full-desktop
       - *light-desktop
       - *headless
+      - *unsupported
 
   minimal-cli-stable-ubuntu:
     enabled: yes
@@ -178,6 +179,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop-3d
+      - *unsupported
       - { BOARD: rpi4b, BRANCH: current }
 
 # i3 desktop without 3d
