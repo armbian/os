@@ -103,7 +103,7 @@ jobs: # <TEMPLATE-IGNORE>
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'no'
         run: |
 
           # install dependencies
