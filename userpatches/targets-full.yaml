@@ -145,7 +145,7 @@ lists:
 
   headless: &headless
 
-    - { BOARD: bananapicm4io, BRANCH: edge }
+    - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }

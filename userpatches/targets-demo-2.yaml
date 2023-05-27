@@ -20,13 +20,9 @@ lists:
 
   unsupported: &unsupported
 
-    - { BOARD: clockworkpi-a06, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
 
   full-desktop: &full-desktop
-
-    - { BOARD: odroidc4, BRANCH: current }
-
-  full-desktop-3d: &full-desktop-3d
 
     - { BOARD: uefi-x86, BRANCH: current }
 
@@ -34,15 +30,26 @@ lists:
 
     - { BOARD: orangepi3-lts, BRANCH: current }
 
-  light-desktop-3d: &light-desktop-3d
-
-    - { BOARD: bananapi, BRANCH: current }
-
   headless: &headless
 
-    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: bananapicm4io, BRANCH: edge }
 
 targets:
+
+  minimal-cli-testing-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: sid
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *unsupported
+      - { BOARD: uefi-arm64, BRANCH: edge }
+      - { BOARD: uefi-x86, BRANCH: edge }
 
   minimal-cli-stable-debian:
     enabled: yes
@@ -108,9 +115,77 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: uefi-riscv64, BRANCH: edge }
 
+  all-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      RELEASE: "lunar"
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
+      - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
+
+  all-cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      RELEASE: "sid"
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
+
+  minimal-desktop-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: lunar
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: ""
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
+      - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
+
+  minimal-desktop-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: sid
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: ""
+    items:
+      - *full-desktop
+      - *light-desktop
+      - *headless
+
 ############################## xfce desktop ##############################
 
-  xfce-desktop-stable-ubuntu:
+  minimal-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -122,13 +197,13 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
       - { BOARD: rpi4b, BRANCH: current }
 
-  xfce-desktop-stable-debian:
+  minimal-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -140,14 +215,15 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
 
-# jammy gnome desktop with and without 3d
+############################## gnome desktop ##############################
+# Gnome is full
 
-  gnome-desktop-stable-ubuntu:
+  full-gnome-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -162,25 +238,26 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
+      - { BOARD: rpi4b, BRANCH: current }
 
-  gnome-3d-desktop-stable-debian:
+  full-gnome-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: bookworm
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop-3d
-      - { BOARD: rpi4b, BRANCH: current }
+      - *full-desktop
 
-# i3 desktop without 3d
+############################## i3 desktop ##############################
+# i3 is minimal
 
   minimal-i3-desktop-stable-ubuntu:
     enabled: yes
@@ -194,15 +271,13 @@ targets:
       DESKTOP_ENVIRONMENT: "i3-wm"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
       - { BOARD: rpi4b, BRANCH: current }
 
-# cinnamon desktop with and without 3d
-
-  cinnamon-desktop-stable-debian:
+  minimal-i3-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -211,27 +286,10 @@ targets:
     vars:
       RELEASE: bookworm
       BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "cinnamon"
+      DESKTOP_ENVIRONMENT: "i3-wm"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *full-desktop
       - *light-desktop
-
-  cinnamon-3d-desktop-stable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "cinnamon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *full-desktop-3d
-      - *light-desktop-3d
