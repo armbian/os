@@ -128,6 +128,7 @@ targets:
       - *full-desktop
       - *light-desktop
       - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: uefi-riscv64, BRANCH: edge }
 
   xfce-desktop-stable-debian:
     enabled: yes
