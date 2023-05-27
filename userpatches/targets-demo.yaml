@@ -99,7 +99,7 @@ targets:
       - { BOARD: uefi-riscv64, BRANCH: edge }
 
   full-cli-stable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -133,6 +133,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: ""
     items:
+      - *unsupported
       - { BOARD: uefi-riscv64, BRANCH: edge }
 
   xfce-desktop-stable-ubuntu:
@@ -168,7 +169,9 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
+      - *full-desktop-3d
       - *light-desktop
+      - *light-desktop-3d
 
 # jammy gnome desktop with and without 3d
 
@@ -223,7 +226,9 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
+      - *full-desktop-3
       - *light-desktop
+      - *light-desktop-3
       - { BOARD: rpi4b, BRANCH: current }
 
 # cinnamon desktop with and without 3d
