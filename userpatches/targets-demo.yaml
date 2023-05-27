@@ -217,7 +217,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
-      - *light-desktop
 
   cinnamon-3d-desktop-stable-debian:
     enabled: yes
@@ -234,4 +233,3 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop-3d
-      - *light-desktop-3d
