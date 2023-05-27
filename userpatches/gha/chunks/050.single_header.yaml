@@ -28,7 +28,7 @@ on:
       uploadtoserver:
         description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
         required: false
-        options: [ 'yes', 'no' ]
+        options: [ 'github', 'armbian' ]
         type: choice
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
