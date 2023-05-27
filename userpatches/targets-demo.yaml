@@ -226,9 +226,9 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
-      - *full-desktop-3
+      - *full-desktop-3d
       - *light-desktop
-      - *light-desktop-3
+      - *light-desktop-3d
       - { BOARD: rpi4b, BRANCH: current }
 
 # cinnamon desktop with and without 3d
