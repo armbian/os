@@ -56,7 +56,9 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *full-desktop
+      - *full-desktop-3d
       - *light-desktop
+      - *light-desktop-3d
       - *headless
 
   full-cli-stable-debian:
@@ -71,7 +73,9 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *full-desktop
+      - *full-desktop-3d
       - *light-desktop
+      - *light-desktop-3d
       - *headless
       - *unsupported
 
@@ -87,7 +91,9 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *full-desktop
+      - *full-desktop-3d
       - *light-desktop
+      - *light-desktop-3d
       - *headless
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: uefi-riscv64, BRANCH: edge }
@@ -104,7 +110,9 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *full-desktop
+      - *full-desktop-3d
       - *light-desktop
+      - *light-desktop-3d
       - *headless
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: uefi-riscv64, BRANCH: edge }
