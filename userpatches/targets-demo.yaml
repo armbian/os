@@ -1,3 +1,7 @@
+#
+# Armbian release template
+#
+
 common-gha-configs:
   armbian-gha: &armbian-gha
     runners:
@@ -19,26 +23,63 @@ common-gha-configs:
 lists:
 
   unsupported: &unsupported
+  # debian stable cli
+  # ubuntu stable xfce desktop
 
     - { BOARD: clockworkpi-a06, BRANCH: current }
 
   full-desktop: &full-desktop
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # debian stable cinnamon desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable xfce desktop
+  # ubuntu stable i3 desktop
+  # ubuntu stable gnome desktop
 
     - { BOARD: odroidc4, BRANCH: current }
 
   full-desktop-3d: &full-desktop-3d
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # debian stable cinnamon desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable i3 desktop
+  # ubuntu stable gnome desktop with 3D support enabled
 
     - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable i3 desktop
+  # ubuntu stable xfce desktop
 
     - { BOARD: orangepi3-lts, BRANCH: current }
 
   light-desktop-3d: &light-desktop-3d
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable i3 desktop
+  # ubuntu stable xfce desktop with 3D support enabled
 
-    - { BOARD: bananapi, BRANCH: current }
+    - { BOARD: tinkerboard, BRANCH: current }
 
   headless: &headless
+  # debian stable minimal
+  # debian stable cli
+  # ubuntu stable minimal
+  # ubuntu stable cli
 
     - { BOARD: bananapicm4io, BRANCH: current }
 
@@ -133,8 +174,23 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: ""
     items:
-      - *unsupported
       - { BOARD: uefi-riscv64, BRANCH: edge }
+
+  xfce-3d-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *light-desktop-3d
 
   xfce-desktop-stable-ubuntu:
     enabled: yes
@@ -152,6 +208,7 @@ targets:
     items:
       - *full-desktop
       - *light-desktop
+      - *unsupported
       - { BOARD: rpi4b, BRANCH: current }
 
   xfce-desktop-stable-debian:
@@ -171,7 +228,6 @@ targets:
       - *full-desktop
       - *full-desktop-3d
       - *light-desktop
-      - *light-desktop-3d
 
 # jammy gnome desktop with and without 3d
 
@@ -206,7 +262,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop-3d
-      - *unsupported
       - { BOARD: rpi4b, BRANCH: current }
 
 # i3 desktop without 3d
