@@ -28,7 +28,7 @@ lists:
 
   full-desktop-3d: &full-desktop-3d
 
-    - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current, HEADERS: yes }
 
   light-desktop: &light-desktop
 
