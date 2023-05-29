@@ -137,7 +137,7 @@ lists:
     - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4b, BRANCH: current }
     - { BOARD: rockpi-4c, BRANCH: current }
-    - { BOARD: rockpro64, BRANCH: current }    
+    - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
@@ -149,6 +149,7 @@ lists:
   # ubuntu stable i3 desktop
   # ubuntu stable xfce desktop
 
+    - { BOARD: bigtreetech-cb1, BRANCH: legacy }
     - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim2plus, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
@@ -157,7 +158,7 @@ lists:
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: nanopi-r6s, BRANCH: legacy }
     - { BOARD: radxa-zero, BRANCH: current }
-    
+
   light-desktop-3d: &light-desktop-3d
   # debian stable minimal
   # debian stable cli
@@ -169,7 +170,7 @@ lists:
 
     - { BOARD: bananapim2ultra, BRANCH: current }
     - { BOARD: bananapim2zero, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: edge }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapim1plus, BRANCH: current }
     - { BOARD: lime, BRANCH: current }
