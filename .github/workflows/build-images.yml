@@ -212,6 +212,10 @@ on:
         description: 'Version override'
         required: false
         default: ''
+      gitbranch:
+        description: 'Build Git Branch'
+        required: false
+        default: 'main'
 
 jobs:
 
@@ -292,6 +296,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
+      gitbranch: "${{ github.event.inputs.gitbranch || 'main' }}"
       release: "stable"
       deploy: true
       parallel: 64
@@ -318,6 +323,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
+      gitbranch: "${{ github.event.inputs.gitbranch || 'main' }}"
       release: "stable"
       deploy: true
       parallel: 64
@@ -344,6 +350,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
+      gitbranch: "${{ github.event.inputs.gitbranch || 'main' }}"
       release: "stable"
       deploy: true
       parallel: 64
@@ -370,6 +377,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
+      gitbranch: "${{ github.event.inputs.gitbranch || 'main' }}"
       release: "stable"
       deploy: true
       parallel: 64
@@ -396,6 +404,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
+      gitbranch: "${{ github.event.inputs.gitbranch || 'main' }}"
       release: "stable"
       deploy: true
       parallel: 64
@@ -422,6 +431,7 @@ jobs:
     with:
 
       config: "${{ github.event.inputs.config || 'default.conf' }}"
+      gitbranch: "${{ github.event.inputs.gitbranch || 'main' }}"
       release: "stable"
       deploy: true
       parallel: 64
