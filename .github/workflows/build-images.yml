@@ -31,6 +31,7 @@ on:
         - bananapir2
         - bananapir2pro
         - beaglev
+        - bigtreetech-cb1
         - clearfogbase
         - clearfogpro
         - clockworkpi-a06
@@ -244,7 +245,7 @@ jobs:
     - name: "Generate version"
       if: ${{ github.event.inputs.bump == 'true' && github.event.inputs.version == '' }}
       id: changelog
-      uses: TriPSs/conventional-changelog-action@v3.18.1
+      uses: TriPSs/conventional-changelog-action@v3.18.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         git-message: 'Bump release to {version}'
