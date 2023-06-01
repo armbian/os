@@ -49,10 +49,10 @@ jobs:
           for i in ${releases[@]}; do
           
               # Cycle desktops
-              [[ "${{ inputs.desktop }}" == yes ]] && desktops=($(find -L config/desktop/sid/environments/ -name support -exec grep -l 'supported' {} \; | rev | cut -d '/' -f 2 | rev))
+              [[ "${{ inputs.desktop }}" == yes ]] && desktops=($(find -L config/desktop/${i}/environments/ -name support -exec grep -l 'supported' {} \; | rev | cut -d '/' -f 2 | rev))
               for j in ${arch[@]}; do
               
-                 runner_tags=qemu
+                 runner_tags=fast
                  variant="${{ inputs.variant }}"
                  
                  # exceptions and runners optimisations
