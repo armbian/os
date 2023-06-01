@@ -127,6 +127,11 @@ jobs:
           tag-prefix: ''
           pre-release-identifier: 'trunk'
 
+      - name: Read Version
+        if: ${{ steps.changelog.outputs.tag }}
+        run: |
+          echo "VERSION_OVERRIDE=${{ steps.changelog.outputs.tag }}" >> $GITHUB_ENV
+
       - name: "Generate body file"
         run: |
             echo "
