@@ -1,11 +1,11 @@
 
 # template file: 050.single_header.yaml
 
-name: "Artifacts STABLE"
+name: "Artifacts v23.05"
 
 on:
-  #schedule:
-  #  - cron: '0 1 * * *' # Scheduled runs every day at 2am UTC
+  schedule:
+    - cron: '0 */6 * * *' # Scheduled runs every 6 hours
   workflow_dispatch:
     inputs:
       skipImages:
