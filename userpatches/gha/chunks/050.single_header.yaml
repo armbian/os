@@ -98,14 +98,14 @@ jobs:
           fi
 
       - name: Read Version
-        if: ${{ github.event.inputs.skipImages != 'yes' }}
+        #if: ${{ github.event.inputs.skipImages != 'yes' }}
         run: |
 
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ env.VERSION_OVERRIDE }}
+        if: ${{ github.event.inputs.skipImages != 'yes' }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
@@ -146,10 +146,10 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ github.repository_owner == 'Armbian' && env.VERSION_OVERRIDE == '' }}
+        if: ${{ github.event.inputs.skipImages != 'yes' }}
         with:
-          tag: ${{ steps.changelog.outputs.tag }}
-          name: "${{ steps.changelog.outputs.tag }}"
+          tag: "${{ env.VERSION_OVERRIDE }}"
+          name: "${{ env.VERSION_OVERRIDE }}"
           bodyFile: "body.html"
           prerelease: "true"
           allowUpdates: true
