@@ -152,7 +152,7 @@ jobs:
         id: releases
         run: |
 
-          cat ${{ steps.versionfile.outputs.file || nightly}}.json
+          cat ${{ steps.versionfile.outputs.file || nightly }}.json
           echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.versionOverride }}" >> $GITHUB_OUTPUT
 
     outputs:
