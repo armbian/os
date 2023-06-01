@@ -21,7 +21,7 @@ common-gha-configs:
 
 targets:
   all-desktop:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -43,9 +43,9 @@ targets:
     pipeline:
       gha: *armbian-gha
     vars:
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
-      RELEASE: "jammy"
+      RELEASE: "lunar"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
