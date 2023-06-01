@@ -56,19 +56,19 @@ jobs:
       run: |
 
         cd build
-        
+
         # generate for trunk
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts BETA"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "Artifacts main"/' userpatches/gha/gha_config.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-beta.yml
-        
+
         # generate for latest stable branch
         sed -i 's/build_ref: .*/build_ref: "v23.05"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts STABLE"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "Artifacts v23.05"/' userpatches/gha/gha_config.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
-        
+
         cd ../os
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"

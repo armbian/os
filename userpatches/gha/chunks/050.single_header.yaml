@@ -1,8 +1,8 @@
 name: "[[script_name]]"
 
 on:
-  #schedule:
-  #  - cron: '0 1 * * *' # Scheduled runs every day at 2am UTC
+  schedule:
+    - cron: '0 */6 * * *' # Scheduled runs every 6 hours
   workflow_dispatch:
     inputs:
       skipImages:
