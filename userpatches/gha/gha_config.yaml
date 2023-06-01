@@ -3,7 +3,7 @@ org: "armbian" # can't be an expression, only string.
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
 build_ref: "v23.05"
-cron_job: "schedule: cron: '0 */1 * * *'"
+cron_job: "0 */1 * * *"
 script_name: "Build Artifacts and Images"
 
 # armbian/os coordinates. set all to empty to not use userpatches.

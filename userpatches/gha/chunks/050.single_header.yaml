@@ -1,7 +1,8 @@
 name: "[[script_name]]"
 
 on:
-  "[[cron_job]]"
+  schedule:
+    - cron: [[cron_job]]
   workflow_dispatch:
     inputs:
       skipImages:
