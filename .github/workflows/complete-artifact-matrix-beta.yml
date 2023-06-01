@@ -5,7 +5,7 @@ name: "Artifacts main"
 
 on:
   schedule: 
-    - cron: '0 */1 * * *'
+    - cron: ''
   workflow_dispatch:
     inputs:
       skipImages:
