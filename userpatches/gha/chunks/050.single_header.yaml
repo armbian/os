@@ -97,7 +97,7 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ github.event.inputs.versionOverride == '' }}
+        if: ${{ github.event.inputs.versionOverride == '' && github.event.inputs.skipImages == 'yes' }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
@@ -152,6 +152,7 @@ jobs:
         id: releases
         run: |
 
+          cat ${{ steps.versionfile.outputs.file || nightly}}.json
           echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.versionOverride }}" >> $GITHUB_OUTPUT
 
     outputs:
