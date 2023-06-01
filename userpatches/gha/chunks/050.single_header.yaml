@@ -165,7 +165,7 @@ jobs:
         id: releases
         run: |
 
-          echo "version=${{ steps.changelog.outputs.tag }}${{ env.VERSION_OVERRIDE }}" >> $GITHUB_OUTPUT
+          echo "version=${{ env.VERSION_OVERRIDE }}" >> $GITHUB_OUTPUT
 
     outputs:
 
