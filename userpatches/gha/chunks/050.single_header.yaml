@@ -53,6 +53,8 @@ env:
   # Added to every build, even the prepare job.
   EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds }}"
 
+  VERSION_OVERRIDE: "${{ github.event.inputs.versionOverride }}"
+
   # To use GitHub CLI in a GitHub Actions workflow
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
@@ -95,9 +97,14 @@ jobs:
               echo "file=stable" >> $GITHUB_OUTPUT
           fi
 
+      - name: Read Version
+        if: ${{ github.event.inputs.skipImages == 'yes' }}
+        run: |
+          cat "${{ steps.versionfile.outputs.file }}.json"
+
       # Bump version automatically
       - name: Bump version
-        if: ${{ github.event.inputs.versionOverride == '' && github.event.inputs.skipImages == 'yes' }}
+        if: ${{ env.VERSION_OVERRIDE }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
@@ -138,7 +145,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.versionOverride == '' }}
+        if: ${{ github.repository_owner == 'Armbian' && env.VERSION_OVERRIDE == '' }}
         with:
           tag: ${{ steps.changelog.outputs.tag }}
           name: "${{ steps.changelog.outputs.tag }}"
@@ -152,8 +159,7 @@ jobs:
         id: releases
         run: |
 
-          cat ${{ steps.versionfile.outputs.file || 'nightly' }}.json
-          echo "version=${{ steps.changelog.outputs.tag }}${{ github.event.inputs.versionOverride }}" >> $GITHUB_OUTPUT
+          echo "version=${{ steps.changelog.outputs.tag }}${{ env.VERSION_OVERRIDE }}" >> $GITHUB_OUTPUT
 
     outputs:
 
