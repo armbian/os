@@ -9,7 +9,7 @@ common-gha-configs:
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
         uboot: [ "self-hosted", "Linux", "fast", "X64" ]
-        armbian-bsp-cli: [ "ubuntu-latest" ]
+        armbian-bsp-cli: [ "fast" ]
       by-name-and-arch:
         rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
