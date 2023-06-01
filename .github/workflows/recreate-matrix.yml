@@ -72,7 +72,7 @@ jobs:
         cd ../os
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
-        git pull --rebase
+        #git pull --rebase
         git add .github/workflows/complete-artifact-matrix-beta.yml
         git add .github/workflows/complete-artifact-matrix-stable.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
