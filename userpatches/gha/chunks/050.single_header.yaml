@@ -98,7 +98,7 @@ jobs:
           fi
 
       - name: Read Version
-        if: ${{ github.event.inputs.skipImages == 'yes' }}
+        if: ${{ github.event.inputs.skipImages != 'yes' }}
         run: |
 
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
