@@ -1,8 +1,7 @@
 name: "[[script_name]]"
 
 on:
-  schedule:
-    - cron: '0 */6 * * *' # Scheduled runs every 6 hours
+  "[[cron_job]]"
   workflow_dispatch:
     inputs:
       skipImages:
@@ -62,7 +61,7 @@ env:
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
