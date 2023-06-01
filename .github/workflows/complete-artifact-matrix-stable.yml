@@ -4,7 +4,8 @@
 name: "Artifacts v23.05"
 
 on:
-  "schedule: cron: '0 */1 * * *'"
+  schedule:
+    - cron: 0 */1 * * *
   workflow_dispatch:
     inputs:
       skipImages:
