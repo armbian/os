@@ -2466,7 +2466,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -2616,7 +2618,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -2766,7 +2770,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -2916,7 +2922,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3066,7 +3074,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3216,7 +3226,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3366,7 +3378,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3516,7 +3530,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3666,7 +3682,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3816,7 +3834,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3966,7 +3986,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4116,7 +4138,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4266,7 +4290,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4416,7 +4442,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4566,7 +4594,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4716,7 +4746,9 @@ jobs:
       - name: ${{matrix.desc}}
         id: build-one-image
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
