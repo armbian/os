@@ -26,7 +26,7 @@ jobs:
           echo "b ${{ env.RUNNER_NAME }}"
       - name: "Compile"
         run: |
-        
-          USE_FIXED_LOOP_NUMBER=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//')
-        
-          ./compile.sh USE_FIXED_LOOP_NUMBER=$USE_FIXED_LOOP_NUMBER BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
+   
+          # calculate loop from runner name
+          USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
+          ./compile.sh USE_FIXED_LOOP_DEVICE=$USE_FIXED_LOOP_DEVICE BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
