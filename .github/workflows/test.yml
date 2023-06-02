@@ -8,5 +8,20 @@ jobs:
     name: Recreate action
     runs-on: test
     steps:
+
+      - name: Checkout Armbian Framework
+        uses: actions/checkout@v3.5.2
+        with:
+          persist-credentials: false
+          repository: armbian/build
+          ref:  main
+          fetch-depth: 0
+          clean: false
+          path: build
+    
       - run: env
       - run: echo $VAR
+      - name: "Compile"
+        run: |
+        
+          ./compile.sh BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
