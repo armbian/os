@@ -1,0 +1,12 @@
+name: Test
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    name: Recreate action
+    runs-on: test
+    steps:
+      - run: env
+      - run: echo $VAR
