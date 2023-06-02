@@ -33,4 +33,5 @@ jobs:
           fi
           pwd
           ls -l
+          cd build
           ./compile.sh USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
