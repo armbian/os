@@ -19,7 +19,7 @@ jobs: # <TEMPLATE-IGNORE>
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Cleaning releases
-      - uses: dev-drprasad/delete-older-releases@v0.2
+      - uses: dev-drprasad/delete-older-releases@v0.2.1
         with:
           repo: armbian/os
           keep_latest: 3
