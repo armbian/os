@@ -5,11 +5,19 @@
 common-gha-configs:
   armbian-gha: &armbian-gha
     runners:
-      default: "fast"
+      default: "alfa"
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
         uboot: [ "self-hosted", "Linux", "fast", "X64" ]
         armbian-bsp-cli: [ "fast" ]
+      by-name-and-arch:
+        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
+        rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
+        image-armhf: [ "ubuntu-latest" ]
+        image-amd64: [ "ubuntu-latest" ]
+        image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
 lists:
 
@@ -247,7 +255,7 @@ targets:
 # ubuntu xfce without apps
 
   xfce-barebone-desktop-unstable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
