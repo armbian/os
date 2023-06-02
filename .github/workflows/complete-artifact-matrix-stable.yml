@@ -108,7 +108,7 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ github.event.inputs.skipImages != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
@@ -154,7 +154,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ github.event.inputs.skipImages != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
           tag: "${{ env.VERSION_OVERRIDE }}"
           name: "${{ env.VERSION_OVERRIDE }}"
@@ -4972,7 +4972,7 @@ jobs:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Cleaning releases
-      - uses: dev-drprasad/delete-older-releases@v0.2
+      - uses: dev-drprasad/delete-older-releases@v0.2.1
         with:
           repo: armbian/os
           keep_latest: 3
