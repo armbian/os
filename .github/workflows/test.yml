@@ -6,7 +6,7 @@ jobs:
 
   build:
     name: Recreate action
-    runs-on: test
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout Armbian Framework
