@@ -74,12 +74,20 @@ jobs:
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
+        # generate for CI test branch
+        sed -i 's/build_ref: .*/build_ref: "AR-1582"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "Artifacts testing"/' userpatches/gha/gha_config.yaml
+        sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
+        bash ./compile.sh gha-template
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-testing.yml
+
         cd ../os
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
         #git pull --rebase
         git add .github/workflows/complete-artifact-matrix-beta.yml
         git add .github/workflows/complete-artifact-matrix-stable.yml
+        git add .github/workflows/complete-artifact-matrix-testing.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
 
     - name: Push changes
