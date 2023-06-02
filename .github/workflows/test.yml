@@ -20,7 +20,8 @@ jobs:
           path: build
     
       - run: env
-      - run: echo $VAR
+      - run: echo "a: $RUNNER_NAME"
+      - run: echo "b ${{ env.RUNNER_NAME }}"
       - name: "Compile"
         run: |
         
