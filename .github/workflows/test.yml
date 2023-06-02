@@ -27,4 +27,6 @@ jobs:
       - name: "Compile"
         run: |
         
-          ./compile.sh BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
+          USE_FIXED_LOOP_NUMBER=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//')
+        
+          ./compile.sh USE_FIXED_LOOP_NUMBER=$USE_FIXED_LOOP_NUMBER BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
