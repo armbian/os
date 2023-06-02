@@ -31,4 +31,6 @@ jobs:
           if [[ -z "${ImageOS}" ]]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          ./compile.sh USE_FIXED_LOOP_DEVICE=$USE_FIXED_LOOP_DEVICE BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
+          pwd
+          ls -l
+          ./compile.sh USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" BOARD=udoo BRANCH=current RELEASE=jammy BUILD_DESKTOP=no KERNEL_CONFIGURE=no BUILD_MINIMAL=yes
