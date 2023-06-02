@@ -42,7 +42,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
-  BUILD_REF: "" # branch or tag or sha1
+  BUILD_REF: "v23.05" # branch or tag or sha1
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
