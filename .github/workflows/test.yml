@@ -6,7 +6,7 @@ jobs:
 
   build:
     name: Recreate action
-    runs-on: ubuntu-latest
+    runs-on: fast
     steps:
 
       - name: Checkout Armbian Framework
@@ -28,9 +28,10 @@ jobs:
         run: |
    
           # calculate loop from runner name
-          if [[ -z "${ImageOS}" ]]; then
+          #if [[ -z "${ImageOS}" ]]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
-          fi
+          echo $USE_FIXED_LOOP_DEVICE
+          #fi
           pwd
           ls -l
           cd build
