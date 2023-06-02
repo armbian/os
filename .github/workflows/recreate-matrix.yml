@@ -52,7 +52,7 @@ jobs:
       run: |
 
         rsync -av os/userpatches/. build/userpatches/
-        rm build/userpatches/targets.conf
+        rm build/userpatches/targets.yaml
 
     - name: "Generate Action Script"
       run: |
