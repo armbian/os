@@ -10,6 +10,7 @@ on:
       - "userpatches/*"
       - "userpatches/gha/**"
       - "userpatches/gha/chunks/**"
+      - ".github/workflows/recreate-matrix.yml"
 
   workflow_dispatch:
   repository_dispatch:
