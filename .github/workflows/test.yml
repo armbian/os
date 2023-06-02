@@ -14,7 +14,7 @@ jobs:
         with:
           persist-credentials: false
           repository: armbian/build
-          ref:  main
+          ref:  AR-1582
           fetch-depth: 0
           clean: false
           path: build
