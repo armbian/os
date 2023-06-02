@@ -4,20 +4,11 @@
 common-gha-configs:
   armbian-gha: &armbian-gha
     runners:
-      default: "fast"
+      default: "ubuntu-latest"
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
-        uboot: [ "self-hosted", "Linux", "fast", "X64" ]
+        uboot:  [ "self-hosted", "Linux", "fast", "X64" ]
         armbian-bsp-cli: [ "fast" ]
-      by-name-and-arch:
-        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
-        rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
-        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
-        rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-        image-armhf: [ "self-hosted", "Linux", 'fast' ]
-        image-arm64: [ "self-hosted", "Linux", 'fast' ]
-        image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
-        image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
 targets:
   all-desktop:
@@ -46,6 +37,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
       RELEASE: "lunar"
+      BRANCH: "edge"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
