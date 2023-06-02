@@ -33,7 +33,7 @@ jobs:
         persist-credentials: false
         repository: armbian/build
         ref:  main
-        fetch-depth: 1
+        fetch-depth: 0
         clean: false
         path: build
 
