@@ -65,22 +65,24 @@ jobs:
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts nightly"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ nightly ]"/' userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-beta.yml
-        cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
-
+        
         # generate for latest stable branch
         sed -i 's/build_ref: .*/build_ref: "'$LAST'"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
-        cp userpatches/targets-release.yaml userpatches/targets.yaml
 
         # generate for CI test branch
         sed -i 's/build_ref: .*/build_ref: "AR-1582"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts testing"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
+        
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-testing.yml
 
