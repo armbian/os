@@ -57,15 +57,17 @@ jobs:
 
         cd build
 
+        LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
+
         # generate for trunk
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts main"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "Artifacts nightly"/' userpatches/gha/gha_config.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-beta.yml
 
         # generate for latest stable branch
-        sed -i 's/build_ref: .*/build_ref: "v23.05"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts v23.05"/' userpatches/gha/gha_config.yaml
+        sed -i 's/build_ref: .*/build_ref: "'$LAST'"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "Artifacts stable"/' userpatches/gha/gha_config.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
