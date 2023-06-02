@@ -36,7 +36,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ github.event.inputs.skipImages != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
           tag: "${{ env.VERSION_OVERRIDE }}"
           omitBody: true
