@@ -1,7 +1,7 @@
 
 # template file: 050.single_header.yaml
 
-name: "Artifacts v23.05"
+name: "Artifacts stable"
 
 on:
   schedule:
@@ -42,7 +42,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
-  BUILD_REF: "v23.05" # branch or tag or sha1
+  BUILD_REF: "" # branch or tag or sha1
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
@@ -4821,7 +4821,7 @@ jobs:
 
   publish-debs-to-repo:
     name: "publish debs to repo"
-    runs-on: [ "self-hosted", "Linux", "fast", "repo" ]
+    runs-on: "[ "self-hosted", "Linux", "fast", "repo" ]"
     if: ${{ !failure() && !cancelled() }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
