@@ -1,0 +1,269 @@
+#
+# Armbian release template
+#
+
+common-gha-configs:
+  armbian-gha: &armbian-gha
+    runners:
+      default: "ubuntu-latest"
+      by-name:
+        kernel: [ "self-hosted", "Linux", "alfa" ]
+        uboot: [ "self-hosted", "Linux", "fast", "X64" ]
+        armbian-bsp-cli: [ "fast" ]
+
+lists:
+
+  unsupported: &unsupported
+  # debian stable cli
+  # ubuntu stable xfce desktop
+
+    - { BOARD: bananapim3, BRANCH: current }
+    - { BOARD: bananapipro, BRANCH: current }
+    - { BOARD: beaglev, BRANCH: current }
+    - { BOARD: beelinkx2, BRANCH: current }
+    - { BOARD: clockworkpi-a06, BRANCH: current }
+    - { BOARD: cubieboard2, BRANCH: current }
+    - { BOARD: cubieboard4, BRANCH: current }
+    - { BOARD: cubietruck, BRANCH: current }
+    - { BOARD: cubietruckplus, BRANCH: current }
+    - { BOARD: cubox-i, BRANCH: current }
+    - { BOARD: khadas-edge, BRANCH: current }
+    - { BOARD: lime-a33, BRANCH: current }
+    - { BOARD: mangopi-mq, BRANCH: current }
+    - { BOARD: melea1000, BRANCH: current }
+    - { BOARD: micro, BRANCH: current }
+    - { BOARD: nanopia64, BRANCH: current }
+    - { BOARD: nanopiair, BRANCH: current }
+    - { BOARD: nanopik1plus, BRANCH: current }
+    - { BOARD: nanopik2-s905, BRANCH: current }
+    - { BOARD: nanopi-r4se, BRANCH: current }
+    - { BOARD: nezha, BRANCH: current }
+    - { BOARD: orangepi2, BRANCH: current }
+    - { BOARD: orangepipc2, BRANCH: current }
+    - { BOARD: orangepiprime, BRANCH: current }
+    - { BOARD: orangepi-rk3399, BRANCH: current }
+    - { BOARD: orangepiwin, BRANCH: current }
+    - { BOARD: orangepizeroplus2-h3, BRANCH: current }
+    - { BOARD: orangepizeroplus2-h5, BRANCH: current }
+    - { BOARD: panther-x2, BRANCH: current }
+    - { BOARD: pcduino3, BRANCH: current }
+    - { BOARD: pinebook-a64, BRANCH: current }
+    - { BOARD: pinecube, BRANCH: current }
+    - { BOARD: quartz64a, BRANCH: current }
+    - { BOARD: quartz64b, BRANCH: current }
+    - { BOARD: radxa-zero2, BRANCH: current }
+    - { BOARD: recore, BRANCH: current }
+    - { BOARD: rockpi-n10, BRANCH: current }
+    - { BOARD: roc-rk3399-pc, BRANCH: current }
+    - { BOARD: star64, BRANCH: current }
+    - { BOARD: sunvell-r69, BRANCH: current }
+    - { BOARD: tinkerboard-2, BRANCH: current }
+    - { BOARD: udoo, BRANCH: current }
+    - { BOARD: unleashed, BRANCH: current }
+    - { BOARD: unmatched, BRANCH: current }
+    - { BOARD: visionfive, BRANCH: current }
+    - { BOARD: visionfive2, BRANCH: current }
+    - { BOARD: xt-q8l-v10, BRANCH: current }
+
+  full-desktop: &full-desktop
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # debian stable cinnamon desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable xfce desktop
+  # ubuntu stable i3 desktop
+  # ubuntu stable gnome desktop
+
+    - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: jetson-nano, BRANCH: current }
+    - { BOARD: khadas-vim1, BRANCH: current }
+    - { BOARD: khadas-vim2, BRANCH: current }
+    - { BOARD: khadas-vim3, BRANCH: current }
+    - { BOARD: khadas-vim3l, BRANCH: current }
+    - { BOARD: khadas-edge2, BRANCH: legacy }
+    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
+    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
+    - { BOARD: mekotronics-r58x, BRANCH: legacy }
+    - { BOARD: odroidc2, BRANCH: current }
+    - { BOARD: odroidc4, BRANCH: current }
+    - { BOARD: odroidhc4, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: orangepi5, BRANCH: legacy }
+    - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: legacy }
+    - { BOARD: rock-5b, BRANCH: legacy }
+    - { BOARD: station-m1, BRANCH: current }
+    - { BOARD: station-m2, BRANCH: current }
+    - { BOARD: station-m3, BRANCH: legacy }
+    - { BOARD: station-p1, BRANCH: current }
+    - { BOARD: station-p2, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
+
+  full-desktop-3d: &full-desktop-3d
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # debian stable cinnamon desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable i3 desktop
+  # ubuntu stable gnome desktop with 3D support enabled
+
+    - { BOARD: firefly-rk3399, BRANCH: current }
+    - { BOARD: lafrite, BRANCH: current }
+    - { BOARD: lepotato, BRANCH: current }
+    - { BOARD: nanopct4, BRANCH: current }
+    - { BOARD: nanopim4v2, BRANCH: current }
+    - { BOARD: nanopim4, BRANCH: current }
+    - { BOARD: odroidm1, BRANCH: edge }
+    - { BOARD: orangepi3-lts, BRANCH: current }
+    - { BOARD: orangepi4, BRANCH: current }
+    - { BOARD: orangepi4-lts, BRANCH: current }
+    - { BOARD: pinebook-pro, BRANCH: current }
+    - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rock64, BRANCH: current }
+    - { BOARD: rockpi-4a, BRANCH: current }
+    - { BOARD: rockpi-4b, BRANCH: current }
+    - { BOARD: rockpi-4c, BRANCH: current }
+    - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
+
+  light-desktop: &light-desktop
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable i3 desktop
+  # ubuntu stable xfce desktop
+
+    - { BOARD: bigtreetech-cb1, BRANCH: legacy }
+    - { BOARD: bananapim2s, BRANCH: current }
+    - { BOARD: bananapim2plus, BRANCH: current }
+    - { BOARD: bananapir2pro, BRANCH: current }
+    - { BOARD: onecloud, BRANCH: current }
+    - { BOARD: rk322x-box, BRANCH: current }
+    - { BOARD: rk3318-box, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: legacy }
+    - { BOARD: radxa-zero, BRANCH: current }
+
+  light-desktop-3d: &light-desktop-3d
+  # debian stable minimal
+  # debian stable cli
+  # debian stable xfce desktop
+  # ubuntu stable minimal
+  # ubuntu stable cli
+  # ubuntu stable i3 desktop
+  # ubuntu stable xfce desktop with 3D support enabled
+
+    - { BOARD: bananapim2ultra, BRANCH: current }
+    - { BOARD: bananapim2zero, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: edge }
+    - { BOARD: bananapim64, BRANCH: current }
+    - { BOARD: bananapim1plus, BRANCH: current }
+    - { BOARD: lime, BRANCH: current }
+    - { BOARD: lime2, BRANCH: current }
+    - { BOARD: lime-a64, BRANCH: current }
+    - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: olimex-teres-a64, BRANCH: current }
+    - { BOARD: orangepiplus2e, BRANCH: current }
+    - { BOARD: orangepilite2, BRANCH: current }
+    - { BOARD: orangepioneplus, BRANCH: current }
+    - { BOARD: orangepipc, BRANCH: current }
+    - { BOARD: orangepipcplus, BRANCH: current }
+    - { BOARD: pineh64, BRANCH: current }
+    - { BOARD: pineh64-b, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: current }
+    - { BOARD: nanopineo4, BRANCH: current }
+    - { BOARD: tinkerboard, BRANCH: current }
+    - { BOARD: tritium-h3, BRANCH: current }
+    - { BOARD: pine64, BRANCH: current }
+
+  headless: &headless
+  # debian stable minimal
+  # debian stable cli
+  # ubuntu stable minimal
+  # ubuntu stable cli
+
+    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: clearfogbase, BRANCH: current }
+    - { BOARD: clearfogpro, BRANCH: current }
+    - { BOARD: cubieboard, BRANCH: current }
+    - { BOARD: espressobin, BRANCH: current }
+    - { BOARD: jethubj100, BRANCH: current }
+    - { BOARD: jethubj80, BRANCH: current }
+    - { BOARD: helios4, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: current }
+    - { BOARD: nanopineo2black, BRANCH: current }
+    - { BOARD: nanopineocore2, BRANCH: current }
+    - { BOARD: nanopineo2, BRANCH: current }
+    - { BOARD: nanopineo3, BRANCH: current }
+    - { BOARD: nanopineo, BRANCH: current }
+    - { BOARD: nanopineoplus2, BRANCH: current }
+    - { BOARD: nanopi-r1, BRANCH: current }
+    - { BOARD: nanopi-r1s-h5, BRANCH: current }
+    - { BOARD: nanopi-r2c, BRANCH: current }
+    - { BOARD: nanopi-r2s, BRANCH: current }
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: orangepi-r1, BRANCH: current }
+    - { BOARD: orangepi-r1plus, BRANCH: current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
+    - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: orangepizero, BRANCH: current }
+    - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: pine64so, BRANCH: current }
+    - { BOARD: radxa-e25, BRANCH: current }
+    - { BOARD: radxa-e25, BRANCH: legacy }
+    - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
+    - { BOARD: zeropi, BRANCH: current }
+
+targets:
+
+# debian unstable minimal
+
+  minimal-cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: sid
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-riscv64, BRANCH: edge }
+      - *full-desktop
+      - *full-desktop-3d
+      - *light-desktop
+      - *light-desktop-3d
+      - *headless
+      - *unsupported
+
+# ubuntu xfce without apps
+
+  xfce-barebone-desktop-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: lunar
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: ""
+    items:
+      - *full-desktop
+      - *full-desktop-3d
+      - *light-desktop
+      - *light-desktop-3d
+      - { BOARD: uefi-riscv64, BRANCH: edge }
+      - { BOARD: rpi4b, BRANCH: current }
