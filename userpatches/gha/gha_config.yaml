@@ -13,3 +13,6 @@ userpatches_dir: "userpatches" # folder inside the userpatches repo; use "." if 
 
 ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
+
+# repository runner
+repository_runner: "[ \"self-hosted\", \"Linux\", \"fast\", \"repo\" ]"
