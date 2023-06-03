@@ -62,7 +62,7 @@ jobs:
         LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
 
         # generate for trunk every 4 hours
-        sed -i 's/cron_job: .*/cron_job: "0 */4 * * *"/' userpatches/gha/gha_config.yaml
+        sed -i 's/cron_job: .*/cron_job: "0 *\/4 * * *"/' userpatches/gha/gha_config.yaml
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts: nightly"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ nightly ]"/' userpatches/gha/gha_config.yaml
