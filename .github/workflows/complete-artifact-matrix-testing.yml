@@ -5,7 +5,7 @@ name: "Artifacts: testing"
 
 on:
   schedule:
-    - cron: 0 */4 * * *
+    - cron: 0 0 * * SAT
   workflow_dispatch:
     inputs:
       skipImages:

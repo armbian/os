@@ -5,7 +5,7 @@ name: "Artifacts: stable"
 
 on:
   schedule:
-    - cron: 0 */4 * * *
+    - cron: 0 0 * * SUN
   workflow_dispatch:
     inputs:
       skipImages:
