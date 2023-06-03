@@ -36,9 +36,9 @@ targets:
     vars:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
-      RELEASE: "lunar"
+      RELEASE: "jammy"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
-      #all: yes # includes all available BOARD and BRANCH combinations
+      all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
-      not-eos: yes # not-eos boards, all branches
+      #not-eos: yes # not-eos boards, all branches
