@@ -1,7 +1,7 @@
 
 # template file: 050.single_header.yaml
 
-name: "Artifacts stable"
+name: "Artifacts: stable"
 
 on:
   schedule:
@@ -5035,7 +5035,13 @@ jobs:
         if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
         run: |
 
-          rsync -arh --progress ${{ env.REPO_LOCATION }}/. upload@${{ env.ARMBIAN_HOST_UPLOAD }}:/tank/upload/repository/${{ env.BUILD_REF }}
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          # upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=16 --no-perms ${{ env.REPO_LOCATION }}/ repository/${{ env.BUILD_REF }} ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
 # template file: 950.single_footer.yaml
 
