@@ -5026,8 +5026,13 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: "Rsync"
-        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
+      - name: Deploy to server
+        timeout-minutes: 90
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
         run: |
 
           rsync -arh --progress ${{ env.REPO_LOCATION }}/. upload@${{ env.ARMBIAN_HOST_UPLOAD }}:/tank/upload/repository/${{ env.BUILD_REF }}
