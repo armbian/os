@@ -12,7 +12,7 @@ common-gha-configs:
 
 targets:
   all-desktop:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -39,6 +39,6 @@ targets:
       RELEASE: "jammy"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
-      all: yes # includes all available BOARD and BRANCH combinations
+      #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
-      #not-eos: yes # not-eos boards, all branches
+      not-eos: yes # not-eos boards, all branches
