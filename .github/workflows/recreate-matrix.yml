@@ -104,6 +104,7 @@ jobs:
         git add .github/workflows/complete-artifact-matrix-beta.yml
         git add .github/workflows/complete-artifact-matrix-stable.yml
         git add .github/workflows/complete-artifact-matrix-testing.yml
+        git add .github/workflows/complete-artifact-matrix-all.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
 
     - name: Push changes
