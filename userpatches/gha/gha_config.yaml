@@ -4,6 +4,7 @@ org: "armbian" # can't be an expression, only string.
 org_and_build_repo: "armbian/build"
 build_ref: "v23.05"
 script_name: "Build Artifacts and Images"
+repository_ref: "stable"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
