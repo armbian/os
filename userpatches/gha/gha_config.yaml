@@ -3,16 +3,17 @@ org: "armbian" # can't be an expression, only string.
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
 build_ref: "v23.05"
-cron_job: "0 */4 * * *"
 script_name: "Build Artifacts and Images"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
 userpatches_ref: "main"
 userpatches_dir: "userpatches" # folder inside the userpatches repo; use "." if stuff is in the root of the repo
+targets_filename: "targets.yaml" # file with build definitions
 
 ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
 
 # repository runner
+cron_job: "0 */4 * * *"
 repository_runner: "[ \"self-hosted\", \"Linux\", \"fast\", \"repo\" ]"
