@@ -66,6 +66,7 @@ jobs:
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts: nightly"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ nightly ]"/' userpatches/gha/gha_config.yaml
+        sed -i 's/targets_filename: .*/targets_filename: "targets-release-nightly.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-beta.yml
@@ -75,6 +76,7 @@ jobs:
         sed -i 's/build_ref: .*/build_ref: "'$LAST'"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts: stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
+        sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
@@ -84,6 +86,7 @@ jobs:
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts: all"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
+        sed -i 's/targets_filename: .*/targets_filename: "targets-all-not-eos.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-all-not-eos.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-all.yml
@@ -92,8 +95,8 @@ jobs:
         sed -i 's/build_ref: .*/build_ref: "AR-1582"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts: testing"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
+        sed -i 's/targets_filename: .*/targets_filename: "targets-release-template.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
-
         bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-testing.yml
 
