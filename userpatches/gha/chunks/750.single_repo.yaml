@@ -161,5 +161,5 @@ jobs: # <TEMPLATE-IGNORE>
           fi
 
           # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=16 --no-perms /opt/armbian_repo/ repository/[[repository_ref]] ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=16 --only-missing --no-perms /opt/armbian_repo/ repository/[[repository_ref]] ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
