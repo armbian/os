@@ -40,10 +40,6 @@ lists:
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pcduino3, BRANCH: current }
 
-  full-desktop: &full-desktop
-  full-desktop-3d: &full-desktop-3d
-
-
   light-desktop: &light-desktop
   # debian stable minimal
   # debian stable cli
@@ -121,8 +117,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
       - *light-desktop
       - *light-desktop-3d
       - *headless
@@ -140,8 +134,6 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
       - *light-desktop
       - *light-desktop-3d
       - *headless
@@ -160,8 +152,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
       - *light-desktop
       - *light-desktop-3d
       - *headless
@@ -181,8 +171,6 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
       - *light-desktop
       - *light-desktop-3d
       - *headless
@@ -262,8 +250,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
-      - *full-desktop-3d
       - *light-desktop
 
 # ubuntu gnome desktop without 3d
@@ -300,7 +286,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop-3d
       - { BOARD: rpi4b, BRANCH: current }
 
 # i3 desktop without 3d
@@ -319,8 +304,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
-      - *full-desktop-3d
       - *light-desktop
       - *light-desktop-3d
       - { BOARD: rpi4b, BRANCH: current }
@@ -343,20 +326,3 @@ targets:
     items:
       - *full-desktop
 
-# cinnamon desktop with 3d
-
-  cinnamon-3d-desktop-stable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "cinnamon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *full-desktop-3d
