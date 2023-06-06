@@ -229,7 +229,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
       - *light-desktop
       - *unsupported
       - { BOARD: rpi4b, BRANCH: current }
@@ -251,24 +250,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *light-desktop
-
-# ubuntu gnome desktop without 3d
-
-  gnome-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "gnome"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *full-desktop
 
 # debian gnome desktop with 3d
 
@@ -307,22 +288,3 @@ targets:
       - *light-desktop
       - *light-desktop-3d
       - { BOARD: rpi4b, BRANCH: current }
-
-# cinnamon desktop without 3d
-
-  cinnamon-desktop-stable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "cinnamon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *full-desktop
-
