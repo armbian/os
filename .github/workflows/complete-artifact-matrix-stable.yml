@@ -536,7 +536,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -652,7 +652,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -768,7 +768,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -884,7 +884,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1000,7 +1000,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1116,7 +1116,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1232,7 +1232,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1348,7 +1348,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1464,7 +1464,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1580,7 +1580,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1696,7 +1696,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1812,7 +1812,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -1928,7 +1928,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2044,7 +2044,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2160,7 +2160,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2276,7 +2276,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2392,7 +2392,7 @@ jobs:
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2416,7 +2416,7 @@ jobs:
 
   "build-images-chunk-1": # templated "build-images-chunk-1"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-1 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -2546,7 +2546,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2570,7 +2570,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-2": # templated "build-images-chunk-2"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-2 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -2700,7 +2700,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2724,7 +2724,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-3": # templated "build-images-chunk-3"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-3 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -2854,7 +2854,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -2878,7 +2878,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-4": # templated "build-images-chunk-4"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-4 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3008,7 +3008,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3032,7 +3032,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-5": # templated "build-images-chunk-5"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-5 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3162,7 +3162,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3186,7 +3186,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-6": # templated "build-images-chunk-6"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-6 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3316,7 +3316,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3340,7 +3340,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-7": # templated "build-images-chunk-7"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-7 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3470,7 +3470,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3494,7 +3494,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-8": # templated "build-images-chunk-8"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-8 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3624,7 +3624,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3648,7 +3648,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-9": # templated "build-images-chunk-9"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-9 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3778,7 +3778,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3802,7 +3802,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-10": # templated "build-images-chunk-10"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-10 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -3932,7 +3932,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -3956,7 +3956,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-11": # templated "build-images-chunk-11"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-11 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -4086,7 +4086,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -4110,7 +4110,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-12": # templated "build-images-chunk-12"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-12 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -4240,7 +4240,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -4264,7 +4264,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-13": # templated "build-images-chunk-13"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-13 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -4394,7 +4394,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -4418,7 +4418,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-14": # templated "build-images-chunk-14"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-14 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -4548,7 +4548,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -4572,7 +4572,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-15": # templated "build-images-chunk-15"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-15 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -4702,7 +4702,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
@@ -4726,7 +4726,7 @@ jobs:
         run: rm -rfv output/images userpatches/VERSION
   "build-images-chunk-16": # templated "build-images-chunk-16"
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == 'armbian' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-16 == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -4856,7 +4856,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
