@@ -113,24 +113,6 @@ targets:
       - *full-desktop
       - *full-desktop-3d
 
-# ubuntu xfce with 3d
-
-  xfce-3d-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *light-desktop-3d
-
 # ubuntu xfce
 
   xfce-desktop-stable-ubuntu:
@@ -148,7 +130,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
-      - *light-desktop
 
 # debian xfce
 
