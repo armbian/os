@@ -3,7 +3,7 @@ on: # <TEMPLATE-IGNORE>
 jobs: # <TEMPLATE-IGNORE>
   "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 90
+    timeout-minutes: 180
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
@@ -133,7 +133,7 @@ jobs: # <TEMPLATE-IGNORE>
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}

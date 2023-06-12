@@ -98,7 +98,7 @@ jobs: # <TEMPLATE-IGNORE>
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
       - name: Deploy to server
-        timeout-minutes: 90
+        timeout-minutes: 180
         env:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
