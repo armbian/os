@@ -22,85 +22,30 @@ common-gha-configs:
 
 lists:
 
-  unsupported: &unsupported
-  # debian stable cli
-  # ubuntu stable xfce desktop
-
-    - { BOARD: bananapipro, BRANCH: current }
-    - { BOARD: beelinkx2, BRANCH: current }
-    - { BOARD: cubieboard2, BRANCH: current }
-    - { BOARD: cubietruck, BRANCH: current }
-    - { BOARD: cubox-i, BRANCH: current }
-    - { BOARD: melea1000, BRANCH: current }
-    - { BOARD: micro, BRANCH: current }
-    - { BOARD: nanopiair, BRANCH: current }
-    - { BOARD: orangepi2, BRANCH: current }
-    - { BOARD: orangepipc2, BRANCH: current }
-    - { BOARD: orangepizeroplus2-h3, BRANCH: current }
-    - { BOARD: orangepizeroplus2-h5, BRANCH: current }
-    - { BOARD: pcduino3, BRANCH: current }
-
-  light-desktop: &light-desktop
+  full-desktop: &full-desktop
   # debian stable minimal
   # debian stable cli
   # debian stable xfce desktop
+  # debian stable cinnamon desktop
   # ubuntu stable minimal
   # ubuntu stable cli
-  # ubuntu stable i3 desktop
   # ubuntu stable xfce desktop
+  # ubuntu stable i3 desktop
+  # ubuntu stable gnome desktop
 
-    - { BOARD: bananapim2s, BRANCH: current }
-    - { BOARD: bananapim2plus, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: legacy }
+    - { BOARD: orangepi5-plus, BRANCH: legacy }
 
-  light-desktop-3d: &light-desktop-3d
+  full-desktop-3d: &full-desktop-3d
   # debian stable minimal
   # debian stable cli
   # debian stable xfce desktop
+  # debian stable cinnamon desktop
   # ubuntu stable minimal
   # ubuntu stable cli
   # ubuntu stable i3 desktop
-  # ubuntu stable xfce desktop with 3D support enabled
+  # ubuntu stable gnome desktop with 3D support enabled
 
-    - { BOARD: bananapim2ultra, BRANCH: current }
-    - { BOARD: bananapim2zero, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: edge }
-    - { BOARD: bananapim1plus, BRANCH: current }
-    - { BOARD: lime, BRANCH: current }
-    - { BOARD: lime2, BRANCH: current }
-    - { BOARD: orangepiplus2e, BRANCH: current }
-    - { BOARD: orangepipc, BRANCH: current }
-    - { BOARD: orangepipcplus, BRANCH: current }
-    - { BOARD: tritium-h3, BRANCH: current }
-
-  headless: &headless
-  # debian stable minimal
-  # debian stable cli
-  # ubuntu stable minimal
-  # ubuntu stable cli
-
-    - { BOARD: cubieboard, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopineo2black, BRANCH: current }
-    - { BOARD: nanopineocore2, BRANCH: current }
-    - { BOARD: nanopineo2, BRANCH: current }
-    - { BOARD: nanopineo, BRANCH: current }
-    - { BOARD: nanopineoplus2, BRANCH: current }
-    - { BOARD: nanopi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: legacy }
-    - { BOARD: orangepizero, BRANCH: current }
-    - { BOARD: orangepizeroplus, BRANCH: current }
-    - { BOARD: pine64so, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: legacy }
-    - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: rockpi-s, BRANCH: current }
-    - { BOARD: zeropi, BRANCH: current }
+    - { BOARD: rockpi-4cplus, BRANCH: current }
 
 targets:
 
@@ -117,9 +62,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
+      - *full-desktop
+      - *full-desktop-3d
 
 # debian cli
 
@@ -134,10 +78,8 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - *unsupported
+      - *full-desktop
+      - *full-desktop-3d
 
 # ubuntu minimal
 
@@ -152,11 +94,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: uefi-riscv64, BRANCH: edge }
+      - *full-desktop
+      - *full-desktop-3d
 
 # ubuntu cli
 
@@ -171,29 +110,8 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: uefi-riscv64, BRANCH: edge }
-
-# ubuntu xfce without apps
-
-  xfce-barebone-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: ""
-    items:
-      - { BOARD: uefi-riscv64, BRANCH: edge }
+      - *full-desktop
+      - *full-desktop-3d
 
 # ubuntu xfce with 3d
 
@@ -229,9 +147,8 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *full-desktop
       - *light-desktop
-      - *unsupported
-      - { BOARD: rpi4b, BRANCH: current }
 
 # debian xfce
 
@@ -249,7 +166,26 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *light-desktop
+      - *full-desktop
+      - *full-desktop-3d
+
+# ubuntu gnome desktop without 3d
+
+  gnome-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *full-desktop
 
 # debian gnome desktop with 3d
 
@@ -267,7 +203,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - { BOARD: rpi4b, BRANCH: current }
+      - *full-desktop-3d
 
 # i3 desktop without 3d
 
@@ -285,6 +221,41 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *light-desktop
-      - *light-desktop-3d
-      - { BOARD: rpi4b, BRANCH: current }
+      - *full-desktop
+      - *full-desktop-3d
+
+# cinnamon desktop without 3d
+
+  cinnamon-desktop-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "cinnamon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *full-desktop
+
+# cinnamon desktop with 3d
+
+  cinnamon-3d-desktop-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "cinnamon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *full-desktop-3d
