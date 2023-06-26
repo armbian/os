@@ -190,6 +190,7 @@ on:
         - station-m3
         - station-p1
         - station-p2
+        - thinkpad-x13s
         - tinkerboard-2
         - tinkerboard
         - tritium-h3
@@ -251,7 +252,7 @@ jobs:
     - name: "Generate version"
       if: ${{ github.event.inputs.bump == 'true' && github.event.inputs.version == '' }}
       id: changelog
-      uses: TriPSs/conventional-changelog-action@v3.19.0
+      uses: TriPSs/conventional-changelog-action@v3.18.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         git-message: 'Bump release to {version}'
