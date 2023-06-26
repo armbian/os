@@ -110,7 +110,7 @@ jobs:
       - name: Bump version
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v3.19.0
+        uses: TriPSs/conventional-changelog-action@v3.18.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           git-message: 'Bump release to {version}'
