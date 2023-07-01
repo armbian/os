@@ -40,39 +40,37 @@ jobs:
         with:
           all_but_latest: true
           access_token: ${{ secrets.GITHUB_TOKEN }}
+          
+  Artifacts:
 
-#  kernel:
-#    name: "Build kernel cache"
-#    needs: Cancel
-#
-#    if: ${{ github.repository_owner == 'Armbian' }}
-#    uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-#    with:
-#      ACCESS_NAME: igorpecovnik
-#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-#    secrets:
-#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+    name: Upload artifacts
+    runs-on: stable
+    steps:
 
-#  uboot:
-#    name: "Build u-boot cache"
-#    needs: Cancel
-#
-#    uses: armbian/scripts/.github/workflows/build-u-boot-cache.yml@main
-#    with:
-#      ACCESS_NAME: armbian
-#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-#    secrets:
-#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      - name: Install SSH key for storage
+        env:
+          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+        if: env.KEY_TORRENTS != null
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_TORRENTS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Deploy to server
+        env:
+          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+        if: env.KEY_TORRENTS != null
+
+        run: |
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --Remove-source-files --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com
 
   external:
     name: "Download external"
-    needs: Cancel
+    needs: Artifacts
 
     if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
@@ -85,21 +83,6 @@ jobs:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
-
-#  Rootfs:
-#    name: "Build rootfs cache"
-#    needs: Cancel
-#    
-#    if: ${{ success() && github.repository_owner == 'Armbian' }}
-#    uses: armbian/scripts/.github/workflows/build-rootfs-cache.yml@main
-#    with:
-#      ACCESS_NAME: armbian
-#      BUILD_BRANCH: ${{ inputs.BUILD_BRANCH }}
-#      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-#    secrets:
-#      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-#      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
 
   apt-armbian-com:
 
