@@ -1,8 +1,7 @@
 name: Build Nightly Images
 on:
-
-#  schedule:
-#    - cron: "00 0 * * *"
+  repository_dispatch:
+    types: ["Build Nightly Images"]
   workflow_dispatch:
 
 jobs:
