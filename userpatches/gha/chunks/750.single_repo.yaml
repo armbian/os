@@ -93,6 +93,41 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
 
+      - name: Install SSH key for storage
+        env:
+          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+        if: env.KEY_TORRENTS != null
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_TORRENTS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Deploy to server
+        env:
+          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+        if: env.KEY_TORRENTS != null
+
+        run: |
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: armbian/os
+          event-type: "Repository update"
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: armbian/os
+          event-type: "Build Nightly Images"
+
       - name: Import GPG key from GitHub secrets
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
