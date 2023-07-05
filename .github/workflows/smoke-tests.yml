@@ -34,4 +34,5 @@ jobs:
       USER_REPOSITORY: ${{ secrets.USER_REPOSITORY }}
       HOST_REPOSITORY: ${{ secrets.HOST_REPOSITORY }}
       KNOWN_HOSTS_REPOSITORY: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
-      GITBRANCH: ${{ inputs.gitbranch }}
+    with:
+      GITBRANCH: "${{ github.event.inputs.gitbranch || 'main' }}"
