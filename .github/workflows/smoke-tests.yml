@@ -9,7 +9,11 @@ on:
       gitbranch:
         description: 'Build Git Branch'
         required: false
-        default: 'main'  
+        default: 'main'
+      powermanagement:
+        type: boolean
+        description: "Power Management"
+        default: true
 #  workflow_run:
 #    workflows: ["Repository update"]
 #    types:
@@ -36,3 +40,4 @@ jobs:
       KNOWN_HOSTS_REPOSITORY: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
     with:
       GITBRANCH: "${{ github.event.inputs.gitbranch || 'main' }}"
+      PWRMNGMT: "${{ github.event.inputs.powermanagement || 'true' }}"
