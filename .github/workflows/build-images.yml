@@ -254,7 +254,7 @@ jobs:
     - name: "Generate version"
       if: ${{ github.event.inputs.bump == 'true' && github.event.inputs.version == '' }}
       id: changelog
-      uses: TriPSs/conventional-changelog-action@v3.19.0
+      uses: TriPSs/conventional-changelog-action@v3.18.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         git-message: 'Bump release to {version}'
