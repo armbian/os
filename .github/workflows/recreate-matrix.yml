@@ -73,7 +73,7 @@ jobs:
         #cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-beta.yml
 
         # generate for latest stable branch
-        sed -i 's/cron_job: .*/cron_job: "0 0 * * SUN"/' userpatches/gha/gha_config.yaml
+        sed -i 's/cron_job: .*/#cron_job: "0 0 * * SUN"/' userpatches/gha/gha_config.yaml
         sed -i 's/build_ref: .*/build_ref: "'$LAST'"/' userpatches/gha/gha_config.yaml
         sed -i 's/script_name: .*/script_name: "Artifacts: stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
@@ -81,7 +81,7 @@ jobs:
         sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
-        #cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
         # generate all
         sed -i 's/cron_job: .*/cron_job: "0 0 * * SAT"/' userpatches/gha/gha_config.yaml
