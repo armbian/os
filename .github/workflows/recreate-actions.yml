@@ -57,7 +57,7 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.ACCESS_TOKEN }}
+        github_token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
         repository: armbian/os
         branch: ${{ github.ref }}
         directory: os
