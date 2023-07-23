@@ -38,7 +38,7 @@ on:
         default: '4'
 
 concurrency:
-  group: ${{ github.ref }}
+  group: hetzner-runner
   cancel-in-progress: true
 
 jobs:
