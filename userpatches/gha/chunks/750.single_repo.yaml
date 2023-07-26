@@ -6,7 +6,7 @@ jobs: # <TEMPLATE-IGNORE>
   publish-debs-to-repo:
     name: "publish debs to repo"
     runs-on: [[repository_runner]]
-    if: ${{ !failure() && !cancelled() }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
+    if: ${{ !failure() && !cancelled() && (github.event.inputs.targetsFilterInclude == '') }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
 
