@@ -23,6 +23,11 @@ on:
         required: false
         default: ''
         type: string
+      targetsFilterInclude:
+        description: 'TARGETS_FILTER_INCLUDE, example: "BOARD:odroidhc4,BOARD:odroidn2"'
+        required: false
+        default: ''
+        type: string
       nightlybuild:
         description: 'yes = nighlty, no = stable'
         required: false
@@ -245,7 +250,17 @@ jobs:
         run: |
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
-          bash ./compile.sh gha-matrix armbian-images  BETA=${{ github.event.inputs.nightlybuild || 'yes' }} CLEAN_INFO=yes CLEAN_MATRIX=yes MATRIX_ARTIFACT_CHUNKS=17 MATRIX_IMAGE_CHUNKS=16 CHECK_OCI=${{ github.event.inputs.checkOci  || 'yes' }} TARGETS_FILENAME="targets-release-nightly.yaml" SKIP_IMAGES=${{ github.event.inputs.skipImages || 'yes' }} ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes #  IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
+          bash ./compile.sh gha-matrix armbian-images \
+          TARGETS_FILTER_INCLUDE='${{ github.event.inputs.targetsFilterInclude || '' }}' \
+          BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
+          CLEAN_INFO=yes \
+          CLEAN_MATRIX=yes \
+          MATRIX_ARTIFACT_CHUNKS=17 \
+          MATRIX_IMAGE_CHUNKS=16 \
+          CHECK_OCI=${{ github.event.inputs.checkOci || 'yes' }} \
+          TARGETS_FILENAME="targets-release-nightly.yaml" \
+          SKIP_IMAGES=${{ github.event.inputs.skipImages || 'yes' }} \
+          ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes # IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
         if: always()
@@ -4886,7 +4901,7 @@ jobs:
   publish-debs-to-repo:
     name: "publish debs to repo"
     runs-on: [ nightly ]
-    if: ${{ !failure() && !cancelled() }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
+    if: ${{ !failure() && !cancelled() && (github.event.inputs.targetsFilterInclude == '') }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
 
