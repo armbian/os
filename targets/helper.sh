@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# list generator 
+# list generator
 #
 boards=($(find build/config/boards/ -mindepth 1 -maxdepth 1 -type f -iregex '.*\.\(tvb\|csc\|wip\|conf\)$' 2> /dev/null | sort | cut -d"/" -f4 | cut -d"." -f1))
 releases=("lunar" "sid")
