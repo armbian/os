@@ -20,12 +20,15 @@ on:
 #      - completed
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
 
   Teamcheck:
-
+  
+    permissions:
+      actions: write
+      
     name: "Check Team Membership"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
