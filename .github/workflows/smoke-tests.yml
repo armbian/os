@@ -37,7 +37,7 @@ jobs:
        with:
          username: ${{ github.actor }}
          team: 'octocats'
-         GITHUB_TOKEN: ${{ secrets.PAT }}    
+         GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}    
     - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
       run: 
         echo "Yes"
