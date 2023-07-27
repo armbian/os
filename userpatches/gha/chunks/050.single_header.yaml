@@ -67,7 +67,7 @@ env:
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: pipeline-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
