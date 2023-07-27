@@ -20,6 +20,20 @@ on:
         required: false
         default: ''
         type: string
+      board:
+        type: choice
+        description: 'Board'
+        options:
+        # boards
+        - all
+        default: 'all'
+      maintainer:
+        type: choice
+        description: 'Maintainer'
+        options:
+        # maintainers
+        - all
+        default: 'all'
       targetsFilterInclude:
         description: 'TARGETS_FILTER_INCLUDE, example: "BOARD:odroidhc4,BOARD:odroidn2"'
         required: false
@@ -245,10 +259,17 @@ jobs:
       - name: Prepare Info JSON and Matrices
         id: prepare-matrix
         run: |
+
+          FILTERS="${{ github.event.inputs.targetsFilterInclude }}"
+
+          if [ -z "${FILTERS}" ] && [ "${{ github.event.inputs.board }}" != "all" ]; then
+              FILTERS='"BOARD:${{ github.event.inputs.board }}"'
+          fi
+
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
           bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] \
-          TARGETS_FILTER_INCLUDE='${{ github.event.inputs.targetsFilterInclude || '' }}' \
+          TARGETS_FILTER_INCLUDE="${FILTERS}" \
           BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
           CLEAN_INFO=yes \
           CLEAN_MATRIX=yes \
