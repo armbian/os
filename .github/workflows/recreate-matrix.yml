@@ -17,7 +17,7 @@ on:
     types: [Recreate Matrix]
 
 concurrency:
-  group: ${{ github.ref }}
+  group: matrix-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
