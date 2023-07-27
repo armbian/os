@@ -26,11 +26,9 @@ jobs:
 
   Teamcheck:
 
-    name: "Generate release"
+    name: "Check Team Membership"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{steps.releases.outputs.version}}
     steps:
     -  uses: tspascoal/get-user-teams-membership@v2
        id: checkUserMember
