@@ -54,6 +54,12 @@ jobs:
         rsync -av os/userpatches/. build/userpatches/
         rm build/userpatches/targets.yaml
 
+    - name: "Generate Lists"
+      run: |
+
+        ls -1 build/config/boards/*.{conf,eos,wip,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/boards.txt
+        grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq > /tmp/maintainers.txt
+
     - name: "Generate Action Script"
       run: |
 
@@ -71,6 +77,10 @@ jobs:
         sed -i 's/targets_filename: .*/targets_filename: "targets-release-nightly.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
+        sed -i '/# boards/r /tmp/boards.txt' ../os/.github/workflows/
+#output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' ../os/.github/workflows/
+#output/info/artifact-image-complete-matrix.yml
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-beta.yml
 
         # generate for latest stable branch
@@ -81,6 +91,8 @@ jobs:
         sed -i 's/repository_ref:.*/repository_ref: "stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release.yaml userpatches/targets.yaml
+#        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+#        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         bash ./compile.sh gha-template
         #cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
@@ -93,6 +105,10 @@ jobs:
         sed -i 's/targets_filename: .*/targets_filename: "targets-all-not-eos.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-all-not-eos.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
+        sed -i '/# boards/r /tmp/boards.txt' ../os/.github/workflows/
+#output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' ../os/.github/workflows/
+#output/info/artifact-image-complete-matrix.yml
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-all.yml
 
         # generate for CI test branch
