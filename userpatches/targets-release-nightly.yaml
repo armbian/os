@@ -255,7 +255,7 @@ targets:
 # ubuntu xfce without apps
 
   xfce-barebone-desktop-unstable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -266,7 +266,7 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: ""
+      DESKTOP_APPGROUPS_SELECTED: "none"
     items:
       - *full-desktop
       - *full-desktop-3d
