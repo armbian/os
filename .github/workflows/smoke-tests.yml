@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     -  uses: tspascoal/get-user-teams-membership@v2
-       id: checkUserMember
+       id: actorTeams
        with:
          username: ${{ github.actor }}
          GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}    
