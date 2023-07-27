@@ -1,4 +1,4 @@
-name: Rootfs
+name: Build Root Filesystem
 on:
   repository_dispatch:
     types: ["armbian"]
@@ -11,7 +11,7 @@ on:
   workflow_call:
   schedule:
     - cron: '0 3 * * *' # Scheduled runs every day at 3am UTC
-    
+
 jobs:
 
   Cancel:
@@ -64,7 +64,7 @@ jobs:
       desktop: 'yes'
       variant: ''
       branch: "${{ github.event.inputs.branch || 'main' }}"
-      
+
   GUI2:
 
     needs: Cancel
@@ -103,7 +103,7 @@ jobs:
       desktop: 'yes'
       variant: '3dsupport browsers chat desktop_tools editors email internet multimedia office programming remote_desktop'    
       branch: "${{ github.event.inputs.branch || 'main' }}"
-      
+
   GUI5:
 
     needs: Cancel
