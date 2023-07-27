@@ -39,8 +39,9 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
          
     - name: Label PR as external contribution
+      if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
       run: |
-        echo "Is: ${{ steps.checkUserMember.outputs.isTeamMember }}"
+        echo "Is: Yes ${{ steps.checkUserMember.outputs.isTeamMember }}"
       
   Smoke:
     needs: Teamcheck
