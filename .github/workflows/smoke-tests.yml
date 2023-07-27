@@ -24,7 +24,26 @@ permissions:
 
 jobs:
 
+  Teamcheck:
+
+    name: "Generate release"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{steps.releases.outputs.version}}
+    steps:
+    -  uses: tspascoal/get-user-teams-membership@v2
+       id: checkUserMember
+       with:
+         username: ${{ github.actor }}
+         team: 'octocats'
+         GITHUB_TOKEN: ${{ secrets.PAT }}    
+    - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
+      run: 
+        echo "Yes"
+        
   Smoke:
+    needs: Teamcheck
     permissions:
       contents: none
 
