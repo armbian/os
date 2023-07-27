@@ -1,4 +1,4 @@
-name: Build Root Filesystem
+name: Build Root Filesystem (cronjob)
 on:
   repository_dispatch:
     types: ["armbian"]

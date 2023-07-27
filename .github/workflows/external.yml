@@ -1,4 +1,4 @@
-name: Verify installation
+name: Verify installation (automatic)
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize, review_requested]
