@@ -507,6 +507,10 @@ jobs:
               FILTERS='"BOARD:${{ github.event.inputs.board }}"'
           fi
 
+          if [ -z "${FILTERS}" ] && [ "${{ github.event.inputs.maintainer }}" != "all" ]; then
+              FILTERS='"BOARD_MAINTAINERS:${{ github.event.inputs.maintainer }}"'
+          fi
+
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
           bash ./compile.sh gha-matrix armbian-images \
