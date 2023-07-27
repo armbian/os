@@ -28,7 +28,7 @@ jobs:
     permissions:
       actions: write
       
-    name: "Check Team Membership"
+    name: "Check ORG Team Membership"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +41,7 @@ jobs:
          team: "Release manager"
          GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
          
-    - name: Label PR as external contribution
+    - name: Cancel if not a part of the team
       if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
       uses: "andymckay/cancel-action@0.3"
       with:
