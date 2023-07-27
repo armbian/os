@@ -41,6 +41,8 @@ jobs:
     - name: Label PR as external contribution
       if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
       uses: "andymckay/cancel-action@0.3"
+      with:
+        access_token: ${{ secrets.GITHUB_TOKEN }}
       
   Smoke:
     needs: Teamcheck
