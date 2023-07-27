@@ -35,7 +35,7 @@ jobs:
        with:
          username: ${{ github.actor }}
          organization: armbian
-         team: release-manager
+         team: "Website"
          GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
          
     - name: Label PR as external contribution
