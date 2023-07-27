@@ -36,7 +36,7 @@ jobs:
          username: ${{ github.actor }}
          team: 'release-manager'
          GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}    
-    - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
+    - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
       run: 
         echo "Yes"
         
