@@ -65,7 +65,7 @@ jobs:
         sed -i 's/cron_job: .*/cron_job: "0 *\/4 * * *"/' userpatches/gha/gha_config.yaml
         sed -i 's/cron_job: .*/cron_job: "0 0 * * SUN"/' userpatches/gha/gha_config.yaml
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts: nightly"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "ARTIFACTS: nightly"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ nightly ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "nightly"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release-nightly.yaml"/' userpatches/gha/gha_config.yaml
@@ -76,7 +76,7 @@ jobs:
         # generate for latest stable branch
         sed -i 's/cron_job: .*/cron_job: "0 0 * * SUN"/' userpatches/gha/gha_config.yaml
         sed -i 's/build_ref: .*/build_ref: "'$LAST'"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts: stable"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "ARTIFACTS: stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
@@ -87,7 +87,7 @@ jobs:
         # generate all
         sed -i 's/cron_job: .*/cron_job: "0 0 * * SAT"/' userpatches/gha/gha_config.yaml
         sed -i 's/build_ref: .*/build_ref: "main"/' userpatches/gha/gha_config.yaml
-        sed -i 's/script_name: .*/script_name: "Artifacts: all"/' userpatches/gha/gha_config.yaml
+        sed -i 's/script_name: .*/script_name: "ARTIFACTS: all"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "all"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-all-not-eos.yaml"/' userpatches/gha/gha_config.yaml
