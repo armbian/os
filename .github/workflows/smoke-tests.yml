@@ -34,12 +34,10 @@ jobs:
        id: checkUserMember
        with:
          username: ${{ github.actor }}
-         team: 'release-manager'
          GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}    
-    - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
-      run: 
-        echo "Yes"
-        
+    - if: ${{ !(contains(steps.actorTeams.outputs.teams, 'A team members') || contains(steps.actorTeams.outputs.teams.teams, 'A team admins')) }}
+      name: Label PR as external contribution
+      
   Smoke:
     needs: Teamcheck
     permissions:
