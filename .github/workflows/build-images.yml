@@ -225,21 +225,8 @@ on:
 
 jobs:
 
-#  Kernel:
-#   name: "Update kernel cache"    
-#   uses: armbian/scripts/.github/workflows/build-kernel-cache.yml@main
-#   with:
-#     ACCESS_NAME: igorpecovnik
-#     BUILD_BRANCH: ""
-#     BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-#   secrets:
-#     ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#     KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-#     KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
-
   generaterelease:
 
-#    needs: Kernel
     name: "Generate release"
     if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: ubuntu-latest
@@ -255,7 +242,7 @@ jobs:
     - name: "Generate version"
       if: ${{ github.event.inputs.bump == 'true' && github.event.inputs.version == '' }}
       id: changelog
-      uses: TriPSs/conventional-changelog-action@v3.19.0
+      uses: TriPSs/conventional-changelog-action@v3.18.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         git-message: 'Bump release to {version}'
