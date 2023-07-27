@@ -31,14 +31,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     -  uses: tspascoal/get-user-teams-membership@v2
-       id: actorTeams
+       id: checkUserMember
        with:
          username: ${{ github.actor }}
-         GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}    
-    - if: ${{ !(contains(steps.actorTeams.outputs.teams, 'A team members') || contains(steps.actorTeams.outputs.teams.teams, 'A team admins')) }}
-      name: Label PR as external contribution
+         organization: armbian
+         team: release-manager
+         GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
+         
+    - name: Label PR as external contribution
       run: |
-        echo "tzest"
+        echo "Is: ${{ steps.checkUserMember.outputs.isTeamMember }}"
       
   Smoke:
     needs: Teamcheck
