@@ -1,0 +1,19 @@
+name: "TST"
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+
+  Prepare:
+    permissions:
+      actions: write
+    name: "Team"
+    runs-on: [ubuntu-latest]
+    steps:
+
+      - name: "Check membership"
+        uses: armbian/actions/team-check@main
+        with:
+          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
