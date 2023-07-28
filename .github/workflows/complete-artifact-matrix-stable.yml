@@ -281,6 +281,7 @@ on:
         default: ''
         type: string
       nightlybuild:
+        default: 'no'
         description: 'yes = nighlty, no = stable'
         required: false
         options: [ 'yes', 'no' ]
