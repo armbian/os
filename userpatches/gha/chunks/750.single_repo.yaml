@@ -112,7 +112,8 @@ jobs: # <TEMPLATE-IGNORE>
           if ! command -v "lftp" > /dev/null 2>&1; then
              sudo apt-get -y -qq install lftp
           fi
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com || true
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --verbose -R --include-glob *.deb  --no-empty-dirs --parallel=8 --no-perms output/debs/. debs/ ;bye" sftp://users.armbian.com || true
 
       - name: Import GPG key from GitHub secrets
         id: import_gpg
