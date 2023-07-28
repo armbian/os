@@ -48,7 +48,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: Cleanup leftover output
         run: |
-          rm -rfv output/images userpatches/VERSION output/debs output/debs-beta
+          rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -152,6 +152,7 @@ jobs: # <TEMPLATE-IGNORE>
           # upload artifacts
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
-      - name: "Cleanup output images"
+      # cleaning self hosted runners
+      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         if: always()
-        run: rm -rfv output/images userpatches/VERSION
+        uses: armbian/actions/runner-clean@main

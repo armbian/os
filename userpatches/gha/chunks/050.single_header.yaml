@@ -86,7 +86,21 @@ concurrency:
 
 jobs:
 
+  team_check:
+    permissions:
+      actions: write
+    name: "Team check"
+    runs-on: [ "ubuntu-latest" ]
+    steps:
+
+      - name: "Check membership"
+        uses: armbian/actions/team-check@main
+        with:
+          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   version_prep:
+    needs: team_check
     name: "Bump version"
     runs-on: [ "ubuntu-latest" ]
     steps:
