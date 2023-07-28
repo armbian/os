@@ -91,10 +91,10 @@ jobs:
         sed -i 's/repository_ref:.*/repository_ref: "stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
         cp userpatches/targets-release.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
         # add boards and maintainers
         sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
-        bash ./compile.sh gha-template
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
         # generate all
