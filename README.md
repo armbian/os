@@ -23,14 +23,14 @@ Build Clusters Health<br>
 - Keeps build framework [packages artifacts](https://github.com/orgs/armbian/packages) cache up to date
 - Keeps stable [apt.armbian.com](https://apt.armbian.com) and nightly [beta.armbian.com](https://beta.armbian.com) packages repository up to date
 - Builds [nightly](https://github.com/armbian/os/releases) and [stable images](https://www.armbian.com/download/) and uploads them to Armbian CDN
-- Keep synchronizing the  selection of [3rd party](external) applications with Armbian repositories
+- Keep synchronizing the selection of [3rd party](external) applications with Armbian repositories
 - Tests install of all packages added onto stable and testing Debian and Ubuntu releases
 
 # When is this happening?
 
 - Artifacts cache and images update every eight hours, starting at 0:00 AM UTC
 - Repository update is updated once per day, at 3:00 AM UTC
-- Manually, when an Armbian member executes a build action
+- Manually, when [Armbian release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
 # Need to include stable or nightly images for your board?
 
@@ -49,6 +49,13 @@ Automation at Pull Request will:
 - Execute **test install on all distributions** where it can be installed
 
 To add a package into auto-sync, you need to add GPG formatted repository key (when you mirror from repository) to the `external/keys` generated configuration file in folder `external`
+
+
+    ├── external
+    │   ├── aptly.conf
+    │   ├── keys
+    │   │   ├── aptly.gpg
+
 
     URL="http://dl.google.com/linux/chrome/deb/ stable"
     KEY="main"
