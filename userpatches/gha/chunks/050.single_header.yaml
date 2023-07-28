@@ -1,4 +1,4 @@
-name: "[[script_name]]"
+name: "[[script_name]] (admin)"
 
 on:
   schedule:
@@ -82,7 +82,7 @@ env:
 
 concurrency:
   group: pipeline-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
 
