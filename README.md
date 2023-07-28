@@ -48,14 +48,14 @@ Automation at Pull Request will:
 - Place package into specific release or component, or everywhere
 - Execute **test install on all distributions** where it can be installed
 
-To add a package into auto-sync, you need to add GPG formatted repository key (when you mirror from repository) to the `external/keys` generated configuration file in folder `external`
-
+To add a package into auto-sync, you need to add 
 
     ├── external
     │   ├── aptly.conf
     │   ├── keys
     │   │   ├── aptly.gpg
 
+GPG formatted repository key (when you mirror from repository) to the `external/keys` generated configuration file in folder `external`. Example of external package example.conf:
 
     URL="http://dl.google.com/linux/chrome/deb/ stable"
     KEY="main"
