@@ -1,4 +1,4 @@
-name: Smoke tests on DUTs
+name: Smoke tests on DUTs (admin)
 #
 # Runs varios tests with latest nighly codebase on a real hardware
 #
@@ -24,7 +24,23 @@ permissions:
 
 jobs:
 
+  Teamcheck:
+    permissions:
+      actions: write
+      
+    name: "Check ORG Team Membership"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: "Check membership"
+      uses: armbian/actions/team-check@main
+      with:
+        ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Smoke:
+    needs: Teamcheck
     permissions:
       contents: none
 

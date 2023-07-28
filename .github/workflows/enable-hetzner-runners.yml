@@ -1,4 +1,4 @@
-name: Enable Hetzner Runners
+name: Enable Hetzner Runners (admin)
 on:
   workflow_dispatch:
     inputs:
@@ -43,7 +43,23 @@ concurrency:
 
 jobs:
 
+  Teamcheck:
+    permissions:
+      actions: write
+      
+    name: "Check ORG Team Membership"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: "Check membership"
+      uses: armbian/actions/team-check@main
+      with:
+        ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Prepare:
+    needs: Teamcheck
     name: "Enable cloud runners"
     outputs:
       matrix: ${{steps.machine-number.outputs.matrix}}
