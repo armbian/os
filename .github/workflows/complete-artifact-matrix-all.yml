@@ -1,7 +1,7 @@
 
 # template file: 050.single_header.yaml
 
-name: "ARTIFACTS: all"
+name: "ARTIFACTS: all (admin)"
 
 on:
   schedule:
@@ -323,7 +323,7 @@ env:
 
 concurrency:
   group: pipeline-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
 
