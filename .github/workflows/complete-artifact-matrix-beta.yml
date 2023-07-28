@@ -5372,6 +5372,11 @@ jobs:
           # upload artifacts
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /opt/armbian_repo/ repository/nightly ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
+    outputs:
+
+      # not related to matrix
+      version: ${{ needs.matrix_prep.outputs.version }}
+
 # template file: 950.single_footer.yaml
 
   # ------ aggregate all artifact chunks into a single dependency -------
@@ -5411,7 +5416,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
-          tag: "${{ env.VERSION_OVERRIDE }}"
+          tag: "${{ needs.publish-debs-to-repo.outputs.version }}"
           omitBody: true
           omitName: true
           allowUpdates: true
