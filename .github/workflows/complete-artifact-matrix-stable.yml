@@ -281,7 +281,6 @@ on:
         default: ''
         type: string
       nightlybuild:
-        default: 'no'
         description: 'yes = nighlty, no = stable'
         required: false
         options: [ 'yes', 'no' ]
@@ -323,7 +322,7 @@ env:
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
-  group: pipeline-${{ github.ref }}
+  group: pipeline-stable${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
