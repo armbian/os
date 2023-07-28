@@ -38,7 +38,7 @@ jobs: # <TEMPLATE-IGNORE>
       - uses: ncipollo/release-action@v1
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
-          tag: "${{ env.VERSION_OVERRIDE }}"
+          tag: "${{ needs.publish-debs-to-repo.outputs.version }}"
           omitBody: true
           omitName: true
           allowUpdates: true

@@ -184,3 +184,7 @@ jobs: # <TEMPLATE-IGNORE>
           # upload artifacts
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /opt/armbian_repo/ repository/[[repository_ref]] ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
+    outputs:
+
+      # not related to matrix
+      version: ${{ needs.matrix_prep.outputs.version }}
