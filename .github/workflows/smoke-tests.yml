@@ -33,20 +33,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    -  uses: tspascoal/get-user-teams-membership@v2
-       id: checkUserMember
-       with:
-         username: ${{ github.actor }}
-         organization: armbian
-         team: "Release manager"
-         GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
-         
-    - name: Cancel if not a part of the team
-      if: ${{ steps.checkUserMember.outputs.isTeamMember == 'false' }}
-      uses: "andymckay/cancel-action@0.3"
+    - name: "Check membership"
+      uses: armbian/actions/team-check@main
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-      
+        ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Smoke:
     needs: Teamcheck
     permissions:
