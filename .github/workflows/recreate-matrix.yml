@@ -95,7 +95,7 @@ jobs:
         sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         bash ./compile.sh gha-template
-        #cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
         # generate all
         sed -i 's/cron_job: .*/cron_job: "0 0 * * SAT"/' userpatches/gha/gha_config.yaml
@@ -129,7 +129,7 @@ jobs:
         git config --local user.name "Armbianworker"
         #git pull --rebase
         git add .github/workflows/complete-artifact-matrix-beta.yml
-        #git add .github/workflows/complete-artifact-matrix-stable.yml
+        git add .github/workflows/complete-artifact-matrix-stable.yml
         #git add .github/workflows/complete-artifact-matrix-testing.yml
         git add .github/workflows/complete-artifact-matrix-all.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
