@@ -5432,11 +5432,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           days_old: 7
 
-      # Switch pre-release to release
+      # Switch pre-release to release ${{ env.version }}
       - uses: ncipollo/release-action@v1
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
-          tag: "${{ needs.publish-debs-to-repo.outputs.version }}"
+          tag: "${{ env.version }}"
           omitBody: true
           omitName: true
           allowUpdates: true
