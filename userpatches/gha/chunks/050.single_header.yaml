@@ -160,6 +160,15 @@ jobs:
         if: ${{ steps.changelog.outputs.tag }}
         run: |
           echo "VERSION_OVERRIDE=${{ steps.changelog.outputs.tag }}" >> $GITHUB_ENV
+          mkdir -p downloads
+          echo "${{ steps.changelog.outputs.tag }}" > downloads/version
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: assets-for-download
+          path: downloads
+          retention-days: 5
 
       - name: "Generate body file"
         run: |
