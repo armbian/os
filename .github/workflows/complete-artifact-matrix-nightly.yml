@@ -4,8 +4,7 @@
 name: "ARTIFACTS: nightly (admin)"
 
 on:
-  schedule:
-    - cron: 0 0 * * SUN
+  0 0 * * SUN
   workflow_dispatch:
     inputs:
       skipImages:

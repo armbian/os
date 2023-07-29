@@ -4,8 +4,7 @@
 name: "ARTIFACTS: all (admin)"
 
 on:
-  schedule:
-    - cron: 0 0 * * SAT
+  0 0 * * SAT
   workflow_dispatch:
     inputs:
       skipImages:

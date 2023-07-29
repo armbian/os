@@ -4,8 +4,7 @@
 name: "ARTIFACTS: stable (admin)"
 
 on:
-  schedule:
-    - cron: */20 * * * *
+  */20 * * * *
   workflow_dispatch:
     inputs:
       skipImages:
