@@ -1,7 +1,7 @@
 
 # template file: 050.single_header.yaml
 
-name: "ARTIFACTS: stable (admin)"
+name: "ARTIFACTS: old stable (admin)"
 
 on:
   schedule:
@@ -299,7 +299,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
-  BUILD_REF: "main" # branch or tag or sha1
+  BUILD_REF: "v23.05.2" # branch or tag or sha1
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
@@ -322,7 +322,7 @@ env:
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
-  group: pipeline-stable${{ github.ref }}
+  group: pipeline-old-stable${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
