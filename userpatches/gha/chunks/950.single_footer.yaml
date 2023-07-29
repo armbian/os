@@ -19,7 +19,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Read version
         run: |
 
-          echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_OUTPUT
+          echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
           cat downloads/version
 
       - uses: geekyeggo/delete-artifact@v2
@@ -44,8 +44,7 @@ jobs: # <TEMPLATE-IGNORE>
           days_old: 7
 
       # Switch pre-release to release
-      - name: "Version ${{ env.version }}"
-        uses: ncipollo/release-action@v1
+      - uses: ncipollo/release-action@v1
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
           tag: "${{ env.version }}"
