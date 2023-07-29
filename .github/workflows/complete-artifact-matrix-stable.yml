@@ -56,6 +56,7 @@ on:
         - espressobin
         - fe-som-rk3399
         - firefly-rk3399
+        - fxblox-rk1
         - helios4
         - helios64
         - hinlink-h88k
@@ -263,6 +264,7 @@ on:
         - lanefu
         - lbmendes
         - linhz0hz
+        - mahdi
         - monkaBlyat
         - paolosabatino
         - pyavitz
@@ -401,6 +403,15 @@ jobs:
         if: ${{ steps.changelog.outputs.tag }}
         run: |
           echo "VERSION_OVERRIDE=${{ steps.changelog.outputs.tag }}" >> $GITHUB_ENV
+          mkdir -p downloads
+          echo "${{ steps.changelog.outputs.tag }}" > downloads/version
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: assets-for-download
+          path: downloads
+          retention-days: 5
 
       - name: "Generate body file"
         run: |
@@ -5388,13 +5399,20 @@ jobs:
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
-      # Cleaning releases
-      #- name: "Keep only 7 releases"
-      #  uses: Vucko130/delete-older-releases@v0.2.2
-      #  with:
-      #    keep_latest: 7
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+          name: assets-for-download
+          path: downloads
+
+      - name: Read version
+        run: |
+
+          echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_OUTPUT
+
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: assets-for-download
+          failOnError: false
 
       # Cleaning releases
       - uses: dev-drprasad/delete-older-releases@v0.2.1
