@@ -1,4 +1,4 @@
-name: Smoke tests on DUTs (admin)
+name: Smoke tests (repository update)
 #
 # Runs varios tests with latest nighly codebase on a real hardware
 #
@@ -14,10 +14,10 @@ on:
         type: boolean
         description: "Power Management"
         default: true
-#  workflow_run:
-#    workflows: ["Repository update"]
-#    types:
-#      - completed
+  workflow_run:
+    workflows: ["Repository update"]
+    types:
+      - completed
 
 permissions:
   contents: read
