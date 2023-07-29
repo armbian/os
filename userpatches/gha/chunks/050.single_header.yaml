@@ -1,8 +1,7 @@
 name: "[[script_name]] (admin)"
 
 on:
-  schedule:
-    - cron: [[cron_job]]
+  [[cron_job]]
   workflow_dispatch:
     inputs:
       skipImages:
