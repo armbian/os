@@ -5401,6 +5401,7 @@ jobs:
     steps:
 
       - name: Download all workflow run artifacts
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         uses: actions/download-artifact@v3
         with:
           name: assets-for-download
@@ -5410,7 +5411,6 @@ jobs:
         run: |
 
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
-          cat downloads/version
 
       - uses: geekyeggo/delete-artifact@v2
         with:
