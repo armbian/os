@@ -107,7 +107,7 @@ jobs:
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         # we need unique concurency id
         sed -i "s/pipeline-/pipeline-stable/" output/info/artifact-image-complete-matrix.yml
-        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-old-stable.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
 
 
         #
