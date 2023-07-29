@@ -4,7 +4,7 @@
 name: "ARTIFACTS: stable (admin)"
 
 on:
-  */20 * * * *
+  
   workflow_dispatch:
     inputs:
       skipImages:
