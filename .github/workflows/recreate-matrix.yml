@@ -76,6 +76,7 @@ jobs:
         sed -i 's/repository_runner:.*/repository_runner: "[ nightly ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "nightly"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release-nightly.yaml"/' userpatches/gha/gha_config.yaml
+        cp userpatches/gha/gha_config.yaml ../os/userpatches/gha/gha_config_nightly.yaml
         cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
@@ -92,6 +93,7 @@ jobs:
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
+        cp userpatches/gha/gha_config.yaml ../os/userpatches/gha/gha_config_old_stable.yaml
         cp userpatches/targets-release.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
@@ -108,6 +110,7 @@ jobs:
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "stable"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-release.yaml"/' userpatches/gha/gha_config.yaml
+        cp userpatches/gha/gha_config.yaml ../os/userpatches/gha/gha_config_stable.yaml
         cp userpatches/targets-release.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
@@ -124,6 +127,7 @@ jobs:
         sed -i 's/repository_runner:.*/repository_runner: "[ stable ]"/' userpatches/gha/gha_config.yaml
         sed -i 's/repository_ref:.*/repository_ref: "all"/' userpatches/gha/gha_config.yaml
         sed -i 's/targets_filename: .*/targets_filename: "targets-all-not-eos.yaml"/' userpatches/gha/gha_config.yaml
+        cp userpatches/gha/gha_config.yaml ../os/userpatches/gha/gha_config_all.yaml
         cp userpatches/targets-all-not-eos.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
@@ -150,6 +154,12 @@ jobs:
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
         #git pull --rebase
+
+        git add userpatches/gha/gha_config_nightly.yaml
+        git add userpatches/gha/gha_config_stable.yaml
+        git add userpatches/gha/gha_config_old_stable.yaml
+        git add userpatches/gha/gha_config_all.yaml
+
         git add .github/workflows/complete-artifact-matrix-beta.yml
         git add .github/workflows/complete-artifact-matrix-stable.yml
         git add .github/workflows/complete-artifact-matrix-old-stable.yml
