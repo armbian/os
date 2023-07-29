@@ -21,5 +21,29 @@ jobs:
     needs: "Prepare"
     runs-on: [ubuntu-latest]
     steps:
-      - name: "i"
-        run: echo
+
+      - name: Install SSH key for storage
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+        if: env.KEY_ARMBIAN_UPLOAD != null
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Get content from server
+        timeout-minutes: 180
+        env:
+          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+
+        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
+        run: |
+
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;find -l debs/;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }} > x.txt
+          cat x.txt
