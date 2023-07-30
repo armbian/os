@@ -7,14 +7,6 @@
 <a href=https://github.com/armbian/os/actions/workflows/complete-artifact-matrix-all.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/complete-artifact-matrix-all.yml?logo=githubactions&label=Artifacts%20make&style=for-the-badge&branch=main"></a>
 <a href=https://github.com/armbian/os/actions/workflows/repository-update.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/repository-update.yml?logo=githubactions&label=Repository%20update&style=for-the-badge&branch=main"></a>
 <a href=https://github.com/armbian/os/actions/workflows/smoke-tests.yml><img alt="Smoke test success ratio" src="https://img.shields.io/badge/dynamic/json?logo=speedtest&label=Smoke%20tests%20success&query=SMOKE&color=44cc11&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
-<br><br>
-Build Clusters Health<br>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-alpha/os/build.yml?label=01&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-beta/os/build.yml?label=02&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-gama/os/build.yml?label=03&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian-delta/os/build.yml?label=04&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbiankappa/os/build.yml?label=05&style=flat-square&branch=main"></a>
-<a href="#"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbianro/os/build.yml?label=06&style=flat-square&branch=main"></a>
 </p>
 
 
