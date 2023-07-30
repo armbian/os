@@ -9,13 +9,13 @@ on:
         required: true
         options: [ 'yes', 'no' ]
         type: choice
-        [[skipImagesDefaults]]
+        default: [[skipImagesDefaults]]
       checkOci:
         description: 'Check OCI for existing artifacts? yes = check OCI, no = always build everything'
         required: true
         options: [ 'yes', 'no' ]
         type: choice
-        [[checkOciDefaults]]
+        default: [[checkOciDefaults]]
       extraParamsAllBuilds:
         description: 'Extra params for all builds/jobs (prepare/artifact/image) (eg: DEBUG=yes)'
         required: false
@@ -45,13 +45,13 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        [[nightlybuildDefaults]]
+        default: [[nightlybuildDefaults]]
       uploadtoserver:
         description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
         required: false
         options: [ 'github', 'armbian', 'both' ]
         type: choice
-        [[uploadtoserverDefaults]]
+        default: [[uploadtoserverDefaults]]
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
