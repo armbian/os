@@ -528,11 +528,11 @@ jobs:
 
           FILTERS="${{ github.event.inputs.targetsFilterInclude }}"
 
-          if [ -z "${FILTERS}" ] && [ "${{ github.event.inputs.board }}" != "all" ]; then
+          if [ -z "${FILTERS}" ] && [ "${{ github.event.inputs.board }}" != "all" ] && [ -n "${{ github.event.inputs.board }}" ]; then
               FILTERS='"BOARD:${{ github.event.inputs.board }}"'
           fi
 
-          if [ -z "${FILTERS}" ] && [ "${{ github.event.inputs.maintainer }}" != "all" ]; then
+          if [ -z "${FILTERS}" ] && [ "${{ github.event.inputs.maintainer }}" != "all" ] && [ -n "${{ github.event.inputs.board }}" ]; then
               FILTERS='"BOARD_MAINTAINERS:${{ github.event.inputs.maintainer }}"'
           fi
 
