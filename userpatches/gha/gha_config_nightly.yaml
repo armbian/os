@@ -6,6 +6,12 @@ build_ref: "main"
 script_name: "ARTIFACTS: nightly"
 repository_ref: "nightly"
 
+# menu defaults
+skipImagesDefaults: "defaults: 'yes'"
+checkOciDefaults: "defaults: 'yes'"
+nightlybuildDefaults: "defaults: 'yes'"
+uploadtoserverDefaults: "defaults: 'github'"
+
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
 userpatches_ref: "main"

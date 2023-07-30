@@ -6,6 +6,12 @@ build_ref: "v23.05.2"
 script_name: "ARTIFACTS: old stable"
 repository_ref: "stable"
 
+# menu defaults
+skipImagesDefaults: "defaults: 'no'"
+checkOciDefaults: "defaults: 'yes'"
+nightlybuildDefaults: "defaults: 'no'"
+uploadtoserverDefaults: "defaults: 'armbian'"
+
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
 userpatches_ref: "main"

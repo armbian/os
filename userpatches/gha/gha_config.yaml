@@ -6,6 +6,12 @@ build_ref: "v23.05"
 script_name: "Build Artifacts and Images"
 repository_ref: "stable"
 
+# menu defaults
+skipImagesDefaults: "defaults: 'yes'"
+checkOciDefaults: "defaults: 'yes'"
+nightlybuildDefaults: "defaults: 'yes'"
+uploadtoserverDefaults: "defaults: 'both'"
+
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
 userpatches_ref: "main"
