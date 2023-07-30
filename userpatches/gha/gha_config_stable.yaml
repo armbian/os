@@ -7,10 +7,10 @@ script_name: "ARTIFACTS: stable"
 repository_ref: "stable"
 
 # menu defaults
-skipImagesDefaults: "no"
-checkOciDefaults: "yes"
-nightlybuildDefaults: "no"
-uploadtoserverDefaults: "armbian"
+skipImagesDefaults: "'no'"
+checkOciDefaults: "'yes'"
+nightlybuildDefaults: "'yes'"
+uploadtoserverDefaults: "'armbian'"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"

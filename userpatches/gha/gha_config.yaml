@@ -7,10 +7,10 @@ script_name: "Build Artifacts and Images"
 repository_ref: "stable"
 
 # menu defaults
-skipImagesDefaults: "yes"
-checkOciDefaults: "yes"
-nightlybuildDefaults: "yes"
-uploadtoserverDefaults: "both"
+skipImagesDefaults: "'yes'"
+checkOciDefaults: "'yes'"
+nightlybuildDefaults: "'yes'"
+uploadtoserverDefaults: "'both'"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
