@@ -288,13 +288,13 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        default: no
+        default: 'yes'
       uploadtoserver:
         description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
         required: false
         options: [ 'github', 'armbian', 'both' ]
         type: choice
-        default: armbian
+        default: 'armbian'
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
