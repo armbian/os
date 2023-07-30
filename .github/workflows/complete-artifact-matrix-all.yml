@@ -13,13 +13,13 @@ on:
         required: true
         options: [ 'yes', 'no' ]
         type: choice
-        defaults: 'yes'
+        default: yes
       checkOci:
         description: 'Check OCI for existing artifacts? yes = check OCI, no = always build everything'
         required: true
         options: [ 'yes', 'no' ]
         type: choice
-        defaults: 'yes'
+        default: yes
       extraParamsAllBuilds:
         description: 'Extra params for all builds/jobs (prepare/artifact/image) (eg: DEBUG=yes)'
         required: false
@@ -289,13 +289,13 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        defaults: 'yes'
+        default: yes
       uploadtoserver:
         description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
         required: false
         options: [ 'github', 'armbian', 'both' ]
         type: choice
-        defaults: 'github'
+        default: github
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
