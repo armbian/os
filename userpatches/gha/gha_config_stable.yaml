@@ -3,14 +3,14 @@ org: "armbian" # can't be an expression, only string.
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
 build_ref: "main"
-script_name: "ARTIFACTS: stable"
+script_name: "Build Official Images (admin)"
 repository_ref: "stable"
 
 # menu defaults
 skipImagesDefaults: "'no'"
 checkOciDefaults: "'yes'"
-nightlybuildDefaults: "'yes'"
-uploadtoserverDefaults: "'armbian'"
+nightlybuildDefaults: "'no'"
+uploadtoserverDefaults: "'both'"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"

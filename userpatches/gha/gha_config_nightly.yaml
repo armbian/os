@@ -3,7 +3,7 @@ org: "armbian" # can't be an expression, only string.
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
 build_ref: "main"
-script_name: "ARTIFACTS: nightly"
+script_name: "Build Nightly Images (cronjob)"
 repository_ref: "nightly"
 
 # menu defaults
