@@ -1,7 +1,7 @@
 
 # template file: 050.single_header.yaml
 
-name: "ARTIFACTS: stable (admin)"
+name: "Build Official Images (admin)"
 
 on:
   
@@ -288,13 +288,13 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        default: 'yes'
+        default: 'no'
       uploadtoserver:
         description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
         required: false
         options: [ 'github', 'armbian', 'both' ]
         type: choice
-        default: 'armbian'
+        default: 'both'
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
