@@ -28,7 +28,7 @@ targets:
       #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
       #not-eos: yes # not-eos boards, all branches
-      not-eos-with-video: yes
+      not-eos-with-video: yes # not-eos boards, all branches, with video out
 
   all-cli:
     enabled: yes
