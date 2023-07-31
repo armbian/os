@@ -4,7 +4,8 @@
 name: "Build Nightly Images (cronjob)"
 
 on:
-  
+  schedule:
+   - cron: '0 13 * * *'
   workflow_dispatch:
     inputs:
       skipImages:
@@ -266,7 +267,7 @@ on:
         - lanefu
         - lbmendes
         - linhz0hz
-        - mahdi
+        - mahdichi
         - monkaBlyat
         - paolosabatino
         - pyavitz
