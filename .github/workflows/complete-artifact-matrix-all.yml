@@ -372,7 +372,7 @@ jobs:
 
           echo "file=nightly" >> $GITHUB_OUTPUT
           echo "pre_release=true" >> $GITHUB_OUTPUT
-          if [ "${{ github.event.inputs.nightlybuild }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'yes'" }} == "no" ]; then
               echo "pre_release=false" >> $GITHUB_OUTPUT
               echo "file=stable" >> $GITHUB_OUTPUT
           fi
