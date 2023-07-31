@@ -5,7 +5,7 @@ name: "Build Nightly Images (cronjob)"
 
 on:
   schedule:
-   - cron: '*/30 * * * *'
+   - cron: '0 */3 * * *'
   workflow_dispatch:
     inputs:
       skipImages:
@@ -5354,7 +5354,7 @@ jobs:
           set -x
           export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
           # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
-          if [[ "${{ github.event.inputs.nightlybuild }} == "yes" ]]; then
+          if [[ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "yes" ]]; then
             export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
           else
             export INCOMING_DEBS_DIR="$(pwd)/output/debs"
