@@ -134,14 +134,14 @@ jobs:
           fi
 
       - name: Read Version
-        #if: ${{ github.event.inputs.skipImages != 'yes' }}
+        #if: ${{ github.event.inputs.skipImages != [[skipImagesDefaults]] }}
         run: |
 
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.19.0
         with:
@@ -196,7 +196,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         with:
           tag: "${{ env.VERSION_OVERRIDE }}"
           name: "${{ env.VERSION_OVERRIDE }}"
@@ -300,14 +300,14 @@ jobs:
           cd build
           bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
-          BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
+          BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} \
           CLEAN_INFO=yes \
           CLEAN_MATRIX=yes \
           MATRIX_ARTIFACT_CHUNKS=[[num_chunks_artifacts]] \
           MATRIX_IMAGE_CHUNKS=[[num_chunks_images]] \
-          CHECK_OCI=${{ github.event.inputs.checkOci || 'yes' }} \
+          CHECK_OCI=${{ github.event.inputs.checkOci || [[nightlybuildDefaults]] }} \
           TARGETS_FILENAME="[[ targets_filename ]]" \
-          SKIP_IMAGES=${{ github.event.inputs.skipImages || 'yes' }} \
+          SKIP_IMAGES=${{ github.event.inputs.skipImages || [[skipImagesDefaults]]}} \
           ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes # IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
