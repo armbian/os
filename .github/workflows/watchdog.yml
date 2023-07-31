@@ -1,0 +1,35 @@
+#
+# This action recreate action for building stable images
+#
+name: Watchdog (cronjob)
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
+
+jobs:
+
+  Check:
+    name: "Watchdog"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Read status"
+        run: |
+
+          OWNER_REPO="armbian/os"
+          ATTEMPTS="5"
+
+          WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.name=="Build Nightly Images (cronjob)")' | jq -r '.id')
+          read ID STATUS ATTEMPT <<< $(gh api "/repos/${OWNER_REPO}/actions/workflows/${WORKFLOW}/runs" | jq '.workflow_runs[]' | jq -r '.id,.conclusion,.run_attempt' | head -3 | xargs -n3 -d'\n')
+
+          # Debug print
+          echo "ID=$ID STATUS=$STATUS ATTEMPT=$ATTEMPT"
+
+          # if attempt is lower then 5 and status is "cancelled" or "failed", rerun failed jobs
+          if [ "${ATTEMPT}" -lt "${ATTEMPTS}" ] && ([ "$STATUS" == "failure" ] || [ "$STATUS" == "cancelled" ]); then
+          gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/${OWNER_REPO}/actions/runs/${ID}/rerun-failed-jobs
+          fi
