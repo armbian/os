@@ -151,7 +151,7 @@ jobs: # <TEMPLATE-IGNORE>
           set -x
           export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
           # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
-          if [% raw %][[ "${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}" == "yes" ]][% endraw %]; then
+          if [% raw %][[ "${{ github.event.inputs.nightlybuild || [% endraw %][[nightlybuildDefaults]][% raw %] }}" == "yes" ]][% endraw %]; then
             export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
           else
             export INCOMING_DEBS_DIR="$(pwd)/output/debs"
