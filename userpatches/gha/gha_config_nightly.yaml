@@ -22,5 +22,5 @@ ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
 
 # repository runner
-cron_job: ""
+cron_job: "schedule:\n   - cron: '0 13 * * *'"
 repository_runner: "[ nightly ]"
