@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Nightly images"
+      - name: "Nightly images and rootfs"
         run: |
 
           OWNER_REPO="armbian/os"
