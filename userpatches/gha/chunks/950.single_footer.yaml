@@ -31,7 +31,7 @@ jobs: # <TEMPLATE-IGNORE>
       - uses: dev-drprasad/delete-older-releases@v0.2.1
         with:
           repo: armbian/os
-          keep_latest: 3
+          keep_latest: 32
           delete_tag_pattern: trunk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,7 +41,7 @@ jobs: # <TEMPLATE-IGNORE>
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 7
+          days_old: 14
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
