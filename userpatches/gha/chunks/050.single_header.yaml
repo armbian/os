@@ -145,7 +145,7 @@ jobs:
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3.19.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'
           git-user-name: armbianworker
           git-user-email: info@armbian.com
@@ -204,7 +204,7 @@ jobs:
           prerelease: "true"
           allowUpdates: true
           removeArtifacts: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
         id: releases
