@@ -5,7 +5,7 @@ name: "Build Nightly Images (cronjob)"
 
 on:
   schedule:
-   - cron: '0 */3 * * *'
+   - cron: '0 */1 * * *'
   workflow_dispatch:
     inputs:
       skipImages:
