@@ -4,6 +4,7 @@ org: "armbian" # can't be an expression, only string.
 org_and_build_repo: "armbian/build"
 build_ref: "main"
 script_name: "Build Nightly Images (cronjob)"
+concurrency_group: ""
 repository_ref: "nightly"
 
 # menu defaults
@@ -22,5 +23,7 @@ ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
 
 # repository runner
-cron_job: "schedule:\n   - cron: '0 */3 * * *'"
 repository_runner: "[ nightly ]"
+
+# when this should run
+cron_job: "schedule:\n   - cron: '00 4 * * *'"

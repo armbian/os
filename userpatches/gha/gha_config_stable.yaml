@@ -4,13 +4,14 @@ org: "armbian" # can't be an expression, only string.
 org_and_build_repo: "armbian/build"
 build_ref: "main"
 script_name: "Build Official Images (admin)"
+concurrency_group: "${{ github.run_id }}-"
 repository_ref: "stable"
 
 # menu defaults
 skipImagesDefaults: "'no'"
 checkOciDefaults: "'yes'"
 nightlybuildDefaults: "'no'"
-uploadtoserverDefaults: "'both'"
+uploadtoserverDefaults: "'armbian'"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
@@ -22,5 +23,7 @@ ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
 
 # repository runner
-cron_job: ""
 repository_runner: "[ stable ]"
+
+# when this should run
+cron_job: ""
