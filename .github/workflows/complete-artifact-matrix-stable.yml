@@ -294,7 +294,7 @@ on:
         required: false
         options: [ 'github', 'armbian', 'both' ]
         type: choice
-        default: 'both'
+        default: 'armbian'
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
@@ -327,7 +327,7 @@ env:
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
-  group: pipeline-stable${{ github.ref }}
+  group: ${{ github.run_id }}-pipeline-stable${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -2837,7 +2837,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -2992,7 +2992,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3147,7 +3147,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3302,7 +3302,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3457,7 +3457,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3612,7 +3612,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3767,7 +3767,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3922,7 +3922,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4077,7 +4077,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4232,7 +4232,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4387,7 +4387,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4542,7 +4542,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4697,7 +4697,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4852,7 +4852,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -5007,7 +5007,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -5162,7 +5162,7 @@ jobs:
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: (${{ github.event.inputs.uploadtoserver || 'both' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'both' }}  == 'both')
+        if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
