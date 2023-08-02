@@ -4,7 +4,7 @@
 name: Watchdog (cronjob)
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 env:
@@ -25,7 +25,7 @@ jobs:
         run: |
 
           OWNER_REPO="armbian/os"
-          ATTEMPTS="5"
+          ATTEMPTS="3"
 
           WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.name=="Build Nightly Images (cronjob)")' | jq -r '.id')
           read ID STATUS ATTEMPT <<< $(gh api "/repos/${OWNER_REPO}/actions/workflows/${WORKFLOW}/runs" | jq '.workflow_runs[]' | jq -r '.id,.conclusion,.run_attempt' | head -3 | xargs -n3 -d'\n')
