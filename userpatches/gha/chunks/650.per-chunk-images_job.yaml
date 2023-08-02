@@ -118,7 +118,7 @@ jobs: # <TEMPLATE-IGNORE>
       - name: "Upload artefacts"
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        if: ${{ (github.event.inputs.uploadtoserver || [[uploadtoserverDefaults]]) == 'github' || (github.event.inputs.uploadtoserver || [[uploadtoserverDefaults]]) == 'both' }}
+        if: (${{ github.event.inputs.uploadtoserver || [[uploadtoserverDefaults]] }} == 'github') || (${{ github.event.inputs.uploadtoserver || [[uploadtoserverDefaults]] }}  == 'both')
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"

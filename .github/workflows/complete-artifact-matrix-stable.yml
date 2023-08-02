@@ -2857,7 +2857,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3012,7 +3012,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3167,7 +3167,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3322,7 +3322,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3477,7 +3477,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3632,7 +3632,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3787,7 +3787,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -3942,7 +3942,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -4097,7 +4097,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -4252,7 +4252,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -4407,7 +4407,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -4562,7 +4562,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -4717,7 +4717,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -4872,7 +4872,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -5027,7 +5027,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
@@ -5182,7 +5182,7 @@ jobs:
           KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
           ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver || 'both' == 'armbian' || github.event.inputs.uploadtoserver || 'both' == 'both' ) }}
+        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
         run: |
 
           # install dependencies
