@@ -20,8 +20,10 @@
 
 # When is this happening?
 
-- Artifacts cache and images update every eight hours, starting at 0:00 AM UTC
+- Artifacts cache is updated every eight hours, starting at 0:00 AM UTC
 - Repository update is updated once per day, at 3:00 AM UTC
+- Smoke tests is executed after **repository update** is finished.
+- Nightly images are build once per day, at 5:00 AM UTC
 - Manually, when [Armbian release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
 # Want to enable images for your board?
@@ -29,44 +31,6 @@
 Armbian build system includes many build configurations, but we are producing only some possible build options for all images. Only the most popular ones get everything, while others get the bare minimum, some nothing. 
 
 To enable a board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [yaml files here](userpatches/) and send a pull request. The configuration file is self-explanatory.
-
-# Import 3rd party package into Armbian
-
-We don't want to include 3rd party and Personal Package Archives (PPAs) repository components within the official release. However, adding a more recent or different version may occur for security and feature purposes. 
-
-Automation at Pull Request will:
-
-- Download packages from repository directly or from GitHub releases
-- Place package into specific release or component, or everywhere
-- Execute **test install on all distributions** where it can be installed
-
-To add a package into auto-sync, you need to add 
-
-    ├── external
-    │   ├── aptly.conf
-    │   ├── keys
-    │   │   ├── aptly.gpg
-
-GPG formatted repository key (when you mirror from repository) to the `external/keys` generated configuration file in folder `external`. Example of external package example.conf:
-
-    URL="http://dl.google.com/linux/chrome/deb/ stable"
-    KEY="main"
-    RELEASE=all
-    TARGET=desktop
-    METHOD=aptly
-    INSTALL=google-chrome-stable
-    GLOB="Name (% google-chrome-stable), \$Version (>= 111.0)"
-    ARCH=amd64
-    REPOSITORY=BS
-
-- *URL* = repository URL (http://dl.google.com/linux/chrome/deb/ stable)
-- *KEY* = Source component = main
-- *RELEASE* = all|jammy|lunar|bullseye|sid
-- *TARGET* = Armbian repository component (utils, desktop)
-- *METHOD* = aptly (for Debian-based repo), gh (download package from GitHub releases)
-- *GLOB* = `Name (% http-*)` packages that starts with http. [Other variants](https://www.aptly.info/doc/feature/query/)
-- *ARCH* = limit mirroring to architecture
-- *REPOSITORY* = B = beta.armbian.com, S = apt.armbian.com
 
 ## Development
 
