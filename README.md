@@ -26,12 +26,6 @@
 - Nightly images are build once per day, at 5:00 AM UTC
 - Manually, when Armbian [release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
-# Want to enable images for your board?
-
-Armbian build system includes many build configurations, but we are producing only some possible build options for all images. Only the most popular ones get everything, while others get the bare minimum, some nothing. 
-
-To enable a board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [yaml files here](userpatches/) and send a pull request. The configuration file is self-explanatory.
-
 ## Development
 
 - [Pull request](https://github.com/armbian/build/pulls)
