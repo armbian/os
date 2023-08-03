@@ -1,5 +1,5 @@
 #
-# Armbian release template
+# Armbian release template. Use to create all stable images
 #
 
 common-gha-configs:
@@ -41,6 +41,9 @@ lists:
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: mangopi-mq, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
+    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
+    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
+    - { BOARD: mekotronics-r58x, BRANCH: legacy }
     - { BOARD: micro, BRANCH: current }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopiair, BRANCH: current }
@@ -49,6 +52,7 @@ lists:
     - { BOARD: nanopi-r4se, BRANCH: current }
     - { BOARD: nezha, BRANCH: current }
     - { BOARD: orangepi2, BRANCH: current }
+    - { BOARD: orangepi3, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepi-rk3399, BRANCH: current }
@@ -89,6 +93,7 @@ lists:
 
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: firefly-rk3399, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim2, BRANCH: current }
@@ -130,18 +135,33 @@ lists:
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopim4v2, BRANCH: current }
     - { BOARD: nanopim4, BRANCH: current }
+    - { BOARD: odroidc2, BRANCH: current }
+    - { BOARD: odroidc4, BRANCH: current }
+    - { BOARD: odroidhc4, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: edge }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
+    - { BOARD: orangepi5, BRANCH: legacy }
+    - { BOARD: orangepi5-plus, BRANCH: legacy }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: legacy }
+    - { BOARD: rock-5b, BRANCH: legacy }
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4b, BRANCH: current }
     - { BOARD: rockpi-4c, BRANCH: current }
     - { BOARD: rockpi-4cplus, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: station-m1, BRANCH: current }
+    - { BOARD: station-m2, BRANCH: current }
+    - { BOARD: station-m3, BRANCH: legacy }
+    - { BOARD: station-p1, BRANCH: current }
+    - { BOARD: station-p2, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
@@ -174,22 +194,32 @@ lists:
 
     - { BOARD: bananapim2ultra, BRANCH: current }
     - { BOARD: bananapim2zero, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: edge }
+    - { BOARD: bananapim2pro, BRANCH: current }
+    - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapim1plus, BRANCH: current }
+    - { BOARD: bananapim2plus, BRANCH: current }
+    - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: lime, BRANCH: current }
     - { BOARD: lime2, BRANCH: current }
     - { BOARD: lime-a64, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: onecloud, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepiplus2e, BRANCH: current }
     - { BOARD: orangepilite2, BRANCH: current }
+    - { BOARD: orangepione, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc, BRANCH: current }
     - { BOARD: orangepipcplus, BRANCH: current }
     - { BOARD: pineh64, BRANCH: current }
     - { BOARD: pineh64-b, BRANCH: current }
+    - { BOARD: rk322x-box, BRANCH: current }
+    - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: legacy }
+    - { BOARD: pine64, BRANCH: current }
+    - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: nanopineo4, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
@@ -412,6 +442,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
+      - { BOARD: rpi4b, BRANCH: current }
 
 # debian gnome desktop with 3d
 
@@ -422,12 +453,12 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: bookworm
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop-3d
       - { BOARD: rpi4b, BRANCH: current }
