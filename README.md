@@ -24,7 +24,7 @@
 - Repository update is updated once per day, at 3:00 AM UTC
 - Smoke tests is executed after **repository update** is finished.
 - Nightly images are build once per day, at 5:00 AM UTC
-- Manually, when [Armbian release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
+- Manually, when Armbian [release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
 # Want to enable images for your board?
 
