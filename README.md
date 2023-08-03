@@ -28,8 +28,8 @@
 
 # Latest smoke tests results:
 
-- installs all kernels that are defined / supported by the board
-- runs network and computing performance tests
+- installs kernels,dtb and headers that are defined / supported by the board
+- runs network and computing performance tests (7z benchmark)
 - store armbianmonitor logs
 
 <!--START_SECTION:data-section-->
