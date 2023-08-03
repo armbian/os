@@ -44,6 +44,8 @@ All you need to do is:
 - provide IP address
 - [contact us](https://www.armbian.com/contact/)
 
+Device has to be always on and easily accesible for you to re-image in case of failed upgrade.
+
 ## Development
 
 - [Pull request](https://github.com/armbian/build/pulls)
