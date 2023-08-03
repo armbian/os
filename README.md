@@ -6,7 +6,7 @@
 <br>
 <a href=https://github.com/armbian/os/actions/workflows/complete-artifact-matrix-all.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/complete-artifact-matrix-all.yml?logo=githubactions&label=Artifacts%20make&style=for-the-badge&branch=main"></a>
 <a href=https://github.com/armbian/os/actions/workflows/repository-update.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/repository-update.yml?logo=githubactions&label=Repository%20update&style=for-the-badge&branch=main"></a>
-<a href=https://github.com/armbian/os/actions/workflows/smoke-tests.yml><img alt="Smoke test success ratio" src="https://img.shields.io/badge/dynamic/json?logo=speedtest&label=Smoke%20tests%20success&query=SMOKE&color=44cc11&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json"></a>
+<a href=https://github.com/armbian/os/actions/workflows/smoke-tests.yml><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/armbian/os/smoke-tests.yml?logo=githubactions&label=Smoke%20tests&style=for-the-badge&branch=main"></a>
 </p>
 
 
@@ -24,11 +24,11 @@
 - Repository update is updated once per day, at 3:00 AM UTC
 - Manually, when [Armbian release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
-# Need to include stable or nightly images for your board?
+# Want to enable images for your board?
 
-Armbian build system includes many build configurations, but we are producing only some possible build options for all images. Only the most popular ones get everything, while others get the bare minimum, some nothing. The primary reason for the lack of images is a need for more human resources - [maintainers](https://docs.armbian.com/Board_Maintainers_Procedures_and_Guidelines/) - who can help keep them operational. 
+Armbian build system includes many build configurations, but we are producing only some possible build options for all images. Only the most popular ones get everything, while others get the bare minimum, some nothing. 
 
-To enable a board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [this file](targets/default.conf) and send a pull request. The configuration file is self-explanatory.
+To enable a board that exists in [build configurations](https://github.com/armbian/build/tree/main/config/boards), edit [yaml files here](userpatches/) and send a pull request. The configuration file is self-explanatory.
 
 # Import 3rd party package into Armbian
 
