@@ -202,6 +202,7 @@ on:
         - rockpi-s
         - rockpro64
         - rpi4b
+        - sk-am62b
         - sk-am64b
         - star64
         - station-m1
@@ -412,6 +413,7 @@ jobs:
           echo "${{ steps.changelog.outputs.tag }}" > downloads/version
 
       - name: 'Upload Artifact'
+        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
           name: assets-for-download
@@ -419,6 +421,7 @@ jobs:
           retention-days: 5
 
       - name: "Generate body file"
+        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         run: |
             echo "
               <p align='center'>
@@ -451,6 +454,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
+        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         id: releases
         run: |
 
