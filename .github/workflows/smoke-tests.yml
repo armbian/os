@@ -45,7 +45,7 @@ jobs:
       contents: none
 
     if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/smoke-tests.yml@smokey
+    uses: armbian/scripts/.github/workflows/smoke-tests.yml@main
     secrets:
       ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
       NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
