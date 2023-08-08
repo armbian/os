@@ -21,6 +21,8 @@ jobs:
       fail-fast: false
       max-parallel: 8
       matrix:
+
+        # list scripts you want to watch and execute failed jobs x-times
         script: ["build-rootfs","complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-stable"]
     
     name: rerun
