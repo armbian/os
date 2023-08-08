@@ -23,15 +23,11 @@ jobs:
       matrix:
         script: ["build-rootfs","complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-stable"]
     
-    name: Restart
+    name: rerun
     runs-on: ubuntu-latest
     steps:
     
-      - name: Show
-        run: |
-          echo ${{ matrix.image }}
-
-      - name: "Restart ${{ matrix.image }}.yml"
+      - name: "Restart ${{ matrix.script }}.yml"
         run: |
 
           # Define variables here
@@ -41,9 +37,6 @@ jobs:
 
           WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.path==".github/workflows/'${{ matrix.script }}'.yml")' | jq -r '.id')
           read ID STATUS ATTEMPT <<< $(gh api "/repos/${OWNER_REPO}/actions/workflows/${WORKFLOW}/runs" | jq '.workflow_runs[]' | jq -r '.id,.conclusion,.run_attempt' | head -3 | xargs -n3 -d'\n')
-
-          # Debug print
-          echo "ID=$ID STATUS=$STATUS ATTEMPT=$ATTEMPT"
 
           # if attempt is lower then 5 and status is "cancelled" or "failed", rerun failed jobs
           if [ "${ATTEMPT}" -lt "${ATTEMPTS}" ] && ([ "$STATUS" == "failure" ] || [ "$STATUS" == "cancelled" ]); then
