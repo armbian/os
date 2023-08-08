@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       max-parallel: 8
       matrix:
-        image: ["complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-stable"]
+        script: ["complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-stable"]
     
     name: Restart
     runs-on: ubuntu-latest
@@ -36,8 +36,9 @@ jobs:
 
           OWNER_REPO="armbian/os"
           ATTEMPTS="3"
+          SCRIPT="${{ matrix.script }}"
 
-          WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.path==.github/workflows/${{ matrix.image }}.yml)' | jq -r '.id')
+          WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.path==.github/workflows/'${SCRIPT}'.yml)' | jq -r '.id')
           read ID STATUS ATTEMPT <<< $(gh api "/repos/${OWNER_REPO}/actions/workflows/${WORKFLOW}/runs" | jq '.workflow_runs[]' | jq -r '.id,.conclusion,.run_attempt' | head -3 | xargs -n3 -d'\n')
 
           # Debug print
