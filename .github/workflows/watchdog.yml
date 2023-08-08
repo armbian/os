@@ -16,10 +16,20 @@ concurrency:
 
 jobs:
 
-  Check:
-    name: "Watchdog"
+  gradle:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        image: ["complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-stable"]
+    
+    name: Install into
     runs-on: ubuntu-latest
     steps:
+    
+      - name: Show
+        run: |
+          echo ${{ matrix.image }}
 
       - name: "Nightly images and rootfs"
         run: |
@@ -27,7 +37,7 @@ jobs:
           OWNER_REPO="armbian/os"
           ATTEMPTS="3"
 
-          WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.name=="Build Nightly Images (cronjob)")' | jq -r '.id')
+          WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.path==.github/workflows/"${{ matrix.image }}".yml)' | jq -r '.id')
           read ID STATUS ATTEMPT <<< $(gh api "/repos/${OWNER_REPO}/actions/workflows/${WORKFLOW}/runs" | jq '.workflow_runs[]' | jq -r '.id,.conclusion,.run_attempt' | head -3 | xargs -n3 -d'\n')
 
           # Debug print
