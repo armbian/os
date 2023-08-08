@@ -18,6 +18,10 @@
 - Keep synchronizing the selection of [3rd party](external) applications with Armbian repositories
 - Tests install of all packages added onto stable and testing Debian and Ubuntu releases
 
+# How to enable images?
+
+If you want to enable build configurations, edit [yaml config files](/armbian/os/tree/main/userpatches) and send a pull request. ([example](https://github.com/armbian/os/commit/70f3be4f3d96e9a301be751d3ecf3a24394356f9) )
+
 # When is this happening?
 
 - Artifacts cache is updated every eight hours, starting at 0:00 AM UTC
