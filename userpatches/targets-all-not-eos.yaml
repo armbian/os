@@ -22,7 +22,7 @@ targets:
     vars:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "yes"
-      RELEASE: jammy
+      RELEASE: bookworm
 
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
