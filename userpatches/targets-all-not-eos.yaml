@@ -21,8 +21,7 @@ targets:
       only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "armbian-bsp-desktop", "armbian-desktop", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
     vars:
       BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-      CLOUD_IMAGE: "no"
+      BUILD_DESKTOP: "yes"
       RELEASE: jammy
 
     items-from-inventory:
