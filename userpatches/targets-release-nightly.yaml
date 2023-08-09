@@ -249,7 +249,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: sid
+      RELEASE: bookworm
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -269,7 +269,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: lunar
+      RELEASE: jammy
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
