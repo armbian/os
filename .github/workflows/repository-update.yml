@@ -71,7 +71,7 @@ jobs:
     needs: Artifacts
 
     if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
+    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@repository
     with:
       ACCESS_NAME: armbian
       BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
@@ -81,46 +81,3 @@ jobs:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
-
-  apt-armbian-com:
-
-    name: "Update https://apt.armbian.com"
-    #needs: [kernel,external]
-    needs: [external]
-    if: ${{ inputs.UPDATE_REPOSITORY || 'true' && github.repository_owner == 'Armbian' }}
-    runs-on: [self-hosted, Linux, local]
-    steps:
-      - uses: armbian/actions/triggers@main
-        with:
-          KEY: ${{ secrets.KEY_REPOSITORY }}
-          USER: ${{ secrets.USER_REPOSITORY }}
-          HOST: ${{ secrets.HOST_REPOSITORY }}
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
-
-  beta-armbian-com:
-
-    name: "Update https://beta.armbian.com"
-    needs: [apt-armbian-com]
-    if: ${{ inputs.UPDATE_REPOSITORY || 'true' && github.repository_owner == 'Armbian' }}
-    runs-on: [self-hosted, Linux, local]
-    steps:
-      - uses: armbian/actions/triggers@main
-        with:
-          KEY: ${{ secrets.KEY_REPOSITORY_BETA }}
-          USER: ${{ secrets.USER_REPOSITORY }}
-          HOST: ${{ secrets.HOST_REPOSITORY }}
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
-
-  sync-servers:
-
-    name: "Sync servers"
-    needs: [apt-armbian-com,beta-armbian-com]
-    if: ${{ inputs.UPDATE_REPOSITORY || 'true' && github.repository_owner == 'Armbian' }}
-    runs-on: [self-hosted, Linux, local]
-    steps:
-      - uses: armbian/actions/triggers@main
-        with:
-          KEY: ${{ secrets.KEY_SYNC_MIRRORS }}
-          USER: ${{ secrets.USER_REPOSITORY }}
-          HOST: ${{ secrets.HOST_REPOSITORY }}
-          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS_REPOSITORY }}
