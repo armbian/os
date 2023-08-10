@@ -79,9 +79,8 @@ jobs:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
       KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
       HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
-      KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
