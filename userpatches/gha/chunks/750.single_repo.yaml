@@ -93,27 +93,18 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-        if: env.KEY_TORRENTS != null
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_TORRENTS }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
       - name: Deploy to server
-        env:
-          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-        if: env.KEY_TORRENTS != null
-
         run: |
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com || true
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --verbose -R --include-glob *.deb  --no-empty-dirs --parallel=8 --no-perms output/debs/. debs/ ;bye" sftp://users.armbian.com || true
+
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
 
       - name: Import GPG key from GitHub secrets
         id: import_gpg
@@ -158,32 +149,32 @@ jobs: # <TEMPLATE-IGNORE>
           fi
           bash -x output/info/reprepro/reprepro.sh
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+#      - name: Install SSH key for storage
+ #       env:
+  #        KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+   #     if: env.KEY_ARMBIAN_UPLOAD != null
+    #    uses: shimataro/ssh-key-action@v2
+     #   with:
+      #    key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+       #   known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+        #  if_key_exists: replace
 
-      - name: Deploy to server
-        timeout-minutes: 90
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+#      - name: Deploy to server
+ #       timeout-minutes: 90
+  #      env:
+   #       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+    #      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
 
-        if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
-        run: |
+     #   if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
+      #  run: |
 
           # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
+       #   if ! command -v "lftp" > /dev/null 2>&1; then
+        #     sudo apt-get -y -qq install lftp
+         # fi
 
           # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /opt/armbian_repo/ repository/[[repository_ref]] ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+         # lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /opt/armbian_repo/ repository/[[repository_ref]] ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
     outputs:
 
