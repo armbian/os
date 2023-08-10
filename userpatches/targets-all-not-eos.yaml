@@ -18,20 +18,13 @@ targets:
     pipeline:
       gha: *armbian-gha
       build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "rootfs", "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "armbian-bsp-desktop", "armbian-desktop", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
+      only-artifacts: [ "u-"firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
     vars:
-      BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "yes"
-
+      BUILD_MINIMAL: "yes"
     items-from-inventory:
-      #wip: yes # includes all work-in-progress boards
-      #all: yes # includes all available BOARD and BRANCH combinations
-      #conf: yes # includes all supported boards
-      #not-eos: yes # not-eos boards, all branches
-      not-eos-with-video: yes # not-eos boards, all branches, with video out
+      not-eos: yes # not-eos boards, all branches
 
-
-  all-desktop-jammy:
+  all-desktop:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -43,25 +36,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "none"
       RELEASE: "jammy"
-    items-from-inventory:
-      #wip: yes # includes all work-in-progress boards
-      #all: yes # includes all available BOARD and BRANCH combinations
-      #conf: yes # includes all supported boards
-      #not-eos: yes # not-eos boards, all branches
-      not-eos-with-video: yes # not-eos boards, all branches, with video out
-
-  all-desktop-bookworm:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    vars:
-      BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT: "xfce"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "none"
-      RELEASE: "bookworm"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
