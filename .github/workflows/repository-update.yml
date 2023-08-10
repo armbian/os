@@ -80,4 +80,7 @@ jobs:
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
+      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
+      HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
       KNOWN_HOSTS_UPLOAD: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
