@@ -18,7 +18,7 @@ targets:
     pipeline:
       gha: *armbian-gha
       build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "u-"firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
+      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
     vars:
       BUILD_MINIMAL: "yes"
     items-from-inventory:
