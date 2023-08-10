@@ -64,6 +64,7 @@ jobs:
           if ! command -v "lftp" > /dev/null 2>&1; then
              sudo apt-get -y -qq install lftp
           fi
+          mkdir -p output/debs-beta/ output/debs/
           lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --Remove-source-files --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com
 
   external:
