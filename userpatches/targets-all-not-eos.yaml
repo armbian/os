@@ -31,7 +31,7 @@ targets:
       not-eos-with-video: yes # not-eos boards, all branches, with video out
 
 
-  all-desktop:
+  all-desktop-jammy:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -43,6 +43,25 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "none"
       RELEASE: "jammy"
+    items-from-inventory:
+      #wip: yes # includes all work-in-progress boards
+      #all: yes # includes all available BOARD and BRANCH combinations
+      #conf: yes # includes all supported boards
+      #not-eos: yes # not-eos boards, all branches
+      not-eos-with-video: yes # not-eos boards, all branches, with video out
+
+  all-desktop-bookworm:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT: "xfce"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "none"
+      RELEASE: "bookworm"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
