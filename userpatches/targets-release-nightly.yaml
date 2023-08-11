@@ -32,11 +32,11 @@ lists:
     - { BOARD: visionfive2, BRANCH: edge }
 
   unsupported: &unsupported
-  # debian stable cli
-  # ubuntu stable xfce desktop
+    # debian stable cli
+    # ubuntu stable xfce desktop
 
     - { BOARD: bananapim3, BRANCH: current }
-    - { BOARD: bananapipro, BRANCH: current }  
+    - { BOARD: bananapipro, BRANCH: current }
     - { BOARD: beelinkx2, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
     - { BOARD: cubieboard2, BRANCH: current }
@@ -82,15 +82,15 @@ lists:
     - { BOARD: xt-q8l-v10, BRANCH: current }
 
   full-desktop: &full-desktop
-  # debian stable minimal
-  # debian stable cli
-  # debian stable xfce desktop
-  # debian stable cinnamon desktop
-  # ubuntu stable minimal
-  # ubuntu stable cli
-  # ubuntu stable xfce desktop
-  # ubuntu stable i3 desktop
-  # ubuntu stable gnome desktop
+    # debian stable minimal
+    # debian stable cli
+    # debian stable xfce desktop
+    # debian stable cinnamon desktop
+    # ubuntu stable minimal
+    # ubuntu stable cli
+    # ubuntu stable xfce desktop
+    # ubuntu stable i3 desktop
+    # ubuntu stable gnome desktop
 
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
@@ -123,14 +123,14 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: current }
 
   full-desktop-3d: &full-desktop-3d
-  # debian stable minimal
-  # debian stable cli
-  # debian stable xfce desktop
-  # debian stable cinnamon desktop
-  # ubuntu stable minimal
-  # ubuntu stable cli
-  # ubuntu stable i3 desktop
-  # ubuntu stable gnome desktop with 3D support enabled
+    # debian stable minimal
+    # debian stable cli
+    # debian stable xfce desktop
+    # debian stable cinnamon desktop
+    # ubuntu stable minimal
+    # ubuntu stable cli
+    # ubuntu stable i3 desktop
+    # ubuntu stable gnome desktop with 3D support enabled
 
     - { BOARD: firefly-rk3399, BRANCH: current }
     - { BOARD: lafrite, BRANCH: current }
@@ -153,13 +153,13 @@ lists:
     - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
-  # debian stable minimal
-  # debian stable cli
-  # debian stable xfce desktop
-  # ubuntu stable minimal
-  # ubuntu stable cli
-  # ubuntu stable i3 desktop
-  # ubuntu stable xfce desktop
+    # debian stable minimal
+    # debian stable cli
+    # debian stable xfce desktop
+    # ubuntu stable minimal
+    # ubuntu stable cli
+    # ubuntu stable i3 desktop
+    # ubuntu stable xfce desktop
 
     - { BOARD: bigtreetech-cb1, BRANCH: legacy }
     - { BOARD: bananapim2s, BRANCH: current }
@@ -172,13 +172,13 @@ lists:
     - { BOARD: radxa-zero, BRANCH: current }
 
   light-desktop-3d: &light-desktop-3d
-  # debian stable minimal
-  # debian stable cli
-  # debian stable xfce desktop
-  # ubuntu stable minimal
-  # ubuntu stable cli
-  # ubuntu stable i3 desktop
-  # ubuntu stable xfce desktop with 3D support enabled
+    # debian stable minimal
+    # debian stable cli
+    # debian stable xfce desktop
+    # ubuntu stable minimal
+    # ubuntu stable cli
+    # ubuntu stable i3 desktop
+    # ubuntu stable xfce desktop with 3D support enabled
 
     - { BOARD: bananapim2ultra, BRANCH: current }
     - { BOARD: bananapim2zero, BRANCH: current }
@@ -205,10 +205,10 @@ lists:
     - { BOARD: pine64, BRANCH: current }
 
   headless: &headless
-  # debian stable minimal
-  # debian stable cli
-  # ubuntu stable minimal
-  # ubuntu stable cli
+    # debian stable minimal
+    # debian stable cli
+    # ubuntu stable minimal
+    # ubuntu stable cli
 
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: clearfogbase, BRANCH: current }
@@ -245,8 +245,8 @@ lists:
     - { BOARD: zeropi, BRANCH: current }
 
 targets:
-
-# ubuntu unstable minimal
+  
+  # ubuntu unstable minimal
 
   minimal-cli-unstable-ubuntu:
     enabled: yes
@@ -260,8 +260,8 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *special
-
-# debian unstable minimal
+  
+  # debian unstable minimal
 
   minimal-cli-unstable-debian:
     enabled: yes
@@ -280,8 +280,8 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
-
-# ubuntu xfce without apps
+  
+  # ubuntu xfce without apps
 
   xfce-barebone-desktop-unstable-ubuntu:
     enabled: yes
