@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
       max-parallel: 8
       matrix:
-        repository: ["apt.armbian.com","beta.armbian.com"]
+        repository: ["debs","debs-beta"]
     
     name: rerun
     runs-on: repository
@@ -46,4 +46,4 @@ jobs:
     
       - name: "Prepare for ${{ matrix.repository }}"
         run: |
-          tree /incoming
+          tree /incoming/${{ matrix.repository }}
