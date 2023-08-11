@@ -63,6 +63,5 @@ jobs:
 
       - name: "Build repository ${{ matrix.repository }}"
         run: |
-          pwd
-          ls -l
-          
+        
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -c update -p sendmail
