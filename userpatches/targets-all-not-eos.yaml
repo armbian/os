@@ -7,7 +7,7 @@ common-gha-configs:
       default: "ubuntu-latest"
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
-        uboot:  [ "self-hosted", "Linux", "fast", "X64" ]
+        uboot: [ "self-hosted", "Linux", "fast", "X64" ]
         armbian-bsp-cli: [ "fast" ]
 
 targets:
