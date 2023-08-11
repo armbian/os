@@ -64,4 +64,5 @@ jobs:
       - name: "Build repository ${{ matrix.repository }}"
         run: |
         
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           tools/repository/repo -i /incoming/${{ matrix.repository }} -c update -p sendmail
