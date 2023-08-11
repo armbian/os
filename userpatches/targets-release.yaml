@@ -38,19 +38,15 @@ lists:
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: helios64, BRANCH: current }
-    - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: mangopi-mq, BRANCH: edge } # does not have 'current'
-    - { BOARD: melea1000, BRANCH: current }
     - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
     - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
     - { BOARD: mekotronics-r58x, BRANCH: legacy }
     - { BOARD: micro, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: collabora }
     - { BOARD: nanopia64, BRANCH: current }
-    - { BOARD: nanopiair, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
-    - { BOARD: nanopi-r4se, BRANCH: current }
     - { BOARD: nezha, BRANCH: edge } # does not have current
     - { BOARD: orangepi2, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
@@ -59,18 +55,15 @@ lists:
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepiwin, BRANCH: current }
     - { BOARD: orangepizeroplus2-h3, BRANCH: current }
-    - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: panther-x2, BRANCH: current }
     - { BOARD: pcduino3, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
-    - { BOARD: pinecube, BRANCH: current }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
     - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: recore, BRANCH: current }
     - { BOARD: rockpi-n10, BRANCH: current }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
-    - { BOARD: sk-am64b, BRANCH: current }
     - { BOARD: star64, BRANCH: edge } # does not have current
     - { BOARD: sunvell-r69, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
@@ -267,6 +260,14 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
+    # Those have been moved from "unsupported" since they can't build desktops (HAS_VIDEO_OUTPUT=no)
+    - { BOARD: lime-a33, BRANCH: current }
+    - { BOARD: melea1000, BRANCH: current }
+    - { BOARD: nanopiair, BRANCH: current }
+    - { BOARD: nanopi-r4se, BRANCH: current }
+    - { BOARD: orangepizeroplus2-h5, BRANCH: current }
+    - { BOARD: pinecube, BRANCH: current }
+    - { BOARD: sk-am64b, BRANCH: current }
 
 targets:
   
