@@ -33,55 +33,17 @@ concurrency:
 
 jobs:
 
-  Artifacts:
-
-    name: Upload artifacts
-    runs-on: stable
+  gradle:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        repository: ["apt.armbian.com","beta.armbian.com"]
+    
+    name: rerun
+    runs-on: repository
     steps:
-
-      - name: "Check membership"
-        uses: armbian/actions/team-check@main
-        with:
-          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install SSH key for storage
-        env:
-          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-        if: env.KEY_TORRENTS != null
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_TORRENTS }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_UPLOAD }}
-          if_key_exists: replace
-
-      - name: Deploy to server
-        env:
-          KEY_TORRENTS: ${{ secrets.KEY_TORRENTS }}
-        if: env.KEY_TORRENTS != null
-
+    
+      - name: "Prepare for ${{ matrix.repository }}"
         run: |
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-          mkdir -p output/debs-beta/ output/debs/
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror --Remove-source-files --verbose -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs-beta/. debs-beta/ ;bye" sftp://users.armbian.com
-
-  external:
-    name: "Download external"
-    needs: Artifacts
-
-    if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
-    with:
-      ACCESS_NAME: armbian
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
-      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
-      HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
-      HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
-      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          tree /incoming
