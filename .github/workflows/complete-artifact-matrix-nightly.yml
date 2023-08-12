@@ -5360,8 +5360,8 @@ jobs:
       - name: Deploy to server
         run: |
 
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
 
       - name: Import GPG key from GitHub secrets
         id: import_gpg
