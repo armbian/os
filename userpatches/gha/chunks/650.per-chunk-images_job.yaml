@@ -64,13 +64,20 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -137,23 +144,10 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
