@@ -99,6 +99,7 @@ jobs: # <TEMPLATE-IGNORE>
         timeout-minutes: 180
         run: |
 
+          mkdir -p output/debs output/debs-beta
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
