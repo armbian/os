@@ -63,15 +63,12 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -97,24 +94,14 @@ jobs: # <TEMPLATE-IGNORE>
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
+      - name: Deploy to server
+        if: github.event.inputs.uploadtoserver == 'armbian'
+        timeout-minutes: 180
+        run: |
 
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
-        run: rm -rfv output/debs
-
+        run: rm -rfv output/debs output/debs-beta
