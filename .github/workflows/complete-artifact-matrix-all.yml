@@ -543,6 +543,7 @@ jobs:
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
           bash ./compile.sh gha-matrix armbian-images \
+          REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
           BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
           CLEAN_INFO=yes \

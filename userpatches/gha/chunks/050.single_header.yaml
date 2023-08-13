@@ -203,7 +203,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         id: releases
         run: |
 
