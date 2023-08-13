@@ -63,12 +63,12 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -94,14 +94,14 @@ jobs: # <TEMPLATE-IGNORE>
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
