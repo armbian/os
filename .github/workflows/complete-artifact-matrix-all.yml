@@ -450,7 +450,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
-        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
+#        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         id: releases
         run: |
 
