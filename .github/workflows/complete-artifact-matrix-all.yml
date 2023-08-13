@@ -380,11 +380,6 @@ jobs:
               echo "file=stable" >> $GITHUB_OUTPUT
           fi
 
-      - name: Read version if not forced
-        if: ${{ ! github.event.inputs.versionOverride }}
-        run: |
-          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-
       # Bump version automatically
       - name: Bump version
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
@@ -406,15 +401,15 @@ jobs:
           tag-prefix: ''
           pre-release-identifier: 'trunk'
 
-      - name: Read Version
-        if: ${{ steps.changelog.outputs.tag }}
+      - name: Read version from file if nor overriden
+        if: ${{ ! github.event.inputs.versionOverride }}
         run: |
-          echo "VERSION_OVERRIDE=${{ steps.changelog.outputs.tag }}" >> $GITHUB_ENV
           mkdir -p downloads
-          echo "${{ steps.changelog.outputs.tag }}" > downloads/version
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
-        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
+ #       if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
           name: assets-for-download
