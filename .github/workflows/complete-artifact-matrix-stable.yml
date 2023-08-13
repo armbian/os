@@ -806,19 +806,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -844,14 +844,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -911,19 +911,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -949,14 +949,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1016,19 +1016,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1054,14 +1054,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1121,19 +1121,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1159,14 +1159,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1226,19 +1226,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1264,14 +1264,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1331,19 +1331,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1369,14 +1369,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1436,19 +1436,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1474,14 +1474,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1541,19 +1541,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1579,14 +1579,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1646,19 +1646,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1684,14 +1684,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1751,19 +1751,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1789,14 +1789,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1856,19 +1856,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1894,14 +1894,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -1961,19 +1961,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1999,14 +1999,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -2066,19 +2066,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2104,14 +2104,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -2171,19 +2171,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2209,14 +2209,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -2276,19 +2276,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2314,14 +2314,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -2381,19 +2381,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2419,14 +2419,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -2486,19 +2486,19 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+ #     - name: Install SSH key
+ #       uses: shimataro/ssh-key-action@v2
+ #       with:
+ #         key: ${{ secrets.KEY_UPLOAD }}
+ #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+ #         if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2524,14 +2524,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-      - name: Deploy to server
-        if: github.event.inputs.uploadtoserver == 'armbian'
-        timeout-minutes: 180
-        run: |
+#      - name: Deploy to server
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 180
+#        run: |
 
-          mkdir -p output/debs output/debs-beta
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
 
       - name: "Cleanup artefacts"
         if: always()
@@ -2595,7 +2595,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -2753,7 +2753,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -2911,7 +2911,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3069,7 +3069,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3227,7 +3227,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3385,7 +3385,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3543,7 +3543,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3701,7 +3701,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -3859,7 +3859,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4017,7 +4017,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4175,7 +4175,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4333,7 +4333,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4491,7 +4491,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4649,7 +4649,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4807,7 +4807,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -4965,7 +4965,7 @@ jobs:
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
