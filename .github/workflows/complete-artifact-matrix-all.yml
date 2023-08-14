@@ -5180,18 +5180,17 @@ jobs:
           name: assets-for-download
           failOnError: false
 
-      # Cleaning releases
-      - uses: dev-drprasad/delete-older-releases@v0.2.1
-        with:
-          repo: armbian/os
-          keep_latest: 32
-          delete_tag_pattern: trunk
-        env:
+#      # Cleaning releases
+#      - uses: dev-drprasad/delete-older-releases@v0.2.1
+#        with:
+#          repo: armbian/os
+#          keep_latest: 32
+#          delete_tag_pattern: trunk
+#        env:
 #          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       # Cleaning logs
-      - name: "Keep only 7 days of workflow logs"
+      - name: "Keep only 14 days of workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
