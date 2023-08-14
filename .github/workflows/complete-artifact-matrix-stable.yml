@@ -382,7 +382,8 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+ #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.0.0
         with:
