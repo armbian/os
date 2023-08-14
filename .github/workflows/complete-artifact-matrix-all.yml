@@ -79,6 +79,7 @@ on:
         - lafrite
         - lamobo-r1
         - lepotato
+        - licheepi-4a
         - lime-a10
         - lime-a33
         - lime-a64
@@ -5186,7 +5187,8 @@ jobs:
           keep_latest: 32
           delete_tag_pattern: trunk
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       # Cleaning logs
       - name: "Keep only 7 days of workflow logs"
