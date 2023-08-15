@@ -126,11 +126,16 @@ jobs:
         id: versionfile
         run: |
 
+          # file = where version is getting stored, different for stable and nightly
+          # skip_tag = we only upload nighlty to GH releases
+
           echo "file=nightly" >> $GITHUB_OUTPUT
-          echo "pre_release=true" >> $GITHUB_OUTPUT
+#          echo "pre_release=true" >> $GITHUB_OUTPUT
+          echo "skip_tag=false" >> $GITHUB_OUTPUT
           if [ "${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}" == "no" ]; then
-              echo "pre_release=false" >> $GITHUB_OUTPUT
+ #             echo "pre_release=false" >> $GITHUB_OUTPUT
               echo "file=stable" >> $GITHUB_OUTPUT
+              echo "skip_tag=true" >> $GITHUB_OUTPUT
           fi
 
       # Bump version automatically
@@ -149,9 +154,10 @@ jobs:
           skip-on-empty: 'false'
           skip-commit: 'false'
           skip-ci: 'false'
-          skip-tag: 'true'
+          skip-tag: "${{ steps.versionfile.outputs.skip_tag }}"
           version-file: "${{ steps.versionfile.outputs.file }}.json"
-          pre-release: "${{ steps.versionfile.outputs.pre_release }}"
+#          pre-release: "${{ steps.versionfile.outputs.pre_release }}"
+          pre-release: 'true'
           git-branch: 'main'
           tag-prefix: ''
           pre-release-identifier: 'trunk'
