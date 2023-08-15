@@ -396,8 +396,9 @@ jobs:
           output-file: 'false'
           skip-version-file: 'false'
           skip-on-empty: 'false'
-          skip-commit: 'true'
+          skip-commit: 'false'
           skip-ci: 'false'
+          skip-tag: 'true'
           version-file: "${{ steps.versionfile.outputs.file }}.json"
           pre-release: "${{ steps.versionfile.outputs.pre_release }}"
           git-branch: 'main'
@@ -4995,8 +4996,9 @@ jobs:
         run: |
           echo "sync all parts"
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
-          --include='debs/' \
-          --include='debs-beta/' \
+          --include 'debs/' \
+          --include 'debs-beta/' \
+          --exclude '*' \
           --remove-source-files \
           output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/
 
