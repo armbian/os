@@ -127,7 +127,7 @@ jobs: # <TEMPLATE-IGNORE>
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || [[uploadtoserverDefaults]] }} == 'github') || (${{ github.event.inputs.uploadtoserver || [[uploadtoserverDefaults]] }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
