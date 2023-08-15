@@ -4999,11 +4999,12 @@ jobs:
         run: |
           echo "sync all parts"
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
-          --include 'debs/' \
-          --include 'debs-beta/' \
-          --exclude '*' \
+          --include='debs***' \
+          --exclude='*' \
           --remove-source-files \
           output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/
+          # clean
+          find output/. -type d -empty -delete
 
       - name: Generate repository
         if: ${{ (github.event.inputs.skipImages || 'yes') == 'yes' }}
