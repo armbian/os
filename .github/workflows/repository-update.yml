@@ -61,7 +61,7 @@ jobs:
 
           # upload artifacts
           mkdir -p /outgoing/${{ matrix.repository }}/public/
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /outgoing/${{ matrix.repository }}/public/. ${{ matrix.repository }}/ ;bye" sftp://stpete-mirror.armbian.com
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 8;mirror -R --parallel=1 --no-perms /outgoing/${{ matrix.repository }}/public/. ${{ matrix.repository }}/ ;bye" sftp://stpete-mirror.armbian.com
 
               
       #- name: "Prepare for ${{ matrix.repository }}"
