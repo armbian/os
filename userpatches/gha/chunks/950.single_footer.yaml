@@ -45,7 +45,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'no' }}
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
         with:
           tag: "${{ env.version }}"
           omitBody: true
