@@ -5036,7 +5036,7 @@ jobs:
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
 
               # upload repository
-              lftp -u upload, -e "set net:timeout 4;set net:max-retries 8;mirror -R --parallel=1 --no-perms /outgoing/repository-beta/public/. ${{ matrix.repository }}/ ;bye" sftp://stpete-mirror.armbian.com
+              lftp -u upload, -e "set net:timeout 4;set net:max-retries 8;mirror -R --parallel=1 --no-perms /outgoing/repository-beta/public/. repository-beta/ ;bye" sftp://stpete-mirror.armbian.com
 
           else
 
