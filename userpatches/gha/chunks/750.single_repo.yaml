@@ -106,7 +106,7 @@ jobs: # <TEMPLATE-IGNORE>
           # only keep latest debs in the incoming dir
           BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
           mkdir -p output/debs/ output/debs-beta/
-          if [[ "$BETA" == "yes" ]]
+          if [% raw %][[ "$BETA" == "yes" ]][% endraw %]
             rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
           else
             rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
