@@ -4908,6 +4908,7 @@ jobs:
       # Prepare dependencies.
       # If no /usr/bin/gpg, install gnupg2
       # If no /usr/bin/reprepro, install reprepro
+      # If no /usr/bin/lftp, install lftp
       - name: Install dependencies
         run: |
           if [ ! -e /usr/bin/gpg ]; then
@@ -4918,6 +4919,11 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y reprepro
           fi
+          if [ ! -e /usr/bin/lftp ]; then
+            sudo apt-get update
+            sudo apt-get install -y lftp
+          fi
+
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
@@ -5019,16 +5025,26 @@ jobs:
               # add common
               if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
                   tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+
+                  # drop nightly repository in this case too
+                  rm -rf/outgoing/repository-beta/*
               fi
+
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
+
+              # upload repository
+              lftp -u upload, -e "set net:timeout 4;set net:max-retries 8;mirror -R --parallel=1 --no-perms /outgoing/repository-beta/public/. ${{ matrix.repository }}/ ;bye" sftp://stpete-mirror.armbian.com
+
           else
+
               # add common
               if [[ "$(cat /incoming/debs/status 2>/dev/null)" == "done" ]]; then
                   tools/repository/repo -i /incoming/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
               fi
               tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
               tools/repository/repo -i output/debs-beta -o /outgoing/repository -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository/public/content.html
+
           fi
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
