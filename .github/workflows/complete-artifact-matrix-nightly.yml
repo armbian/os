@@ -445,16 +445,16 @@ jobs:
               &nbsp;
               </p>" > body.html
 
-#      - uses: ncipollo/release-action@v1
-#        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
-#        with:
-#          tag: "${{ env.VERSION_OVERRIDE }}"
-#          name: "${{ env.VERSION_OVERRIDE }}"
-#          bodyFile: "body.html"
-#          prerelease: "true"
-#          allowUpdates: true
-#          removeArtifacts: true
-#          token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
+      - uses: ncipollo/release-action@v1
+        if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
+        with:
+          tag: "${{ env.VERSION_OVERRIDE }}"
+          name: "${{ env.VERSION_OVERRIDE }}"
+          bodyFile: "body.html"
+          prerelease: "true"
+          allowUpdates: true
+          removeArtifacts: true
+          token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
 #        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
