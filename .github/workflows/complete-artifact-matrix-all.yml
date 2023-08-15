@@ -5016,11 +5016,11 @@ jobs:
           if [[ "$BETA" == "yes" ]]; then
               # to do - sync from pre-prepare
               rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta output/debs-beta/
-              tools/repository/repo -i output/debs-beta -o /outgoing/debs-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
           else
               # to do - sync from pre-prepare
               rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs output/debs/
-              tools/repository/repo -i output/debs -o /outgoing/debs -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
           fi
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
