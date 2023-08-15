@@ -95,6 +95,11 @@ jobs: # <TEMPLATE-IGNORE>
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
+      - name: Sync parts
+        if: ${{ github.event.inputs.targetsFilterInclude != "" && github.event.inputs.board != "all" && github.event.inputs.board != "all" }}
+        run: |
+          echo "sync it all"
+
       - name: Generate repository
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
         run: |

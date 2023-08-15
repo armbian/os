@@ -2594,7 +2594,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -2746,7 +2746,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -2898,7 +2898,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3050,7 +3050,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3202,7 +3202,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3354,7 +3354,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3506,7 +3506,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3658,7 +3658,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3810,7 +3810,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -3962,7 +3962,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -4114,7 +4114,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -4266,7 +4266,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -4418,7 +4418,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -4570,7 +4570,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -4722,7 +4722,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
@@ -4874,7 +4874,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
+        if: ${{ github.event.inputs.nightlybuild || 'no' == 'yes' }}
 
         uses: ncipollo/release-action@v1
         with:
