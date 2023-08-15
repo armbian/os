@@ -106,7 +106,11 @@ jobs: # <TEMPLATE-IGNORE>
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
         run: |
           echo "sync all parts"
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
+          --include='debs/' \
+          --include='debs-beta/' \
+          --remove-source-files \
+          output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/
 
       - name: Generate repository
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
