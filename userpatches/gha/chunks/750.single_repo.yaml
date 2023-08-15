@@ -89,29 +89,52 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
-        run: |
-          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
-      - name: Deploy to server
+      - name: Generate repository
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
         run: |
 
           # only keep latest debs in the incoming dir
           BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
-          mkdir -p output/debs/ output/debs-beta/
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
-            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+              # to do - sync from pre-prepare
+              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta output/debs-beta/
+              tools/repository/repo -i output/debs-beta -o /outgoing/debs-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
           else
-            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
+              # to do - sync from pre-prepare
+              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs output/debs/
+              tools/repository/repo -i output/debs -o /outgoing/debs -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
           fi
+
+      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+
+#      - name: Install SSH key
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+#      - name: Deploy to server
+#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
+#        run: |
+
+#          # only keep latest debs in the incoming dir
+#          BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
+#          mkdir -p output/debs/ output/debs-beta/
+#          if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
+#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+#          else
+#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
+#          fi
 
 #      - name: Import GPG key from GitHub secrets
 #        id: import_gpg
