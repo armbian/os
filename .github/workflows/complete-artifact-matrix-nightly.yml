@@ -2524,8 +2524,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2676,8 +2676,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2828,8 +2828,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2980,8 +2980,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3132,8 +3132,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3284,8 +3284,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3436,8 +3436,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3588,8 +3588,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3740,8 +3740,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3892,8 +3892,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4044,8 +4044,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4196,8 +4196,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4348,8 +4348,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4500,8 +4500,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4652,8 +4652,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4804,8 +4804,8 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
-        timeout-minutes: 30
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
