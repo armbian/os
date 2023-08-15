@@ -4994,7 +4994,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Sync parts
+      - name: Sync parts when making single images / maintainer
         if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
         run: |
           echo "sync all parts"
