@@ -2490,7 +2490,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2642,7 +2642,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2794,7 +2794,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2946,7 +2946,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3098,7 +3098,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3250,7 +3250,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3402,7 +3402,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3554,7 +3554,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3706,7 +3706,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3858,7 +3858,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4010,7 +4010,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4162,7 +4162,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4314,7 +4314,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4466,7 +4466,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4618,7 +4618,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4770,7 +4770,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-       - name: Cleanup userpatches repo
+      - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
