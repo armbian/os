@@ -810,12 +810,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -841,18 +841,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-2": # templated "build-artifacts-chunk-2"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-2 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -915,12 +911,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -946,18 +942,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-3": # templated "build-artifacts-chunk-3"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-3 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1020,12 +1012,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1051,18 +1043,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-4": # templated "build-artifacts-chunk-4"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-4 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1125,12 +1113,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1156,18 +1144,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-5": # templated "build-artifacts-chunk-5"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-5 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1230,12 +1214,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1261,18 +1245,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-6": # templated "build-artifacts-chunk-6"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-6 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1335,12 +1315,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1366,18 +1346,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-7": # templated "build-artifacts-chunk-7"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-7 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1440,12 +1416,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1471,18 +1447,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-8": # templated "build-artifacts-chunk-8"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-8 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1545,12 +1517,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1576,18 +1548,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-9": # templated "build-artifacts-chunk-9"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-9 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1650,12 +1618,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1681,18 +1649,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-10": # templated "build-artifacts-chunk-10"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-10 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1755,12 +1719,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1786,18 +1750,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-11": # templated "build-artifacts-chunk-11"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-11 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1860,12 +1820,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1891,18 +1851,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-12": # templated "build-artifacts-chunk-12"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-12 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1965,12 +1921,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -1996,18 +1952,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-13": # templated "build-artifacts-chunk-13"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-13 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2070,12 +2022,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2101,18 +2053,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-14": # templated "build-artifacts-chunk-14"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-14 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2175,12 +2123,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2206,18 +2154,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-15": # templated "build-artifacts-chunk-15"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-15 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2280,12 +2224,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2311,18 +2255,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-16": # templated "build-artifacts-chunk-16"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-16 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2385,12 +2325,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2416,18 +2356,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-17": # templated "build-artifacts-chunk-17"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-17 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2490,12 +2426,12 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
- #     - name: Install SSH key
- #       uses: shimataro/ssh-key-action@v2
- #       with:
- #         key: ${{ secrets.KEY_UPLOAD }}
- #         known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
- #         if_key_exists: replace
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
 
       - name: Check API rate limits
         run: |
@@ -2521,18 +2457,14 @@ jobs:
           # show current api rate
           curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
 
-#      - name: Deploy to server
+      - name: Deploy debian packages to our servers
 #        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 180
-#        run: |
+        timeout-minutes: 15
+        run: |
 
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs.parts
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta.parts
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs output/debs-beta
+          mkdir -p output/debs output/debs-beta
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
 
 # template file: 650.per-chunk-images_job.yaml
 
@@ -5071,12 +5003,13 @@ jobs:
           if_key_exists: replace
 
       - name: Deploy to server
+        if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
         run: |
 
           # only keep latest debs in the incoming dir
           BETA="${{ github.event.inputs.nightlybuild || 'no' }}"
           mkdir -p output/debs/ output/debs-beta/
-          if [[ "$BETA" == "yes" ]]
+          if [[ "$BETA" == "yes" ]]; then
             rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
           else
             rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
