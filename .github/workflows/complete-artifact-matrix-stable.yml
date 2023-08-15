@@ -395,7 +395,7 @@ jobs:
           output-file: 'false'
           skip-version-file: 'false'
           skip-on-empty: 'false'
-          skip-commit: 'false'
+          skip-commit: 'true'
           skip-ci: 'false'
           version-file: "${{ steps.versionfile.outputs.file }}.json"
           pre-release: "${{ steps.versionfile.outputs.pre_release }}"
