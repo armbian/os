@@ -53,7 +53,7 @@ jobs:
           fi
 
           # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /outgoing/${{ matrix.repository }}/public/. ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /outgoing/${{ matrix.repository }}/public/. ;bye" sftp://${{ secrets.ARMBIAN_HOST_UPLOAD }}
               
       #- name: "Prepare for ${{ matrix.repository }}"
       #  run: |
