@@ -2490,7 +2490,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2524,6 +2524,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -2641,7 +2642,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2675,6 +2676,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -2792,7 +2794,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2826,6 +2828,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -2943,7 +2946,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -2977,6 +2980,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -3094,7 +3098,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3128,6 +3132,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -3245,7 +3250,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3279,6 +3284,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -3396,7 +3402,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3430,6 +3436,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -3547,7 +3554,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3581,6 +3588,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -3698,7 +3706,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3732,6 +3740,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -3849,7 +3858,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -3883,6 +3892,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -4000,7 +4010,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4034,6 +4044,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -4151,7 +4162,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4185,6 +4196,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -4302,7 +4314,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4336,6 +4348,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -4453,7 +4466,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4487,6 +4500,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -4604,7 +4618,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4638,6 +4652,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
@@ -4755,7 +4770,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
+       - name: Cleanup userpatches repo
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: rm -rf userpatches.repo
 
@@ -4789,6 +4804,7 @@ jobs:
           rm -f userpatches/VERSION
 
       - name: ${{matrix.desc}}
+        timeout-minutes: 30
         id: build-one-image
         run: |
           # calculate loop from runner name
