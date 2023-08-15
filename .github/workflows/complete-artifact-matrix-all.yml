@@ -5016,11 +5016,17 @@ jobs:
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           if [[ "$BETA" == "yes" ]]; then
               # to do - sync from pre-prepare
-              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta output/debs-beta/
+#              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta output/debs-beta/
+              if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
+                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              fi
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
           else
               # to do - sync from pre-prepare
-              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs output/debs/
+#              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs output/debs/
+              if [[ "$(cat /incoming/debs/status 2>/dev/null)" == "done" ]]; then
+                  tools/repository/repo -i /incoming/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              fi
               tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
           fi
 
