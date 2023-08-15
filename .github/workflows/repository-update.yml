@@ -38,31 +38,42 @@ jobs:
       fail-fast: false
       max-parallel: 8
       matrix:
-        repository: ["debs","debs-beta"]
+        repository: ["repository-beta","repository"]
     
     name: rerun
     runs-on: repository
     steps:
+
+      - name: "Sync ${{ matrix.repository }}"
+        run: |
+
+          # install dependencies
+          if ! command -v "lftp" > /dev/null 2>&1; then
+             sudo apt-get -y -qq install lftp
+          fi
+
+          upload artifacts
+          lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /outgoing/${{ matrix.repository }}/public/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
     
-      - name: "Prepare for ${{ matrix.repository }}"
-        run: |
-          tree /incoming/${{ matrix.repository }}
+      #- name: "Prepare for ${{ matrix.repository }}"
+      #  run: |
+      #   tree /incoming/${{ matrix.repository }}
 
-      - name: Checkout build repository
-        uses: actions/checkout@v3
-        with:
-          repository: armbian/build
-          fetch-depth: 1
-          clean: false
+      #- name: Checkout build repository
+      #  uses: actions/checkout@v3
+      #  with:
+      #    repository: armbian/build
+      #    fetch-depth: 1
+      #    clean: false
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.GPG_KEY1 }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+      #- name: Import GPG key
+      #  uses: crazy-max/ghaction-import-gpg@v5
+      #  with:
+      #    gpg_private_key: ${{ secrets.GPG_KEY1 }}
+      #    passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
-      - name: "Build repository ${{ matrix.repository }}"
-        run: |
-        
-          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${{ matrix.repository }} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+      #- name: "Build repository ${{ matrix.repository }}"
+      #  run: |
+      #  
+      #    sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+      #   tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${{ matrix.repository }} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
