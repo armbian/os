@@ -5040,12 +5040,13 @@ jobs:
 
               # add common
               if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
-                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
                   # drop nightly repository in this case too
-                  rm -rf /outgoing/repository-beta/*
+                  sudo rm -rf /outgoing/repository-beta/*
                   # remove status
-                  rm -f /incoming/debs-beta/status
+                  sudo rm -f /incoming/debs-beta/status
+
+                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
               fi
 
