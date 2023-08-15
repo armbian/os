@@ -136,6 +136,9 @@ jobs: # <TEMPLATE-IGNORE>
 
                   # drop nightly repository in this case too
                   rm -rf /outgoing/repository-beta/*
+                  # remove status
+                  rm -f /incoming/debs-beta/status
+
               fi
 
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}

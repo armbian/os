@@ -5027,7 +5027,7 @@ jobs:
                   tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
                   # drop nightly repository in this case too
-                  rm -rf/outgoing/repository-beta/*
+                  rm -rf /outgoing/repository-beta/*
               fi
 
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
