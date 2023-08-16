@@ -91,9 +91,11 @@ lists:
     - { BOARD: firefly-rk3399, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
     - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
