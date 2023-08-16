@@ -5054,7 +5054,8 @@ jobs:
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
 
               # upload repository
-              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
+              rsync -arvc --exclude "dists" --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
+              rsync -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
 
           else
 
