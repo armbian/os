@@ -5038,14 +5038,14 @@ jobs:
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           if [[ "$BETA" == "yes" ]]; then
 
+              # drop nightly repository in any case
+              sudo rm -rf /outgoing/repository-beta/*
+
               # add common
               if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
 
-                  # drop nightly repository in this case too
-                  sudo rm -rf /outgoing/repository-beta/*
                   # remove status
                   sudo rm -f /incoming/debs-beta/status
-
                   tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
               fi
