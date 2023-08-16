@@ -5053,7 +5053,7 @@ jobs:
               tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
 
               # upload repository
-              lftp -u upload, -e "set net:timeout 4;set net:max-retries 8;mirror -R --parallel=1 --no-perms /outgoing/repository-beta/public/. repository-beta/ ;bye" sftp://stpete-mirror.armbian.com
+              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
 
           else
 
