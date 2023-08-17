@@ -112,5 +112,5 @@ jobs:
       - name: Echo
         run: |
           echo "${{ matrix.node }}"          
-          ssh StrictHostKeyChecking=no upload@${{ matrix.node }} "df -h"
+          ssh -o StrictHostKeyChecking=accept-new upload@${{ matrix.node }} "df -h"
           sleep 10
