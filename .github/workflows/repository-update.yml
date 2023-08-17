@@ -36,7 +36,7 @@ jobs:
               
       - name: "Prepare for ${{ matrix.repository }}"
         run: |
-         tree /outgoing/${{ matrix.repository }}
+         tree /incoming/${{ matrix.repository }}
 
       - name: Checkout build repository
         uses: actions/checkout@v3
