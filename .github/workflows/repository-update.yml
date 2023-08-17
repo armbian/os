@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       max-parallel: 8
       matrix:
-        repository: ["repository-beta","repository"]
+        repository: ["debs-beta","debs"]
     
     name: rerun
     runs-on: repository
@@ -53,6 +53,7 @@ jobs:
 
       - name: "Build repository ${{ matrix.repository }}"
         run: |
-        
+
+          TARGET=${${{ matrix.repository }}/debs/repository}
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${{ matrix.repository }} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
