@@ -92,7 +92,7 @@ jobs:
     runs-on: repository
     needs: Prepare
     outputs:
-      matrix: ${{fromJson(needs.Prepare.outputs.matrix)}}
+      matrix: ${{needs.Prepare.outputs.matrix}}
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
