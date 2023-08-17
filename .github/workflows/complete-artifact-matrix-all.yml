@@ -4909,32 +4909,13 @@ jobs:
 
 # template file: 750.single_repo.yaml
 
-  external:
-    name: "Download external"
-    if: ${{ !failure() && !cancelled() && (github.event.inputs.targetsFilterInclude == '') }}
-    needs: [ "matrix_prep", "all-artifacts-ready" ]
-    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
-    with:
-      ACCESS_NAME: armbian
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
-    secrets:
-      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
-      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
-      HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
-      HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
-      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-
-
   # ------ publish packages to repository -------
 
   publish-debs-to-repo:
     name: "publish debs to repo"
     runs-on: [ repository ]
     if: ${{ !failure() && !cancelled() && (github.event.inputs.targetsFilterInclude == '') }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
-    needs: [ "external" ]
+    needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
 
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
