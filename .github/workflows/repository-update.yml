@@ -112,6 +112,17 @@ jobs:
           key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
+          
+      - name: What to sync?
+        run: |
+        
+          TARGETS=($(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ secrets.HOST_UPLOAD_USER }}" \
+          | jq '.results[] | .tags' | jq '.[].name' | grep -v null | sed "s/\"//g"))
+
+          for target in "${TARGETS[@]}"; do
+          echo "Host ${{ secrets.HOST_UPLOAD_USER }} host $target" >> $GITHUB_STEP_SUMMARY
+          done
 
       - name: "Rsync to ${{ matrix.node }}:/tank/upload/repository"
         run: |
