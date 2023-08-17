@@ -16,7 +16,42 @@ concurrency:
 
 jobs:
 
+  Prepare:
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \                                                                                                          <main>
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=beta" \
+          | jq '.results[] | .name' | grep -v null | sed 's/\/24"/"/g' | sed "s/ /:/g" | sed "s/\"//g" |jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  Sync:
+    name: "DUT"
+    runs-on: repository
+    needs: Prepare
+    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+
+    steps:
+
+      - name: Echo
+        run: echo "${{ matrix.node }}"
+        
   gradle:
+    needs: Sync
     strategy:
       fail-fast: false
       max-parallel: 8
