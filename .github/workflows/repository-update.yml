@@ -57,8 +57,8 @@ jobs:
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
 
-          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+#          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+#          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: "Sync repository ${{ matrix.repository }}"
         run: |
@@ -67,8 +67,8 @@ jobs:
           TARGET=${REPOSITORY/debs/repository}
           
           # upload repository
-          rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
-          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+#          rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+#          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
 
   Prepare:
     needs: gradle
@@ -83,7 +83,7 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=beta" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=push" \
           | jq '.results[] | .name' | grep -v null | sed "s/\"//g" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
@@ -102,7 +102,15 @@ jobs:
 
     steps:
 
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
       - name: Echo
         run: |
-          echo "${{ matrix.node }}"
+          echo "${{ matrix.node }}"          
+          ssh upload@${{ matrix.node }} "df -h"
           sleep 10
