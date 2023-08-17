@@ -54,7 +54,7 @@ jobs:
       - name: "Build repository ${{ matrix.repository }}"
         run: |
         
-          REPOSITORY="{{ matrix.repository }}"
+          REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
           echo $TARGET
           #sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
