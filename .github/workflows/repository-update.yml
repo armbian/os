@@ -118,10 +118,10 @@ jobs:
         
           TARGETS=($(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" \
-          | jq '.results[] | .tags' | jq '.[].name' | grep -v null | sed "s/\"//g"))
+          | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
           for target in "${TARGETS[@]}"; do
-          echo "Host ${{ secrets.HOST_UPLOAD_USER }} host $target" >> $GITHUB_STEP_SUMMARY
+          echo "Synching $target" >> $GITHUB_STEP_SUMMARY
           done
 
       - name: "Rsync to ${{ matrix.node }}:/tank/upload/repository"
