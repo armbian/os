@@ -113,7 +113,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Rsync
+      - name: "Rsync to ${{ matrix.node }}:/tank/upload/repository"
         run: |
 
           rsync -arvc -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
@@ -140,7 +140,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Rsync
+      - name: "Rsync with delete to ${{ matrix.node }}:/tank/upload/repository"
         run: |
 
           rsync -arvc -e 'ssh -o StrictHostKeyChecking=accept-new' --delete /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
