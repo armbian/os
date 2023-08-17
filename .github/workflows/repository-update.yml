@@ -54,7 +54,7 @@ jobs:
       - name: "Build repository ${{ matrix.repository }}"
         run: |
 
-          echo ${"${{ matrix.repository }}"/debs/repository}
+          echo ${${{ matrix.repository }}/debs/repository}
         
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
