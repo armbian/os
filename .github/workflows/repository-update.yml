@@ -5,27 +5,6 @@ on:
   schedule:
     - cron: "00 3 * * *"
   workflow_dispatch:
-    inputs:
-      BUILD_BRANCH:
-        description: Build branch
-        required: false
-        default: main
-        type: string
-      BUILD_RUNNER:
-        description: Build runner
-        required: false
-        default: ubuntu-latest
-        type: string
-      TARGET_REPOSITORY:
-        type: choice
-        description: Select repository
-        options:
-        - beta.armbian.com
-        - apt.armbian.com
-      UPDATE_REPOSITORY:
-        type: boolean
-        description: Update repository
-        default: true
 
 concurrency:
   group: repository-${{ github.ref }}
@@ -50,39 +29,26 @@ jobs:
           key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
-
-      - name: "Sync ${{ matrix.repository }}"
-        run: |
-
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload artifacts
-          mkdir -p /outgoing/${{ matrix.repository }}/public/
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 8;mirror -R --parallel=1 --no-perms /outgoing/${{ matrix.repository }}/public/. ${{ matrix.repository }}/ ;bye" sftp://stpete-mirror.armbian.com
-
               
-      #- name: "Prepare for ${{ matrix.repository }}"
-      #  run: |
-      #   tree /incoming/${{ matrix.repository }}
+      - name: "Prepare for ${{ matrix.repository }}"
+        run: |
+         tree /incoming/${{ matrix.repository }}
 
-      #- name: Checkout build repository
-      #  uses: actions/checkout@v3
-      #  with:
-      #    repository: armbian/build
-      #    fetch-depth: 1
-      #    clean: false
+      - name: Checkout build repository
+        uses: actions/checkout@v3
+        with:
+          repository: armbian/build
+          fetch-depth: 1
+          clean: false
 
-      #- name: Import GPG key
-      #  uses: crazy-max/ghaction-import-gpg@v5
-      #  with:
-      #    gpg_private_key: ${{ secrets.GPG_KEY1 }}
-      #    passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
-      #- name: "Build repository ${{ matrix.repository }}"
-      #  run: |
-      #  
-      #    sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-      #   tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${{ matrix.repository }} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+      - name: "Build repository ${{ matrix.repository }}"
+        run: |
+        
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${{ matrix.repository }} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
