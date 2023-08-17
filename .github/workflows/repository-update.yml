@@ -106,10 +106,11 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
       - name: Echo
         run: |
           echo "${{ matrix.node }}"          
-          ssh upload@${{ matrix.node }} "df -h"
+          ssh StrictHostKeyChecking=no upload@${{ matrix.node }} "df -h"
           sleep 10
