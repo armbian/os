@@ -117,7 +117,7 @@ jobs:
         run: |
         
           TARGETS=($(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ secrets.HOST_UPLOAD_USER }}" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" \
           | jq '.results[] | .tags' | jq '.[].name' | grep -v null | sed "s/\"//g"))
 
           for target in "${TARGETS[@]}"; do
