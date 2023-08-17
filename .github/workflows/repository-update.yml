@@ -23,7 +23,7 @@ jobs:
       matrix:
         repository: ["debs-beta","debs"]
     
-    name: Update
+    name: Make
     runs-on: repository
     steps:
 
@@ -36,6 +36,7 @@ jobs:
               
       - name: "Prepare for ${{ matrix.repository }}"
         run: |
+
          tree /incoming/${{ matrix.repository }}
 
       - name: Checkout build repository
@@ -71,6 +72,7 @@ jobs:
 #          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
 
   Prepare:
+    name: "Upload to servers"
     needs: gradle
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
@@ -88,7 +90,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
 
   Sync:
-    name: "Push to "
+    name: "Files"
     runs-on: repository
     needs: Prepare
     outputs:
@@ -118,7 +120,7 @@ jobs:
           sleep 10
 
   Index:
-    name: "Sync index"
+    name: "Index"
     runs-on: repository
     needs: Sync
     if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
