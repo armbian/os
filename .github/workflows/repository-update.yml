@@ -15,43 +15,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-
-  Prepare:
-    outputs:
-      matrix: ${{steps.json.outputs.JSON_CONTENT}}
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Get primary mirrors from database
-        id: json
-        run: |
-
-          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=beta" \
-          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-
-  Sync:
-    name: "DUT"
-    runs-on: repository
-    needs: Prepare
-    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
-    timeout-minutes: 60
-    strategy:
-      max-parallel: 4
-      fail-fast: false
-      matrix:
-
-        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
-
-    steps:
-
-      - name: Echo
-        run: echo "${{ matrix.node }}"
         
   gradle:
-    needs: Sync
     strategy:
       fail-fast: false
       max-parallel: 8
@@ -104,3 +69,40 @@ jobs:
           # upload repository
           rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
           rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+
+  Prepare:
+    needs: gradle
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=beta" \
+          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  Sync:
+    name: "Push to "
+    runs-on: repository
+    needs: Prepare
+    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+
+    steps:
+
+      - name: Echo
+        run: |
+          echo "${{ matrix.node }}"
+          sleep 10
