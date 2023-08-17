@@ -6,8 +6,12 @@ on:
     - cron: "00 3 * * *"
   workflow_dispatch:
 
+#concurrency:
+#  group: repository-${{ github.ref }}
+#  cancel-in-progress: false
+
 concurrency:
-  group: repository-${{ github.ref }}
+  group: pipeline-all${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
