@@ -113,12 +113,11 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Echo
+      - name: Rsync
         run: |
-          echo "${{ matrix.node }}"          
-          ssh -o StrictHostKeyChecking=accept-new upload@${{ matrix.node }} "df -h"
-          sleep 10
 
+          rsync -arvc -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
+          
   Index:
     name: "Index"
     runs-on: repository
@@ -141,8 +140,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Echo
+      - name: Rsync
         run: |
-          echo "${{ matrix.node }}"          
-          ssh -o StrictHostKeyChecking=accept-new upload@${{ matrix.node }} "df -h"
-          sleep 10
+
+          rsync -arvc -e 'ssh -o StrictHostKeyChecking=accept-new' --delete /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
