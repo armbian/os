@@ -91,6 +91,8 @@ jobs:
     name: "Push to "
     runs-on: repository
     needs: Prepare
+    outputs:
+      matrix: ${{fromJson(needs.Prepare.outputs.matrix)}}
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
@@ -119,14 +121,14 @@ jobs:
     name: "Sync index"
     runs-on: repository
     needs: Sync
-    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
 
-        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+        node: ${{fromJson(needs.Sync.outputs.matrix)}}
 
     steps:
 
