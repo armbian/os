@@ -23,7 +23,7 @@ jobs:
       matrix:
         repository: ["debs-beta","debs"]
     
-    name: rerun
+    name: Update
     runs-on: repository
     steps:
 
@@ -57,3 +57,7 @@ jobs:
           TARGET=${${{ matrix.repository }}/debs/repository}
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+
+          # upload repository
+          rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
