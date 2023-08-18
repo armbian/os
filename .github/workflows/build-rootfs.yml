@@ -12,23 +12,14 @@ on:
   schedule:
     - cron: '0 3 * * *' # Scheduled runs every day at 3am UTC
 
-jobs:
+concurrency:
+  group: rootfs
+  cancel-in-progress: true
 
-  Cancel:
-    name: "Cancel currently active"
-    if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: qemu
-    timeout-minutes: 3
-    steps:
-      - uses: styfle/cancel-workflow-action@0.11.0
-        if: ${{ github.event.schedule == '' }}
-        with:
-          all_but_latest: true
-          access_token: ${{ secrets.GITHUB_TOKEN }}
+jobs:
 
   Minimal:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
