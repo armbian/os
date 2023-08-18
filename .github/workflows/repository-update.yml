@@ -62,7 +62,7 @@ jobs:
           sudo chown -R ${USER}.${USER} /outgoing/${TARGET}
 
           # clean
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|code|codium"
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|chromium-browser|zoom|gh"
           
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
