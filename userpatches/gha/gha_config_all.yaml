@@ -4,7 +4,7 @@ org: "armbian" # can't be an expression, only string.
 org_and_build_repo: "armbian/build"
 build_ref: "main"
 script_name: "Build All Artifacts (cronjob)"
-concurrency_group: "pipeline-all"
+concurrency_group: "pipeline"
 repository_ref: "all"
 
 # menu defaults
