@@ -45,6 +45,7 @@ jobs:
           repository: armbian/build
           fetch-depth: 1
           clean: false
+          path: build
 
       - name: Checkout OS repository
         uses: actions/checkout@v3
@@ -52,6 +53,7 @@ jobs:
           repository: armbian/os
           fetch-depth: 1
           clean: false
+          path: os
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v5
@@ -65,19 +67,8 @@ jobs:
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
 
-          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-
-          # clean old packages
-          PACKAGES=$(grep INSTALL os/external/* 2>/dev/null | cut -d"=" -f2 | sort | uniq | grep -v -e '^$' | grep -v -e '^"' | tr '\n' '|' | sed 's/.$//')
-          TARGETS=(bionic bookworm bullseye buster focal hirsute impish jammy jessy kinetic lunar sid stretch xenial)
-          for i in "${TARGETS[@]}"
-          do
-              aptly --dry-run --config=aptly.conf repo remove "${i}" "$PACKAGES"
-              aptly --dry-run --config=aptly.conf repo remove "${i}"-utils "$PACKAGES"
-              aptly --dry-run --config=aptly.conf repo remove "${i}"-desktop "$PACKAGES"
-              
-          done
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' build/tools/repository/aptly.conf
+          build/tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: "Sync repository ${{ matrix.repository }}"
         run: |
