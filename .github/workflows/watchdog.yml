@@ -34,7 +34,7 @@ jobs:
 
           # Define variables here
           OWNER_REPO="armbian/os"
-          ATTEMPTS="4"
+          ATTEMPTS="6"
           SCRIPT="${{ matrix.script }}"
 
           WORKFLOW=$(gh api "/repos/${OWNER_REPO}/actions/workflows" | jq '.workflows[] | select(.path==".github/workflows/'${{ matrix.script }}'.yml")' | jq -r '.id')
