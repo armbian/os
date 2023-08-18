@@ -1,41 +1,25 @@
 name: Repository update (admin)
 on:
-#  repository_dispatch:
-#    types: ["Repository update"]
+  repository_dispatch:
+    types: ["Repository update"]
 #  schedule:
 #    - cron: "00 3 * * *"
   workflow_dispatch:
     inputs:
-      BUILD_BRANCH:
-        description: Build branch
+      PKG_REMOVE:
+        description: Packages to remove [pkg-name] or [Name (% linux*edge*)]
         required: false
-        default: main
         type: string
-      BUILD_RUNNER:
-        description: Build runner
-        required: false
-        default: ubuntu-latest
-        type: string
-      TARGET_REPOSITORY:
-        type: choice
-        description: Select repository
-        options:
-        - beta.armbian.com
-        - apt.armbian.com
-      UPDATE_REPOSITORY:
-        type: boolean
-        description: Update repository
-        default: true
-
+        
 concurrency:
-  group: repository-${{ github.ref }}
+  group: pipeline
   cancel-in-progress: false
 
 jobs:
 
-  Artifacts:
+  Check:
 
-    name: Upload artifacts
+    name: "Check membership"
     runs-on: fast
     steps:
 
@@ -47,13 +31,13 @@ jobs:
 
   external:
     name: "Download external"
-    needs: Artifacts
+    needs: Check
 
     if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }}
+      BUILD_RUNNER: "ubuntu-latest"
     secrets:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -63,3 +47,151 @@ jobs:
       HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
       HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
       KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+
+  gradle:
+    needs: external
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        repository: ["debs-beta","debs"]
+    
+    name: Make
+    runs-on: repository
+    steps:
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+              
+      - name: "Prepare for ${{ matrix.repository }}"
+        run: |
+
+         tree /incoming/${{ matrix.repository }}
+
+      - name: Checkout build repository
+        uses: actions/checkout@v3
+        with:
+          repository: armbian/build
+          fetch-depth: 1
+          clean: false
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: "Build repository ${{ matrix.repository }}"
+        run: |
+
+          REPOSITORY="${{ matrix.repository }}"
+          TARGET=${REPOSITORY/debs/repository}
+
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+          sudo chown -R ${USER}.${USER} /outgoing/${TARGET}
+
+          # clean
+          if [[ -n "${{ inputs.PKG_REMOVE }}" ]]; then
+             PKG_REMOVE="|${{ inputs.PKG_REMOVE }}"
+          fi
+
+          # remove certain and custom package
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|chromium-browser|zoom|gh${PKG_REMOVE}"
+
+          # add from incoming
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+
+  Prepare:
+    name: "Upload to servers"
+    needs: gradle
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=push" \
+          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  Sync:
+    name: "Files"
+    runs-on: repository
+    needs: Prepare
+    outputs:
+      matrix: ${{needs.Prepare.outputs.matrix}}
+    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+
+    steps:
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+          
+      - name: What to sync?
+        run: |
+        
+          TARGETS=($(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" \
+          | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
+
+          for target in "${TARGETS[@]}"; do
+              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
+              if [[ "$target" == "debs" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository ; fi
+              if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta ; fi
+          done
+          
+  Index:
+    name: "Index"
+    runs-on: repository
+    needs: Sync
+    if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Sync.outputs.matrix)}}
+
+    steps:
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+
+      - name: What to sync?
+        run: |
+        
+          TARGETS=($(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" \
+          | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
+
+          for target in "${TARGETS[@]}"; do
+              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
+              if [[ "$target" == "debs" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository ; fi
+              if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta ; fi
+          done
