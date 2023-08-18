@@ -69,8 +69,8 @@ jobs:
           TARGET=${REPOSITORY/debs/repository}
           
           # upload repository
-          rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
-          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+          rsync -ar --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+          rsync -ar --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
 
   Prepare:
     name: "Upload to servers"
@@ -128,7 +128,7 @@ jobs:
       - name: "Rsync to ${{ matrix.node }}:/tank/upload/repository"
         run: |
 
-          rsync -arvc -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+          rsync -ar -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
           
   Index:
     name: "Index"
@@ -155,4 +155,4 @@ jobs:
       - name: "Rsync with delete to ${{ matrix.node }}:/tank/upload/repository"
         run: |
 
-          rsync -arvc -e 'ssh -o StrictHostKeyChecking=accept-new' --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+          rsync -ar -e 'ssh -o StrictHostKeyChecking=accept-new' --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
