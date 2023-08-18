@@ -17,9 +17,9 @@ concurrency:
 
 jobs:
 
-  Artifacts:
+  Check:
 
-    name: Upload artifacts
+    name: "Check membership"
     runs-on: fast
     steps:
 
@@ -31,7 +31,7 @@ jobs:
 
   external:
     name: "Download external"
-    needs: Artifacts
+    needs: Check
 
     if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
