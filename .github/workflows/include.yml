@@ -43,7 +43,7 @@ jobs:
         
           # Make a list of valid pairs from our config
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT          
-          releases=($(grep -rw config/distributions/*/support -ve 'eos' | cut -d"/" -f3 | grep -Ev "focal|buster|kinetic"))
+          releases=($(grep -rw config/distributions/*/support -ve 'eos' | cut -d"/" -f3 | grep -Ev "focal|buster|kinetic|sid"))
           arch=("amd64" "armhf" "arm64" "riscv64")
           desktops=("none")
           for i in ${releases[@]}; do
