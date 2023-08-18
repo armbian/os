@@ -4,7 +4,7 @@ org: "armbian" # can't be an expression, only string.
 org_and_build_repo: "armbian/build"
 build_ref: "main"
 script_name: "Build Official Images (admin)"
-concurrency_group: "${{ github.run_id }}-"
+concurrency_group: "${{ github.run_id }}-pipeline-stable"
 repository_ref: "stable"
 
 # menu defaults

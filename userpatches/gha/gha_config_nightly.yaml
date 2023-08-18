@@ -4,7 +4,7 @@ org: "armbian" # can't be an expression, only string.
 org_and_build_repo: "armbian/build"
 build_ref: "main"
 script_name: "Build Nightly Images (cronjob)"
-concurrency_group: ""
+concurrency_group: "pipeline-nightly"
 repository_ref: "nightly"
 
 # menu defaults
