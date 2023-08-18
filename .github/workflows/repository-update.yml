@@ -132,7 +132,7 @@ jobs:
       - name: "Rsync to ${{ matrix.node }}:/tank/upload/repository"
         run: |
 
-          rsync -ar -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+          rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
           
   Index:
     name: "Index"
@@ -159,4 +159,4 @@ jobs:
       - name: "Rsync with delete to ${{ matrix.node }}:/tank/upload/repository"
         run: |
 
-          rsync -ar -e 'ssh -o StrictHostKeyChecking=accept-new' --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+          rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
