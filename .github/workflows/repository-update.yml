@@ -2,8 +2,8 @@ name: Repository update (admin)
 on:
 #  repository_dispatch:
 #    types: ["Repository update"]
-  schedule:
-    - cron: "00 3 * * *"
+#  schedule:
+#    - cron: "00 3 * * *"
   workflow_dispatch:
     inputs:
       PKG_REMOVE:
@@ -11,17 +11,45 @@ on:
         required: false
         type: string
         
-#concurrency:
-#  group: repository-${{ github.ref }}
-#  cancel-in-progress: false
-
 concurrency:
-  group: pipeline-all${{ github.ref }}
+  group: pipeline-all
   cancel-in-progress: false
 
 jobs:
-        
+
+  Artifacts:
+
+    name: Upload artifacts
+    runs-on: fast
+    steps:
+
+      - name: "Check membership"
+        uses: armbian/actions/team-check@main
+        with:
+          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  external:
+    name: "Download external"
+    needs: Artifacts
+
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
+    with:
+      ACCESS_NAME: armbian
+      BUILD_RUNNER: "ubuntu-latest"
+    secrets:
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
+      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
+      HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+
   gradle:
+    needs: external
     strategy:
       fail-fast: false
       max-parallel: 8
