@@ -46,6 +46,13 @@ jobs:
           fetch-depth: 1
           clean: false
 
+      - name: Checkout OS repository
+        uses: actions/checkout@v3
+        with:
+          repository: armbian/os
+          fetch-depth: 1
+          clean: false
+
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v5
         with:
@@ -58,8 +65,19 @@ jobs:
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
 
-#          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-#          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+
+          # clean old packages
+          PACKAGES=$(grep INSTALL os/external/* 2>/dev/null | cut -d"=" -f2 | sort | uniq | grep -v -e '^$' | grep -v -e '^"' | tr '\n' '|' | sed 's/.$//')
+          TARGETS=(bionic bookworm bullseye buster focal hirsute impish jammy jessy kinetic lunar sid stretch xenial)
+          for i in "${TARGETS[@]}"
+          do
+              aptly --dry-run --config=aptly.conf repo remove "${i}" "$PACKAGES"
+              aptly --dry-run --config=aptly.conf repo remove "${i}"-utils "$PACKAGES"
+              aptly --dry-run --config=aptly.conf repo remove "${i}"-desktop "$PACKAGES"
+              
+          done
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: "Sync repository ${{ matrix.repository }}"
         run: |
@@ -68,8 +86,8 @@ jobs:
           TARGET=${REPOSITORY/debs/repository}
           
           # upload repository
-#          rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
-#          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+          rsync -arvc --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+          rsync -arvc --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
 
   Prepare:
     name: "Upload to servers"
