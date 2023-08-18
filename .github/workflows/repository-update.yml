@@ -128,8 +128,8 @@ jobs:
 
           for target in "${TARGETS[@]}"; do
           echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-          [[ $target == debs ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
-          [[ $target == debs-beta ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+          [[ "$target" == "debs" ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
+          [[ "$target" == "debs-beta" ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
           done
           
   Index:
@@ -164,6 +164,6 @@ jobs:
 
           for target in "${TARGETS[@]}"; do
           echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-          [[ $target == debs ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
-          [[ $target == debs-beta ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+          [[ "$target" == "debs" ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
+          [[ "$target" == "debs-beta" ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
           done
