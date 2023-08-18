@@ -78,6 +78,7 @@ on:
         - lafrite
         - lamobo-r1
         - lepotato
+        - licheepi-4a
         - lime-a10
         - lime-a33
         - lime-a64
@@ -254,6 +255,7 @@ on:
         - brentr
         - bretmlw
         - catalinii
+        - chainsx
         - clee
         - devdotnetorg
         - efectn
@@ -371,23 +373,21 @@ jobs:
       - name: Determine version
         id: versionfile
         run: |
-
+          # file = where version is getting stored, different for stable and nightly
+          # skip_tag = we only upload nighlty to GH releases
           echo "file=nightly" >> $GITHUB_OUTPUT
+          echo "skip_tag=false" >> $GITHUB_OUTPUT
           echo "pre_release=true" >> $GITHUB_OUTPUT
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-              echo "pre_release=false" >> $GITHUB_OUTPUT
               echo "file=stable" >> $GITHUB_OUTPUT
+              echo "skip_tag=true" >> $GITHUB_OUTPUT
+              echo "pre_release=false" >> $GITHUB_OUTPUT
           fi
-
-       #- name: Read Version
-       #if: ${{ github.event.inputs.skipImages != 'no' }}
-       # run: |
-       #
-       #         cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+ #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.0.0
         with:
@@ -400,21 +400,22 @@ jobs:
           skip-on-empty: 'false'
           skip-commit: 'false'
           skip-ci: 'false'
+          skip-tag: "${{ steps.versionfile.outputs.skip_tag }}"
           version-file: "${{ steps.versionfile.outputs.file }}.json"
           pre-release: "${{ steps.versionfile.outputs.pre_release }}"
           git-branch: 'main'
           tag-prefix: ''
           pre-release-identifier: 'trunk'
 
-      - name: Read Version
-        if: ${{ steps.changelog.outputs.tag }}
+      - name: Read version from file if nor overriden
+        if: ${{ ! github.event.inputs.versionOverride }}
         run: |
-          echo "VERSION_OVERRIDE=${{ steps.changelog.outputs.tag }}" >> $GITHUB_ENV
           mkdir -p downloads
-          echo "${{ steps.changelog.outputs.tag }}" > downloads/version
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+ #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
           name: assets-for-download
@@ -444,7 +445,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.nightlybuild || 'no') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
         with:
           tag: "${{ env.VERSION_OVERRIDE }}"
           name: "${{ env.VERSION_OVERRIDE }}"
@@ -455,7 +456,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+#        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         id: releases
         run: |
 
@@ -548,6 +549,7 @@ jobs:
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
           bash ./compile.sh gha-matrix armbian-images \
+          REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
           BETA=${{ github.event.inputs.nightlybuild || 'no' }} \
           CLEAN_INFO=yes \
@@ -806,67 +808,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-2": # templated "build-artifacts-chunk-2"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-2 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -922,67 +909,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-3": # templated "build-artifacts-chunk-3"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-3 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1038,67 +1010,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-4": # templated "build-artifacts-chunk-4"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-4 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1154,67 +1111,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-5": # templated "build-artifacts-chunk-5"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-5 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1270,67 +1212,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-6": # templated "build-artifacts-chunk-6"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-6 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1386,67 +1313,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-7": # templated "build-artifacts-chunk-7"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-7 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1502,67 +1414,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-8": # templated "build-artifacts-chunk-8"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-8 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1618,67 +1515,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-9": # templated "build-artifacts-chunk-9"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-9 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1734,67 +1616,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-10": # templated "build-artifacts-chunk-10"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-10 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1850,67 +1717,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-11": # templated "build-artifacts-chunk-11"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-11 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1966,67 +1818,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-12": # templated "build-artifacts-chunk-12"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-12 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2082,67 +1919,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-13": # templated "build-artifacts-chunk-13"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-13 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2198,67 +2020,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-14": # templated "build-artifacts-chunk-14"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-14 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2314,67 +2121,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-15": # templated "build-artifacts-chunk-15"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-15 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2430,67 +2222,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-16": # templated "build-artifacts-chunk-16"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-16 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2546,67 +2323,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-17": # templated "build-artifacts-chunk-17"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-17 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2662,67 +2424,52 @@ jobs:
       - name: Build  ${{matrix.desc}}
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" UPLOAD_TO_OCI_ONLY=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key
 #        uses: shimataro/ssh-key-action@v2
 #        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          key: ${{ secrets.KEY_UPLOAD }}
 #          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 #          if_key_exists: replace
 
-      - name: Check API rate limits
-        run: |
+#      - name: Check API rate limits
+#        run: |
 
-          # install dependencies
-          if ! command -v "gh" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install gh
-          fi
+#          # install dependencies
+#          if ! command -v "gh" > /dev/null 2>&1; then
+#             sudo apt-get -y -qq install gh
+#          fi
 
-          while true
-            do
-            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
-                echo "API rate in good shape $PERCENT % free"
-                exit 0
-            fi
-            echo "API rate lower then 30%, sleping 10m"
-            sleep 10m
-          done
-
-          # show current api rate
-          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-
-      #- name: Deploy to server
-      #  timeout-minutes: 180
-      #  env:
-      #    KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-      #    ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-      #  if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && github.event.inputs.uploadtoserver == 'armbian'
-      #  run: |
-
-      #    # install dependencies
-      #    if ! command -v "lftp" > /dev/null 2>&1; then
-      #       sudo apt-get -y -qq install lftp
-      #    fi
-
-      #    # upload artifacts
-      #    lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-      - name: "Cleanup artefacts"
-        if: always()
-        run: rm -rfv output/debs
+#          while true
+#            do
+#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
+#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
+#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
+#            if (( $PERCENT > 30 )); then
+#                echo "API rate in good shape $PERCENT % free"
+#                exit 0
+#            fi
+#            echo "API rate lower then 30%, sleping 10m"
+#            sleep 10m
+#          done
+#
+#          # show current api rate
+#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
+#
+#      - name: Deploy debian packages to our servers
+#        if: github.event.inputs.uploadtoserver == 'armbian'
+#        timeout-minutes: 15
+#        run: |
+#
+#          mkdir -p output/debs output/debs-beta
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
+#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
 
 # template file: 650.per-chunk-images_job.yaml
 
@@ -2777,25 +2524,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -2845,8 +2600,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -2862,23 +2616,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2935,25 +2676,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3003,8 +2752,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3020,23 +2768,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3093,25 +2828,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3161,8 +2904,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3178,23 +2920,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3251,25 +2980,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3319,8 +3056,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3336,23 +3072,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3409,25 +3132,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3477,8 +3208,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3494,23 +3224,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3567,25 +3284,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3635,8 +3360,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3652,23 +3376,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3725,25 +3436,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3793,8 +3512,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3810,23 +3528,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3883,25 +3588,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -3951,8 +3664,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -3968,23 +3680,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4041,25 +3740,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -4109,8 +3816,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4126,23 +3832,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4199,25 +3892,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -4267,8 +3968,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4284,23 +3984,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4357,25 +4044,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -4425,8 +4120,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4442,23 +4136,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4515,25 +4196,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -4583,8 +4272,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4600,23 +4288,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4673,25 +4348,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -4741,8 +4424,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4758,23 +4440,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4831,25 +4500,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -4899,8 +4576,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -4916,23 +4592,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4989,25 +4652,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -5057,8 +4728,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -5074,23 +4744,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5147,25 +4804,33 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
+        timeout-minutes: 30
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-      - name: Install SSH key for storage
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-        if: env.KEY_ARMBIAN_UPLOAD != null
+#      - name: Install SSH key for storage
+#        env:
+#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#        if: env.KEY_ARMBIAN_UPLOAD != null
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+      - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
+          key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
@@ -5215,8 +4880,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
-        if: ${{ github.event.inputs.nightlybuild || 'no' }} == 'yes'
-
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
           artifacts: "output/images/*/*/Armbian_*.*"
@@ -5232,23 +4896,10 @@ jobs:
 
       - name: Deploy to server
         timeout-minutes: 15
-        env:
-          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-          ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-        if: ${{ env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null && ( github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' ) }}
+        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
-          # install dependencies
-          if ! command -v "lftp" > /dev/null 2>&1; then
-             sudo apt-get -y -qq install lftp
-          fi
-
-          # upload image
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --no-empty-dirs --parallel=8 --no-perms output/images/ nightly/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
-
-          # upload artifacts
-          lftp -u upload, -e "set net:timeout 4;set net:max-retries 12;mirror -R --include-glob *.deb --no-empty-dirs --parallel=8 --no-perms output/debs/ debs/ ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5261,7 +4912,7 @@ jobs:
 
   publish-debs-to-repo:
     name: "publish debs to repo"
-    runs-on: [ stable ]
+    runs-on: [ repository ]
     if: ${{ !failure() && !cancelled() && (github.event.inputs.targetsFilterInclude == '') }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
@@ -5272,6 +4923,7 @@ jobs:
       # Prepare dependencies.
       # If no /usr/bin/gpg, install gnupg2
       # If no /usr/bin/reprepro, install reprepro
+      # If no /usr/bin/lftp, install lftp
       - name: Install dependencies
         run: |
           if [ ! -e /usr/bin/gpg ]; then
@@ -5282,6 +4934,11 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y reprepro
           fi
+          if [ ! -e /usr/bin/lftp ]; then
+            sudo apt-get update
+            sudo apt-get install -y lftp
+          fi
+
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
@@ -5343,11 +5000,13 @@ jobs:
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download BETA=${{ github.event.inputs.nightlybuild || 'no' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'no' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
-        run: |
-          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -5356,54 +5015,124 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Deploy to server
+      - name: Sync parts when making single images / maintainer
+        if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
+        run: |
+          echo "sync all parts"
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
+          --include='debs***' \
+          --exclude='*' \
+          --remove-source-files \
+          output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/
+          # clean
+          find output/. -type d -empty -delete
+
+      - name: Generate repository
+        if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
         run: |
 
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+          # only keep latest debs in the incoming dir
+          # prepare outgoing: setfacl -m g:docker:rwx -R outgoing/
+          BETA="${{ github.event.inputs.nightlybuild || 'no' }}"
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+          if [[ "$BETA" == "yes" ]]; then
 
-      - name: Import GPG key from GitHub secrets
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
-        with:
-          gpg_private_key: ${{ secrets.GPG_KEY1 }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+              # drop nightly repository in any case
+              sudo rm -rf /outgoing/repository-beta/*
 
-      - name: Show GPG user IDs
-        run: |
-          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
-          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
-          echo "name:        ${{ steps.import_gpg.outputs.name }}"
-          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+              # add common
+              if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
 
-      - name: List loaded keys keys
-        run: gpg -K || true
+                  # remove status
+                  sudo rm -f /incoming/debs-beta/status
+                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
-      - name: Prepare the reprepro scripts
-        id: prepare-scripts-reprepro
-        run: |
-          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || 'no' }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+              fi
 
-      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
-        run: |
-          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
 
-      - name: Run the reprepro scripts
-        id: run-scripts-reprepro
-        env:
-          REPO_GPG_KEYID: ${{ steps.import_gpg.outputs.keyid }}
-          REPO_LOCATION: /opt/armbian_repo
-          REPO_CONF_LOCATION: /opt/armbian_repo/conf
-        run: |
-          set -x
-          export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
-          # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
-          if [[ "${{ github.event.inputs.nightlybuild || 'no' }}" == "yes" ]]; then
-            export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
+              # upload repository
+              rsync -arvc --exclude "dists" --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
+              rsync -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
+
           else
-            export INCOMING_DEBS_DIR="$(pwd)/output/debs"
+
+              # add common
+              if [[ "$(cat /incoming/debs/status 2>/dev/null)" == "done" ]]; then
+                  tools/repository/repo -i /incoming/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              fi
+              tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository/public/content.html
+
           fi
-          bash -x output/info/reprepro/reprepro.sh
+
+      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+
+#      - name: Install SSH key
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+#      - name: Deploy to server
+#        if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
+#        run: |
+
+#          # only keep latest debs in the incoming dir
+#          BETA="${{ github.event.inputs.nightlybuild || 'no' }}"
+#          mkdir -p output/debs/ output/debs-beta/
+#          if [[ "$BETA" == "yes" ]]; then
+#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+#          else
+#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
+#          fi
+
+#      - name: Import GPG key from GitHub secrets
+#        id: import_gpg
+#        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
+#        with:
+#          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+#          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+#      - name: Show GPG user IDs
+#        run: |
+#          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
+#          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
+#          echo "name:        ${{ steps.import_gpg.outputs.name }}"
+#          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+
+#      - name: List loaded keys keys
+#        run: gpg -K || true
+
+#      - name: Prepare the reprepro scripts
+#        id: prepare-scripts-reprepro
+#        run: |
+#          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || 'no' }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+#      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+#        run: |
+#          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+
+#      - name: Run the reprepro scripts
+#        id: run-scripts-reprepro
+#        env:
+#          REPO_GPG_KEYID: ${{ steps.import_gpg.outputs.keyid }}
+#          REPO_LOCATION: /opt/armbian_repo
+#          REPO_CONF_LOCATION: /opt/armbian_repo/conf
+#        run: |
+#          set -x
+#          export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
+#          # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
+#          if [[ "${{ github.event.inputs.nightlybuild || 'no' }}" == "yes" ]]; then
+#            export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
+#          else
+#            export INCOMING_DEBS_DIR="$(pwd)/output/debs"
+#          fi
+ #         bash -x output/info/reprepro/reprepro.sh
 
 #      - name: Install SSH key for storage
  #       env:
@@ -5465,17 +5194,17 @@ jobs:
           name: assets-for-download
           failOnError: false
 
-      # Cleaning releases
-      - uses: dev-drprasad/delete-older-releases@v0.2.1
-        with:
-          repo: armbian/os
-          keep_latest: 32
-          delete_tag_pattern: trunk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      # Cleaning releases
+#      - uses: dev-drprasad/delete-older-releases@v0.2.1
+#        with:
+#          repo: armbian/os
+#          keep_latest: 32
+#          delete_tag_pattern: trunk
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Cleaning logs
-      - name: "Keep only 7 days of workflow logs"
+      - name: "Keep only 14 days of workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -5483,7 +5212,7 @@ jobs:
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' && (github.event.inputs.nightlybuild || 'no') == 'yes' }}
         with:
           tag: "${{ env.version }}"
           omitBody: true

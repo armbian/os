@@ -16,6 +16,7 @@ jobs: # <TEMPLATE-IGNORE>
       # Prepare dependencies.
       # If no /usr/bin/gpg, install gnupg2
       # If no /usr/bin/reprepro, install reprepro
+      # If no /usr/bin/lftp, install lftp
       - name: Install dependencies
         run: |
           if [ ! -e /usr/bin/gpg ]; then
@@ -26,6 +27,11 @@ jobs: # <TEMPLATE-IGNORE>
             sudo apt-get update
             sudo apt-get install -y reprepro
           fi
+          if [ ! -e /usr/bin/lftp ]; then
+            sudo apt-get update
+            sudo apt-get install -y lftp
+          fi
+
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
@@ -87,11 +93,13 @@ jobs: # <TEMPLATE-IGNORE>
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
-        run: |
-          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -100,54 +108,124 @@ jobs: # <TEMPLATE-IGNORE>
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Deploy to server
+      - name: Sync parts when making single images / maintainer
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+        run: |
+          echo "sync all parts"
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
+          --include='debs***' \
+          --exclude='*' \
+          --remove-source-files \
+          output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/
+          # clean
+          find output/. -type d -empty -delete
+
+      - name: Generate repository
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
         run: |
 
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+          # only keep latest debs in the incoming dir
+          # prepare outgoing: setfacl -m g:docker:rwx -R outgoing/
+          BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+          if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
 
-      - name: Import GPG key from GitHub secrets
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
-        with:
-          gpg_private_key: ${{ secrets.GPG_KEY1 }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+              # drop nightly repository in any case
+              sudo rm -rf /outgoing/repository-beta/*
 
-      - name: Show GPG user IDs
-        run: |
-          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
-          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
-          echo "name:        ${{ steps.import_gpg.outputs.name }}"
-          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+              # add common
+              if [% raw %][[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]][% endraw %]; then
 
-      - name: List loaded keys keys
-        run: gpg -K || true
+                  # remove status
+                  sudo rm -f /incoming/debs-beta/status
+                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
-      - name: Prepare the reprepro scripts
-        id: prepare-scripts-reprepro
-        run: |
-          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+              fi
 
-      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
-        run: |
-          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
 
-      - name: Run the reprepro scripts
-        id: run-scripts-reprepro
-        env:
-          REPO_GPG_KEYID: ${{ steps.import_gpg.outputs.keyid }}
-          REPO_LOCATION: /opt/armbian_repo
-          REPO_CONF_LOCATION: /opt/armbian_repo/conf
-        run: |
-          set -x
-          export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
-          # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
-          if [% raw %][[ "${{ github.event.inputs.nightlybuild || [% endraw %][[nightlybuildDefaults]][% raw %] }}" == "yes" ]][% endraw %]; then
-            export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
+              # upload repository
+              rsync -arvc --exclude "dists" --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
+              rsync -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
+
           else
-            export INCOMING_DEBS_DIR="$(pwd)/output/debs"
+
+              # add common
+              if [% raw %][[ "$(cat /incoming/debs/status 2>/dev/null)" == "done" ]][% endraw %]; then
+                  tools/repository/repo -i /incoming/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              fi
+              tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+              tools/repository/repo -i output/debs-beta -o /outgoing/repository -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository/public/content.html
+
           fi
-          bash -x output/info/reprepro/reprepro.sh
+
+      - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+        run: |
+          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+
+#      - name: Install SSH key
+#        uses: shimataro/ssh-key-action@v2
+#        with:
+#          key: ${{ secrets.KEY_UPLOAD }}
+#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+#          if_key_exists: replace
+
+#      - name: Deploy to server
+#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
+#        run: |
+
+#          # only keep latest debs in the incoming dir
+#          BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
+#          mkdir -p output/debs/ output/debs-beta/
+#          if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
+#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
+#          else
+#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
+#          fi
+
+#      - name: Import GPG key from GitHub secrets
+#        id: import_gpg
+#        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
+#        with:
+#          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+#          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+#      - name: Show GPG user IDs
+#        run: |
+#          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
+#          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
+#          echo "name:        ${{ steps.import_gpg.outputs.name }}"
+#          echo "email:       ${{ steps.import_gpg.outputs.email }}"
+
+#      - name: List loaded keys keys
+#        run: gpg -K || true
+
+#      - name: Prepare the reprepro scripts
+#        id: prepare-scripts-reprepro
+#        run: |
+#          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+#      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+#        run: |
+#          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
+
+#      - name: Run the reprepro scripts
+#        id: run-scripts-reprepro
+#        env:
+#          REPO_GPG_KEYID: ${{ steps.import_gpg.outputs.keyid }}
+#          REPO_LOCATION: /opt/armbian_repo
+#          REPO_CONF_LOCATION: /opt/armbian_repo/conf
+#        run: |
+#          set -x
+#          export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
+#          # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
+#          if [% raw %][[ "${{ github.event.inputs.nightlybuild || [% endraw %][[nightlybuildDefaults]][% raw %] }}" == "yes" ]][% endraw %]; then
+#            export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
+#          else
+#            export INCOMING_DEBS_DIR="$(pwd)/output/debs"
+#          fi
+ #         bash -x output/info/reprepro/reprepro.sh
 
 #      - name: Install SSH key for storage
  #       env:

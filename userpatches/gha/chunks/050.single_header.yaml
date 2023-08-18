@@ -125,23 +125,21 @@ jobs:
       - name: Determine version
         id: versionfile
         run: |
-
+          # file = where version is getting stored, different for stable and nightly
+          # skip_tag = we only upload nighlty to GH releases
           echo "file=nightly" >> $GITHUB_OUTPUT
+          echo "skip_tag=false" >> $GITHUB_OUTPUT
           echo "pre_release=true" >> $GITHUB_OUTPUT
           if [ "${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}" == "no" ]; then
-              echo "pre_release=false" >> $GITHUB_OUTPUT
               echo "file=stable" >> $GITHUB_OUTPUT
+              echo "skip_tag=true" >> $GITHUB_OUTPUT
+              echo "pre_release=false" >> $GITHUB_OUTPUT
           fi
-
-       #- name: Read Version
-       #if: ${{ github.event.inputs.skipImages != [[skipImagesDefaults]] }}
-       # run: |
-       #
-       #         cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+ #       if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+        if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.0.0
         with:
@@ -154,21 +152,22 @@ jobs:
           skip-on-empty: 'false'
           skip-commit: 'false'
           skip-ci: 'false'
+          skip-tag: "${{ steps.versionfile.outputs.skip_tag }}"
           version-file: "${{ steps.versionfile.outputs.file }}.json"
           pre-release: "${{ steps.versionfile.outputs.pre_release }}"
           git-branch: 'main'
           tag-prefix: ''
           pre-release-identifier: 'trunk'
 
-      - name: Read Version
-        if: ${{ steps.changelog.outputs.tag }}
+      - name: Read version from file if nor overriden
+        if: ${{ ! github.event.inputs.versionOverride }}
         run: |
-          echo "VERSION_OVERRIDE=${{ steps.changelog.outputs.tag }}" >> $GITHUB_ENV
           mkdir -p downloads
-          echo "${{ steps.changelog.outputs.tag }}" > downloads/version
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+ #       if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
           name: assets-for-download
@@ -198,7 +197,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+        if: ${{ (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' && (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         with:
           tag: "${{ env.VERSION_OVERRIDE }}"
           name: "${{ env.VERSION_OVERRIDE }}"
@@ -209,7 +208,7 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         id: releases
         run: |
 
@@ -302,6 +301,7 @@ jobs:
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
           bash ./compile.sh gha-matrix [[userpatches_config_for_prepare_job]] \
+          REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
           BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} \
           CLEAN_INFO=yes \
