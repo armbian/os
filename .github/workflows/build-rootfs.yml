@@ -32,7 +32,6 @@ jobs:
 
   Server:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
@@ -45,7 +44,6 @@ jobs:
 
   GUI1:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
@@ -58,7 +56,6 @@ jobs:
 
   GUI2:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
@@ -71,7 +68,6 @@ jobs:
 
   GUI3:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
@@ -84,7 +80,6 @@ jobs:
 
   GUI4:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
@@ -97,7 +92,6 @@ jobs:
 
   GUI5:
 
-    needs: Cancel
     if: ${{ success() && github.repository_owner == 'Armbian' }}
     uses: ./.github/workflows/include.yml
 
