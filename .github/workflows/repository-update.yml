@@ -195,3 +195,19 @@ jobs:
               if [[ "$target" == "debs" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta ; fi
           done
+
+  dispatch:
+    name: "Dispatch smoke tests"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    needs: Index
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: 'armbian/os'
+          event-type: "Smoke tests"
+          client-payload: '{"powermanagement": true}'
+
