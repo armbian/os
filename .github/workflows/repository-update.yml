@@ -12,7 +12,7 @@ on:
         type: string
         
 concurrency:
-  group: pipeline-all
+  group: pipeline
   cancel-in-progress: false
 
 jobs:
