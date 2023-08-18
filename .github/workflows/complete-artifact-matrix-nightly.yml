@@ -191,6 +191,7 @@ on:
         - renegade
         - roc-rk3399-pc
         - rock-3a
+        - rock-4se
         - rock-5-cmio
         - rock-5a
         - rock-5b
@@ -238,6 +239,7 @@ on:
         - 150balbes
         - AGM1968
         - AaronNGray
+        - DylanHP
         - Heisath
         - Kreyren
         - ManoftheSea
@@ -333,7 +335,7 @@ env:
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
-  group: pipeline-nightly${{ github.ref }}
+  group: pipeline-nightlynightly
   cancel-in-progress: false
 
 jobs:
