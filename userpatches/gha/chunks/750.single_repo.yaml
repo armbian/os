@@ -130,11 +130,11 @@ jobs: # <TEMPLATE-IGNORE>
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
 
-              # drop nightly repository in any case
-              sudo rm -rf /outgoing/repository-beta/*
-
               # add common
               if [% raw %][[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]][% endraw %]; then
+
+                  # drop nightly repository
+                  sudo rm -rf /outgoing/repository-beta/*
 
                   # remove status
                   sudo rm -f /incoming/debs-beta/status
@@ -160,99 +160,17 @@ jobs: # <TEMPLATE-IGNORE>
 
           fi
 
+      - name: "Run repository update action"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/os
+          event-type: "Repository update"
+
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: |
           echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Deploy to server
-#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
-#        run: |
-
-#          # only keep latest debs in the incoming dir
-#          BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
-#          mkdir -p output/debs/ output/debs-beta/
-#          if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
-#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs-beta
-#          else
-#            rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files --delete output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/debs
-#          fi
-
-#      - name: Import GPG key from GitHub secrets
-#        id: import_gpg
-#        uses: crazy-max/ghaction-import-gpg@72b6676b71ab476b77e676928516f6982eef7a41 # v5.3.0 # https://github.com/crazy-max/ghaction-import-gpg/releases
-#        with:
-#          gpg_private_key: ${{ secrets.GPG_KEY1 }}
-#          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
-
-#      - name: Show GPG user IDs
-#        run: |
-#          echo "fingerprint: ${{ steps.import_gpg.outputs.fingerprint }}"
-#          echo "keyid:       ${{ steps.import_gpg.outputs.keyid }}"
-#          echo "name:        ${{ steps.import_gpg.outputs.name }}"
-#          echo "email:       ${{ steps.import_gpg.outputs.email }}"
-
-#      - name: List loaded keys keys
-#        run: gpg -K || true
-
-#      - name: Prepare the reprepro scripts
-#        id: prepare-scripts-reprepro
-#        run: |
-#          bash ./compile.sh debs-to-repo-reprepro BETA=${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }} REPO_GPG_KEYID="${{ steps.import_gpg.outputs.keyid }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
-
-#      - name: "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
-#        run: |
-#          echo "Logs debs-to-repo-reprepro: ${{ steps.prepare-scripts-reprepro.outputs.logs_url }}"
-
-#      - name: Run the reprepro scripts
-#        id: run-scripts-reprepro
-#        env:
-#          REPO_GPG_KEYID: ${{ steps.import_gpg.outputs.keyid }}
-#          REPO_LOCATION: /opt/armbian_repo
-#          REPO_CONF_LOCATION: /opt/armbian_repo/conf
-#        run: |
-#          set -x
-#          export REPREPRO_INFO_DIR="$(pwd)/output/info/reprepro"
-#          # rpardini is an absolute idiot, and chose "[" (bracket) as the delimiter jinja template, so now has to escape it (raw/endraw). Imbecile.
-#          if [% raw %][[ "${{ github.event.inputs.nightlybuild || [% endraw %][[nightlybuildDefaults]][% raw %] }}" == "yes" ]][% endraw %]; then
-#            export INCOMING_DEBS_DIR="$(pwd)/output/debs-beta"
-#          else
-#            export INCOMING_DEBS_DIR="$(pwd)/output/debs"
-#          fi
- #         bash -x output/info/reprepro/reprepro.sh
-
-#      - name: Install SSH key for storage
- #       env:
-  #        KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-   #     if: env.KEY_ARMBIAN_UPLOAD != null
-    #    uses: shimataro/ssh-key-action@v2
-     #   with:
-      #    key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-       #   known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-        #  if_key_exists: replace
-
-#      - name: Deploy to server
- #       timeout-minutes: 90
-  #      env:
-   #       KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-    #      ARMBIAN_HOST_UPLOAD: ${{ secrets.ARMBIAN_HOST_UPLOAD }}
-
-     #   if: env.KEY_ARMBIAN_UPLOAD != null && env.ARMBIAN_HOST_UPLOAD != null
-      #  run: |
-
-          # install dependencies
-       #   if ! command -v "lftp" > /dev/null 2>&1; then
-        #     sudo apt-get -y -qq install lftp
-         # fi
-
-          # upload artifacts
-         # lftp -u upload, -e "set net:timeout 4;set net:max-retries 6;mirror -R --parallel=8 --no-perms /opt/armbian_repo/ repository/[[repository_ref]] ;bye" sftp://${{ env.ARMBIAN_HOST_UPLOAD }}
 
     outputs:
 
