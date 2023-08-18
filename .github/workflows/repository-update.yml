@@ -59,7 +59,7 @@ jobs:
           TARGET=${REPOSITORY/debs/repository}
 
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-          sudo chown -R ${USER}.${USER} /outgoing/
+          sudo chown -R ${USER}.${USER} /outgoing/${TARGET}
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: "Sync repository ${{ matrix.repository }}"
