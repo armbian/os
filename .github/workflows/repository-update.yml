@@ -74,17 +74,7 @@ jobs:
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|chromium-browser|zoom|gh${PKG_REMOVE}"
 
           # add from incoming
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-
-      - name: "Sync repository ${{ matrix.repository }}"
-        run: |
-
-          REPOSITORY="${{ matrix.repository }}"
-          TARGET=${REPOSITORY/debs/repository}
-          
-          # upload repository
-          #rsync -ar --exclude "dists" --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
-          #rsync -ar --delete /outgoing/${TARGET}/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/${TARGET}
+#          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
   Prepare:
     name: "Upload to servers"
@@ -136,9 +126,9 @@ jobs:
           | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
           for target in "${TARGETS[@]}"; do
-          echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-          [[ "$target" == "debs" ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository
-          [[ "$target" == "debs-beta" ]] && rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta
+              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
+              if [[ "$target" == "debs" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository ; fi
+              if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' --exclude "dists" /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta ; fi
           done
           
   Index:
