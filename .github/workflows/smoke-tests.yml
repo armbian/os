@@ -14,10 +14,8 @@ on:
         type: boolean
         description: "Power Management"
         default: true
-  workflow_run:
-    workflows: ["Repository update"]
-    types:
-      - completed
+  repository_dispatch:
+    types: ["Smoke tests"]
 
 permissions:
   contents: read
