@@ -45,15 +45,6 @@ jobs:
           repository: armbian/build
           fetch-depth: 1
           clean: false
-          path: build
-
-      - name: Checkout OS repository
-        uses: actions/checkout@v3
-        with:
-          repository: armbian/os
-          fetch-depth: 1
-          clean: false
-          path: os
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v5
@@ -67,7 +58,8 @@ jobs:
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
 
-          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' build/tools/repository/aptly.conf
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+          sudo chown -R ${USER}.${USER} /outgoing/
           build/tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
       - name: "Sync repository ${{ matrix.repository }}"
