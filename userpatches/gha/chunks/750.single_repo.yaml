@@ -130,6 +130,9 @@ jobs: # <TEMPLATE-IGNORE>
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
 
+              # fix permission
+              sudo chown -R ${USER}.${USER} /outgoing/repository-beta
+
               # add common
               if [% raw %][[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]][% endraw %]; then
 
