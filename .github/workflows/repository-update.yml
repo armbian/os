@@ -152,9 +152,9 @@ jobs:
 
           JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
-          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]')          
-          SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"] ' | sed "s/\"//g")
-          SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"] ' | sed "s/\"//g")
+          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")          
+          SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
+          SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
           
