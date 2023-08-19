@@ -33,7 +33,7 @@ jobs:
     name: "Download external"
     needs: Check
 
-    if: ${{ github.repository_owner == 'XXXXXXXXArmbian' }}
+    if: ${{ github.repository_owner == 'Armbian' }}
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
@@ -49,7 +49,7 @@ jobs:
       KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 
   gradle:
-    #needs: external
+    needs: external
     strategy:
       fail-fast: false
       max-parallel: 8
@@ -100,10 +100,10 @@ jobs:
           fi
 
           # remove certain and custom package
-#          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|chromium-browser|zoom|gh${PKG_REMOVE}"
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|chromium-browser|zoom|gh${PKG_REMOVE}"
 
           # add from incoming
- #         tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
 
   Prepare:
     name: "Upload to servers"
