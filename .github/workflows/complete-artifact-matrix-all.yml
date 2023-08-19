@@ -5057,6 +5057,9 @@ jobs:
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           if [[ "$BETA" == "yes" ]]; then
 
+              # fix permission
+              sudo chown -R ${USER}.${USER} /outgoing/repository-beta
+
               # add common
               if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
 
