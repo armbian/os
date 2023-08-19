@@ -109,7 +109,7 @@ jobs: # <TEMPLATE-IGNORE>
           if_key_exists: replace
 
       - name: Sync parts when making single images / maintainer
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
         run: |
 
           # 
