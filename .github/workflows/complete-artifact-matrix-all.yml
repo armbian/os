@@ -5036,7 +5036,7 @@ jobs:
           if_key_exists: replace
 
       - name: Sync parts when making single images / maintainer
-        if: ${{ (github.event.inputs.skipImages || 'yes') == 'no' }}
+#        if: ${{ (github.event.inputs.skipImages || 'yes') == 'no' }}
         run: |
 
           # 
