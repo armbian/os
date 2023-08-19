@@ -25,9 +25,9 @@ If you want to enable build configurations, edit [yaml config files](/armbian/os
 # When is this happening?
 
 - Artifacts cache is updated every eight hours, starting at 0:00 AM UTC
-- Repository update is updated after **artifacts cache update** is finished.
-- Smoke tests is executed after **repository update** is finished.
-- Nightly images are build once per day, at 5:00 AM UTC or if [build config is changed](https://github.com/armbian/os/blob/main/userpatches/targets-release-nightly.yaml)
+- Repository update starts after **artifacts cache update** is done succesfully.
+- Smoke tests starts after **repository update** is done succesfully.
+- Nightly images are build once per day, at 5:00 AM UTC, or if [build config is changed](https://github.com/armbian/os/blob/main/userpatches/targets-release-nightly.yaml)
 - Manually, when Armbian [release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
 # Latest smoke tests results:
