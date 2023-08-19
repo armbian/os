@@ -194,6 +194,9 @@ jobs:
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
               if [[ "$target" == "debs" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta ; fi
+              # delete at the end
+              if [[ "$target" == "debs" ]]; then rsync -ar --progress -delete -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository ; fi
+              if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -delete -e 'ssh -o StrictHostKeyChecking=accept-new' /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@${{ matrix.node }}:/tank/upload/repository-beta ; fi
           done
 
   dispatch:
