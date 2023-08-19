@@ -33,7 +33,7 @@ jobs:
     name: "Download external"
     needs: Check
 
-    if: ${{ github.repository_owner == 'Armbian' }}
+    if: ${{ github.repository_owner == 'XXXXXXXXArmbian' }}
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
@@ -49,7 +49,7 @@ jobs:
       KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
 
   gradle:
-    needs: external
+    #needs: external
     strategy:
       fail-fast: false
       max-parallel: 8
