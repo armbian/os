@@ -26,4 +26,4 @@ userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
 repository_runner: "[ repository ]"
 
 # when this should run
-cron_job: "schedule:\n   - cron: '00 4 * * *'\npush:\n  branches:\n    - 'main'\n  paths:\n    - 'userpatches/targets-release-nightly.yaml'"
+cron_job: "schedule:\n   - cron: '00 4 * * *'\n  push:\n    branches:\n      - 'main'\n    paths:\n      - 'userpatches/targets-release-nightly.yaml'"
