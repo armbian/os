@@ -10,4 +10,5 @@ Edit `targets-release.yaml`
 
 Edit `targets-release-nightly.yaml`
 
-(build once per day, at 5:00 AM UTC)
+- builds once per day, at 5:00 AM UTC
+- builds at push when file is changed
