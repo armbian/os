@@ -20,7 +20,7 @@
 
 # How to enable images?
 
-If you want to enable build configurations, edit [yaml config files](/armbian/os/tree/main/userpatches) and send a pull request. ([example](https://github.com/armbian/os/commit/70f3be4f3d96e9a301be751d3ecf3a24394356f9) )
+If you want to enable build configurations, edit [yaml config files](userpatches) and send a pull request. ([example](https://github.com/armbian/os/commit/70f3be4f3d96e9a301be751d3ecf3a24394356f9) )
 
 # When is this happening?
 
