@@ -156,7 +156,7 @@ jobs:
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"] ' | sed "s/\"//g")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"] ' | sed "s/\"//g")
           
-          TARGETS=$(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g")
+          TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
           
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
