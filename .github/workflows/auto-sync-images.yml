@@ -3,8 +3,8 @@ on:
   workflow_dispatch:
   repository_dispatch:
     types: ["Repository update"]
-#  schedule:
-#    - cron: "00 3 * * *"
+  schedule:
+    - cron: "*/15 * * * *"
         
 concurrency:
   group: auto-sync
