@@ -22,15 +22,10 @@ jobs:
 
       - name: Generate index
         run: |
-
-          #rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $2" " "https://dl.armbian.com/"$5" "$3"?"$4 }' | grep "archive/" | sed -e 's| |","|g' -e 's|^|"|g' -e 's|$|"|g'
-          #gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | sed "s/\"//g"| sed -e 's| |","|g' -e 's|^|"|g' -e 's|$|"|g'
-
-
-          A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $2" " "https://dl.armbian.com/"$5" "$3"?"$4 }' | grep "archive/" | sed -e 's| |","|g' -e 's|^|"|g' -e 's|$|"|g')
-          B=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | sed "s/\"//g"| sed -e 's| |","|g' -e 's|^|"|g' -e 's|$|"|g')
+          A=$(LC_ALL=sl_SI.UTF-8 rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $2" " "https://dl.armbian.com/"$5" "$3"?"$4 }' | grep "archive/" | sed -e 's| |","|g' -e 's|^|"|g' -e 's|$|"|g')
+          B=$(LC_ALL=sl_SI.UTF-8 gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | sed "s/\"//g"| sed -e 's| |","|g' -e 's|^|"|g' -e 's|$|"|g')
           for line in $A $B; do
-              SIZE=$(echo $line | cut -d"," -f1 | sed "s/\"//g" | sed "s/\,//g" )
+              SIZE=$(echo $line | cut -d"," -f1 | sed "s/\"//g" | sed "s/\.//g" )
               SIZE=$(echo "scale=0; $(echo $SIZE)/1024/1024" | bc -l)"Mb"
               DATETIME=$(echo $line | cut -d"," -f3 | sed "s/\"//g")
               DATETIME=$(date -d "$(echo $DATETIME | sed "s/?/ /g")" +%s)
