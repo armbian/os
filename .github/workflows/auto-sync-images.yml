@@ -1,0 +1,42 @@
+name: Auto sync images to storage (cronjob)
+on:
+  repository_dispatch:
+    types: ["Repository update"]
+#  schedule:
+#    - cron: "00 3 * * *"
+        
+concurrency:
+  group: pipeline
+  cancel-in-progress: false
+
+jobs:
+
+  Check:
+
+    name: "Check membership"
+    runs-on: fast
+    steps:
+
+      - name: "Check membership"
+        uses: armbian/actions/team-check@main
+        with:
+          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Sync:
+    name: "Download external"
+    needs: Check
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: repository
+    steps:
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Rsync
+        run: |
+          rsync -arP --remove-source-files --progress --exclude=".*" -e 'ssh -o StrictHostKeyChecking=accept-new' /incoming/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/tank/upload/images
