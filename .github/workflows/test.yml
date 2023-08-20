@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 1
           clean: false
 
-      - name: Generate index
+      - name: Generate downloadable files index
         run: |
 
           A=$(LC_ALL=sl_SI.UTF-8 rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $2" " "https://dl.armbian.com/"$5" "$3"?"$4 }' | grep "archive/" | sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
