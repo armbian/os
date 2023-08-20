@@ -1,0 +1,35 @@
+name: Generate index
+on:
+  workflow_dispatch:
+
+jobs:
+
+  Check:
+  
+    name: "Check membership"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout OS repository
+        uses: actions/checkout@v3
+        with:
+          repository: armbian/os
+          fetch-depth: 1
+          clean: false
+
+      - name: Generate index
+        run: |
+
+          echo "abcd" > index.csv
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Upload index
+        run: |
+
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files index.csv ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
