@@ -40,4 +40,4 @@ jobs:
 
       - name: Rsync
         run: |
-          rsync -arP --remove-source-files --progress --exclude=".*" -e 'ssh -o StrictHostKeyChecking=accept-new' /incoming/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/tank/upload/images
+          rsync -arP --remove-source-files --progress --exclude=".*" -e 'ssh -o StrictHostKeyChecking=accept-new' /incoming/images/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/images
