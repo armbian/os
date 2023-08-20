@@ -6,6 +6,9 @@ jobs:
 
   Check:
   
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
     name: "Check membership"
     runs-on: ubuntu-latest
     steps:
