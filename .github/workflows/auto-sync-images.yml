@@ -1,5 +1,6 @@
 name: Auto sync images to storage (cronjob)
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: ["Repository update"]
 #  schedule:
