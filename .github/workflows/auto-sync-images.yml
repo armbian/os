@@ -7,7 +7,7 @@ on:
 #    - cron: "00 3 * * *"
         
 concurrency:
-  group: pipeline
+  group: auto-sync
   cancel-in-progress: false
 
 jobs:
