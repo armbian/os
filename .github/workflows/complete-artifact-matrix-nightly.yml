@@ -2509,6 +2509,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -2638,7 +2645,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -2693,6 +2705,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -2822,7 +2841,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -2877,6 +2901,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -3006,7 +3037,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -3061,6 +3097,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -3190,7 +3233,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -3245,6 +3293,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -3374,7 +3429,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -3429,6 +3489,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -3558,7 +3625,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -3613,6 +3685,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -3742,7 +3821,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -3797,6 +3881,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -3926,7 +4017,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -3981,6 +4077,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -4110,7 +4213,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -4165,6 +4273,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -4294,7 +4409,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -4349,6 +4469,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -4478,7 +4605,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -4533,6 +4665,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -4662,7 +4801,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -4717,6 +4861,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -4846,7 +4997,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -4901,6 +5057,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -5030,7 +5193,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -5085,6 +5253,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -5214,7 +5389,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
@@ -5269,6 +5449,13 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     steps:
 
+      - name: Install dependencies
+        run: |
+          if [ ! -e /usr/bin/buildtorrent ]; then
+            sudo apt-get update
+            sudo apt-get install -y buildtorrent
+          fi
+
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
         uses: armbian/actions/runner-clean@main
@@ -5398,7 +5585,12 @@ jobs:
           TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          # nighly images are GH only
+          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          fi
+
           cd output/images/*/archive/
 
           buildtorrent \
