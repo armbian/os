@@ -23,6 +23,7 @@ on:
         type: choice
         description: 'Number of machines'
         options:
+        - "1"
         - "2"
         - "4"
         - "8"
@@ -31,6 +32,7 @@ on:
         type: choice
         description: 'Runners per machine'
         options:
+        - "1"
         - "2"
         - "4"
         - "8"
