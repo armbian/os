@@ -142,7 +142,7 @@ jobs: # <TEMPLATE-IGNORE>
         timeout-minutes: 3
         run: |
 
-#          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -151,7 +151,7 @@ jobs: # <TEMPLATE-IGNORE>
              WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
           fi
 
-#         cd output/images/*/archive/
+          #cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" output/images/${BOARD}/*/${FILE}
 
       - name: "Upload artefacts"
