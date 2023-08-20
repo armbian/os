@@ -5041,7 +5041,10 @@ jobs:
           # 
           TARGET=""
           if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'no'" == "no" ]; then
-          TARGET="partial/"
+              TARGET="partial/"
+          else
+              # drop nightly repository
+              sudo rm -rf /outgoing/repository-beta/*
           fi
 
           echo "sync all parts"
