@@ -14,9 +14,9 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: Install dependencies
         run: |
-          if [ ! -e /usr/bin/buildtorrent ]; then
+          if [ ! -e /usr/bin/mktorrent ]; then
             sudo apt-get update
-            sudo apt-get install -y buildtorrent
+            sudo apt-get install -y mktorrent
           fi
 
       # cleaning self hosted runners
@@ -139,13 +139,15 @@ jobs: # <TEMPLATE-IGNORE>
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
-        timeout-minutes: 5
+        timeout-minutes: 3
         run: |
 
-          ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
-          TRACKERS="$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf ",""${line}"; done)"
-          TRACKERS="${TRACKERS:1}"
-          TORRENTDESC="Armbian, Linux operating system for single-board computers"
+          #ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
+          #TRACKERS="$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf ",""${line}"; done)"
+          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          #TRACKERS="${TRACKERS:1}"
+
+          #TORRENTDESC="Armbian, Linux operating system for single-board computers"
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -154,18 +156,19 @@ jobs: # <TEMPLATE-IGNORE>
              WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
           fi
 
-          cd output/images/*/archive/
+ #         cd output/images/*/archive/
+          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" output/images/${BOARD}/*/${FILE}
 
-          buildtorrent \
-          --show \
-          --announce="${ANNOUNCE}" \
-          --webseeds="${WEBSEEDS}" \
-          --announcelist="${TRACKERS}" \
-          --comment="${TORRENTDESC}" \
-          --nocreator \
-          --nodate \
-          ${FILE} \
-          ${FILE}.torrent
+#          buildtorrent \
+ #         --show \
+  #        --announce="${ANNOUNCE}" \
+   #       --webseeds="${WEBSEEDS}" \
+    #      --announcelist="${TRACKERS}" \
+     #     --comment="${TORRENTDESC}" \
+      #    --nocreator \
+       #   --nodate \
+        #  ${FILE} \
+         # ${FILE}.torrent
 
       - name: "Upload artefacts"
         timeout-minutes: 15
