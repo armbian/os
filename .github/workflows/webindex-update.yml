@@ -58,6 +58,14 @@ jobs:
               echo "$NAME/${out_release^}_${out_branch}$([[ -n "${out_desktop}" ]] && echo "_")${out_desktop}_nightly${sufix}|$URL|$DATETIME|$SIZE"
           done | sort > index.csv
 
+      - name: Download and compress torrent files
+        run: |
+
+          cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget -q --directory-prefix=stable
+          cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget -q --directory-prefix=unstable
+          zip -qj unstable.zip unstable/*.torrent
+          zip -qj stable.zip stable/*.torrent
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -67,4 +75,4 @@ jobs:
 
       - name: Upload index
         run: |
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files index.csv ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files stable.zip unstable.zip index.csv ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
