@@ -61,8 +61,8 @@ jobs:
       - name: Download and compress torrent files
         run: |
 
-          cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 -q -O --directory-prefix=stable
-          cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 -q -O --directory-prefix=unstable
+          cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 -q --directory-prefix=stable --backups=1
+          cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 -q --directory-prefix=unstable --backups=1
           zip -qj unstable.zip unstable/*.torrent
           zip -qj stable.zip stable/*.torrent
 
