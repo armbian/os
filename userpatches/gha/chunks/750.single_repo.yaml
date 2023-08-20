@@ -115,7 +115,10 @@ jobs: # <TEMPLATE-IGNORE>
           # 
           TARGET=""
           if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ]; then
-          TARGET="partial/"
+              TARGET="partial/"
+          else
+              # drop nightly repository
+              sudo rm -rf /outgoing/repository-beta/*
           fi
 
           echo "sync all parts"
