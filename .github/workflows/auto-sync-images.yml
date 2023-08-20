@@ -44,4 +44,5 @@ jobs:
           sudo chmod go+rwx -R /incoming/images/
           find /incoming/images/. -type f ! -name ".*" -exec sudo chown $USER.$USER {} \;
           rsync -arP --remove-source-files --progress --exclude=".*" -e 'ssh -o StrictHostKeyChecking=accept-new' /incoming/images/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/images
-          find /incoming/images/. -type d -empty -delete
+          
+          find /incoming/images/. -type d -empty -delete 2>/dev/null || true
