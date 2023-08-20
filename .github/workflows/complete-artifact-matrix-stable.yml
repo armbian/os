@@ -2623,6 +2623,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -2806,6 +2807,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -2989,6 +2991,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -3172,6 +3175,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -3355,6 +3359,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -3538,6 +3543,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -3721,6 +3727,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -3904,6 +3911,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -4087,6 +4095,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -4270,6 +4279,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -4453,6 +4463,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -4636,6 +4647,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -4819,6 +4831,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -5002,6 +5015,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -5185,6 +5199,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
@@ -5368,6 +5383,7 @@ jobs:
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
 
       - name: Generate torrent
+        timeout-minutes: 5
         run: |
 
           ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
