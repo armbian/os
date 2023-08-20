@@ -28,6 +28,14 @@ jobs: # <TEMPLATE-IGNORE>
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
+      # clone the torrent lists
+      - name: Checkout torrent lists
+        uses: actions/checkout@v3
+        with:
+          repository: ngosang/trackerslist
+          clean: false
+          path: trackerslist.repo
+
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v3
@@ -122,6 +130,29 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+
+      - name: Generate torrent
+        run: |
+
+          ANNOUNCE="$(cat trackerslist.repo/trackers_best_ip.txt | sed '/^\s*$/d' | sort -R | head -1)"
+          TRACKERS="$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf ",""${line}"; done)"
+          TRACKERS="${TRACKERS:1}"
+          TORRENTDESC="Armbian, Linux operating system for single-board computers"
+          BOARD=$(ls -1 output/images/ | head -1)
+          FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
+          WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+          cd output/images/*/archive/
+
+          buildtorrent \
+          --show \
+          --announce="${ANNOUNCE}" \
+          --webseeds="${WEBSEEDS}" \
+          --announcelist="${TRACKERS}" \
+          --comment="${TORRENTDESC}" \
+          --nocreator \
+          --nodate \
+          ${FILE} \
+          ${FILE}.torrent
 
       - name: "Upload artefacts"
         timeout-minutes: 15
