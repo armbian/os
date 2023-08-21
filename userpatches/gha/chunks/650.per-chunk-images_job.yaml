@@ -143,7 +143,7 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
 
           TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
-          #BOARD=$(ls -1 output/images/ | head -1)
+          BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
