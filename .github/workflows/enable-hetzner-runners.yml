@@ -1,0 +1,128 @@
+name: Enable Hetzner Runners (admin)
+on:
+  workflow_dispatch:
+    inputs:
+      period:
+        type: choice
+        description: 'Availability time'
+        options:
+        - 50m
+        - 110m
+        - 170m
+        - 230m
+        default: 50m
+      machine:
+        type: choice
+        description: 'Machine type'
+        options:
+        - cax21
+        - cax31
+        - cax41
+        default: 'cax21'
+      machine_count:
+        type: choice
+        description: 'Number of machines'
+        options:
+        - "1"
+        - "2"
+        - "4"
+        - "8"
+        default: '2'
+      runners_count:
+        type: choice
+        description: 'Runners per machine'
+        options:
+        - "1"
+        - "2"
+        - "4"
+        - "8"
+        - "16"
+        default: '4'
+
+concurrency:
+  group: hetzner-runner
+  cancel-in-progress: true
+
+jobs:
+
+  Teamcheck:
+    permissions:
+      actions: write
+      
+    name: "Check ORG Team Membership"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: "Check membership"
+      uses: armbian/actions/team-check@main
+      with:
+        ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Prepare:
+    needs: Teamcheck
+    name: "Enable cloud runners"
+    outputs:
+      matrix: ${{steps.machine-number.outputs.matrix}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Determine changed kernels
+        id: machine-number
+        run: |
+          echo "matrix=$(for x in $(seq -w 0 $(( ${{ github.event.inputs.machine_count }} - 1 ))); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
+  Enable:
+    name: "Cloud VM"
+    runs-on: ubuntu-latest
+    needs: Prepare
+    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+    steps:
+
+      - name: Enable Hetzner Virtual Machines
+        if: ${{ github.repository_owner == 'Armbian' }}
+        uses: armbian/actions/hetzner@1.0
+        with:
+          action-type: enable
+          machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
+          machine-id: "${{ matrix.node }}"          
+          runners-count: "${{ github.event.inputs.runners_count || '4' }}"          
+          machine-count: "${{ github.event.inputs.machine_count || '2' }}"
+          key: ${{ secrets.KEY_TORRENTS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
+          hetzner_id: ${{ secrets.HETZNER_ONE }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+
+  sleeping:
+    name: "Sleeping"
+    needs: Enable
+    runs-on: ubuntu-latest
+    steps:
+     
+      - name: Sleeping "${{ github.event.inputs.period }}"
+        run: sleep "${{ github.event.inputs.period || '5m' }}"
+ 
+  stop:
+    #if: always()
+    name: "Disable cloud runners"
+    needs: sleeping
+    runs-on: ubuntu-latest
+    steps:
+     
+      - name: Enable Hetzner Virtual Machines
+        if: ${{ always() && github.repository_owner == 'Armbian' }}
+        uses: armbian/actions/hetzner@1.0
+        with:
+          action-type: disable
+          machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
+          runners-count: "${{ github.event.inputs.runners_count || '2' }}"
+          machine-count: "${{ github.event.inputs.machine_count || '2' }}"
+          key: ${{ secrets.KEY_TORRENTS }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
+          hetzner_id: ${{ secrets.HETZNER_ONE }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}

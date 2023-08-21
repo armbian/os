@@ -1,7 +1,7 @@
-name: Verify installation
+name: Verify installation (pull request)
 on:
   pull_request:
-    types: [opened, reopened, edited, synchronize]
+    types: [opened, reopened, edited, synchronize, review_requested]
     paths:
       - 'external/*.conf'
   workflow_dispatch:

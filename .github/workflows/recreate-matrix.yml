@@ -1,0 +1,143 @@
+#
+# This action recreate action for building stable images
+#
+name: Recreate Matrix (push)
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - "userpatches/gha/**"
+      - "userpatches/gha/chunks/**"
+      - ".github/workflows/recreate-matrix.yml"
+
+  workflow_dispatch:
+  repository_dispatch:
+    types: [Recreate Matrix]
+
+concurrency:
+  group: matrix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    name: Recreate action
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Armbian Framework
+      uses: actions/checkout@v3.5.2
+      with:
+        persist-credentials: false
+        repository: armbian/build
+        ref:  main
+        fetch-depth: 0
+        clean: false
+        path: build
+
+    - name: Checkout Armbian OS Config
+      uses: actions/checkout@v3.5.2
+      with:
+        persist-credentials: false
+        repository: armbian/os
+        ref:  main
+        clean: false
+        fetch-depth: 0
+        path: os
+
+    - name: "Rsync userpatches"
+      run: |
+
+        rsync -av os/userpatches/. build/userpatches/
+        rm -f build/userpatches/targets.yaml
+
+    - name: "Generate Lists"
+      run: |
+
+        ls -1 build/config/boards/*.{conf,eos,wip,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/boards.txt
+        grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
+        #
+
+    - name: "Generate Action Script"
+      run: |
+
+        cd build
+        # Last stable branch
+        LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
+
+        #
+        # copy nightly templates
+        #
+        cp userpatches/gha/gha_config_nightly.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/pipeline-nightly/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-nightly.yml
+
+        #
+        # copy old stable templates
+        #
+        cp userpatches/gha/gha_config_old_stable.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release.yaml userpatches/targets.yaml
+        sed -i 's/build_ref: .*/build_ref: "'$LAST'"/' userpatches/gha/gha_config.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/pipeline-old-stable/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-old-stable.yml
+
+
+        #
+        # copy stable templates
+        #
+        cp userpatches/gha/gha_config_stable.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/pipeline-stable/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
+
+
+        #
+        # copy all templates
+        #
+        cp userpatches/gha/gha_config_all.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-all-not-eos.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/pipeline-all/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-all.yml
+
+        cd ../os
+        git config --local user.email "info@armbian.com"
+        git config --local user.name "Armbianworker"
+
+        # Add Action Scritps
+        git add .github/workflows/complete-artifact-matrix-nightly.yml
+        #git add .github/workflows/complete-artifact-matrix-old-stable.yml
+        git add .github/workflows/complete-artifact-matrix-stable.yml
+        git add .github/workflows/complete-artifact-matrix-all.yml
+
+        git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
+        repository: armbian/os
+        branch: ${{ github.ref }}
+        directory: os
