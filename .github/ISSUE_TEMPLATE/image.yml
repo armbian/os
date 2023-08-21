@@ -1,0 +1,15 @@
+name: Armbian OS Image request
+description: Supported and WIP images only
+title: "I would like to have Debian Bookworm XFCE for Raspberry Pi ..."
+labels: ["feature"]
+assignees: "igorpecovnik"
+body:
+  - type: textarea
+    id: image
+    attributes:
+      label: Which image would you like to have?
+      description: "<br>What do you miss?<br>"
+      placeholder: Tell us what is missing!
+      value: "BOARD: bananapim3, BRANCH: current"
+    validations:
+      required: true
