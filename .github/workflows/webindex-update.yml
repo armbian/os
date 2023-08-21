@@ -49,13 +49,15 @@ jobs:
               DATETIME=$(echo $line | cut -d"|" -f3 | sed "s/\"//g")
               DATETIME=$(date -d "$(echo $DATETIME | sed "s/?/ /g")" +%s)
               URL=$(echo $line | cut -d"|" -f2 | sed "s/\"//g")
+              NIGHTLY=""
+              [[ "$URL" == *"github"* ]] && NIGHTLY="_nightly"
               NAME=$(echo $URL | cut -d"_" -f3 | awk '{print tolower($0)}')
               sufix=$(echo $URL | rev | cut -d'.' -f 1 | rev | sed "s/^/./" | sed "s/.xz//g")
               out_release=$(echo $URL | cut -d"_" -f4)
               out_branch=$(echo $URL | cut -d"_" -f5)
               out_kernel=$(echo $URL | cut -d"_" -f6-7 | cut -d"." -f1-3 | cut -d"_" -f1)
               out_desktop=$(echo $URL | cut -d"_" -f7- | cut -d"." -f1 | cut -d"_" -f1)
-              echo "$NAME/${out_release^}_${out_branch}$([[ -n "${out_desktop}" ]] && echo "_")${out_desktop}_nightly${sufix}|$URL|$DATETIME|$SIZE"
+              echo "$NAME/${out_release^}_${out_branch}$([[ -n "${out_desktop}" ]] && echo "_")${out_desktop}${NIGHTLY}${sufix}|$URL|$DATETIME|$SIZE"
           done | sort > index.csv
 
       - name: Download and compress torrent files
