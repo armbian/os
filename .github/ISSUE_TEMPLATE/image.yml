@@ -7,7 +7,7 @@ body:
   - type: textarea
     id: image
     attributes:
-      label: "Supported and WIP images only [from here](https://github.com/armbian/build/tree/main/config/boards)!"
+      label: "[Supported and WIP images only from here](https://github.com/armbian/build/tree/main/config/boards)"
       description: "<br>What do you miss?<br>"
       placeholder: Tell us what is missing!
       value: "BOARD: bananapim3, BRANCH: current"
