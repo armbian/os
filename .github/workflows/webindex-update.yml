@@ -58,7 +58,7 @@ jobs:
               out_kernel=$(echo $URL | cut -d"_" -f6-7 | cut -d"." -f1-3 | cut -d"_" -f1)
               out_desktop=$(echo $URL | cut -d"_" -f7- | cut -d"." -f1 | cut -d"_" -f1)
               echo "$NAME/${out_release^}_${out_branch}$([[ -n "${out_desktop}" ]] && echo "_")${out_desktop}${NIGHTLY}${sufix}|$URL|$DATETIME|$SIZE"
-          done | sort > index.csv
+          done > index.csv
 
       - name: Download and compress torrent files
         run: |
