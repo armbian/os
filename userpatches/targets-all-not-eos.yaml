@@ -12,7 +12,20 @@ common-gha-configs:
 
 targets:
 
-  all-artifacts:
+  all-artifacts-bullseye:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: no # don't build images for this target ("no" here is a boolean, not string)
+      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantag>
+    vars:
+      BUILD_MINIMAL: "yes"
+      RELEASE: "bullseye"
+    items-from-inventory:
+      not-eos: yes # not-eos boards, all branches
+
+  all-artifacts-bookworm:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -21,6 +34,33 @@ targets:
       only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
     vars:
       BUILD_MINIMAL: "yes"
+      RELEASE: "bookworm"
+    items-from-inventory:
+      not-eos: yes # not-eos boards, all branches
+
+  all-artifacts-sid:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: no # don't build images for this target ("no" here is a boolean, not string)
+      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantag>
+    vars:
+      BUILD_MINIMAL: "yes"
+      RELEASE: "sid"
+    items-from-inventory:
+      not-eos: yes # not-eos boards, all branches
+
+  all-artifacts-lunar:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: no # don't build images for this target ("no" here is a boolean, not string)
+      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantag>
+    vars:
+      BUILD_MINIMAL: "yes"
+      RELEASE: "lunar"
     items-from-inventory:
       not-eos: yes # not-eos boards, all branches
 
