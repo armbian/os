@@ -66,6 +66,14 @@ jobs:
           zip -qj unstable.zip unstable/*.torrent
           zip -qj stable.zip stable/*.torrent
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            index.csv
+            stable.zip
+            unstable.zip
+
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
