@@ -65,7 +65,7 @@ jobs:
           #cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 -q --directory-prefix=stable --backups=1
           #cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 -q --directory-prefix=unstable --backups=1
           #zip -qj unstable.zip unstable/*.torrent
-          3zip -qj stable.zip stable/*.torrent
+          #zip -qj stable.zip stable/*.torrent
 
       - uses: actions/upload-artifact@v3
         with:
