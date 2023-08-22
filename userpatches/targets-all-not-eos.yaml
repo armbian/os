@@ -13,7 +13,7 @@ common-gha-configs:
 targets:
 
   all-base-files-and-rootfs-cli-minimal:
-    configs: [ rpardini-generic ]
+    configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
       only-artifacts: [ "armbian-base-files", "rootfs" ] # only armbian-base-files and rootfs artifacts

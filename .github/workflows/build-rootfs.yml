@@ -9,8 +9,8 @@ on:
         default: 'main'
 
   workflow_call:
-  schedule:
-    - cron: '0 3 * * *' # Scheduled runs every day at 3am UTC
+#  schedule:
+#    - cron: '0 3 * * *' # Scheduled runs every day at 3am UTC
 
 concurrency:
   group: rootfs
