@@ -249,7 +249,7 @@ lists:
     - { BOARD: zeropi, BRANCH: current }
 
 targets:
-  
+
   # ubuntu unstable minimal
 
   minimal-cli-unstable-ubuntu:
@@ -264,7 +264,7 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *special
-  
+
   # debian unstable minimal
 
   minimal-cli-unstable-debian:
@@ -274,7 +274,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -284,7 +284,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
-  
+
   # ubuntu xfce without apps
 
   xfce-barebone-desktop-unstable-ubuntu:
