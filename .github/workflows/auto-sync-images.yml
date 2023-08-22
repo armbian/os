@@ -15,7 +15,7 @@ jobs:
   Check:
 
     name: "Check membership"
-    runs-on: fast
+    runs-on: ubuntu-latest
     steps:
 
       - name: "Check membership"
