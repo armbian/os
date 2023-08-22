@@ -40,7 +40,7 @@ targets:
       - { BOARD: tinkerboard, BRANCH: current } # armhf
       # riscv64 needs to be done in a separate target, since only sid supports it
 
-riscv64-base-files-and-rootfs-cli-minimal:
+  riscv64-base-files-and-rootfs-cli-minimal:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
