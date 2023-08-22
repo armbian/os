@@ -40,6 +40,25 @@ targets:
       - { BOARD: tinkerboard, BRANCH: current } # armhf
       # riscv64 needs to be done in a separate target, since only sid supports it
 
+riscv64-base-files-and-rootfs-cli-minimal:
+    configs: [ armbian-images ]
+    pipeline:
+      build-image: no # don't build images for this
+      only-artifacts: [ "armbian-base-files", "rootfs" ] # only armbian-base-files and rootfs artifacts
+      gha: *armbian-gha
+    expand: # expand causes the items matrix to multiply. if you have X items, and 6 expands, you'll get 6X items. In this case, 3 items, 6 expands, total 18 items.
+      lunar:
+        RELEASE: "lunar"
+      #trixie: # one day
+      #  RELEASE: "trixie"
+      sid:
+        RELEASE: "sid"
+    vars: # common vars. both the items and the expansions can override these.
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-risc64, BRANCH: current } # riscv64
+
   all-desktop:
     enabled: yes
     configs: [ armbian-images ]
