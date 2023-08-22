@@ -51,6 +51,19 @@ targets:
     items-from-inventory:
       not-eos: yes # not-eos boards, all branches
 
+  all-artifacts-trixie:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: no # don't build images for this target ("no" here is a boolean, not string)
+      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
+    vars:
+      BUILD_MINIMAL: "yes"
+      RELEASE: "trixie"
+    items-from-inventory:
+      not-eos: yes # not-eos boards, all branches
+
   all-artifacts-lunar:
     enabled: yes
     configs: [ armbian-images ]
