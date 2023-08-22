@@ -12,70 +12,33 @@ common-gha-configs:
 
 targets:
 
-  all-artifacts-bullseye:
-    enabled: yes
-    configs: [ armbian-images ]
+  all-base-files-and-rootfs-cli-minimal:
+    configs: [ rpardini-generic ]
     pipeline:
+      build-image: no # don't build images for this
+      only-artifacts: [ "armbian-base-files", "rootfs" ] # only armbian-base-files and rootfs artifacts
       gha: *armbian-gha
-      build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
-    vars:
+    expand: # expand causes the items matrix to multiply. if you have X items, and 6 expands, you'll get 6X items. In this case, 3 items, 6 expands, total 18 items.
+      jammy:
+        RELEASE: "jammy"
+      lunar:
+        RELEASE: "lunar"
+      bullseye:
+        RELEASE: "bullseye"
+      bookworm:
+        RELEASE: "bookworm"
+      trixie:
+        RELEASE: "trixie"
+      sid:
+        RELEASE: "sid"
+    vars: # common vars. both the items and the expansions can override these.
       BUILD_MINIMAL: "yes"
-      RELEASE: "bullseye"
-    items-from-inventory:
-      not-eos: yes # not-eos boards, all branches
-
-  all-artifacts-bookworm:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
-    vars:
-      BUILD_MINIMAL: "yes"
-      RELEASE: "bookworm"
-    items-from-inventory:
-      not-eos: yes # not-eos boards, all branches
-
-  all-artifacts-sid:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
-    vars:
-      BUILD_MINIMAL: "yes"
-      RELEASE: "sid"
-    items-from-inventory:
-      not-eos: yes # not-eos boards, all branches
-
-  all-artifacts-trixie:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
-    vars:
-      BUILD_MINIMAL: "yes"
-      RELEASE: "trixie"
-    items-from-inventory:
-      not-eos: yes # not-eos boards, all branches
-
-  all-artifacts-lunar:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: no # don't build images for this target ("no" here is a boolean, not string)
-      only-artifacts: [ "firmware", "full_firmware", "armbian-config", "armbian-zsh", "armbian-plymouth-theme", "armbian-base-files", "armbian-bsp-cli", "fake_ubuntu_advantage_tools" ] # only build these artifacts for these targets. it's "uboot", not "u-boot"
-    vars:
-      BUILD_MINIMAL: "yes"
-      RELEASE: "lunar"
-    items-from-inventory:
-      not-eos: yes # not-eos boards, all branches
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: current } # arm64
+      - { BOARD: uefi-x86, BRANCH: current } # amd64
+      - { BOARD: tinkerboard, BRANCH: current } # armhf
+      # riscv64 needs to be done in a separate target, since only sid supports it
 
   all-desktop:
     enabled: yes
