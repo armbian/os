@@ -57,7 +57,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-risc64, BRANCH: current } # riscv64
+      - { BOARD: uefi-riscv64, BRANCH: current } # riscv64
 
   all-desktop:
     enabled: yes
