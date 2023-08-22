@@ -139,6 +139,7 @@ on:
         - odroidhc4
         - odroidm1
         - odroidn2
+        - odroidn2l
         - odroidxu4
         - olimex-som-a20
         - olimex-som204-a20
@@ -5609,14 +5610,6 @@ jobs:
           repository: armbian/os
           event-type: "Repository update"
 
-      - name: "Run webindex update action"
-        if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.DISPATCH }}
-          repository: armbian/os
-          event-type: "Webindex update"
-
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: |
           echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
@@ -5637,14 +5630,22 @@ jobs:
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
-      - name: Download all workflow run artifacts
+      - name: "Run webindex update action"
+        if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/os
+          event-type: "Webindex update"
+
+      - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/download-artifact@v3
         with:
           name: assets-for-download
           path: downloads
 
-      - name: Read version
+      - name: "Read version"
         run: |
 
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
