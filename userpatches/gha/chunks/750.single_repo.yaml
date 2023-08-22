@@ -181,14 +181,6 @@ jobs: # <TEMPLATE-IGNORE>
           repository: armbian/os
           event-type: "Repository update"
 
-      - name: "Run webindex update action"
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.DISPATCH }}
-          repository: armbian/os
-          event-type: "Webindex update"
-
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: |
           echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
