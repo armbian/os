@@ -18,34 +18,6 @@ common-gha-configs:
 
 targets:
 
-  all-userspace:
-    configs: [ armbian-images ]
-    pipeline:
-      build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
-      gha: *armbian-gha
-    vars: # common vars, must exist.
-      USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
-    items-from-inventory:
-      userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        #skip-releases: [ "sid" ] # do NOT include these releases
-        #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
-        skip-desktops: [ "lxde" ] # do NOT include these desktops
-        #only-desktops: ["gnome", "xfce"] # ONLY include these desktops
-        cli: yes # include normal CLI userspace
-        minimal: yes # include minimal CLI userspace
-        desktops: yes # include desktops, one per desktop_variations below; 'eos' ones are always skipped
-        desktop_variations:
-          - [ ] # empty, no appgroups, simple desktop
-          - [ 3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop ] # 3d + all
-          - [ browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop ] # all except 3d
-        arches: # wanted architectures, and their "example" BOARD and BRANCH.
-          arm64: [ { BOARD: "uefi-arm64", BRANCH: "current" } ]
-          armhf: [ { BOARD: "tinkerboard", BRANCH: "current" } ]
-          amd64: [ { BOARD: "uefi-x86", BRANCH: "current" } ]
-          riscv64: [ { BOARD: "uefi-riscv64", BRANCH: "edge" } ]
-
-
   all-desktop:
     enabled: yes
     configs: [ armbian-images ]
