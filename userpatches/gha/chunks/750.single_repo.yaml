@@ -70,7 +70,7 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          rm -rf userpatches.repo
+          #rm -rf userpatches.repo
 
       # Clean off output/info, if any
       - name: Cleanup output/info
