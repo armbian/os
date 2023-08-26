@@ -111,6 +111,7 @@ on:
         - nanopi-r2s
         - nanopi-r4s
         - nanopi-r4se
+        - nanopi-r5s
         - nanopi-r6s
         - nanopia64
         - nanopiair
@@ -5548,6 +5549,9 @@ jobs:
           else
               # drop nightly repository
               sudo rm -rf /outgoing/repository-beta/*
+              # sync to stable from the list
+              rsync --include-from=userpatches.repo/stable-repo.sync --exclude='*' --progress -va output/debs-beta/. \
+              ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           fi
 
           echo "sync all parts"
