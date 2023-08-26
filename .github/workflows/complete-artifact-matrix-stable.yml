@@ -5544,7 +5544,8 @@ jobs:
               # drop nightly repository
               sudo rm -rf /outgoing/repository-beta/*
               # sync to stable from the list
-              rsync --include-from=userpatches.repo/stable-repo.sync --exclude='*' --progress -va output/debs-beta/. \
+              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" --include-from=userpatches.repo/stable-repo.sync \
+              --exclude='*' --progress -va output/debs-beta/. \
               ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           fi
 
