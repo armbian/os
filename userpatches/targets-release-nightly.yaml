@@ -259,11 +259,17 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: lunar
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *special
+      - *full-desktop
+      - *full-desktop-3d
+      - *light-desktop
+      - *light-desktop-3d
+      - *headless
+      - *unsupported
 
   # debian unstable minimal
 
