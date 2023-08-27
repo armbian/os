@@ -100,10 +100,10 @@ jobs:
           fi
 
           # remove certain and custom package
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r bullseye,bookworm,trixie,sid,focal,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
 
           # add from incoming
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r bullseye,bookworm,trixie,sid,focal,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
 
   Prepare:
     name: "Upload to servers"
