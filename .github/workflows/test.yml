@@ -1,0 +1,19 @@
+name: del rel
+on:
+  workflow_dispatch:
+
+jobs:
+
+  Check:
+
+    name: "Check membership"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Del
+        uses: dev-drprasad/delete-older-releases@v0.2
+        with:
+          repo: armbian/os
+          keep_latest: 3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
