@@ -11,7 +11,7 @@ jobs:
     steps:
 
       - name: Del
-        uses: dev-drprasad/delete-older-releases@v0.2
+        uses: dev-drprasad/delete-older-releases@v0.2.1
         with:
           repo: armbian/os
           keep_latest: 3
