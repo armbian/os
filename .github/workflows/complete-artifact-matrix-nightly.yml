@@ -5655,19 +5655,19 @@ jobs:
 
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
 
+      # Delete artifact
       - uses: geekyeggo/delete-artifact@v2
         with:
           name: assets-for-download
           failOnError: false
 
-#      # Cleaning releases
-#      - uses: dev-drprasad/delete-older-releases@v0.2.1
-#        with:
-#          repo: armbian/os
-#          keep_latest: 32
-#          delete_tag_pattern: trunk
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Cleaning releases
+      - uses: dev-drprasad/delete-older-releases@v0.2.1
+        with:
+          repo: armbian/os
+          keep_latest: 3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
