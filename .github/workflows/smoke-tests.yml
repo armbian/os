@@ -20,6 +20,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: smoke
+  cancel-in-progress: false
+
 jobs:
 
   Teamcheck:
