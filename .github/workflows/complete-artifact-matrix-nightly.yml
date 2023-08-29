@@ -5662,10 +5662,12 @@ jobs:
           failOnError: false
 
       # Cleaning releases
+      #
+      # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
       - uses: dev-drprasad/delete-older-releases@v0.2.1
         with:
           repo: armbian/os
-          keep_latest: 3
+          keep_latest: 16
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
