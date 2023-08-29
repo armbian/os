@@ -2533,7 +2533,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -2636,7 +2636,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -2716,7 +2716,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -2819,7 +2819,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -2899,7 +2899,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -3002,7 +3002,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3082,7 +3082,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -3185,7 +3185,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3265,7 +3265,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -3368,7 +3368,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3448,7 +3448,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -3551,7 +3551,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3631,7 +3631,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -3734,7 +3734,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3814,7 +3814,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -3917,7 +3917,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3997,7 +3997,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -4100,7 +4100,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4180,7 +4180,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -4283,7 +4283,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4363,7 +4363,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -4466,7 +4466,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4546,7 +4546,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -4649,7 +4649,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4729,7 +4729,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -4832,7 +4832,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4912,7 +4912,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -5015,7 +5015,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -5095,7 +5095,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -5198,7 +5198,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -5278,7 +5278,7 @@ jobs:
       - name: Checkout torrent lists
         uses: actions/checkout@v3
         with:
-          repository: ngosang/trackerslist
+          repository: XIU2/TrackersListCollection
           clean: false
           path: trackerslist.repo
 
@@ -5381,7 +5381,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/trackers_all.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
