@@ -148,7 +148,12 @@ jobs: # <TEMPLATE-IGNORE>
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}" == "no" ]; then
-             WEBSEEDS="https://dl.armbian.com/${BOARD}/archive/${FILE}"
+             # add seeds from different regions
+             WEBSEEDS="\
+             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
+             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
+             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
+             "
           fi
 
           cd output/images/*/archive/
