@@ -1,9 +1,11 @@
-name: Smoke tests (repository update)
+name: Smoke tests (cronjob)
 #
 # Runs varios tests with latest nighly codebase on a real hardware
 #
 
 on:
+  schedule:
+   - cron: '00 3 * * *'
   workflow_dispatch:
     inputs:
       gitbranch:
@@ -14,8 +16,8 @@ on:
         type: boolean
         description: "Power Management"
         default: true
-  repository_dispatch:
-    types: ["Smoke tests"]
+#  repository_dispatch:
+#    types: ["Smoke tests"]
 
 permissions:
   contents: read
