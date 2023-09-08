@@ -2644,11 +2644,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -2832,11 +2828,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -3020,11 +3012,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -3208,11 +3196,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -3396,11 +3380,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -3584,11 +3564,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -3772,11 +3748,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -3960,11 +3932,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -4148,11 +4116,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -4336,11 +4300,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -4524,11 +4484,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -4712,11 +4668,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -4900,11 +4852,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -5088,11 +5036,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -5276,11 +5220,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
@@ -5464,11 +5404,7 @@ jobs:
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS="\
-             https://dl.armbian.com/EU/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/AS/${BOARD}/archive/${FILE},\
-             https://dl.armbian.com/NA/${BOARD}/archive/${FILE},\
-             "
+             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
           fi
 
           cd output/images/*/archive/
