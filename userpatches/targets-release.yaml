@@ -1,4 +1,4 @@
-
+#
 # Armbian release template. Use to create all stable images
 #
 
@@ -279,7 +279,7 @@ lists:
     - { BOARD: sk-am64b, BRANCH: current }
 
 targets:
-  
+
   # debian minimal
 
   minimal-cli-stable-debian:
@@ -298,7 +298,7 @@ targets:
       - *light-desktop
       - *light-desktop-3d
       - *headless
-  
+
   # debian cli
 
   full-cli-stable-debian:
@@ -318,7 +318,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
-  
+
   # ubuntu minimal
 
   minimal-cli-stable-ubuntu:
@@ -339,7 +339,7 @@ targets:
       - *headless
       - *special
       - { BOARD: rpi4b, BRANCH: current }
-  
+
   # ubuntu cli
 
   full-cli-stable-ubuntu:
@@ -360,7 +360,7 @@ targets:
       - *headless
       - *special
       - { BOARD: rpi4b, BRANCH: current }
-  
+
   # ubuntu xfce without apps
 
   xfce-barebone-desktop-stable-ubuntu:
@@ -378,7 +378,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *special
-  
+
   # ubuntu xfce with 3d
 
   xfce-3d-desktop-stable-ubuntu:
@@ -396,7 +396,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *light-desktop-3d
-  
+
   # ubuntu xfce
 
   xfce-desktop-stable-ubuntu:
@@ -417,7 +417,7 @@ targets:
       - *light-desktop
       - *unsupported
       - { BOARD: rpi4b, BRANCH: current }
-  
+
   # debian xfce
 
   xfce-desktop-stable-debian:
@@ -456,7 +456,7 @@ targets:
     items:
       - *full-desktop
       - { BOARD: rpi4b, BRANCH: current }
-  
+
   # debian gnome desktop with 3d
 
   gnome-3d-desktop-stable-debian:
@@ -474,7 +474,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop-3d
-  
+
   # i3 desktop without 3d
 
   minimal-i3-desktop-stable-ubuntu:
@@ -496,7 +496,7 @@ targets:
       - *light-desktop
       - *light-desktop-3d
       - { BOARD: rpi4b, BRANCH: current }
-  
+
   # cinnamon desktop without 3d
 
   cinnamon-desktop-stable-debian:
@@ -514,7 +514,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop
-  
+
   # cinnamon desktop with 3d
 
   cinnamon-3d-desktop-stable-debian:
