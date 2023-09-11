@@ -28,7 +28,7 @@ jobs:
     steps:
 
     - name: Checkout Armbian Framework
-      uses: actions/checkout@v3.5.2
+      uses: actions/checkout@v4
       with:
         persist-credentials: false
         repository: armbian/build
@@ -38,7 +38,7 @@ jobs:
         path: build
 
     - name: Checkout Armbian OS Config
-      uses: actions/checkout@v3.5.2
+      uses: actions/checkout@v4
       with:
         persist-credentials: false
         repository: armbian/os

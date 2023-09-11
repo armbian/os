@@ -11,12 +11,12 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        default: 'no'    
+        default: 'no'
       PKG_REMOVE:
         description: Packages to remove [pkg-name] or [Name (% linux*edge*)]
         required: false
         type: string
-        
+
 concurrency:
   group: pipeline
   cancel-in-progress: false
@@ -61,7 +61,7 @@ jobs:
       max-parallel: 8
       matrix:
         repository: ["debs-beta","debs"]
-    
+
     name: Make
     runs-on: repository
     steps:
@@ -72,14 +72,14 @@ jobs:
           key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
-              
+
       - name: "Prepare for ${{ matrix.repository }}"
         run: |
 
          tree /incoming/${{ matrix.repository }}
 
       - name: Checkout build repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           repository: armbian/build
           fetch-depth: 1
@@ -159,24 +159,24 @@ jobs:
           key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
-          
+
       - name: What to sync?
         run: |
 
           JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
-          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")          
+          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-          
+
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
-          
+
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
               if [[ "$target" == "debs" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
           done
-          
+
   Index:
     name: "Index"
     runs-on: repository
@@ -202,13 +202,13 @@ jobs:
 
       - name: What to sync?
         run: |
-        
+
           JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
-          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")          
+          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-          
+
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
           for target in "${TARGETS[@]}"; do

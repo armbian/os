@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: ["Webindex update"]
   workflow_dispatch:
-        
+
 concurrency:
   group: webindex
   cancel-in-progress: false
@@ -23,17 +23,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Webindex:
-  
+
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+
     name: "Generate Download Index"
     runs-on: ubuntu-latest
     needs: Check
     steps:
 
       - name: Checkout OS repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: armbian/os
           fetch-depth: 1
@@ -66,10 +66,10 @@ jobs:
           ls -l
           cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=stable --backups=1 || true
           cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=unstable --backups=1 || true
-          
+
           # hack. we treat stable a bit different. Need to be unified once
           sed -i "s|https://dl.armbian.com/||" index.csv
-          
+
           zip -qj unstable.zip unstable/*.torrent
           zip -qj stable.zip stable/*.torrent
 
