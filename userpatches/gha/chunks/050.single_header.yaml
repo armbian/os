@@ -114,7 +114,7 @@ jobs:
 
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
@@ -232,7 +232,7 @@ jobs:
 
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ env.BUILD_REF }}
@@ -242,7 +242,7 @@ jobs:
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
