@@ -79,7 +79,7 @@ jobs:
          tree /incoming/${{ matrix.repository }}
 
       - name: Checkout build repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: armbian/build
           fetch-depth: 1
