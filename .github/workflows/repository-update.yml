@@ -39,7 +39,7 @@ jobs:
     name: "Download external"
     needs: Check
 
-    if: ${{ github.repository_owner == 'Armbian' }}
+    if: ${{ github.repository_owner == 'Armbian' && ${{ inputs.UPDATE_STABLE_REPO }} }}
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
