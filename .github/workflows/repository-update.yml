@@ -38,7 +38,7 @@ jobs:
   Sync:
     name: "Files"
     runs-on: repository
-    #needs: Prepare
+    needs: Check
     outputs:
       matrix: ${{needs.Prepare.outputs.matrix}}
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
