@@ -1,10 +1,10 @@
 name: Auto sync images to storage (cronjob)
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: ["Repository update"]
-  schedule:
-    - cron: "*/15 * * * *"
+#  repository_dispatch:
+#    types: ["Repository update"]
+#  schedule:
+#    - cron: "*/15 * * * *"
         
 concurrency:
   group: auto-sync
