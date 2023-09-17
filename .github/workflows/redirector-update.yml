@@ -1,0 +1,185 @@
+name: Redirector update (cronjob)
+on:
+  repository_dispatch:
+    types: ["Redirector update"]
+#  schedule:
+#    - cron: "00 3 * * *"
+  workflow_dispatch:
+
+jobs:
+
+  Check:
+
+    name: "Check membership"
+    runs-on: Linux
+    steps:
+
+      - name: "Check membership"
+        uses: armbian/actions/team-check@main
+        with:
+          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  Test:
+    name: "Get list of all mirrors"
+    needs: Check
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs" \
+          | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|apt|" | sed "s/\"//g" \
+          | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  Ping:
+    name: "Check control file"
+    runs-on: Linux
+    needs: Test
+    outputs:
+      matrix: ${{needs.test.outputs.matrix}}
+    if: ${{ needs.Test.outputs.matrix != '[]' && needs.Test.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Test.outputs.matrix)}}
+
+    steps:
+
+      - name: "Check control file"
+        run: |
+
+          SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
+          SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
+          
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/.control || true)
+          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/.control || true)
+          if [[ "$ORIGIN" == "$CHECK" ]]; then
+
+             # Change status in NetBox
+             curl -s -X PATCH \
+             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
+             -H "Content-Type: application/json" \
+             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
+             --data '{"status" : "active" }' | jq '.'
+            echo "Enabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
+            echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
+            echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+
+          else
+          
+             # Change status in NetBox
+             curl -s -X PATCH \
+             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
+             -H "Content-Type: application/json" \
+             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
+             --data '{"status" : "failed" }' | jq '.'
+             echo "Disabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
+             echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
+             echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+  Prepare:
+    name: "Generate YAML for re-director"
+    needs: Ping
+    runs-on: Linux
+    steps:
+
+      - uses: robinraju/release-downloader@v1.8
+        with:
+          repository: "P3TERX/GeoLite.mmdb"
+          latest: true
+          fileName: "*.mmdb"
+
+      - name: Get primary mirrors from database
+        run: |
+
+          # each is under different port
+          VARIANT=(archive:8082 debs:80 debs-beta:8083 images:8081 rsync:8084 content:8100)
+
+          for variant in "${VARIANT[@]}"; do
+         
+            FILENAME="${variant%:*}"
+            PORT="${variant##*:}"
+            echo "#" > dlrouter-${FILENAME}.yaml
+            echo "# ${FILENAME}.armbian.com " >> dlrouter-${FILENAME}.yaml
+            echo "#" >> dlrouter-${FILENAME}.yaml
+            cat <<- EOF >> dlrouter-${FILENAME}.yaml
+            geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+            asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+            dl_map: /scripts/redirect-config/userdata.csv
+            bind: ':${PORT}'
+          
+            # Reload authorization key
+            reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          
+            # LRU Cache Size (in items)
+            cacheSize: 2048
+          
+            # Server definition
+            # Weights are just like nginx, where if it's > 1 it'll be chosen x out of x + total times
+            # By default, the top 3 servers are used for choosing the best.
+            # server = full url or host+path
+            # weight = int
+            # optional: latitude, longitude (float)
+            servers:
+            EOF
+            echo "<pre>" >> $GITHUB_STEP_SUMMARY
+            SERVERS=($(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+            "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=${FILENAME}" | jq '.results[] | .name' | grep -v null | sed "s/\"//g"))
+
+              for server in "${SERVERS[@]}"; do
+                unset REGION LATITUDE LONGITUDE
+                COMMAND=$(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=$server" | jq)
+
+                # where paths has been altered by mirror
+                DL_PATH_DEBS=$(echo $COMMAND | jq '.results[] | .custom_fields["download_path_debs"]' | sed "s/\"//g")
+                DL_PATH_IMAGES=$(echo $COMMAND | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                
+                WEIGHT=$(echo $COMMAND | jq '.results[] | .custom_fields["weight"]' | head -1 | sed "s/\"//g")
+                SITE_ID=$(echo $COMMAND | jq '.results[] | .site.id' | sed "s/\"//g")
+                if [[ $SITE_ID != null ]]; then
+                  COMMAND=$(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                  "https://stuff.armbian.com/netbox/api/dcim/sites/?limit=500&id=$SITE_ID" | jq)
+                  REGION=$(echo $COMMAND | jq '.results[] | .region.name' | sed "s/\"//g")
+                  LATITUDE=$(echo $COMMAND | jq '.results[] | .latitude' | sed "s/\"//g")
+                  LONGITUDE=$(echo $COMMAND | jq '.results[] | .longitude' | sed "s/\"//g")
+                  PHYSICAL=$(echo $COMMAND | jq '.results[] | .physical_address' | sed "s/\"//g")
+                  TIME_ZONE=$(echo $COMMAND | jq '.results[] | .time_zone' | sed "s/\"//g")
+                  UPLOAD=$(echo $COMMAND | jq '.results[] | .custom_fields["upload_speed"]' | sed "s/\"//g")
+                fi
+          echo ""  >> dlrouter-${FILENAME}.yaml
+          [[ -n $REGION ]] && echo "  # $TIME_ZONE - $UPLOAD Mbit/s" >> dlrouter-${FILENAME}.yaml
+
+          DL_PATH="${FILENAME}"
+          [[ "${FILENAME}" == rsync ]] && DL_PATH=""
+          [[ "${FILENAME}" == debs ]] && DL_PATH="apt"
+          [[ "${FILENAME}" == debs-beta ]] && DL_PATH="beta"
+          [[ "${FILENAME}" == images ]] && DL_PATH="dl"
+          [[ "$DL_PATH_DEBS" != null && "${FILENAME}" == debs ]] && DL_PATH="${DL_PATH_DEBS}"
+          [[ "$DL_PATH_IMAGES" != null && "${FILENAME}" == images ]] && DL_PATH="${DL_PATH_IMAGES}"
+          
+          echo "  - server: $server/$DL_PATH/" >> "dlrouter-${FILENAME}.yaml"
+          [[ "$LATITUDE" != null && -n "$LATITUDE" ]] && echo "    latitude: $LATITUDE" >> dlrouter-${FILENAME}.yaml
+          [[ "$LONGITUDE" != null && -n "$LONGITUDE" ]] && echo "    longitude: $LONGITUDE" >> dlrouter-${FILENAME}.yaml
+          [[ "$WEIGHT" != null ]] && echo "    weight: $WEIGHT" >> dlrouter-${FILENAME}.yaml          
+            done
+            cat dlrouter-${FILENAME}.yaml >> $GITHUB_STEP_SUMMARY
+            echo "</pre>" >> $GITHUB_STEP_SUMMARY            
+          done
+
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: redirecor-config
+          path: ${{ github.workspace }}/*.yaml
