@@ -110,7 +110,7 @@ jobs:
   Ping-debs:
     name: "Check debs"
     runs-on: Linux
-    needs: Test-debs-beta
+    needs: Test-debs
     outputs:
       matrix: ${{needs.Test-debs.outputs.matrix}}
     if: ${{ needs.Test-debs.outputs.matrix != '[]' && needs.Test-debs.outputs.matrix != '' }}
