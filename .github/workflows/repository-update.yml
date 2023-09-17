@@ -35,9 +35,84 @@ jobs:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  external:
+    name: "Download external"
+    needs: Check
+
+    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
+    with:
+      ACCESS_NAME: armbian
+      BUILD_RUNNER: "ubuntu-latest"
+    secrets:
+      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
+      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
+      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
+      HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
+      HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
+      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+
+  gradle:
+    needs: external
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        repository: ["debs-beta","debs"]
+
+    name: Make
+    runs-on: repository
+    steps:
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: "Prepare for ${{ matrix.repository }}"
+        run: |
+         tree /incoming/${{ matrix.repository }}
+      - name: Checkout build repository
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/build
+          fetch-depth: 1
+          clean: false
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_KEY1 }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
+
+      - name: "Build repository ${{ matrix.repository }}"
+        run: |
+          REPOSITORY="${{ matrix.repository }}"
+          TARGET=${REPOSITORY/debs/repository}
+          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
+          sudo chown -R ${USER}.${USER} /outgoing/${TARGET}
+          # clean
+          if [[ -n "${{ inputs.PKG_REMOVE }}" ]]; then
+             PKG_REMOVE="|${{ inputs.PKG_REMOVE }}"
+          fi
+          # remove certain and custom package
+          # cleaning is optional so lets apply some magic as we don't want this at every rebuild
+          day=$( date +%d )
+          if [ "$day" = "01" ] || [ "$day" = "15" ]; then
+              tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
+          fi
+          # add from incoming
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+          # create index
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
+
   Prepare:
     name: "Upload to servers"
-    needs: Check
+    needs: gradle
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
     runs-on: ubuntu-latest
