@@ -79,33 +79,20 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/beta/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-
-             # Change status in NetBox
-             curl -s -X PATCH \
-             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
-             -H "Content-Type: application/json" \
-             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
-             --data '{"status" : "active" }' | jq '.'
-            #echo "Enabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-            #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-            #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
-
-          else
-          
-             # Change status in NetBox
-             curl -s -X PATCH \
-             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
-             -H "Content-Type: application/json" \
-             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
-             --data '{"status" : "failed" }' | jq '.'
-             #echo "Disabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-             #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-             #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+            rm -rf downloads
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
           fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: debs-beta
+          path: downloads
+          if-no-files-found: ignore
 
   Ping-debs:
     name: "Check debs"
@@ -128,33 +115,20 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-
-             # Change status in NetBox
-             curl -s -X PATCH \
-             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
-             -H "Content-Type: application/json" \
-             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
-             --data '{"status" : "active" }' | jq '.'
-            #echo "Enabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-            #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-            #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
-
-          else
-          
-             # Change status in NetBox
-             curl -s -X PATCH \
-             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
-             -H "Content-Type: application/json" \
-             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
-             --data '{"status" : "failed" }' | jq '.'
-             #echo "Disabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-             #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-             #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+            rm -rf downloads
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
           fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: debs
+          path: downloads
+          if-no-files-found: ignore
 
   Prepare-debs-beta:
     name: "Generate debs-beta YAML for re-director"
@@ -162,24 +136,34 @@ jobs:
     runs-on: Linux
     steps:
 
-      - uses: robinraju/release-downloader@v1.8
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
         with:
-          repository: "P3TERX/GeoLite.mmdb"
-          latest: true
-          fileName: "*.mmdb"
+          name: debs-beta
+          path: downloads
 
-      - name: Test
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test debs
         uses: armbian/actions/make-yaml-redirector@main
         with:
           variant: debs-beta
+          failoverserver: "${{ env.failoverserver }}"
           port: 1234
           geodb: GeoLite2-City.mmdb
           asndb: GeoLite2-ASN.mmdb
           dl_map: userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
-          failoverserver: imola.armbian.com
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: debs-beta
+          failOnError: false
 
   Prepare-debs:
     name: "Generate debs YAML for re-director"
@@ -187,20 +171,31 @@ jobs:
     runs-on: Linux
     steps:
 
-      - uses: robinraju/release-downloader@v1.8
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
         with:
-          repository: "P3TERX/GeoLite.mmdb"
-          latest: true
-          fileName: "*.mmdb"
+          name: debs
+          path: downloads
 
-      - name: Test
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test debs
         uses: armbian/actions/make-yaml-redirector@main
         with:
           variant: debs
+          failoverserver: "${{ env.failoverserver }}"
           port: 1234
           geodb: GeoLite2-City.mmdb
           asndb: GeoLite2-ASN.mmdb
           dl_map: userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
-          failoverserver: imola.armbian.com
           netbox: ${{ secrets.NETBOX_TOKEN }}
+
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: debs
+          failOnError: false
