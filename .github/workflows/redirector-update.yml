@@ -21,7 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Test:
-    name: "Check mirrors"
+    name: "Check debs-bets mirrors"
     needs: Check
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
@@ -34,7 +34,7 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs-beta" \
           | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|apt|" | sed "s/\"//g" \
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
