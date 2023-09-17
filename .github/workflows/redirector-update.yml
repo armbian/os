@@ -109,6 +109,7 @@ jobs:
           asndb: GeoLite2-ASN.mmdb
           dl_map: userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          failoverserver: imola.armbian.com
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
       - name: Get primary mirrors from database
