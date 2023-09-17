@@ -21,7 +21,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   Test:
-    name: "Get list of all mirrors"
+    name: "Check mirrors"
     needs: Check
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
@@ -40,7 +40,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
 
   Ping:
-    name: "Check control file"
+    name: "Check"
     runs-on: Linux
     needs: Test
     outputs:
@@ -55,7 +55,7 @@ jobs:
 
     steps:
 
-      - name: "Check control file"
+      - name: "Check"
         run: |
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
