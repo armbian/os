@@ -127,6 +127,7 @@ lists:
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: edge }
 
   full-desktop-3d: &full-desktop-3d
     # debian stable minimal
