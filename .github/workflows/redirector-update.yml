@@ -58,6 +58,25 @@ jobs:
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
+  Test-archive:
+    name: "Check archive mirrors"
+    needs: Check
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: Linux
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=archive" \
+          | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|archive|" | sed "s/\"//g" \
+          | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
   Ping-debs-beta:
     name: "Check debs-beta"
     runs-on: Linux
@@ -130,6 +149,44 @@ jobs:
           path: downloads
           if-no-files-found: ignore
 
+  Ping-archive:
+    name: "Check archive"
+    runs-on: Linux
+    needs: Test-archive
+    outputs:
+      matrix: ${{needs.Test-archive.outputs.matrix}}
+    if: ${{ needs.Test-archive.outputs.matrix != '[]' && needs.Test-archive.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Test-archive.outputs.matrix)}}
+
+    steps:
+
+      - name: "Check"
+        run: |
+
+          SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
+          SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/archive/control || true)
+          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          if [[ "$ORIGIN" == "$CHECK" ]]; then
+            rm -rf downloads
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
+          fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive
+          path: downloads
+          if-no-files-found: ignore
+          
+##############################################################################vvv
+
   Prepare-debs-beta:
     name: "Generate debs-beta YAML for re-director"
     needs: Ping-debs-beta
@@ -190,9 +247,39 @@ jobs:
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
+  Prepare-archive:
+    name: "Generate archive YAML for re-director"
+    needs: Ping-archive
+    runs-on: Linux
+    steps:
+
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: archive
+          path: downloads
+
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test archive
+        uses: armbian/actions/make-yaml-redirector@main
+        with:
+          variant: archive
+          failoverserver: "${{ env.failoverserver }}"
+          port: 1234
+          geodb: GeoLite2-City.mmdb
+          asndb: GeoLite2-ASN.mmdb
+          dl_map: userdata.csv
+          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          netbox: ${{ secrets.NETBOX_TOKEN }}
+
   Make:
     name: "Generate YAML for re-director"
-    needs: [ Prepare-debs,Prepare-debs-beta ]
+    needs: [ Prepare-debs,Prepare-debs-beta,Prepare-archive ]
     runs-on: Linux
     steps:
 
@@ -227,4 +314,9 @@ jobs:
       - uses: geekyeggo/delete-artifact@v2
         with:
           name: debs-beta
+          failOnError: false
+
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: archive
           failOnError: false
