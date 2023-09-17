@@ -2,8 +2,8 @@ name: Redirector update (cronjob)
 on:
   repository_dispatch:
     types: ["Redirector update"]
-#  schedule:
-#    - cron: "00 3 * * *"
+  schedule:
+    - cron: "00 8 * * *"
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-############################################################################################################################################################
+###################################################################################################
 
   Test-debs-beta:
     name: "Check debs-bets mirrors"
@@ -98,7 +98,7 @@ jobs:
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
-############################################################################################################################################################
+###################################################################################################
 
   Ping-debs-beta:
     name: "Check debs-beta"
@@ -244,7 +244,7 @@ jobs:
           path: downloads
           if-no-files-found: ignore
           
-############################################################################################################################################################
+###################################################################################################
 
   Prepare-debs-beta:
     name: "Generate debs-beta YAML for re-director"
@@ -385,8 +385,10 @@ jobs:
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
+###################################################################################################
+
   Make:
-    name: "Generate YAML for re-director"
+    name: "Upload"
     needs: [ Prepare-debs,Prepare-debs-beta,Prepare-archive,Prepare-images ]
     runs-on: Linux
     steps:
@@ -416,27 +418,12 @@ jobs:
 
       - uses: geekyeggo/delete-artifact@v2
         with:
-          name: redirector-config
-          failOnError: false
-
-      - uses: geekyeggo/delete-artifact@v2
-        with:
-          name: debs
-          failOnError: false
-          
-      - uses: geekyeggo/delete-artifact@v2
-        with:
-          name: debs-beta
-          failOnError: false
-
-      - uses: geekyeggo/delete-artifact@v2
-        with:
-          name: archive
-          failOnError: false
-
-      - uses: geekyeggo/delete-artifact@v2
-        with:
-          name: images
+          name: |
+            redirector-config
+            debs
+            debs-beta
+            archive
+            images
           failOnError: false
 
       - name: Install SSH key
@@ -446,8 +433,12 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-# To do: add runner to redirector, but on clean install. Until then upload files.
-
+      # To do: add runner to redirector, but on clean install. Until then upload files.
       - name: Upload files
         run: |
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files downloads/dlrouter-archive.yaml downloads/dlrouter-debs-beta.yaml downloads/dlrouter-images.yaml downloads/dlrouter-debs.yaml  ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files \
+          downloads/dlrouter-archive.yaml \
+          downloads/dlrouter-debs-beta.yaml \
+          downloads/dlrouter-images.yaml \
+          downloads/dlrouter-debs.yaml \
+          ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
