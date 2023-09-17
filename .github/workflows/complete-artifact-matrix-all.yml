@@ -2675,6 +2675,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -2859,6 +2861,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -3043,6 +3047,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -3227,6 +3233,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -3411,6 +3419,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -3595,6 +3605,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -3779,6 +3791,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -3963,6 +3977,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -4147,6 +4163,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -4331,6 +4349,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -4515,6 +4535,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -4699,6 +4721,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -4883,6 +4907,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -5067,6 +5093,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -5251,6 +5279,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
@@ -5435,6 +5465,8 @@ jobs:
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
+          # generate control file which checks mirrors
+          sudo date +%s > output/images/control
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
 
       # cleaning self hosted runners
