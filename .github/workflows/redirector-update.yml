@@ -205,13 +205,7 @@ jobs:
       - name: "Download artifacts"
         uses: actions/download-artifact@v3
         with:
-          name: debs
-          path: downloads
-          
-      - name: "Download artifacts"
-        uses: actions/download-artifact@v3
-        with:
-          name: debs-beta
+          name: redirector-config
           path: downloads
 
       - name: "Check"
@@ -219,7 +213,12 @@ jobs:
           
           ls -l downloads
           ls -l *.mmdb          
-          
+
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: redirector-config
+          failOnError: false
+
       - uses: geekyeggo/delete-artifact@v2
         with:
           name: debs
