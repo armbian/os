@@ -94,7 +94,7 @@ jobs:
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=images" \
-          | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|dl|" | sed "s/\"//g" \
+          | jq '.results[] | .name,.custom_fields["download_path_images"],.id' | sed "s|null|dl|" | sed "s/\"//g" \
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
