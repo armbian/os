@@ -160,11 +160,6 @@ jobs:
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
-      - uses: geekyeggo/delete-artifact@v2
-        with:
-          name: debs-beta
-          failOnError: false
-
   Prepare-debs:
     name: "Generate debs YAML for re-director"
     needs: Ping-debs
@@ -195,7 +190,42 @@ jobs:
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
+  Make:
+    name: "Generate YAML for re-director"
+    needs: [ Prepare-debs,Prepare-debs-beta ]
+    runs-on: Linux
+    steps:
+
+      - uses: robinraju/release-downloader@v1.8
+        with:
+          repository: "P3TERX/GeoLite.mmdb"
+          latest: true
+          fileName: "*.mmdb"
+
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: debs
+          path: downloads
+          
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: debs-beta
+          path: downloads
+
+      - name: "Check"
+        run: |
+          
+          ls -l downloads
+          ls -l *.mmdb          
+          
       - uses: geekyeggo/delete-artifact@v2
         with:
           name: debs
+          failOnError: false
+          
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: debs-beta
           failOnError: false
