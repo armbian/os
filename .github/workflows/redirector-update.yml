@@ -309,7 +309,6 @@ jobs:
         with:
           variant: debs
           failoverserver: "${{ env.failoverserver }}"
-          port: 80
           geodb: /scripts/redirect-config/GeoLite2-City.mmdb
           asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
           dl_map: /scripts/redirect-config/userdata.csv
