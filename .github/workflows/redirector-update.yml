@@ -2,8 +2,8 @@ name: Redirector update (cronjob)
 on:
   repository_dispatch:
     types: ["Redirector update"]
-#  schedule:
-#    - cron: "00 3 * * *"
+  schedule:
+    - cron: "00 8 * * *"
   workflow_dispatch:
 
 jobs:
@@ -20,12 +20,33 @@ jobs:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  Test:
-    name: "Check mirrors"
+###################################################################################################
+
+  Test-debs-beta:
+    name: "Check debs-bets mirrors"
     needs: Check
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
-    runs-on: ubuntu-latest
+    runs-on: Linux
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs-beta" \
+          | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|beta|" | sed "s/\"//g" \
+          | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  Test-debs:
+    name: "Check debs mirrors"
+    needs: Check
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: Linux
     steps:
 
       - name: Get primary mirrors from database
@@ -39,19 +60,59 @@ jobs:
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
-  Ping:
-    name: "Check"
-    runs-on: Linux
-    needs: Test
+  Test-archive:
+    name: "Check archive mirrors"
+    needs: Check
     outputs:
-      matrix: ${{needs.test.outputs.matrix}}
-    if: ${{ needs.Test.outputs.matrix != '[]' && needs.Test.outputs.matrix != '' }}
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: Linux
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=archive" \
+          | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|archive|" | sed "s/\"//g" \
+          | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  Test-images:
+    name: "Check images mirrors"
+    needs: Check
+    outputs:
+      matrix: ${{steps.json.outputs.JSON_CONTENT}}
+    runs-on: Linux
+    steps:
+
+      - name: Get primary mirrors from database
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=images" \
+          | jq '.results[] | .name,.custom_fields["download_path_images"],.id' | sed "s|null|dl|" | sed "s/\"//g" \
+          | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+###################################################################################################
+
+  Ping-debs-beta:
+    name: "Check debs-beta"
+    runs-on: Linux
+    needs: Test-debs-beta
+    outputs:
+      matrix: ${{needs.Test-debs-beta.outputs.matrix}}
+    if: ${{ needs.Test-debs-beta.outputs.matrix != '[]' && needs.Test-debs-beta.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
 
-        node: ${{fromJson(needs.Test.outputs.matrix)}}
+        node: ${{fromJson(needs.Test-debs-beta.outputs.matrix)}}
 
     steps:
 
@@ -60,39 +121,282 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/beta/control || true)
+          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
+          if [[ "$ORIGIN" == "$CHECK" ]]; then
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
+          fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: debs-beta
+          path: downloads
+          if-no-files-found: ignore
+
+  Ping-debs:
+    name: "Check debs"
+    runs-on: Linux
+    needs: Test-debs
+    outputs:
+      matrix: ${{needs.Test-debs.outputs.matrix}}
+    if: ${{ needs.Test-debs.outputs.matrix != '[]' && needs.Test-debs.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Test-debs.outputs.matrix)}}
+
+    steps:
+
+      - name: "Check"
+        run: |
+
+          SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
+          SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-
-             # Change status in NetBox
-             curl -s -X PATCH \
-             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
-             -H "Content-Type: application/json" \
-             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
-             --data '{"status" : "active" }' | jq '.'
-            #echo "Enabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-            #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-            #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
-
-          else
-          
-             # Change status in NetBox
-             curl -s -X PATCH \
-             -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
-             -H "Content-Type: application/json" \
-             https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
-             --data '{"status" : "failed" }' | jq '.'
-             #echo "Disabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-             #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-             #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
           fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: debs
+          path: downloads
+          if-no-files-found: ignore
+
+  Ping-archive:
+    name: "Check archive"
+    runs-on: Linux
+    needs: Test-archive
+    outputs:
+      matrix: ${{needs.Test-archive.outputs.matrix}}
+    if: ${{ needs.Test-archive.outputs.matrix != '[]' && needs.Test-archive.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Test-archive.outputs.matrix)}}
+
+    steps:
+
+      - name: "Check"
+        run: |
+
+          SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
+          SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/archive/control || true)
+          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
+          if [[ "$ORIGIN" == "$CHECK" ]]; then
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
+          fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: archive
+          path: downloads
+          if-no-files-found: ignore
+
+  Ping-images:
+    name: "Check images"
+    runs-on: Linux
+    needs: Test-images
+    outputs:
+      matrix: ${{needs.Test-images.outputs.matrix}}
+    if: ${{ needs.Test-images.outputs.matrix != '[]' && needs.Test-images.outputs.matrix != '' }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+
+        node: ${{fromJson(needs.Test-images.outputs.matrix)}}
+
+    steps:
+
+      - name: "Check"
+        run: |
+
+          SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
+          SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/dl/control || true)
+          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
+          if [[ "$ORIGIN" == "$CHECK" ]]; then
+            mkdir -p downloads
+            echo $SERVER_URL > downloads/$SERVER_ID
+          fi
+
+      - name: Upload JSON
+        uses: actions/upload-artifact@v3
+        with:
+          name: images
+          path: downloads
+          if-no-files-found: ignore
           
-  Prepare:
-    name: "Generate YAML for re-director"
-    needs: Ping
+###################################################################################################
+
+  Prepare-debs-beta:
+    name: "Generate debs-beta YAML for re-director"
+    needs: Ping-debs-beta
     runs-on: Linux
     steps:
+
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+          
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: debs-beta
+          path: downloads
+
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test debs
+        uses: armbian/actions/make-yaml-redirector@main
+        with:
+          variant: debs-beta
+          failoverserver: "${{ env.failoverserver }}"
+          port: 8083
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
+          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          netbox: ${{ secrets.NETBOX_TOKEN }}
+
+  Prepare-debs:
+    name: "Generate debs YAML for re-director"
+    needs: Ping-debs
+    runs-on: Linux
+    steps:
+
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: debs
+          path: downloads
+
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test debs
+        uses: armbian/actions/make-yaml-redirector@main
+        with:
+          variant: debs
+          failoverserver: "${{ env.failoverserver }}"
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
+          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          netbox: ${{ secrets.NETBOX_TOKEN }}
+
+  Prepare-archive:
+    name: "Generate archive YAML for re-director"
+    needs: Ping-archive
+    runs-on: Linux
+    steps:
+    
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: archive
+          path: downloads
+
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test archive
+        uses: armbian/actions/make-yaml-redirector@main
+        with:
+          variant: archive
+          failoverserver: "${{ env.failoverserver }}"
+          port: 8082
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
+          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          netbox: ${{ secrets.NETBOX_TOKEN }}
+
+  Prepare-images:
+    name: "Generate images YAML for re-director"
+    needs: Ping-images
+    runs-on: Linux
+    steps:
+    
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: images
+          path: downloads
+
+      - name: "Check"
+        run: |
+
+          ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
+          echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
+          
+      - name: Test images
+        uses: armbian/actions/make-yaml-redirector@main
+        with:
+          variant: images
+          failoverserver: "${{ env.failoverserver }}"
+          port: 8081
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
+          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          netbox: ${{ secrets.NETBOX_TOKEN }}
+
+###################################################################################################
+
+  Make:
+    name: "Upload"
+    needs: [ Prepare-debs,Prepare-debs-beta,Prepare-archive,Prepare-images ]
+    runs-on: Linux
+    steps:
+
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
 
       - uses: robinraju/release-downloader@v1.8
         with:
@@ -100,95 +404,41 @@ jobs:
           latest: true
           fileName: "*.mmdb"
 
-      - name: Test
-        uses: armbian/actions/make-yaml-redirector@main
+      - name: "Download artifacts"
+        uses: actions/download-artifact@v3
         with:
-          variant: debs-beta
-          port: 1234
-          geodb: GeoLite2-City.mmdb
-          asndb: GeoLite2-ASN.mmdb
-          dl_map: userdata.csv
-          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
-          netbox: ${{ secrets.NETBOX_TOKEN }}
+          name: redirector-config
+          path: downloads
 
-      - name: Get primary mirrors from database
+      - name: "Check"
         run: |
-
-          VARIANT=(archive:8082 debs:80 debs-beta:8083 images:8081 rsync:8084 content:8100)
-          for variant in "${VARIANT[@]}"; do
-          FILENAME="${variant%:*}"
-          PORT="${variant##*:}"
-          echo "#" > dlrouter-${FILENAME}.yaml
-          echo "# ${FILENAME}.armbian.com " >> dlrouter-${FILENAME}.yaml
-          echo "#" >> dlrouter-${FILENAME}.yaml
-          #toilet -f emboss ${FILENAME} | sed 's/^/# /' > dlrouter-${FILENAME}.yaml
-          cat <<- EOF >> dlrouter-${FILENAME}.yaml
-          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
-          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
-          dl_map: /scripts/redirect-config/userdata.csv
-          bind: ':${PORT}'
           
-          # Reload authorization key
-          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
-          
-          # LRU Cache Size (in items)
-          cacheSize: 2048
-          
-          # Server definition
-          # Weights are just like nginx, where if it's > 1 it'll be chosen x out of x + total times
-          # By default, the top 3 servers are used for choosing the best.
-          # server = full url or host+path
-          # weight = int
-          # optional: latitude, longitude (float)
-          servers:
-          EOF
-            echo "<pre>" >> $GITHUB_STEP_SUMMARY
-            SERVERS=($(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-            "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=${FILENAME}" | jq '.results[] | .name' | grep -v null | sed "s/\"//g"))
+          ls -l downloads
+          ls -l *.mmdb          
 
-              for server in "${SERVERS[@]}"; do
-                unset REGION LATITUDE LONGITUDE
-                COMMAND=$(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=$server" | jq)
-
-                # where paths has been altered by mirror
-                DL_PATH_DEBS=$(echo $COMMAND | jq '.results[] | .custom_fields["download_path_debs"]' | sed "s/\"//g")
-                DL_PATH_IMAGES=$(echo $COMMAND | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                
-                WEIGHT=$(echo $COMMAND | jq '.results[] | .custom_fields["weight"]' | head -1 | sed "s/\"//g")
-                SITE_ID=$(echo $COMMAND | jq '.results[] | .site.id' | sed "s/\"//g")
-                if [[ $SITE_ID != null ]]; then
-                  COMMAND=$(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                  "https://stuff.armbian.com/netbox/api/dcim/sites/?limit=500&id=$SITE_ID" | jq)
-                  REGION=$(echo $COMMAND | jq '.results[] | .region.name' | sed "s/\"//g")
-                  LATITUDE=$(echo $COMMAND | jq '.results[] | .latitude' | sed "s/\"//g")
-                  LONGITUDE=$(echo $COMMAND | jq '.results[] | .longitude' | sed "s/\"//g")
-                  PHYSICAL=$(echo $COMMAND | jq '.results[] | .physical_address' | sed "s/\"//g")
-                  TIME_ZONE=$(echo $COMMAND | jq '.results[] | .time_zone' | sed "s/\"//g")
-                  UPLOAD=$(echo $COMMAND | jq '.results[] | .custom_fields["upload_speed"]' | sed "s/\"//g")
-                fi
-          echo ""  >> dlrouter-${FILENAME}.yaml
-          [[ -n $REGION ]] && echo "  # $TIME_ZONE - $UPLOAD Mbit/s" >> dlrouter-${FILENAME}.yaml
-
-          DL_PATH="${FILENAME}"
-          [[ "${FILENAME}" == rsync ]] && DL_PATH=""
-          [[ "${FILENAME}" == debs ]] && DL_PATH="apt"
-          [[ "${FILENAME}" == debs-beta ]] && DL_PATH="beta"
-          [[ "${FILENAME}" == images ]] && DL_PATH="dl"
-          [[ "$DL_PATH_DEBS" != null && "${FILENAME}" == debs ]] && DL_PATH="${DL_PATH_DEBS}"
-          [[ "$DL_PATH_IMAGES" != null && "${FILENAME}" == images ]] && DL_PATH="${DL_PATH_IMAGES}"
-          
-          echo "  - server: $server/$DL_PATH/" >> "dlrouter-${FILENAME}.yaml"
-          [[ "$LATITUDE" != null && -n "$LATITUDE" ]] && echo "    latitude: $LATITUDE" >> dlrouter-${FILENAME}.yaml
-          [[ "$LONGITUDE" != null && -n "$LONGITUDE" ]] && echo "    longitude: $LONGITUDE" >> dlrouter-${FILENAME}.yaml
-          [[ "$WEIGHT" != null ]] && echo "    weight: $WEIGHT" >> dlrouter-${FILENAME}.yaml          
-            done
-            cat dlrouter-${FILENAME}.yaml >> $GITHUB_STEP_SUMMARY
-            echo "</pre>" >> $GITHUB_STEP_SUMMARY            
-          done
-
-
-      - uses: actions/upload-artifact@v3
+      - uses: geekyeggo/delete-artifact@v2
         with:
-          name: redirecor-config
-          path: ${{ github.workspace }}/*.yaml
+          name: |
+            redirector-config
+            debs
+            debs-beta
+            archive
+            images
+          failOnError: false
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      # To do: add runner to redirector, but on clean install. Until then upload files.
+      - name: Upload files
+        run: |
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files \
+          downloads/dlrouter-archive.yaml \
+          downloads/dlrouter-debs-beta.yaml \
+          downloads/dlrouter-images.yaml \
+          downloads/dlrouter-debs.yaml \
+          ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
