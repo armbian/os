@@ -193,6 +193,11 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+          
       - name: "Download artifacts"
         uses: actions/download-artifact@v3
         with:
@@ -223,6 +228,11 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+
       - name: "Download artifacts"
         uses: actions/download-artifact@v3
         with:
@@ -252,6 +262,11 @@ jobs:
     needs: Ping-archive
     runs-on: Linux
     steps:
+    
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
 
       - name: "Download artifacts"
         uses: actions/download-artifact@v3
