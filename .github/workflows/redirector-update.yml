@@ -20,6 +20,8 @@ jobs:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+############################################################################################################################################################
+
   Test-debs-beta:
     name: "Check debs-bets mirrors"
     needs: Check
@@ -96,6 +98,8 @@ jobs:
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
+############################################################################################################################################################
+
   Ping-debs-beta:
     name: "Check debs-beta"
     runs-on: Linux
@@ -119,8 +123,8 @@ jobs:
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/beta/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-            rm -rf downloads
             mkdir -p downloads
             echo $SERVER_URL > downloads/$SERVER_ID
           fi
@@ -155,8 +159,8 @@ jobs:
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-            rm -rf downloads
             mkdir -p downloads
             echo $SERVER_URL > downloads/$SERVER_ID
           fi
@@ -191,8 +195,8 @@ jobs:
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/archive/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-            rm -rf downloads
             mkdir -p downloads
             echo $SERVER_URL > downloads/$SERVER_ID
           fi
@@ -227,8 +231,8 @@ jobs:
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
           ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/dl/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
+          rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
-            rm -rf downloads
             mkdir -p downloads
             echo $SERVER_URL > downloads/$SERVER_ID
           fi
@@ -240,7 +244,7 @@ jobs:
           path: downloads
           if-no-files-found: ignore
           
-##############################################################################vvv
+############################################################################################################################################################
 
   Prepare-debs-beta:
     name: "Generate debs-beta YAML for re-director"
