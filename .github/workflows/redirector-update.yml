@@ -105,6 +105,9 @@ jobs:
         with:
           variant: debs-beta
           port: 1234
+          geodb: GeoLite2-City.mmdb
+          asndb: GeoLite2-ASN.mmdb
+          dl_map: userdata.csv
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
       - name: Get primary mirrors from database
