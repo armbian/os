@@ -103,7 +103,7 @@ jobs:
       - name: Test
         uses: armbian/actions/make-yaml-redirector@main
         with:
-          variant: xxx
+          variant: debs-beta
           port: 1234
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
