@@ -439,3 +439,16 @@ jobs:
         with:
           name: images
           failOnError: false
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+# To do: add runner to redirector, but on clean install. Until then upload files.
+
+      - name: Upload files
+        run: |
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files downloads/dlrouter-archive.yaml downloads/dlrouter-debs-beta.yaml downloads/dlrouter-images.yaml downloads/dlrouter-debs.yaml  ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
