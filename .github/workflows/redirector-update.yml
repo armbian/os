@@ -100,6 +100,12 @@ jobs:
           latest: true
           fileName: "*.mmdb"
 
+      - name: Test
+        uses: armbian/actions/make-yaml-redirector@main
+        with:
+          variant: xxx
+          port: 1234
+
       - name: Get primary mirrors from database
         run: |
 
