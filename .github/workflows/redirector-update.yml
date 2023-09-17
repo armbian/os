@@ -25,7 +25,7 @@ jobs:
     needs: Check
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
-    runs-on: ubuntu-latest
+    runs-on: Linux
     steps:
 
       - name: Get primary mirrors from database
