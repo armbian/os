@@ -283,6 +283,11 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: "Clean"
+        run: |
+        
+          rm -rf downloads/*
+
       - uses: robinraju/release-downloader@v1.8
         with:
           repository: "P3TERX/GeoLite.mmdb"
