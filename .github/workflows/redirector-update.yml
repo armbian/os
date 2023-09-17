@@ -105,6 +105,7 @@ jobs:
         with:
           variant: xxx
           port: 1234
+          netbox: ${{ secrets.NETBOX_TOKEN }}
 
       - name: Get primary mirrors from database
         run: |
