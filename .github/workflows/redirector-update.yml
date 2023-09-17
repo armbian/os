@@ -61,8 +61,8 @@ jobs:
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
           
-          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/.control || true)
-          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/.control || true)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/control || true)
+          CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           if [[ "$ORIGIN" == "$CHECK" ]]; then
 
              # Change status in NetBox
@@ -71,9 +71,9 @@ jobs:
              -H "Content-Type: application/json" \
              https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
              --data '{"status" : "active" }' | jq '.'
-            echo "Enabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-            echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-            echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+            #echo "Enabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
+            #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
+            #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
 
           else
           
@@ -83,9 +83,9 @@ jobs:
              -H "Content-Type: application/json" \
              https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/${SERVER_ID}/ \
              --data '{"status" : "failed" }' | jq '.'
-             echo "Disabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
-             echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
-             echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
+             #echo "Disabling $SERVER_URL" >> $GITHUB_STEP_SUMMARY
+             #echo "Origin $ORIGIN" >> $GITHUB_STEP_SUMMARY
+             #echo "Check $CHECK" >> $GITHUB_STEP_SUMMARY
           fi
           
   Prepare:
