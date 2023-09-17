@@ -75,9 +75,7 @@ jobs:
 
       - name: "Prepare for ${{ matrix.repository }}"
         run: |
-
          tree /incoming/${{ matrix.repository }}
-
       - name: Checkout build repository
         uses: actions/checkout@v4
         with:
@@ -93,28 +91,22 @@ jobs:
 
       - name: "Build repository ${{ matrix.repository }}"
         run: |
-
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
-
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
           sudo chown -R ${USER}.${USER} /outgoing/${TARGET}
-
           # clean
           if [[ -n "${{ inputs.PKG_REMOVE }}" ]]; then
              PKG_REMOVE="|${{ inputs.PKG_REMOVE }}"
           fi
-
           # remove certain and custom package
           # cleaning is optional so lets apply some magic as we don't want this at every rebuild
           day=$( date +%d )
           if [ "$day" = "01" ] || [ "$day" = "15" ]; then
               tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
           fi
-
           # add from incoming
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
-
           # create index
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
 
@@ -129,7 +121,6 @@ jobs:
       - name: Get primary mirrors from database
         id: json
         run: |
-
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=push" \
@@ -173,8 +164,9 @@ jobs:
 
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              if [[ "$target" == "debs" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
+              if [[ "$target" == "debs" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude ".control" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
+              if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude ".control" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
+              if [[ "$target" == "images" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude ".control" /storage2/dl/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   Index:
@@ -218,6 +210,7 @@ jobs:
               # delete at the end
               if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
+              if [[ "$target" == "images" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage2/dl/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi              
           done
 
 #  dispatch:
