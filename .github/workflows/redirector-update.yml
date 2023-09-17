@@ -103,36 +103,34 @@ jobs:
       - name: Get primary mirrors from database
         run: |
 
-          # each is under different port
           VARIANT=(archive:8082 debs:80 debs-beta:8083 images:8081 rsync:8084 content:8100)
-
           for variant in "${VARIANT[@]}"; do
-         
-            FILENAME="${variant%:*}"
-            PORT="${variant##*:}"
-            echo "#" > dlrouter-${FILENAME}.yaml
-            echo "# ${FILENAME}.armbian.com " >> dlrouter-${FILENAME}.yaml
-            echo "#" >> dlrouter-${FILENAME}.yaml
-            cat <<- EOF >> dlrouter-${FILENAME}.yaml
-            geodb: /scripts/redirect-config/GeoLite2-City.mmdb
-            asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
-            dl_map: /scripts/redirect-config/userdata.csv
-            bind: ':${PORT}'
+          FILENAME="${variant%:*}"
+          PORT="${variant##*:}"
+          echo "#" > dlrouter-${FILENAME}.yaml
+          echo "# ${FILENAME}.armbian.com " >> dlrouter-${FILENAME}.yaml
+          echo "#" >> dlrouter-${FILENAME}.yaml
+          #toilet -f emboss ${FILENAME} | sed 's/^/# /' > dlrouter-${FILENAME}.yaml
+          cat <<- EOF >> dlrouter-${FILENAME}.yaml
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
+          bind: ':${PORT}'
           
-            # Reload authorization key
-            reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
+          # Reload authorization key
+          reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           
-            # LRU Cache Size (in items)
-            cacheSize: 2048
+          # LRU Cache Size (in items)
+          cacheSize: 2048
           
-            # Server definition
-            # Weights are just like nginx, where if it's > 1 it'll be chosen x out of x + total times
-            # By default, the top 3 servers are used for choosing the best.
-            # server = full url or host+path
-            # weight = int
-            # optional: latitude, longitude (float)
-            servers:
-            EOF
+          # Server definition
+          # Weights are just like nginx, where if it's > 1 it'll be chosen x out of x + total times
+          # By default, the top 3 servers are used for choosing the best.
+          # server = full url or host+path
+          # weight = int
+          # optional: latitude, longitude (float)
+          servers:
+          EOF
             echo "<pre>" >> $GITHUB_STEP_SUMMARY
             SERVERS=($(curl -sH "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&status=active&device_role=Mirror&tag=${FILENAME}" | jq '.results[] | .name' | grep -v null | sed "s/\"//g"))
