@@ -274,10 +274,10 @@ jobs:
         with:
           variant: debs-beta
           failoverserver: "${{ env.failoverserver }}"
-          port: 1234
-          geodb: GeoLite2-City.mmdb
-          asndb: GeoLite2-ASN.mmdb
-          dl_map: userdata.csv
+          port: 8083
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
@@ -309,10 +309,10 @@ jobs:
         with:
           variant: debs
           failoverserver: "${{ env.failoverserver }}"
-          port: 1234
-          geodb: GeoLite2-City.mmdb
-          asndb: GeoLite2-ASN.mmdb
-          dl_map: userdata.csv
+          port: 80
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
@@ -344,10 +344,10 @@ jobs:
         with:
           variant: archive
           failoverserver: "${{ env.failoverserver }}"
-          port: 1234
-          geodb: GeoLite2-City.mmdb
-          asndb: GeoLite2-ASN.mmdb
-          dl_map: userdata.csv
+          port: 8082
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
@@ -379,10 +379,10 @@ jobs:
         with:
           variant: images
           failoverserver: "${{ env.failoverserver }}"
-          port: 1234
-          geodb: GeoLite2-City.mmdb
-          asndb: GeoLite2-ASN.mmdb
-          dl_map: userdata.csv
+          port: 8081
+          geodb: /scripts/redirect-config/GeoLite2-City.mmdb
+          asndb: /scripts/redirect-config/GeoLite2-ASN.mmdb
+          dl_map: /scripts/redirect-config/userdata.csv
           reloadKey: NLnC4QNF862QumEpt7zwVPZAEvqAz6cZ
           netbox: ${{ secrets.NETBOX_TOKEN }}
 
