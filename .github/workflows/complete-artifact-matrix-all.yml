@@ -2651,6 +2651,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2668,7 +2677,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -2837,6 +2847,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -2854,7 +2873,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3023,6 +3043,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3040,7 +3069,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3209,6 +3239,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3226,7 +3265,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3395,6 +3435,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3412,7 +3461,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3581,6 +3631,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3598,7 +3657,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3767,6 +3827,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3784,7 +3853,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3953,6 +4023,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -3970,7 +4049,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4139,6 +4219,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -4156,7 +4245,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4325,6 +4415,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -4342,7 +4441,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4511,6 +4611,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -4528,7 +4637,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4697,6 +4807,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -4714,7 +4833,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4883,6 +5003,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -4900,7 +5029,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5069,6 +5199,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -5086,7 +5225,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5255,6 +5395,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -5272,7 +5421,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5441,6 +5591,15 @@ jobs:
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+      - name: Choose random user for upload
+        run: |
+
+          arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          rand=$[ $RANDOM % 2 ]
+          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+
+
       - name: "Upload artefacts"
         timeout-minutes: 15
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
@@ -5458,7 +5617,8 @@ jobs:
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
-          token: ${{ secrets.ACCESS_TOKEN }}
+          #token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
