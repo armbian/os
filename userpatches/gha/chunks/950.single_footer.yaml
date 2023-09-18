@@ -22,7 +22,7 @@ jobs: # <TEMPLATE-IGNORE>
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         uses: actions/download-artifact@v3
         with:
-          name: assets-for-download
+          name: assets-for-download-[[concurrency_group]]
           path: downloads
 
       - name: "Read version"
@@ -33,7 +33,7 @@ jobs: # <TEMPLATE-IGNORE>
       # Delete artifact
       - uses: geekyeggo/delete-artifact@v2
         with:
-          name: assets-for-download
+          name: assets-for-download-[[concurrency_group]]
           failOnError: false
 
       # Cleaning releases
