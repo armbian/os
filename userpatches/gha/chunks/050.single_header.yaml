@@ -170,7 +170,7 @@ jobs:
  #       if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
-          name: assets-for-download-[[concurrency_group]]
+          name: assets-for-download-[[repository_ref]]
           path: downloads
           retention-days: 5
 
