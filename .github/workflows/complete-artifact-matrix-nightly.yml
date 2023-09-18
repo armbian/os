@@ -430,7 +430,7 @@ jobs:
  #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
-          name: assets-for-download-pipeline-nightlynightly
+          name: assets-for-download-nightly
           path: downloads
           retention-days: 5
 
@@ -5857,7 +5857,7 @@ jobs:
         if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/download-artifact@v3
         with:
-          name: assets-for-download-pipeline-nightlynightly
+          name: assets-for-download-nightly
           path: downloads
 
       - name: "Read version"
@@ -5868,7 +5868,7 @@ jobs:
       # Delete artifact
       - uses: geekyeggo/delete-artifact@v2
         with:
-          name: assets-for-download-pipeline-nightlynightly
+          name: assets-for-download-nightly
           failOnError: false
 
       # Cleaning releases
