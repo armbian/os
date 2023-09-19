@@ -80,7 +80,6 @@ lists:
     - { BOARD: rock-5b, BRANCH: midstream }
     - { BOARD: rock-5b, BRANCH: collabora }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
-    - { BOARD: sk-am62b, BRANCH: edge } # does not have 'current'
     - { BOARD: sunvell-r69, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
     - { BOARD: udoo, BRANCH: current }
@@ -180,6 +179,7 @@ lists:
     - { BOARD: nanopi-r6s, BRANCH: legacy }
     - { BOARD: nanopi-r6s, BRANCH: edge }
     - { BOARD: radxa-zero, BRANCH: current }
+    - { BOARD: sk-tda4vm, BRANCH: current }
 
   light-desktop-3d: &light-desktop-3d
     # debian stable minimal
@@ -252,6 +252,8 @@ lists:
     - { BOARD: radxa-e25, BRANCH: legacy }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: edge } # does not have 'current'
+    - { BOARD: sk-am64b, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
 
 targets:
