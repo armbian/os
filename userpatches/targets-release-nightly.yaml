@@ -80,7 +80,6 @@ lists:
     - { BOARD: rock-5b, BRANCH: midstream }
     - { BOARD: rock-5b, BRANCH: collabora }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
-    - { BOARD: sk-am62b, BRANCH: edge } # does not have 'current'
     - { BOARD: sunvell-r69, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
     - { BOARD: udoo, BRANCH: current }
@@ -252,6 +251,8 @@ lists:
     - { BOARD: radxa-e25, BRANCH: legacy }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: edge } # does not have 'current'
+    - { BOARD: sk-am64b, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
 
 targets:
