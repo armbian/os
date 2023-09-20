@@ -4,8 +4,8 @@ name: Smoke tests (cronjob)
 #
 
 on:
-  schedule:
-   - cron: '00 3 * * *'
+#  schedule:
+#   - cron: '00 3 * * *'
   workflow_dispatch:
     inputs:
       gitbranch:
