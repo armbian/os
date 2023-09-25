@@ -537,3 +537,22 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *full-desktop-3d
+  
+  # ubuntu lunar gnome desktop without 3d
+  gnome-desktop-latest-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: lunar
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      # Attention, no list reference here, just a specific board.
+      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+
