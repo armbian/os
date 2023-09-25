@@ -66,6 +66,7 @@ on:
         - hinlink-h88k
         - imx7sabre
         - indiedroid-nova
+        - inovato-quadra
         - jethubj100
         - jethubj80
         - jetson-nano
@@ -212,6 +213,7 @@ on:
         - rpi4b
         - sk-am62b
         - sk-am64b
+        - sk-tda4vm
         - star64
         - station-m1
         - station-m2
@@ -396,7 +398,7 @@ jobs:
  #       if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v4.0.0
+        uses: TriPSs/conventional-changelog-action@v4.1.0
         with:
           github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'
