@@ -43,7 +43,7 @@ jobs: # <TEMPLATE-IGNORE>
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -52,7 +52,7 @@ jobs: # <TEMPLATE-IGNORE>
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -144,7 +144,7 @@ jobs: # <TEMPLATE-IGNORE>
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"

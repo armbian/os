@@ -51,7 +51,7 @@ jobs: # <TEMPLATE-IGNORE>
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -61,7 +61,7 @@ jobs: # <TEMPLATE-IGNORE>
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 

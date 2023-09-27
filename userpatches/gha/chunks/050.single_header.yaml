@@ -236,7 +236,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ env.BUILD_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
           path: build
 
