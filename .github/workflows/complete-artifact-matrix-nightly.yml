@@ -498,7 +498,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ env.BUILD_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
           path: build
 
@@ -798,7 +798,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -808,7 +808,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -900,7 +900,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -910,7 +910,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1002,7 +1002,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1012,7 +1012,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1104,7 +1104,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1114,7 +1114,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1206,7 +1206,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1216,7 +1216,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1308,7 +1308,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1318,7 +1318,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1410,7 +1410,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1420,7 +1420,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1512,7 +1512,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1522,7 +1522,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1614,7 +1614,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1624,7 +1624,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1716,7 +1716,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1726,7 +1726,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1818,7 +1818,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1828,7 +1828,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1920,7 +1920,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1930,7 +1930,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2022,7 +2022,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2032,7 +2032,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2124,7 +2124,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2134,7 +2134,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2226,7 +2226,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2236,7 +2236,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2328,7 +2328,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2338,7 +2338,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2430,7 +2430,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2440,7 +2440,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2546,7 +2546,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2555,7 +2555,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2647,7 +2647,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -2744,7 +2744,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2753,7 +2753,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2845,7 +2845,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -2942,7 +2942,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2951,7 +2951,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3043,7 +3043,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3140,7 +3140,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3149,7 +3149,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3241,7 +3241,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3338,7 +3338,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3347,7 +3347,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3439,7 +3439,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3536,7 +3536,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3545,7 +3545,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3637,7 +3637,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3734,7 +3734,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3743,7 +3743,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3835,7 +3835,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -3932,7 +3932,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3941,7 +3941,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4033,7 +4033,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4130,7 +4130,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4139,7 +4139,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4231,7 +4231,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4328,7 +4328,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4337,7 +4337,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4429,7 +4429,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4526,7 +4526,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4535,7 +4535,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4627,7 +4627,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4724,7 +4724,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4733,7 +4733,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4825,7 +4825,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -4922,7 +4922,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4931,7 +4931,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5023,7 +5023,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -5120,7 +5120,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5129,7 +5129,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5221,7 +5221,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -5318,7 +5318,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5327,7 +5327,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5419,7 +5419,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -5516,7 +5516,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 1
+          fetch-depth: 0
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5525,7 +5525,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5617,7 +5617,7 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=\"""${line}\""; done)
+          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
@@ -5725,7 +5725,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -5735,7 +5735,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 1
+          fetch-depth: 0
           clean: false # true is default.
           path: userpatches.repo
 
