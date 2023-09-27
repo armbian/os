@@ -2544,7 +2544,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2613,11 +2615,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -2678,15 +2680,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -2741,7 +2742,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2810,11 +2813,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -2875,15 +2878,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -2938,7 +2940,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3007,11 +3011,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -3072,15 +3076,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3135,7 +3138,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3204,11 +3209,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -3269,15 +3274,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3332,7 +3336,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3401,11 +3407,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -3466,15 +3472,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3529,7 +3534,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3598,11 +3605,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -3663,15 +3670,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3726,7 +3732,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3795,11 +3803,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -3860,15 +3868,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3923,7 +3930,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3992,11 +4001,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -4057,15 +4066,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4120,7 +4128,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4189,11 +4199,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -4254,15 +4264,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4317,7 +4326,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4386,11 +4397,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -4451,15 +4462,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4514,7 +4524,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4583,11 +4595,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -4648,15 +4660,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4711,7 +4722,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4780,11 +4793,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -4845,15 +4858,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4908,7 +4920,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4977,11 +4991,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -5042,15 +5056,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5105,7 +5118,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5174,11 +5189,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -5239,15 +5254,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5302,7 +5316,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5371,11 +5387,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -5436,15 +5452,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5499,7 +5514,9 @@ jobs:
         with:
           repository: XIU2/TrackersListCollection
           clean: false
+          ref: master
           path: trackerslist.repo
+          fetch-depth: 1
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5568,11 +5585,11 @@ jobs:
             API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
             API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
             PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-            if (( $PERCENT > 30 )); then
+            if (( $PERCENT > 20 )); then
                 echo "API rate in good shape $PERCENT % free"
                 exit 0
             fi
-            echo "API rate lower then 30%, sleping 10m"
+            echo "API rate lower then 20%, sleping 10m"
             sleep 10m
           done
 
@@ -5633,15 +5650,14 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: true
+          replacesArtifacts: false
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15
