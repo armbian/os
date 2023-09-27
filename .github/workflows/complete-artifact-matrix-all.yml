@@ -2680,7 +2680,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -2876,7 +2877,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3072,7 +3074,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3268,7 +3271,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3464,7 +3468,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3660,7 +3665,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -3856,7 +3862,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4052,7 +4059,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4248,7 +4256,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4444,7 +4453,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4640,7 +4650,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -4836,7 +4847,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5032,7 +5044,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5228,7 +5241,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5424,7 +5438,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
@@ -5620,7 +5635,8 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: false
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to server
         timeout-minutes: 15
