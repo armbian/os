@@ -798,7 +798,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -808,7 +808,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -900,7 +900,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -910,7 +910,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1002,7 +1002,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1012,7 +1012,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1104,7 +1104,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1114,7 +1114,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1206,7 +1206,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1216,7 +1216,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1308,7 +1308,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1318,7 +1318,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1410,7 +1410,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1420,7 +1420,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1512,7 +1512,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1522,7 +1522,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1614,7 +1614,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1624,7 +1624,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1716,7 +1716,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1726,7 +1726,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1818,7 +1818,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1828,7 +1828,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -1920,7 +1920,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -1930,7 +1930,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2022,7 +2022,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2032,7 +2032,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2124,7 +2124,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2134,7 +2134,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2226,7 +2226,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2236,7 +2236,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2328,7 +2328,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2338,7 +2338,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2430,7 +2430,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the userpatches repo (`armbian/os`)
@@ -2440,7 +2440,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2536,6 +2536,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -2546,7 +2547,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2555,7 +2556,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2734,6 +2735,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -2744,7 +2746,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2753,7 +2755,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -2932,6 +2934,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -2942,7 +2945,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -2951,7 +2954,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3130,6 +3133,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -3140,7 +3144,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3149,7 +3153,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3328,6 +3332,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -3338,7 +3343,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3347,7 +3352,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3526,6 +3531,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -3536,7 +3542,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3545,7 +3551,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3724,6 +3730,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -3734,7 +3741,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3743,7 +3750,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -3922,6 +3929,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -3932,7 +3940,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -3941,7 +3949,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4120,6 +4128,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -4130,7 +4139,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4139,7 +4148,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4318,6 +4327,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -4328,7 +4338,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4337,7 +4347,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4516,6 +4526,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -4526,7 +4537,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4535,7 +4546,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4714,6 +4725,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -4724,7 +4736,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4733,7 +4745,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -4912,6 +4924,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -4922,7 +4935,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -4931,7 +4944,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5110,6 +5123,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -5120,7 +5134,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5129,7 +5143,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5308,6 +5322,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -5318,7 +5333,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5327,7 +5342,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
@@ -5506,6 +5521,7 @@ jobs:
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
       # clone the torrent lists
@@ -5516,7 +5532,7 @@ jobs:
           clean: false
           ref: master
           path: trackerslist.repo
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
@@ -5525,7 +5541,7 @@ jobs:
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
-          fetch-depth: 0
+          fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default.
           path: userpatches.repo
 
