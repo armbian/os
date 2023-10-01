@@ -36,7 +36,7 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs-beta" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs-beta&status=active" \
           | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|beta|" | sed "s/\"//g" \
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
@@ -55,7 +55,7 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=debs&status=active" \
           | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|apt|" | sed "s/\"//g" \
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
@@ -74,7 +74,7 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=archive" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=archive&status=active" \
           | jq '.results[] | .name,.custom_fields["download_path_debs"],.id' | sed "s|null|archive|" | sed "s/\"//g" \
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
@@ -93,7 +93,7 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=images" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=images&status=active" \
           | jq '.results[] | .name,.custom_fields["download_path_images"],.id' | sed "s|null|dl|" | sed "s/\"//g" \
           | xargs -n3 -d'\n' | sed -e 's/\s\+/\//' | sed "s/ /,/" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
@@ -243,7 +243,7 @@ jobs:
           name: images
           path: downloads
           if-no-files-found: ignore
-          
+
 ###################################################################################################
 
   Prepare-debs-beta:
@@ -254,9 +254,9 @@ jobs:
 
       - name: "Clean"
         run: |
-        
+
           rm -rf downloads/*
-          
+
       - name: "Download artifacts"
         uses: actions/download-artifact@v3
         with:
@@ -268,7 +268,7 @@ jobs:
 
           ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
-          
+
       - name: Test debs
         uses: armbian/actions/make-yaml-redirector@main
         with:
@@ -289,7 +289,7 @@ jobs:
 
       - name: "Clean"
         run: |
-        
+
           rm -rf downloads/*
 
       - name: "Download artifacts"
@@ -303,7 +303,7 @@ jobs:
 
           ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
-          
+
       - name: Test debs
         uses: armbian/actions/make-yaml-redirector@main
         with:
@@ -320,10 +320,10 @@ jobs:
     needs: Ping-archive
     runs-on: Linux
     steps:
-    
+
       - name: "Clean"
         run: |
-        
+
           rm -rf downloads/*
 
       - name: "Download artifacts"
@@ -337,7 +337,7 @@ jobs:
 
           ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
-          
+
       - name: Test archive
         uses: armbian/actions/make-yaml-redirector@main
         with:
@@ -355,10 +355,10 @@ jobs:
     needs: Ping-images
     runs-on: Linux
     steps:
-    
+
       - name: "Clean"
         run: |
-        
+
           rm -rf downloads/*
 
       - name: "Download artifacts"
@@ -372,7 +372,7 @@ jobs:
 
           ls -1 downloads/ | sed ':a; N; s/\n/ /; ta'
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
-          
+
       - name: Test images
         uses: armbian/actions/make-yaml-redirector@main
         with:
@@ -395,7 +395,7 @@ jobs:
 
       - name: "Clean"
         run: |
-        
+
           rm -rf downloads/*
 
       - uses: robinraju/release-downloader@v1.8
@@ -412,9 +412,9 @@ jobs:
 
       - name: "Check"
         run: |
-          
+
           ls -l downloads
-          ls -l *.mmdb          
+          ls -l *.mmdb
 
       - uses: geekyeggo/delete-artifact@v2
         with:
