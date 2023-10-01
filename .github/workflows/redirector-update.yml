@@ -157,7 +157,7 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/apt/control || true)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://stpete-mirror.armbian.com/apt/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
@@ -193,7 +193,7 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/archive/control || true)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://stpete-mirror.armbian.com/archive/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
@@ -229,7 +229,7 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/dl/control || true)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://stpete-mirror.armbian.com/dl/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
