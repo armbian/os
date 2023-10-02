@@ -62,6 +62,7 @@ on:
         - helios4
         - helios64
         - hikey960
+        - hinlink-h28k
         - hinlink-h88k
         - imx7sabre
         - indiedroid-nova
@@ -286,6 +287,7 @@ on:
         - rpardini
         - schwar3kat
         - sgjava
+        - sputnik2019
         - teknoid
         - vamzii
         - viraniac
@@ -397,7 +399,7 @@ jobs:
  #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v4.1.0
+        uses: TriPSs/conventional-changelog-action@v4.1.1
         with:
           github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'
@@ -5918,7 +5920,7 @@ jobs:
       # Cleaning releases
       #
       # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
-      - uses: dev-drprasad/delete-older-releases@v0.2.1
+      - uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
           repo: armbian/os
           keep_latest: 16
