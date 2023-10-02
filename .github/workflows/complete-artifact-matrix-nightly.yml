@@ -5924,7 +5924,7 @@ jobs:
       # Cleaning releases
       #
       # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
-      - uses: dev-drprasad/delete-older-releases@v0.2.1
+      - uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
           repo: armbian/os
           keep_latest: 16
