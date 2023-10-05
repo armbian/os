@@ -45,7 +45,7 @@ lists:
     - { BOARD: cubietruck, BRANCH: current }
     - { BOARD: cubietruckplus, BRANCH: current }
     - { BOARD: cubox-i, BRANCH: current }
-    - { BOARD: khadas-edge, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
     - { BOARD: micro, BRANCH: current }
@@ -100,9 +100,9 @@ lists:
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
-    - { BOARD: khadas-vim1, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim2, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
