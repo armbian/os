@@ -20,5 +20,5 @@ jobs:
 #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
     with:
-      ref: "fde02a3285383b26e9fb06ef84691503f96b3b07"
+      ref: "3c137e113f6894a4abce0d41014e2d3a832058fe"
       #ref: ${{ github.event.pull_request.head.sha }}
