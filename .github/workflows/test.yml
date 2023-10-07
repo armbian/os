@@ -1,4 +1,4 @@
-name: Test
+name: Update artifacts on PR
 #
 # Update artifacts on PR
 #
@@ -11,8 +11,9 @@ on:
 jobs:
 
   Check:
-  
-    runs-on: ubuntu-latest
+
+    name: "Permission to run compilation"
+    runs-on: Linux
     outputs:
       member: ${{ steps.checkUserMember.outputs.isTeamMember }}
     steps:
@@ -26,15 +27,15 @@ jobs:
            GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
 
   Compile:
+  
     needs: Check
-    name: "Runner clean ${{ needs.Check.outputs.member }}"
+    name: "Update artifacts"
     if: ${{ github.repository_owner == 'Armbian' &&  needs.Check.outputs.member == 'true' }}
     uses: armbian/os/.github/workflows/complete-artifact-matrix-all.yml@main
     secrets:
       ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
     with:
-      ref: "3c137e113f6894a4abce0d41014e2d3a832058fe"
+      ref: "412b57e6e662842b548cfc3afb1a17adc0c35429"
       #ref: ${{ github.event.pull_request.head.sha }}
