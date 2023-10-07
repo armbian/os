@@ -1,6 +1,6 @@
 name: Update artifacts on PR
 #
-# Update artifacts on PR
+# Update artifacts on PR if developers is a part of Armbian board maintainers team
 #
 
 on:
@@ -13,6 +13,7 @@ jobs:
   Check:
 
     name: "Permission to run compilation"
+    if: ${{ github.repository_owner == 'Armbian' }}
     runs-on: Linux
     outputs:
       member: ${{ steps.checkUserMember.outputs.isTeamMember }}
@@ -30,7 +31,7 @@ jobs:
   
     needs: Check
     name: "Update artifacts"
-    if: ${{ github.repository_owner == 'Armbian' &&  needs.Check.outputs.member == 'true' }}
+    if: ${{ github.repository_owner == 'Armbian' && needs.Check.outputs.member == 'true' }}
     uses: armbian/os/.github/workflows/complete-artifact-matrix-all.yml@main
     secrets:
       ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
