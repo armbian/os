@@ -17,7 +17,7 @@ jobs:
     secrets:
       ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
     with:
       ref: "${{ github.event.inputs.gitbranch || 'main' }}"
