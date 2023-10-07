@@ -4,6 +4,12 @@
 name: "Build All Artifacts (cronjob)"
 
 on:
+  workflow_call:
+    inputs:
+      skipImages:
+       required: true
+       type: string
+       default: "yes"
   schedule:
    - cron: '0 */8 * * *'
   workflow_dispatch:
