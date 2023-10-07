@@ -1,0 +1,23 @@
+name: Test
+#
+# Update artifacts on PR
+#
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    
+jobs:
+
+  Compile:
+
+#    if: ${{ github.repository_owner == 'Armbian' }}
+    uses: armbian/os/.github/workflows/complete-artifact-matrix-all.yml@main
+    secrets:
+      ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+    with:
+      ref: "${{ github.event.inputs.gitbranch || 'main' }}"
