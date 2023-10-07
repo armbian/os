@@ -480,7 +480,7 @@ jobs:
     name: "JSON matrix: 17/16 :: 17 artifact chunks, 16 image chunks"
     if: ${{ github.repository_owner == 'armbian' }}
     needs: [ version_prep ]
-    runs-on: [ "self-hosted", "Linux", 'super' ]
+    runs-on: [ "self-hosted", "Linux", 'alfa' ]
     steps:
 
       # Cleaning self hosted runners
