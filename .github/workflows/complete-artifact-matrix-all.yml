@@ -11,13 +11,6 @@ on:
       ref:
         required: false
         type: string
-    secrets:
-      ACCESS_TOKEN_ARMBIANWORKER:
-        required: true
-      ACCESS_TOKEN:
-        required: true
-      ORG_MEMBERS:
-        required: true
   workflow_dispatch:
     inputs:
       skipImages:
@@ -331,7 +324,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
-  BUILD_REF: "main" # branch or tag or sha1
+  BUILD_REF: "${{ inputs.ref || 'main' }}" # branch or tag or sha1
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
