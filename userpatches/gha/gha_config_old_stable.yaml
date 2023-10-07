@@ -6,6 +6,7 @@ build_ref: "v23.05.2"
 script_name: "ARTIFACTS: old stable"
 concurrency_group: "${{ github.run_id }}-"
 repository_ref: "stable"
+team: "Release manager"
 
 # menu defaults
 skipImagesDefaults: "'no'"

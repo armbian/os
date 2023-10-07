@@ -6,6 +6,7 @@ build_ref: "main"
 script_name: "Build Nightly Images (cronjob)"
 concurrency_group: "pipeline-nightly"
 repository_ref: "nightly"
+team: "Release manager"
 
 # menu defaults
 skipImagesDefaults: "'no'"

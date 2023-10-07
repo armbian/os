@@ -106,6 +106,7 @@ jobs:
         with:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEAM: "[[team]]"
 
   version_prep:
     needs: team_check

@@ -6,6 +6,7 @@ build_ref: "main"
 script_name: "Build Official Images (admin)"
 concurrency_group: "${{ github.run_id }}-pipeline-stable"
 repository_ref: "stable"
+team: "Release manager"
 
 # menu defaults
 skipImagesDefaults: "'no'"

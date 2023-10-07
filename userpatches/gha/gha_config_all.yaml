@@ -6,6 +6,7 @@ build_ref: "${{ inputs.ref || 'main' }}"
 script_name: "Build All Artifacts (cronjob)"
 concurrency_group: "pipeline"
 repository_ref: "all"
+team: "Board Maintainers"
 
 # menu defaults
 skipImagesDefaults: "'yes'"
