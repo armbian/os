@@ -16,7 +16,7 @@ on:
         required: true
       ACCESS_TOKEN:
         required: true
-      GITHUB_TOKEN:
+      ORG_MEMBERS:
         required: true
   workflow_dispatch:
     inputs:
