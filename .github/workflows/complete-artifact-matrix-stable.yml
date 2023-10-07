@@ -5,6 +5,11 @@ name: "Build Official Images (admin)"
 
 on:
   
+  workflow_call:
+    inputs:
+      ref:
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       skipImages:
@@ -396,7 +401,8 @@ jobs:
       # Bump version automatically
       - name: Bump version
  #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
-        if: ${{ ! github.event.inputs.versionOverride }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' && ! github.event.inputs.versionOverride }}
+#        if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.1.1
         with:

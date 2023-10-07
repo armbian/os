@@ -4,11 +4,13 @@
 name: "Build All Artifacts (cronjob)"
 
 on:
-  workflow_call:
-
-
   schedule:
    - cron: '0 */8 * * *'
+  workflow_call:
+    inputs:
+      ref:
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       skipImages:
@@ -350,7 +352,21 @@ concurrency:
 
 jobs:
 
+  team_check:
+    permissions:
+      actions: write
+    name: "Team check"
+    runs-on: [ "ubuntu-latest" ]
+    steps:
+
+      - name: "Check membership"
+        uses: armbian/actions/team-check@main
+        with:
+          ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   version_prep:
+    needs: team_check
     name: "Bump version"
     runs-on: [ "ubuntu-latest" ]
     steps:
@@ -385,8 +401,9 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
+ #       if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' && ! github.event.inputs.versionOverride }}
- #       if: ${{ ! github.event.inputs.versionOverride }}
+#        if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.1.1
         with:
