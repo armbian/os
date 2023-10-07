@@ -22,13 +22,13 @@ jobs:
          with:
            username: ${{ github.actor }}
            organization: armbian
-           team: "Release manager"
+           team: "Board Maintainers"
            GITHUB_TOKEN: ${{ secrets.ORG_MEMBERS }}
 
   Compile:
     needs: Check
     name: "Runner clean ${{ needs.Check.outputs.member }}"
-#    if: ${{ github.repository_owner == 'Armbian' }}
+    if: ${{ github.repository_owner == 'Armbian' &&  needs.Check.outputs.member == 'true' }}
     uses: armbian/os/.github/workflows/complete-artifact-matrix-all.yml@main
     secrets:
       ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
