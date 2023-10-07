@@ -2,7 +2,7 @@ org: "armbian" # can't be an expression, only string.
 
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
-build_ref: "main"
+build_ref: "${{ inputs.ref || 'main' }}"
 script_name: "Build All Artifacts (cronjob)"
 concurrency_group: "pipeline"
 repository_ref: "all"
