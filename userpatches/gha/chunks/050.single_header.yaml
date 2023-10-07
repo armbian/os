@@ -223,7 +223,7 @@ jobs:
     name: "JSON matrix: [[num_chunks_artifacts]]/[[num_chunks_images]] :: [[num_chunks_artifacts]] artifact chunks, [[num_chunks_images]] image chunks"
     if: ${{ github.repository_owner == '[[org]]' }}
     needs: [ version_prep ]
-    runs-on: [ "self-hosted", "Linux", 'alfa' ]
+    runs-on: [ "self-hosted", "Linux", 'super' ]
     steps:
 
       # Cleaning self hosted runners
