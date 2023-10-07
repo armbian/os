@@ -11,13 +11,6 @@ on:
       ref:
         required: false
         type: string
-    secrets:
-      ACCESS_TOKEN_ARMBIANWORKER:
-        required: true
-      ACCESS_TOKEN:
-        required: true
-      ORG_MEMBERS:
-        required: true
   workflow_dispatch:
     inputs:
       skipImages:
@@ -371,6 +364,7 @@ jobs:
         with:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEAM: "Board Maintainers"
 
   version_prep:
     needs: team_check
