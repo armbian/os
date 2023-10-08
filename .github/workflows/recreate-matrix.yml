@@ -24,7 +24,7 @@ jobs:
   build:
     name: Recreate action
     if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: super
+    runs-on: linux
     steps:
 
     - name: Checkout Armbian Framework
