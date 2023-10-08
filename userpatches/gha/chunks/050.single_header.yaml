@@ -90,7 +90,7 @@ env:
   VERSION_OVERRIDE: "${{ github.event.inputs.versionOverride }}"
 
   # To use GitHub CLI in a GitHub Actions workflow
-  GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
 
   # Added to every image build arguments.
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
@@ -112,7 +112,7 @@ jobs:
         uses: armbian/actions/team-check@main
         with:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
           TEAM: "[[team]]"
 
   version_prep:
@@ -296,7 +296,7 @@ jobs:
         with:
           registry: ghcr.io
           username: "[[ghcr_user]]" # GitHub username or org
-          password: ${{ secrets.GITHUB_TOKEN }}    # GitHub actions builtin token. repo has to have pkg access.
+          password: "${{ env.GH_TOKEN }}"    # GitHub actions builtin token. repo has to have pkg access.
 
       - name: Prepare Info JSON and Matrices
         id: prepare-matrix

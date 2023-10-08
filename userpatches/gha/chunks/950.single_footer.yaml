@@ -44,13 +44,13 @@ jobs: # <TEMPLATE-IGNORE>
           repo: armbian/os
           keep_latest: 16
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: "${{ env.GH_TOKEN }}"
           days_old: 14
 
       # Switch pre-release to release
@@ -62,4 +62,4 @@ jobs: # <TEMPLATE-IGNORE>
           omitName: true
           allowUpdates: true
           makeLatest: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: "${{ env.GH_TOKEN }}"
