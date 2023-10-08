@@ -35,7 +35,7 @@ jobs:
     uses: armbian/os/.github/workflows/complete-artifact-matrix-all.yml@main
     secrets:
       #ACCESS_TOKEN_ARMBIANWORKER: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      #ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
     with:
       ref: "1b3e10f0f30c2f3d8dea02a4e761bbe455f7bede"
