@@ -38,5 +38,5 @@ jobs:
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
     with:
-      ref: "82116ecc185efaef6e1fb82e0b4362d50a45b41b"
+      ref: "1b3e10f0f30c2f3d8dea02a4e761bbe455f7bede"
       #ref: ${{ github.event.pull_request.head.sha }}
