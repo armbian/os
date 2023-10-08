@@ -13,14 +13,13 @@ on:
       - 'userpatches/targets-release-nightly.yaml'
   workflow_call:
     inputs:
-      ref:
+      ref:                      # commit id
+        required: false
+        type: string
+      extraParamsAllBuilds:     # addional build parameter
         required: false
         type: string
     secrets:
-#      ACCESS_TOKEN_ARMBIANWORKER:
-#        required: true
-      ACCESS_TOKEN:
-        required: true
       ORG_MEMBERS:
         required: true
   workflow_dispatch:
