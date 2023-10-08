@@ -351,7 +351,7 @@ env:
   GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
 
   # Added to every image build arguments.
-  EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes ENABLE_EXTENSIONS=pull-request"
+  EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
 concurrency:
   group: pipeline
@@ -553,7 +553,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: "igorpecovnik" # GitHub username or org
+          username: "${{ github.repository_owner }}" # GitHub username or org
           password: "${{ env.GH_TOKEN }}"    # GitHub actions builtin token. repo has to have pkg access.
 
       - name: Prepare Info JSON and Matrices
