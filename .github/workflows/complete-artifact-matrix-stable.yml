@@ -341,7 +341,7 @@ env:
   DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust that Docker images are up-to-date.
 
   # Added to every build, even the prepare job.
-  EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds }}"
+  EXTRA_PARAMS_ALL_BUILDS: "${{ github.event.inputs.extraParamsAllBuilds || 'UPLOAD_TO_OCI_ONLY=yes' }}"
 
   VERSION_OVERRIDE: "${{ github.event.inputs.versionOverride }}"
 
