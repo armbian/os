@@ -5900,7 +5900,7 @@ jobs:
   closing:
     name: "Footer"
     runs-on: ubuntu-latest
-    if: ${{ !failure() && !cancelled() && inputs.ref == '' }}
+    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || 'yes') == 'yes' }}
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
