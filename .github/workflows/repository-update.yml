@@ -222,7 +222,6 @@ jobs:
     steps:
 
       - name: "Run webindex update action"
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.DISPATCH }}
@@ -230,7 +229,6 @@ jobs:
           event-type: "Webindex update"
 
       - name: "Run redirector update action"
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.DISPATCH }}
