@@ -2705,7 +2705,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2904,7 +2904,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3103,7 +3103,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3302,7 +3302,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3501,7 +3501,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3700,7 +3700,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3899,7 +3899,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4098,7 +4098,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4297,7 +4297,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4496,7 +4496,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4695,7 +4695,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4894,7 +4894,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5093,7 +5093,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5292,7 +5292,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5491,7 +5491,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5690,7 +5690,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/images
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
