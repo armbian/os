@@ -214,12 +214,29 @@ jobs:
               if [[ "$target" == "images" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage2/dl/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi              
           done
 
-#  dispatch:
-#    name: "Dispatch smoke tests"
-#    if: ${{ github.repository_owner == 'Armbian' }}
-#    needs: Index
-#    runs-on: ubuntu-latest
-#    steps:
+  dispatch:
+    name: "Refresh web and redirector index"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    needs: Index
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Run webindex update action"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/os
+          event-type: "Webindex update"
+
+      - name: "Run redirector update action"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/os
+          event-type: "Redirector update"
+
 #
 #      - name: Repository Dispatch
 #        uses: peter-evans/repository-dispatch@v2
