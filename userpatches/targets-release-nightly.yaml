@@ -158,7 +158,6 @@ lists:
     - { BOARD: rockpi-4c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
-    - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
     - { BOARD: uefi-x86, BRANCH: current }
 
   light-desktop: &light-desktop
@@ -323,15 +322,15 @@ targets:
       - { BOARD: uefi-riscv64, BRANCH: edge }
       - { BOARD: rpi4b, BRANCH: current }
   
-  # ubuntu lunar gnome desktop without 3d
-  gnome-desktop-latest-ubuntu:
+  # debian trixie gnome desktop without 3d
+  gnome-desktop-latest-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: lunar
+      RELEASE: trixie
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
