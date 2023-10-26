@@ -252,6 +252,7 @@ on:
         - virtual-qemu
         - visionfive
         - visionfive2
+        - xiaomi-elish
         - zeropi
         - all
         default: 'all'
@@ -5778,9 +5779,10 @@ jobs:
           #rm -rf userpatches.repo
 
       # Clean off output/info, if any
+      # Clean off debs and debs-beta
       - name: Cleanup output/info
         run: |
-          rm -rfv output/info
+          rm -rfv output/info output/debs output/debs-beta
           mkdir -pv output
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
