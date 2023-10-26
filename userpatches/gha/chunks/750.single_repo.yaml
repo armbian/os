@@ -131,6 +131,7 @@ jobs: # <TEMPLATE-IGNORE>
           --include='debs***' \
           --exclude='*' \
           --remove-source-files \
+          --delete \
           output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           # clean
           find output/. -type d -empty -delete
