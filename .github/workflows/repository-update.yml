@@ -83,7 +83,7 @@ jobs:
         run: |
         
           if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
-            rm -rf /outgoing/repository-beta/public
+            rm -rf /outgoing/repository-beta/{public,db,pool}
           fi
 
       - name: Checkout build repository
