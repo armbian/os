@@ -76,7 +76,16 @@ jobs:
 
       - name: "Prepare for ${{ matrix.repository }}"
         run: |
+        
          tree /incoming/${{ matrix.repository }}
+
+      - name: "Clean beta repository"
+        run: |
+        
+          if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
+            rm -rf /outgoing/repository-beta/public
+          fi
+
       - name: Checkout build repository
         uses: actions/checkout@v4
         with:
