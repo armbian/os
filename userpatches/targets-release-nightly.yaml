@@ -23,8 +23,8 @@ lists:
   # mainly riscv userland
   special: &special
     - { BOARD: beaglev, BRANCH: edge }
-    - { BOARD: mangopi-mq, BRANCH: edge }
-    - { BOARD: nezha, BRANCH: edge }
+#    - { BOARD: mangopi-mq, BRANCH: edge }
+#    - { BOARD: nezha, BRANCH: edge }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: unleashed, BRANCH: edge }
     - { BOARD: unmatched, BRANCH: edge }
