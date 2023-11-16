@@ -104,7 +104,6 @@ lists:
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
     - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
     - { BOARD: mekotronics-r58x, BRANCH: legacy }
@@ -366,6 +365,7 @@ targets:
       - *headless
       - *special
       - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: khadas-edge2, BRANCH: legacy }
 
   # ubuntu xfce without apps
 
@@ -443,7 +443,7 @@ targets:
       - *full-desktop
       - *full-desktop-3d
       - *light-desktop
-  
+
   # ubuntu gnome desktop without 3d
 
   gnome-desktop-stable-ubuntu:
@@ -462,6 +462,7 @@ targets:
     items:
       - *full-desktop
       - { BOARD: rpi4b, BRANCH: current }
+      - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588" }
 
   # debian gnome desktop with 3d
 
