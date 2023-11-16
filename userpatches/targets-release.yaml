@@ -247,6 +247,7 @@ lists:
     - { BOARD: espressobin, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
@@ -323,6 +324,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
+      - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
 
   # ubuntu minimal
 
@@ -365,7 +367,7 @@ targets:
       - *headless
       - *special
       - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: khadas-edge2, BRANCH: legacy }
+      - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
 
   # ubuntu xfce without apps
 
