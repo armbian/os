@@ -247,7 +247,11 @@ lists:
     - { BOARD: espressobin, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
+    #
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: rock-5a, BRANCH: edge }
+    - { BOARD: rock-5b, BRANCH: edge }
+    #
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
@@ -325,6 +329,8 @@ targets:
       - *headless
       - *unsupported
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
+      - { BOARD: rock-5a, BRANCH: legacy }
+      - { BOARD: rock-5b, BRANCH: legacy }
 
   # ubuntu minimal
 
@@ -368,6 +374,8 @@ targets:
       - *special
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
+      - { BOARD: rock-5a, BRANCH: legacy }
+      - { BOARD: rock-5a, BRANCH: legacy }
 
   # ubuntu xfce without apps
 
@@ -465,6 +473,8 @@ targets:
       - *full-desktop
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: rock-5a, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: rock-5b, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
 
   # debian gnome desktop with 3d
 
