@@ -56,7 +56,6 @@ lists:
     - { BOARD: mekotronics-r58x, BRANCH: legacy }
     - { BOARD: micro, BRANCH: current }
     - { BOARD: nanopi-r5s, BRANCH: edge }
-    - { BOARD: nanopct6, BRANCH: collabora }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
@@ -103,15 +102,10 @@ lists:
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
-    - { BOARD: mekotronics-r58x, BRANCH: legacy }
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: legacy }
-    - { BOARD: orangepi5-plus, BRANCH: legacy }
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: legacy }
     - { BOARD: station-m1, BRANCH: current }
@@ -184,7 +178,6 @@ lists:
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: rk322x-box, BRANCH: current }
     - { BOARD: rk3318-box, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: legacy }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
 
@@ -223,7 +216,6 @@ lists:
     - { BOARD: rk322x-box, BRANCH: current }
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: legacy }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: nanopineo4, BRANCH: current }
@@ -248,6 +240,10 @@ lists:
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: rock-5a, BRANCH: edge }
     - { BOARD: rock-5b, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: edge }
+    - { BOARD: orangepi5-plus, BRANCH: edge }
+    - { BOARD: nanopct6, BRANCH: edge }
+    - { BOARD: nanopi-r6s, BRANCH: edge }
     #
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
@@ -328,6 +324,14 @@ targets:
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
       - { BOARD: rock-5a, BRANCH: legacy }
       - { BOARD: rock-5b, BRANCH: legacy }
+      - { BOARD: orangepi5, BRANCH: legacy }
+      - { BOARD: orangepi5-plus, BRANCH: legacy }
+      - { BOARD: nanopct6, BRANCH: legacy }
+      - { BOARD: nanopi-r6s, BRANCH: legacy }
+      - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
+      - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
+      - { BOARD: mekotronics-r58x, BRANCH: legacy }
+      - { BOARD: mekotronics-r58x-pro, BRANCH: legacy }
 
   # ubuntu minimal
 
@@ -372,7 +376,13 @@ targets:
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
       - { BOARD: rock-5a, BRANCH: legacy }
-      - { BOARD: rock-5a, BRANCH: legacy }
+      - { BOARD: rock-5b, BRANCH: legacy }
+      - { BOARD: nanopct6, BRANCH: legacy }
+      - { BOARD: nanopi-r6s, BRANCH: legacy }
+      - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
+      - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
+      - { BOARD: mekotronics-r58x, BRANCH: legacy }
+      - { BOARD: mekotronics-r58x-pro, BRANCH: legacy }
 
   # ubuntu xfce without apps
 
@@ -472,6 +482,10 @@ targets:
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588" }
       - { BOARD: rock-5a, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
       - { BOARD: rock-5b, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: nanopct6, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
 
   # debian gnome desktop with 3d
 
