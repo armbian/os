@@ -46,6 +46,7 @@ on:
         description: 'Board'
         options:
         # boards
+        - armsom-w3
         - bananapi
         - bananapicm4io
         - bananapim1plus
@@ -307,6 +308,7 @@ on:
         - sgjava
         - sputnik2019
         - teknoid
+        - utlark
         - vamzii
         - viraniac
         - all
@@ -2713,7 +2715,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2912,7 +2916,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3111,7 +3117,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3310,7 +3318,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3509,7 +3519,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3708,7 +3720,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3907,7 +3921,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4106,7 +4122,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4305,7 +4323,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4504,7 +4524,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4703,7 +4725,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4902,7 +4926,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5101,7 +5127,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5300,7 +5328,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5499,7 +5529,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5698,7 +5730,9 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
+          # hardcode temporally
+          rsync -e "ssh -p 10023 -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
