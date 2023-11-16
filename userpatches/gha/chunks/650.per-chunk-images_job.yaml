@@ -194,9 +194,7 @@ jobs: # <TEMPLATE-IGNORE>
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          # hardcode temporally
-          rsync -e "ssh -p 10023" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@k-space.ee.armbian.com:/storage/incoming
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
