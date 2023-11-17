@@ -24,14 +24,14 @@ lists:
 
   # mainly riscv userland
   special: &special
-    - { BOARD: beaglev, BRANCH: edge }
+#    - { BOARD: beaglev, BRANCH: edge }
 #    - { BOARD: mangopi-mq, BRANCH: edge }
 #    - { BOARD: nezha, BRANCH: edge }
-    - { BOARD: star64, BRANCH: edge }
-    - { BOARD: unleashed, BRANCH: edge }
-    - { BOARD: unmatched, BRANCH: edge }
-    - { BOARD: visionfive, BRANCH: edge }
-    - { BOARD: visionfive2, BRANCH: edge }
+#    - { BOARD: star64, BRANCH: edge }
+#    - { BOARD: unleashed, BRANCH: edge }
+#    - { BOARD: unmatched, BRANCH: edge }
+#    - { BOARD: visionfive, BRANCH: edge }
+#    - { BOARD: visionfive2, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: edge }
 
   unsupported: &unsupported
@@ -39,29 +39,61 @@ lists:
     # ubuntu stable xfce desktop
 
     - { BOARD: bananapim3, BRANCH: current }
+    - { BOARD: bananapim2zero, BRANCH: current }
     - { BOARD: bananapi, BRANCH: current }
     - { BOARD: bananapipro, BRANCH: current }
+    - { BOARD: bananapim64, BRANCH: current }
+    - { BOARD: bananapim1plus, BRANCH: current }
+    - { BOARD: bananapim2plus, BRANCH: current }
+#    - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: beelinkx2, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
+    - { BOARD: clearfogbase, BRANCH: current }
+    - { BOARD: clearfogpro, BRANCH: current }
+    - { BOARD: cubieboard, BRANCH: current }
     - { BOARD: cubieboard2, BRANCH: current }
     - { BOARD: cubieboard4, BRANCH: current }
     - { BOARD: cubietruck, BRANCH: current }
     - { BOARD: cubox-i, BRANCH: current }
+    - { BOARD: espressobin, BRANCH: current }
+#    - { BOARD: firefly-rk3399, BRANCH: current }
+#    - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
+    - { BOARD: lime, BRANCH: current }
+    - { BOARD: lime2, BRANCH: current }
+    - { BOARD: lime-a64, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: micro, BRANCH: current }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
+#    - { BOARD: nanopct4, BRANCH: current }
+    - { BOARD: nanopim4v2, BRANCH: current }
+    - { BOARD: nanopim4, BRANCH: current }
+    - { BOARD: nanopineo4, BRANCH: current }
+    - { BOARD: odroidc2, BRANCH: current }
+    - { BOARD: odroidc4, BRANCH: current }
+    - { BOARD: odroidhc4, BRANCH: current }
+    - { BOARD: orangepiplus, BRANCH: current }
+    - { BOARD: orangepiplus2e, BRANCH: current }
+    - { BOARD: orangepilite2, BRANCH: current }
+    - { BOARD: orangepione, BRANCH: current }
+    - { BOARD: orangepioneplus, BRANCH: current }
+    - { BOARD: orangepipc, BRANCH: current }
+    - { BOARD: orangepipcplus, BRANCH: current }
     - { BOARD: orangepi2, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
+    - { BOARD: orangepi3b, BRANCH: edge }
+    - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepiwin, BRANCH: current }
     - { BOARD: orangepizeroplus2-h3, BRANCH: current }
     - { BOARD: panther-x2, BRANCH: current }
+    - { BOARD: pineh64, BRANCH: current }
+    - { BOARD: pineh64-b, BRANCH: current }
     - { BOARD: pcduino3, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
     - { BOARD: quartz64a, BRANCH: current }
@@ -69,8 +101,17 @@ lists:
     - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: recore, BRANCH: current }
     - { BOARD: rock64, BRANCH: current }
+    - { BOARD: rockpi-4a, BRANCH: current }
+    - { BOARD: rockpi-4b, BRANCH: current }
+    - { BOARD: rockpi-4c, BRANCH: current }
+    - { BOARD: rockpi-4cplus, BRANCH: current }
     - { BOARD: rockpi-n10, BRANCH: current }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
+#    - { BOARD: station-m1, BRANCH: current }
+#    - { BOARD: station-m2, BRANCH: current }
+#    - { BOARD: station-m3, BRANCH: legacy }
+#    - { BOARD: station-p1, BRANCH: current }
+#    - { BOARD: station-p2, BRANCH: current }
     - { BOARD: sunvell-r69, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
     - { BOARD: udoo, BRANCH: current }
@@ -90,25 +131,14 @@ lists:
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
-    - { BOARD: firefly-rk3399, BRANCH: current }
-    - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: odroidc2, BRANCH: current }
-    - { BOARD: odroidc4, BRANCH: current }
-    - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: legacy }
-    - { BOARD: station-m1, BRANCH: current }
-    - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy }
-    - { BOARD: station-p1, BRANCH: current }
-    - { BOARD: station-p2, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
 
   full-desktop-3d: &full-desktop-3d
@@ -125,32 +155,14 @@ lists:
     - { BOARD: inovato-quadra, BRANCH: current }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: nanopct4, BRANCH: current }
-    - { BOARD: nanopim4v2, BRANCH: current }
-    - { BOARD: nanopim4, BRANCH: current }
-    - { BOARD: odroidc2, BRANCH: current }
-    - { BOARD: odroidc4, BRANCH: current }
-    - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: edge }
-    - { BOARD: orangepi3b, BRANCH: edge }
     - { BOARD: orangepi3-lts, BRANCH: current }
-    - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: legacy }
-    - { BOARD: rockpi-4a, BRANCH: current }
-    - { BOARD: rockpi-4b, BRANCH: current }
-    - { BOARD: rockpi-4c, BRANCH: current }
-    - { BOARD: rockpi-4cplus, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
-    - { BOARD: station-m1, BRANCH: current }
-    - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy }
-    - { BOARD: station-p1, BRANCH: current }
-    - { BOARD: station-p2, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
 
@@ -165,8 +177,6 @@ lists:
 
     - { BOARD: bigtreetech-cb1, BRANCH: legacy }
     - { BOARD: bananapim2s, BRANCH: current }
-    - { BOARD: bananapim2plus, BRANCH: current }
-    - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: rk322x-box, BRANCH: current }
     - { BOARD: rk3318-box, BRANCH: current }
@@ -183,36 +193,18 @@ lists:
     # ubuntu stable xfce desktop with 3D support enabled
 
     - { BOARD: bananapim2ultra, BRANCH: current }
-    - { BOARD: bananapim2zero, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim2s, BRANCH: current }
-    - { BOARD: bananapim64, BRANCH: current }
-    - { BOARD: bananapim1plus, BRANCH: current }
-    - { BOARD: bananapim2plus, BRANCH: current }
-    - { BOARD: bananapir2pro, BRANCH: current }
-    - { BOARD: lime, BRANCH: current }
-    - { BOARD: lime2, BRANCH: current }
-    - { BOARD: lime-a64, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
-    - { BOARD: orangepiplus, BRANCH: current }
-    - { BOARD: orangepiplus2e, BRANCH: current }
-    - { BOARD: orangepilite2, BRANCH: current }
-    - { BOARD: orangepione, BRANCH: current }
-    - { BOARD: orangepioneplus, BRANCH: current }
-    - { BOARD: orangepipc, BRANCH: current }
-    - { BOARD: orangepipcplus, BRANCH: current }
-    - { BOARD: pineh64, BRANCH: current }
-    - { BOARD: pineh64-b, BRANCH: current }
     - { BOARD: rk322x-box, BRANCH: current }
     - { BOARD: rk3318-box, BRANCH: current }
-    - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
-    - { BOARD: nanopineo4, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
 
   headless: &headless
@@ -222,10 +214,6 @@ lists:
     # ubuntu stable cli
 
     - { BOARD: bananapicm4io, BRANCH: current }
-    - { BOARD: clearfogbase, BRANCH: current }
-    - { BOARD: clearfogpro, BRANCH: current }
-    - { BOARD: cubieboard, BRANCH: current }
-    - { BOARD: espressobin, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
@@ -235,7 +223,24 @@ lists:
     - { BOARD: orangepi5-plus, BRANCH: edge }
     - { BOARD: nanopct6, BRANCH: edge }
     - { BOARD: nanopi-r6s, BRANCH: edge }
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: nanopi-r5s, BRANCH: edge }
+    - { BOARD: orangepi-r1, BRANCH: current }
+    - { BOARD: orangepi-r1plus, BRANCH: current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
+    - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: orangepizero, BRANCH: current }
+    - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: pine64so, BRANCH: current }
+    - { BOARD: radxa-e25, BRANCH: current }
+    - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
+    - { BOARD: zeropi, BRANCH: current }
+    # Those have been moved from "unsupported" since they can't build desktops (HAS_VIDEO_OUTPUT=no)
     - { BOARD: helios4, BRANCH: current }
+    - { BOARD: lime-a33, BRANCH: current }
+    - { BOARD: melea1000, BRANCH: current }
+    - { BOARD: nanopiair, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: nanopineo2black, BRANCH: current }
@@ -248,24 +253,6 @@ lists:
     - { BOARD: nanopi-r1s-h5, BRANCH: current }
     - { BOARD: nanopi-r2c, BRANCH: current }
     - { BOARD: nanopi-r2s, BRANCH: current }
-    - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopi-r5s, BRANCH: edge }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: orangepizero, BRANCH: current }
-    - { BOARD: orangepizeroplus, BRANCH: current }
-    - { BOARD: pine64so, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: legacy }
-    - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: rockpi-s, BRANCH: current }
-    - { BOARD: zeropi, BRANCH: current }
-    # Those have been moved from "unsupported" since they can't build desktops (HAS_VIDEO_OUTPUT=no)
-    - { BOARD: lime-a33, BRANCH: current }
-    - { BOARD: melea1000, BRANCH: current }
-    - { BOARD: nanopiair, BRANCH: current }
     - { BOARD: nanopi-r4se, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
