@@ -6,6 +6,7 @@ on:
       - 'main'
     paths:
       - 'live-patch/pre-apt-upgrade.sh'
+      - '.github/workflows/live-patch.yml'
 
 jobs:
 
@@ -33,8 +34,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
+          cp live-patch/pre-apt-upgrade.sh live-patch/pre-apt-upgrade.sh.txt # to have web friendly version
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes live-patch/pre-apt-upgrade.sh
-          ls -l live-patch/
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
