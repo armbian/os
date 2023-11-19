@@ -257,10 +257,10 @@ on:
         options:
         # maintainers
         - 150balbes
+        - 1ubuntuuser
         - AGM1968
         - AaronNGray
         - DylanHP
-        - Heisath
         - Kreyren
         - ManoftheSea
         - Manouchehri
@@ -280,6 +280,7 @@ on:
         - chainsx
         - clee
         - devdotnetorg
+        - echatzip
         - efectn
         - eliasbakken
         - engineer-80
@@ -412,7 +413,7 @@ jobs:
       # Bump version automatically
       - name: Bump version
  #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
-        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' && ! github.event.inputs.versionOverride }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' && ( env.VERSION_OVERRIDE != '' ) }}
 #        if: ${{ ! github.event.inputs.versionOverride }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.1.1
