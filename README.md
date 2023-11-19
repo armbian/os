@@ -56,9 +56,11 @@ Device has to be always on and easily accesible for you to re-image in case of f
 - [Weekly developers meetings](https://forum.armbian.com/events/)
 - [Forums for developers](https://forum.armbian.com/forum/4-advanced-users-development/)
 
-## OS download
+## Download prebuilt images
 
-- [Download](https://www.armbian.com/download/)
+- [quarterly released **supported** builds](https://www.armbian.com/download/?device_support=Supported)
+- [quarterly released **community maintained** builds](https://www.armbian.com/download/?device_support=Community%20support)
+- [automatic released **rolling release** builds](https://github.com/armbian/os/releases/latest) (daily or when code changes)
 
 ## Support
 
