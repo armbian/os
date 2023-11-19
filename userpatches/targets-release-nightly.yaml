@@ -25,6 +25,8 @@ lists:
     - { BOARD: beaglev, BRANCH: edge }
 #    - { BOARD: mangopi-mq, BRANCH: edge }
 #    - { BOARD: nezha, BRANCH: edge }
+    - { BOARD: licheepi-4a, BRANCH: legacy }
+    - { BOARD: licheepi-4a, BRANCH: edge }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: unleashed, BRANCH: edge }
     - { BOARD: unmatched, BRANCH: edge }
@@ -47,8 +49,6 @@ lists:
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
-    - { BOARD: licheepi-4a, BRANCH: legacy }
-    - { BOARD: licheepi-4a, BRANCH: edge }
     - { BOARD: melea1000, BRANCH: current }
     - { BOARD: micro, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: collabora }
@@ -322,6 +322,7 @@ targets:
       - *light-desktop
       - *light-desktop-3d
       - { BOARD: uefi-riscv64, BRANCH: edge }
+      - { BOARD: licheepi-4a, BRANCH: edge }
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: xiaomi-elish, BRANCH: sm8250 }
 
