@@ -10,8 +10,24 @@ on:
 
 jobs:
 
-  sign:
+  Teamcheck:
+    permissions:
+      actions: write
+      
+    name: "Check ORG Team Membership"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: [Linux, X64]
+    steps:
 
+    - name: "Check membership"
+      uses: armbian/actions/team-check@main
+      with:
+        ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TEAM: "Release manager"
+
+  Sign:
+    needs: Teamcheck
     name: "Signing script"
     runs-on: ubuntu-latest
     steps:
