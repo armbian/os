@@ -77,4 +77,4 @@ Device has to be always on and easily accesible for you to re-image in case of f
 
 ## License
 
-This software is published under the GPL-2.0 License license.
+This software is published under the [GPL-2.0 License license](LICENSE).
