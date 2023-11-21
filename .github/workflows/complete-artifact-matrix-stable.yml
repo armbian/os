@@ -414,7 +414,8 @@ jobs:
       - name: Bump version
  #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
 #        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' && ( env.VERSION_OVERRIDE != '' ) }}
-        if: ${{ ! github.event.inputs.versionOverride }}
+#        if: ${{ ! github.event.inputs.versionOverride }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v4.1.1
         with:
