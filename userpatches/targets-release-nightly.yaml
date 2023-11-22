@@ -270,7 +270,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: lunar
+      RELEASE: mantic
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
