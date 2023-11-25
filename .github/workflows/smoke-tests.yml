@@ -16,6 +16,10 @@ on:
         type: boolean
         description: "Power Management"
         default: true
+      betaonly:
+        type: boolean
+        description: "Use only beta repository"
+        default: true
 #  repository_dispatch:
 #    types: ["Smoke tests"]
 
@@ -63,3 +67,4 @@ jobs:
     with:
       GITBRANCH: "${{ github.event.inputs.gitbranch || 'main' }}"
       PWRMNGMT: "${{ github.event.inputs.powermanagement || 'true' }}"
+      BETAONLY:  "${{ github.event.inputs.betaonly || 'true' }}"
