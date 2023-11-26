@@ -66,4 +66,4 @@ jobs:
       - name: Upload
         run: |
 
-          rsync -avh -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" live-patch/* upload@rsync.armbian.com:/storage/www/dl/_patch/ --delete
+          rsync --exclude "README.md" -avh -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" live-patch/* upload@rsync.armbian.com:/storage/www/dl/_patch/ --delete
