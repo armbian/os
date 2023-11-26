@@ -50,8 +50,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          cp live-patch/pre-apt-upgrade.sh live-patch/pre-apt-upgrade.sh.txt # to have web friendly version
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes live-patch/pre-apt-upgrade.sh
+          for file in live-patch/*.sh;
+          do
+              cp $file $file.txt # to have web friendly version 
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes "$file"
+          done
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -63,4 +66,4 @@ jobs:
       - name: Upload
         run: |
 
-          rsync -ar -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" live-patch/pre-apt-upgrade.sh* upload@rsync.armbian.com:/storage/www/dl/_patch/
+          rsync -ar -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" live-patch/* upload@rsync.armbian.com:/storage/www/dl/_patch/
