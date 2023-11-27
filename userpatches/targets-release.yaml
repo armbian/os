@@ -139,7 +139,6 @@ lists:
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
@@ -189,6 +188,7 @@ lists:
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
 
   light-desktop-3d: &light-desktop-3d
     # debian stable minimal
