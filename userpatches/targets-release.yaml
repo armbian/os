@@ -32,6 +32,7 @@ lists:
 #    - { BOARD: unmatched, BRANCH: edge }
 #    - { BOARD: visionfive, BRANCH: edge }
 #    - { BOARD: visionfive2, BRANCH: edge }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: uefi-riscv64, BRANCH: edge }
 
   virtual-boards: &virtual-boards
@@ -188,7 +189,6 @@ lists:
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
 
   light-desktop-3d: &light-desktop-3d
     # debian stable minimal
