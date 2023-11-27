@@ -89,6 +89,11 @@ lists:
     - { BOARD: rock-5b, BRANCH: midstream }
     - { BOARD: rock-5b, BRANCH: collabora }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
+    - { BOARD: station-m1, BRANCH: current }
+    - { BOARD: station-m2, BRANCH: current }
+#    - { BOARD: station-m3, BRANCH: legacy }
+    - { BOARD: station-p1, BRANCH: current }
+    - { BOARD: station-p2, BRANCH: current }
     - { BOARD: sunvell-r69, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
     - { BOARD: udoo, BRANCH: current }
@@ -130,12 +135,8 @@ lists:
     - { BOARD: orangepi5-plus, BRANCH: edge }
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: legacy }
+    - { BOARD: rock-5a, BRANCH: legacy }
     - { BOARD: rock-5b, BRANCH: legacy }
-    - { BOARD: station-m1, BRANCH: current }
-    - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy }
-    - { BOARD: station-p1, BRANCH: current }
-    - { BOARD: station-p2, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: edge }
 

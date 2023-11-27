@@ -34,6 +34,13 @@ lists:
 #    - { BOARD: visionfive2, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: edge }
 
+  virtual-boards: &virtual-boards
+    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
+    - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
+
   unsupported: &unsupported
     # debian stable cli
     # ubuntu stable xfce desktop
@@ -299,6 +306,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
+      - *virtual-boards
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
       - { BOARD: rock-5a, BRANCH: legacy }
       - { BOARD: rock-5b, BRANCH: legacy }
@@ -352,6 +360,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *special
+      - *virtual-boards
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
