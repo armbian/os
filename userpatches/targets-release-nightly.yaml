@@ -33,6 +33,13 @@ lists:
     - { BOARD: visionfive, BRANCH: edge }
     - { BOARD: visionfive2, BRANCH: edge }
 
+  virtual-boards: &virtual-boards
+    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
+    - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
+
   unsupported: &unsupported
     # debian stable cli
     # ubuntu stable xfce desktop
@@ -281,6 +288,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
+      - *virtual-boards
 
   # debian unstable minimal
 
