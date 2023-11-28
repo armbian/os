@@ -2,7 +2,7 @@ org: "armbian" # can't be an expression, only string.
 
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
-build_ref: "main"
+build_ref: "v23.11"
 script_name: "Build Official Images (admin)"
 concurrency_group: "${{ github.run_id }}-pipeline-stable"
 repository_ref: "stable"
