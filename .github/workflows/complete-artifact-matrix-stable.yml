@@ -247,6 +247,8 @@ on:
         - virtual-qemu
         - visionfive
         - visionfive2
+        - wsl2-arm64
+        - wsl2-x86
         - xiaomi-elish
         - zeropi
         - all
@@ -334,7 +336,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
-  BUILD_REF: "main" # branch or tag or sha1
+  BUILD_REF: "v23.11" # branch or tag or sha1
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
