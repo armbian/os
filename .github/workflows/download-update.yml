@@ -86,7 +86,7 @@ jobs:
 
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              if [[ "$target" == "images" ]]; then rsync -ar ${SWITCH} --dry-run --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
+              if [[ "$target" == "images" ]]; then rsync ${SWITCH} -ar --dry-run --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   Index:
@@ -127,7 +127,7 @@ jobs:
 
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              #if [[ "$target" == "images" ]]; then rsync -ar ${SWITCH} --progress --dry-run --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
+              #if [[ "$target" == "images" ]]; then rsync ${SWITCH} -ar --progress --dry-run --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   dispatch:
