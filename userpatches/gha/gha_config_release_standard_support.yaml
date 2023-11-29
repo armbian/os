@@ -3,7 +3,7 @@ org: "armbian" # can't be an expression, only string.
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
 build_ref: "v23.11"
-script_name: "Build Official Images (admin)"
+script_name: "Release Standard Support Images (admin)"
 concurrency_group: "${{ github.run_id }}-pipeline-stable"
 repository_ref: "stable"
 team: "Release manager"
@@ -18,8 +18,7 @@ uploadtoserverDefaults: "'armbian'"
 org_and_userpatches_repo: "armbian/os"
 userpatches_ref: "main"
 userpatches_dir: "userpatches" # folder inside the userpatches repo; use "." if stuff is in the root of the repo
-targets_filename: "targets-release-unsupported.yaml"
-#targets_filename: "targets-release.yaml" # we need to split
+targets_filename: "targets-release-standard-support.yaml" # we need to split
 
 ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
