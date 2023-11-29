@@ -519,6 +519,25 @@ targets:
     items:
       - *full-desktop-3d
 
+  # ubuntu kde plasma with 3d
+
+  kde-plasma-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "kde-plasma"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: current }
+      - { BOARD: uefi-x86, BRANCH: current }
+
   # i3 desktop without 3d
 
   minimal-i3-desktop-stable-ubuntu:
