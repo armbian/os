@@ -96,17 +96,30 @@ jobs:
 
 
         #
-        # copy stable templates
+        # copy standard support release templates
         #
-        cp userpatches/gha/gha_config_stable.yaml userpatches/gha/gha_config.yaml
-        cp userpatches/targets-release.yaml userpatches/targets.yaml
+        cp userpatches/gha/gha_config_release_standard_support.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release-standard-support.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
         sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         # we need unique concurency id
-        sed -i "s/pipeline-/pipeline-stable/" output/info/artifact-image-complete-matrix.yml
-        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-stable.yml
+        sed -i "s/pipeline-/standard-support/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-standard-support.yml
+
+        #
+        # copy unsupported release templates
+        #
+        cp userpatches/gha/gha_config_release_unsupported.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release-unsupported.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/unsupported/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-unsupported.yml
 
 
         #
@@ -128,8 +141,10 @@ jobs:
 
         # Add Action Scritps
         git add .github/workflows/complete-artifact-matrix-nightly.yml
-        #git add .github/workflows/complete-artifact-matrix-old-stable.yml
-        git add .github/workflows/complete-artifact-matrix-stable.yml
+#        git add .github/workflows/complete-artifact-matrix-old-stable.yml
+        git add .github/workflows/complete-artifact-matrix-standard-support.yml
+        git add .github/workflows/complete-artifact-matrix-unsupported.yml
+
         git add .github/workflows/complete-artifact-matrix-all.yml
 
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
