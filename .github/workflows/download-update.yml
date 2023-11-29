@@ -56,15 +56,15 @@ jobs:
     runs-on: rsync
     needs: Upload
     outputs:
-      matrix: ${{needs.Prepare.outputs.matrix}}
-    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+      matrix: ${{needs.Upload.outputs.matrix}}
+    if: ${{ needs.Upload.outputs.matrix != '[]' && needs.Upload.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
 
-        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+        node: ${{fromJson(needs.Upload.outputs.matrix)}}
 
     steps:
 
