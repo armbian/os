@@ -81,7 +81,7 @@ jobs:
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
           for target in "${TARGETS[@]}"; do
-              if [[ "$target" == "images" ]]; then rsync -ar --dry-run --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
+              if [[ "$target" == "images" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   Index:
@@ -92,7 +92,7 @@ jobs:
 
       - name: Cleaning
         run: |
-          [[ "${{ inputs.PURGE }}" == yes ]] && ls -l /storage/incoming/* || true
+          [[ "${{ inputs.PURGE }}" == yes ]] && rm -rf /storage/incoming/* || true
           
   dispatch:
     name: "Refresh web and redirector index"
