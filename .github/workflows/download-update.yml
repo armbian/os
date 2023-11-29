@@ -4,16 +4,12 @@ on:
     types: ["Repository update"]
   workflow_dispatch:
     inputs:
-      UPDATE_STABLE_REPO:
-        description: 'yes = when you are sure packages are on mirrors'
+      SKIP:
+        description: 'yes = skip existing'
         required: false
         options: [ 'yes', 'no' ]
         type: choice
         default: 'no'
-      PKG_REMOVE:
-        description: Packages to remove [pkg-name] or [Name (% linux*edge*)]
-        required: false
-        type: string
 
 concurrency:
   group: download
@@ -86,16 +82,16 @@ jobs:
 
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
+          [[ "${{ inputs.SKIP }}" == yes ]] && SWITCH="--ignore-existing-files"
+
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              #if [[ "$target" == "debs" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              #if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              if [[ "$target" == "images" ]]; then rsync -ar --dry-run --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
+              if [[ "$target" == "images" ]]; then rsync -ar "${SWITCH}" --dry-run --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   Index:
     name: "Index"
-    runs-on: repository
+    runs-on: rsync
     needs: Sync
     if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
     timeout-minutes: 60
@@ -127,14 +123,11 @@ jobs:
 
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
+          [[ "${{ inputs.SKIP }}" == yes ]] && SWITCH="--ignore-existing-files"
+
           for target in "${TARGETS[@]}"; do
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              #if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" == "yes" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              #if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              # delete at the end
-              #if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              #if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              if [[ "$target" == "images" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --dry-run --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi              
+              if [[ "$target" == "images" ]]; then rsync -ar "${SWITCH}" --progress --dry-run --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   dispatch:
