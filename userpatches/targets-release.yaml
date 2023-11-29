@@ -286,6 +286,7 @@ targets:
       - *light-desktop
       - *light-desktop-3d
       - *headless
+      - *special
 
   # debian cli
 
@@ -306,6 +307,7 @@ targets:
       - *light-desktop-3d
       - *headless
       - *unsupported
+      - *special
       - *virtual-boards
       - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
       - { BOARD: rock-5a, BRANCH: legacy }
@@ -319,6 +321,24 @@ targets:
       - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
       - { BOARD: mekotronics-r58x, BRANCH: legacy }
       - { BOARD: mekotronics-r58x-pro, BRANCH: legacy }
+
+  # debian xfce without apps
+
+  xfce-barebone-desktop-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: ""
+    items:
+      - *special
 
   # ubuntu minimal
 
