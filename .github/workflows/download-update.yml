@@ -20,7 +20,7 @@ jobs:
   Check:
 
     name: "Check membership"
-    runs-on: fast
+    runs-on: [Linux, X64]
     steps:
 
       - name: "Check membership"
@@ -35,7 +35,7 @@ jobs:
     name: "Upload to servers"
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
 
       - name: Get primary mirrors from database
@@ -48,7 +48,7 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
 
   Sync:
-    name: "Files"
+    name: "Push"
     runs-on: rsync
     needs: Upload
     outputs:
@@ -86,7 +86,7 @@ jobs:
           done
 
   Index:
-    name: "Index"
+    name: "Purge"
     runs-on: rsync
     needs: Sync
     steps:
@@ -99,7 +99,7 @@ jobs:
     name: "Refresh web and redirector index"
     if: ${{ github.repository_owner == 'Armbian' }}
     needs: Index
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
 
       - name: "Run webindex update action"
