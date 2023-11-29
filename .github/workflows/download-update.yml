@@ -4,8 +4,8 @@ on:
     types: ["Repository update"]
   workflow_dispatch:
     inputs:
-      SKIP:
-        description: 'yes = skip existing'
+      PURGE:
+        description: 'yes = purge incoming'
         required: false
         options: [ 'yes', 'no' ]
         type: choice
@@ -93,42 +93,12 @@ jobs:
     name: "Index"
     runs-on: rsync
     needs: Sync
-    if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
-    timeout-minutes: 60
-    strategy:
-      max-parallel: 4
-      fail-fast: false
-      matrix:
-
-        node: ${{fromJson(needs.Sync.outputs.matrix)}}
-
     steps:
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
-
-
-      - name: What to sync?
+      - name: Cleaning
         run: |
 
-          JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
-          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
-          SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
-          SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-
-          TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
-
-          [[ "${{ inputs.SKIP }}" == yes ]] && SWITCH="--ignore-existing-files"
-
-          for target in "${TARGETS[@]}"; do
-              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              #if [[ "$target" == "images" ]]; then rsync --ignore-existing-files -ar --progress --dry-run --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
-          done
+          [[ "${{ inputs.PURGE }}" == yes ]] && ls -l /storage/incoming/*
 
   dispatch:
     name: "Refresh web and redirector index"
