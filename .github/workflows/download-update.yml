@@ -1,5 +1,7 @@
 name: Download update (admin)
 on:
+  schedule:
+   - cron: '0 */4 * * *'
   repository_dispatch:
     types: ["Repository update"]
   workflow_dispatch:
