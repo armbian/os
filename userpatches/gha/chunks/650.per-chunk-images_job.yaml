@@ -150,6 +150,7 @@ jobs: # <TEMPLATE-IGNORE>
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
+          rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
@@ -160,9 +161,11 @@ jobs: # <TEMPLATE-IGNORE>
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                [[ "${SERVER_PATH}" == "null" ]] && SERVER_PATH="/dl"
+                echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" | tee -a servers.txt
              done
           fi
-
+          WEBSEEDS=$(cat servers.txt)
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
