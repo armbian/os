@@ -162,10 +162,11 @@ jobs: # <TEMPLATE-IGNORE>
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
                 [[ "${SERVER_PATH}" == "null" ]] && SERVER_PATH="/dl"
-                echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" | tee -a servers.txt
+                echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
              done
           fi
-          WEBSEEDS=$(cat servers.txt)
+          
+          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
