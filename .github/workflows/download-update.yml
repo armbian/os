@@ -4,16 +4,12 @@ on:
     types: ["Repository update"]
   workflow_dispatch:
     inputs:
-      UPDATE_STABLE_REPO:
-        description: 'yes = when you are sure packages are on mirrors'
+      PURGE:
+        description: 'yes = purge incoming'
         required: false
         options: [ 'yes', 'no' ]
         type: choice
         default: 'no'
-      PKG_REMOVE:
-        description: Packages to remove [pkg-name] or [Name (% linux*edge*)]
-        required: false
-        type: string
 
 concurrency:
   group: download
@@ -24,7 +20,7 @@ jobs:
   Check:
 
     name: "Check membership"
-    runs-on: fast
+    runs-on: [Linux, X64]
     steps:
 
       - name: "Check membership"
@@ -35,10 +31,11 @@ jobs:
           TEAM: "Release manager"
 
   Upload:
+    needs: Check
     name: "Upload to servers"
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
 
       - name: Get primary mirrors from database
@@ -51,19 +48,19 @@ jobs:
           echo 'EOF' >> $GITHUB_OUTPUT
 
   Sync:
-    name: "Files"
+    name: "Push"
     runs-on: rsync
     needs: Upload
     outputs:
-      matrix: ${{needs.Prepare.outputs.matrix}}
-    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+      matrix: ${{needs.Upload.outputs.matrix}}
+    if: ${{ needs.Upload.outputs.matrix != '[]' && needs.Upload.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
-      max-parallel: 4
+      max-parallel: 8
       fail-fast: false
       matrix:
 
-        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+        node: ${{fromJson(needs.Upload.outputs.matrix)}}
 
     steps:
 
@@ -82,65 +79,26 @@ jobs:
           SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
-
           for target in "${TARGETS[@]}"; do
-              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              #if [[ "$target" == "debs" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              #if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              if [[ "$target" == "images" ]]; then rsync -ar --dry-run --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
+              if [[ "$target" == "images" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   Index:
-    name: "Index"
-    runs-on: repository
+    name: "Purge"
+    runs-on: rsync
     needs: Sync
-    if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
-    timeout-minutes: 60
-    strategy:
-      max-parallel: 4
-      fail-fast: false
-      matrix:
-
-        node: ${{fromJson(needs.Sync.outputs.matrix)}}
-
     steps:
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
-
-
-      - name: What to sync?
+      - name: Cleaning
         run: |
-
-          JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
-          SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
-          SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
-          SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-
-          TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
-
-          for target in "${TARGETS[@]}"; do
-              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              #if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" == "yes" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              #if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              # delete at the end
-              #if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              #if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              if [[ "$target" == "images" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --dry-run --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage/incoming/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi              
-          done
-
+          [[ "${{ inputs.PURGE }}" == yes ]] && rm -rf /storage/incoming/* || true
+          
   dispatch:
     name: "Refresh web and redirector index"
     if: ${{ github.repository_owner == 'Armbian' }}
     needs: Index
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
 
       - name: "Run webindex update action"
