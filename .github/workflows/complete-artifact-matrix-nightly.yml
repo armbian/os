@@ -2684,6 +2684,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -2891,6 +2892,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -3098,6 +3100,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -3305,6 +3308,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -3512,6 +3516,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -3719,6 +3724,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -3926,6 +3932,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -4133,6 +4140,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -4340,6 +4348,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -4547,6 +4556,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -4754,6 +4764,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -4961,6 +4972,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -5168,6 +5180,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -5375,6 +5388,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -5582,6 +5596,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
@@ -5789,6 +5804,7 @@ jobs:
              for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+               
              done
           fi
 
