@@ -93,9 +93,8 @@ jobs:
 
       - name: Cleaning
         run: |
-
-          [[ "${{ inputs.PURGE }}" == yes ]] && ls -l /storage/incoming/*
-
+          [[ "${{ inputs.PURGE }}" == yes ]] && ls -l /storage/incoming/* || true
+          
   dispatch:
     name: "Refresh web and redirector index"
     if: ${{ github.repository_owner == 'Armbian' }}
