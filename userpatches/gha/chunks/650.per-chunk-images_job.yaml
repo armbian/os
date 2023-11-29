@@ -152,7 +152,22 @@ jobs: # <TEMPLATE-IGNORE>
           # nighly images are GH only
           if [ "${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+
+
+             WEBSEEDS=$(
+             NAME=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+
+             for i in $NAME; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                [[ $SERVER_PATH == "null" ]] && SERVER_PATH="/dl"
+                echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},\n|"
+              done)
+
           fi
 
           cd output/images/*/archive/
