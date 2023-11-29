@@ -56,7 +56,7 @@ jobs:
     if: ${{ needs.Upload.outputs.matrix != '[]' && needs.Upload.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
-      max-parallel: 4
+      max-parallel: 8
       fail-fast: false
       matrix:
 
