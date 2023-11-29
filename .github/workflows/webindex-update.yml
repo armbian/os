@@ -42,7 +42,7 @@ jobs:
 
       - name: Generate index
         run: |
-          A=$(rsync -ar rsync://imola.armbian.com/dl/ | awk '{ print $2" " "https://rsync.armbian.com/"$5" "$3"?"$4 }' | grep "archive/" | grep -v ".txt" | sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
+          A=$(rsync -ar rsync://imola.armbian.com/dl/ | awk '{ print $2" " "https://rsync.armbian.com/dl/"$5" "$3"?"$4 }' | grep "archive/" | grep -v ".txt" | sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
           B=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g"| sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
           for line in $A $B; do
               SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\"//g" | sed "s/\.//g" | sed "s/\,//g" )
@@ -69,7 +69,7 @@ jobs:
           cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=unstable --backups=1 || true
 
           # hack. we treat stable a bit different. Need to be unified once
-          sed -i "s|https://dl.armbian.com/||" index.csv
+          sed -i "s|https://rsync.armbian.com/dl/||" index.csv
 
           zip -qj unstable.zip unstable/*.torrent
           zip -qj stable.zip stable/*.torrent
