@@ -67,10 +67,14 @@ jobs:
         TARGET="/tmp/unsupported-slow-hdmi.txt"
         BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
         echo $BOARDFAMILY
+        if [[ $board == *.conf* ]]; then SUPPORT=supported;
+        elif [[ $board == *.wip* ]]; then SUPPORT=wip;
+        else SUPPORT=unsupported; fi
         source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
-        if [[ $ARCH == riscv64 ]]; then TARGET="/tmp/unsupported-riscv64.txt";
-        elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/unsupported-headless.txt";
-        elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET="/tmp/unsupported-fast-hdmi.txt"
+        TARGET="/tmp/${SUPPORT}-slow-hdmi.txt"
+        if [[ $ARCH == riscv64 ]]; then TARGET="/tmp/${SUPPORT}-riscv64.txt";
+        elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/${SUPPORT}-headless.txt";
+        elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET="/tmp/${SUPPORT}-fast-hdmi.txt"
         fi
         KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
         board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
@@ -81,7 +85,10 @@ jobs:
         done
 
         # generate targets-release-unsupported.yaml
-        cp os/userpatches/targets-release-unsupported.template os/userpatches/targets-release-unsupported.yaml
+        cp os/userpatches/targets-release-standard-support.template os/userpatches/targets-release-standard-support.yaml
+        cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
+        cp os/userpatches/targets-release-nightly.template os/userpatches/targets-release-nightly.yaml
+
         sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
         sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
         sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt' os/userpatches/targets-release-unsupported.yaml
@@ -95,10 +102,10 @@ jobs:
         LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
 
         # generate targets-release-unsupported.yaml
-        cp userpatches/targets-release-unsupported.template userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-unsupported.yaml
-        git add -f userpatches/targets-release-unsupported.yaml
+        cp userpatches/targets-release-community-maintained.template userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-community-maintained.yaml
+        git add -f userpatches/targets-release-community-maintained.yaml
 
         #
         # copy nightly templates
