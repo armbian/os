@@ -62,7 +62,7 @@ jobs:
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
         BOARDS=$(ls -1 build/config/boards/*.{csc,tvb})
-        rm -f /tmp/unsupported-*
+        rm -f /tmp/unsupported* /tmp/supported* /tmp/wip*
         for board in $BOARDS; do
         TARGET="/tmp/unsupported-slow-hdmi.txt"
         BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
@@ -89,10 +89,10 @@ jobs:
         cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
         cp os/userpatches/targets-release-nightly.template os/userpatches/targets-release-nightly.yaml
 
-        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt' os/userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt' os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-community-maintained.yaml
 
     - name: "Generate Action Script"
       run: |
