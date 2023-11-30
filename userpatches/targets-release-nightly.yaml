@@ -29,6 +29,9 @@ lists:
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
 
+  staging-slow-hdmi: &staging-slow-hdmi
+    # wip-slow-hdmi
+
   supported-fast-hdmi: &supported-fast-hdmi
     # debian stable minimal
     # ubuntu stable minimal
@@ -40,7 +43,7 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: edge }
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: khadas-edge2,image-output-oowow }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy}
     - { BOARD: khadas-vim2, BRANCH: current }
@@ -69,6 +72,9 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
 
+  staging-fast-hdmi: &staging-fast-hdmi
+    # wip-fast-hdmi
+
   supported-headless: &supported-headless
     # debian stable minimal
     # ubuntu stable minimal
@@ -84,6 +90,16 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
+
+  staging-headless: &staging-headless
+    # wip-headless
+
+  supported-riscv64: &supported-riscv64
+    # ubuntu stable xfce desktop
+    # supported-riscv64
+
+  staging-riscv64: &staging-riscv64
+    # wip-riscv64-hdmi
 
   unsupported-slow-hdmi: &unsupported-slow-hdmi
     # ubuntu stable xfce desktop
@@ -252,12 +268,21 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *supported-slow-hdmi
+      - *staging-slow-hdmi
       - *supported-fast-hdmi
+      - *staging-fast-hdmi
       - *supported-headless
+      - *staging-headless
+      - *supported-riscv64
+      - *staging-riscv64
       - *unsupported-slow-hdmi
+      - *staging-slow-hdmi
       - *unsupported-fast-hdmi
+      - *staging-fast-hdmi
       - *unsupported-headless
+      - *staging-headless
       - *unsupported-riscv64
+      - *staging-riscv64
       - *virtual-boards
 
   # debian unstable minimal
@@ -274,11 +299,19 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *supported-slow-hdmi
+      - *staging-slow-hdmi
       - *supported-fast-hdmi
+      - *staging-fast-hdmi
       - *supported-headless
+      - *staging-headless
       - *unsupported-slow-hdmi
+      - *staging-slow-hdmi
       - *unsupported-fast-hdmi
+      - *staging-fast-hdmi
       - *unsupported-headless
+      - *staging-headless
+      - *unsupported-riscv64
+      - *staging-riscv64
       - *virtual-boards
 
   # ubuntu xfce without apps
@@ -298,9 +331,17 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "none"
     items:
       - *supported-slow-hdmi
+      - *staging-slow-hdmi
       - *supported-fast-hdmi
+      - *staging-fast-hdmi
+      - *supported-riscv64
+      - *staging-riscv64
       - *unsupported-slow-hdmi
+      - *staging-slow-hdmi
       - *unsupported-fast-hdmi
+      - *staging-fast-hdmi
+      - *unsupported-riscv64
+      - *staging-riscv64
       - { BOARD: rpi4b, BRANCH: current }
 
   # debian trixie gnome desktop without 3d

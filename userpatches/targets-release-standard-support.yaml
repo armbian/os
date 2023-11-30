@@ -45,7 +45,7 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: edge }
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: khadas-edge2,image-output-oowow }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy}
     - { BOARD: khadas-vim2, BRANCH: current }
