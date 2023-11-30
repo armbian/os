@@ -276,13 +276,13 @@ targets:
       - *supported-riscv64
       - *staging-riscv64
       - *unsupported-slow-hdmi
-      - *unstaging-slow-hdmi
+      - *staging-slow-hdmi
       - *unsupported-fast-hdmi
-      - *unstaging-fast-hdmi
+      - *staging-fast-hdmi
       - *unsupported-headless
-      - *unstaging-headless
+      - *staging-headless
       - *unsupported-riscv64
-      - *unstaging-riscv64
+      - *staging-riscv64
       - *virtual-boards
 
   # debian unstable minimal
@@ -305,13 +305,13 @@ targets:
       - *supported-headless
       - *staging-headless
       - *unsupported-slow-hdmi
-      - *unstaging-slow-hdmi
+      - *staging-slow-hdmi
       - *unsupported-fast-hdmi
-      - *unstaging-fast-hdmi
+      - *staging-fast-hdmi
       - *unsupported-headless
-      - *unstaging-headless
+      - *staging-headless
       - *unsupported-riscv64
-      - *unstaging-riscv64
+      - *staging-riscv64
       - *virtual-boards
 
   # ubuntu xfce without apps
@@ -337,11 +337,11 @@ targets:
       - *supported-riscv64
       - *staging-riscv64
       - *unsupported-slow-hdmi
-      - *unstaging-slow-hdmi
+      - *staging-slow-hdmi
       - *unsupported-fast-hdmi
-      - *unstaging-fast-hdmi
+      - *staging-fast-hdmi
       - *unsupported-riscv64
-      - *unstaging-riscv64
+      - *staging-riscv64
       - { BOARD: rpi4b, BRANCH: current }
 
   # debian trixie gnome desktop without 3d
