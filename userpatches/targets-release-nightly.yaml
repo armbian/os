@@ -29,9 +29,6 @@ lists:
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
 
-  staging-slow-hdmi: &staging-slow-hdmi
-    # wip-slow-hdmi
-
   supported-fast-hdmi: &supported-fast-hdmi
     # debian stable minimal
     # ubuntu stable minimal
@@ -72,9 +69,6 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
 
-  staging-fast-hdmi: &staging-fast-hdmi
-    # wip-fast-hdmi
-
   supported-headless: &supported-headless
     # debian stable minimal
     # ubuntu stable minimal
@@ -90,13 +84,6 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
-
-  staging-headless: &staging-headless
-    # wip-headless
-
-  supported-riscv64: &supported-riscv64
-    # ubuntu stable xfce desktop
-    # supported-riscv64
 
   staging-riscv64: &staging-riscv64
     # wip-riscv64-hdmi
