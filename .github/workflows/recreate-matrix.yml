@@ -84,8 +84,8 @@ jobs:
 
         # generate targets-release-unsupported.yaml
         cp userpatches/targets-release-unsupported.template userpatches/targets-release-unsupported.yaml
-        sed -i '/# unsupported/r /tmp/unsupported.txt' userpatches/targets-release-unsupported.yaml
-        sed -i '/# unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-unsupported.yaml
         git add userpatches/targets-release-unsupported.yaml
 
         #
@@ -98,7 +98,7 @@ jobs:
         sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
-        
+
         # we need unique concurency id
         sed -i "s/pipeline-/pipeline-nightly/" output/info/artifact-image-complete-matrix.yml
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-nightly.yml
