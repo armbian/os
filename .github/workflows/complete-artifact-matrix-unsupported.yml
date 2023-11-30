@@ -40,6 +40,8 @@ on:
         description: 'Framework build branch'
         options:
         # branches
+        - main
+        - v23.11
         default: 'main'
       board:
         type: choice
