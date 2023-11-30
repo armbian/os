@@ -57,6 +57,7 @@ jobs:
     - name: "Generate Lists"
       run: |
 
+        # generate lists to include them
         ls -1 build/config/boards/*.{conf,eos,wip,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/boards.txt
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
@@ -85,27 +86,40 @@ jobs:
         done
 
         # generate targets-release-community-maintained.yaml
-        cp os/userpatches/targets-release-standard-support.template os/userpatches/targets-release-standard-support.yaml
-        cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
-        cp os/userpatches/targets-release-nightly.template os/userpatches/targets-release-nightly.yaml
+        #cp os/userpatches/targets-release-standard-support.template os/userpatches/targets-release-standard-support.yaml
+        #cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
+        #cp os/userpatches/targets-release-nightly.template os/userpatches/targets-release-nightly.yaml
 
-        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt' os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # supported-slow-hdmi/r /tmp/supported-slow-hdmi.txt' os/userpatches/targets-release-standard-support.template > os/userpatches/targets-release-standard-support.yaml
+        sed -i '/    # supported-fast-hdmi/r /tmp/supported-fast-hdmi.txt' os/userpatches/targets-release-standard-support.template > os/userpatches/targets-release-standard-support.yaml
+        sed -i '/    # supported-riscv64/r /tmp/supported-riscv64.txt'     os/userpatches/targets-release-standard-support.template > os/userpatches/targets-release-standard-support.yaml
+        sed -i '/    # supported-headless/r /tmp/supported-headless.txt'   os/userpatches/targets-release-standard-support.template > os/userpatches/targets-release-standard-support.yaml
+
+        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-community-maintained.template > os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-community-maintained.template > os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-community-maintained.template > os/userpatches/targets-release-community-maintained.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt'   os/userpatches/targets-release-community-maintained.template > os/userpatches/targets-release-community-maintained.yaml
+
+        #sed -i '/    # wip-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
+        #sed -i '/    # wip-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
+        #sed -i '/    # -riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
+        #sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt'   os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
 
     - name: "Generate Action Script"
       run: |
 
         cd build
         # Last stable branch
-        LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
+        #LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
 
         # generate targets-release-community-maintained.yaml
-        cp userpatches/targets-release-community-maintained.template userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-community-maintained.yaml
-        git add -f userpatches/targets-release-community-maintained.yaml
+        #cp userpatches/targets-release-community-maintained.template userpatches/targets-release-community-maintained.yaml
+        #sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-community-maintained.yaml
+        #sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-community-maintained.yaml
+
+        #git add userpatches/targets-release-community-maintained.yaml
+        #git add userpatches/targets-release-community-maintained.yaml
+        #git add -f userpatches/targets-release-community-maintained.yaml
 
         #
         # copy nightly templates
@@ -185,7 +199,9 @@ jobs:
         git config --local user.name "Armbianworker"
 
         # Update build list
+        git add userpatches/targets-release-standard-support.yaml
         git add userpatches/targets-release-community-maintained.yaml
+        git add userpatches/targets-release-nightly.yaml
 
         # Add Action Scritps
         git add .github/workflows/complete-artifact-matrix-nightly.yml
