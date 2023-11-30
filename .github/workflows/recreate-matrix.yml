@@ -60,12 +60,33 @@ jobs:
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
+        function makelists()
+        {
+            BOARDS=$(grep $1 'VIDEO_OUTPUT="no"' -lR build/config/boards/*.{wip,csc,tvb} | uniq)
+            for board in $BOARDS; do
+                KERNEL_TARGET=$(grep KERNEL_TARGET $board)
+                board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
+                if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }";
+                elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }";
+                elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}";
+                fi
+            done > $2
+        }
+        makelists "-v" "/tmp/unsupported.txt"
+        makelists "" "/tmp/unsupported-headless.txt"
+
     - name: "Generate Action Script"
       run: |
 
         cd build
         # Last stable branch
         LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
+
+        # generate targets-release-unsupported.yaml
+        cp userpatches/targets-release-unsupported.template userpatches/targets-release-unsupported.yaml
+        sed -i '/# unsupported/r /tmp/unsupported.txt' userpatches/targets-release-unsupported.yaml
+        sed -i '/# unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-unsupported.yaml
+        git add userpatches/targets-release-unsupported.yaml
 
         #
         # copy nightly templates
@@ -77,6 +98,7 @@ jobs:
         sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
+        
         # we need unique concurency id
         sed -i "s/pipeline-/pipeline-nightly/" output/info/artifact-image-complete-matrix.yml
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-nightly.yml
