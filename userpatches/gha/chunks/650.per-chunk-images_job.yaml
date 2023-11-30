@@ -83,16 +83,6 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:

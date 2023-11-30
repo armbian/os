@@ -136,49 +136,6 @@ jobs: # <TEMPLATE-IGNORE>
           # clean
           find output/. -type d -empty -delete
 
-#      - name: Generate repository
-#        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
-#        run: |
-#
-#          # only keep latest debs in the incoming dir
-#          # prepare outgoing: setfacl -m g:docker:rwx -R outgoing/
-#          BETA="${{ github.event.inputs.nightlybuild || [[nightlybuildDefaults]] }}"
-#          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-#          if [% raw %][[ "$BETA" == "yes" ]][% endraw %]; then
-#
-#              # fix permission
-#              sudo chown -R ${USER}.${USER} /outgoing/repository-beta
-#
-#              # add common
-#              if [% raw %][[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]][% endraw %]; then
-#
-#                  # drop nightly repository
-#                  sudo rm -rf /outgoing/repository-beta/*
-#
-#                  # remove status
-#                  sudo rm -f /incoming/debs-beta/status
-#                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#
-#              fi
-#
-#              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
-#
-#              # upload repository
-#              rsync -arvc --exclude "dists" --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
-#              rsync -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
-#
-#          else
-#
-#              # add common
-#              if [% raw %][[ "$(cat /incoming/debs/status 2>/dev/null)" == "done" ]][% endraw %]; then
-#                  tools/repository/repo -i /incoming/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#              fi
-#              tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#              tools/repository/repo -i output/debs-beta -o /outgoing/repository -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository/public/content.html
-#
-#          fi
-
       - name: "Run repository update action"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
         uses: peter-evans/repository-dispatch@v2
