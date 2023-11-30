@@ -601,7 +601,7 @@ jobs:
           MATRIX_ARTIFACT_CHUNKS=17 \
           MATRIX_IMAGE_CHUNKS=16 \
           CHECK_OCI=${{ github.event.inputs.checkOci || 'yes' }} \
-          TARGETS_FILENAME="targets-nightly.yaml" \
+          TARGETS_FILENAME="targets-release-nightly.yaml" \
           SKIP_IMAGES=${{ github.event.inputs.skipImages || 'no'}} \
           ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes # IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
