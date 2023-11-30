@@ -1,9 +1,8 @@
 # Want to change images on download pages?
 
-## Stable
+## Standard support
 
-Edit `targets-release.yaml`
-
+Edit `targets-release-standard-support.yaml`
 (recreated manually, when [Armbian release](https://github.com/orgs/armbian/teams/release-manager) manager executes build action)
 
 ## Nightly
