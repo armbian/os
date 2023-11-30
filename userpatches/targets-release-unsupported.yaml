@@ -64,7 +64,6 @@ lists:
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
     - { BOARD: firefly-rk3399, BRANCH: current }
-    - { BOARD: fxblox-rk1, BRANCH: legacy}
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
     - { BOARD: hinlink-h28k, BRANCH: legacy}
@@ -75,14 +74,8 @@ lists:
     - { BOARD: jp-tvbox-3566, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: lime-a64, BRANCH: current }
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy}
     - { BOARD: mekotronics-r58x-pro, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x, BRANCH: legacy}
-    - { BOARD: mixtile-blade3, BRANCH: legacy}
     - { BOARD: nanopct4, BRANCH: current }
-    - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopi-r5s, BRANCH: edge }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
@@ -91,7 +84,6 @@ lists:
     - { BOARD: nanopineo4, BRANCH: current }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
-    - { BOARD: odroidm1, BRANCH: edge }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: edge }
     - { BOARD: orangepi-rk3399, BRANCH: current }
@@ -108,18 +100,13 @@ lists:
     - { BOARD: pinebook-a64, BRANCH: current }
     - { BOARD: pineh64-b, BRANCH: current }
     - { BOARD: pineh64, BRANCH: current }
-    - { BOARD: qemu-uboot-arm64, BRANCH: current }
-    - { BOARD: qemu-uboot-x86, BRANCH: current }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: recore, BRANCH: current }
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
     - { BOARD: rock-5-cmio, BRANCH: legacy}
-    - { BOARD: rock-5a, BRANCH: edge }
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4b, BRANCH: current }
     - { BOARD: rockpi-4bplus, BRANCH: edge }
@@ -174,7 +161,6 @@ lists:
     # ubuntu stable xfce desktop
     # unsupported-riscv64
     - { BOARD: beaglev, BRANCH: edge }
-    - { BOARD: licheepi-4a, BRANCH: edge }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: unleashed, BRANCH: edge }
