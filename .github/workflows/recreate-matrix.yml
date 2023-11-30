@@ -99,8 +99,6 @@ jobs:
         sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-standard-support.yaml
         sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-standard-support.yaml
 
- #       cp os/userpatches/targets-release-standard-support.template os/userpatches/targets-release-standard-support.yaml
-
         sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
         sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
         sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-community-maintained.yaml
@@ -109,8 +107,6 @@ jobs:
         sed -i '/    # wip-fast-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-community-maintained.yaml
         sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-community-maintained.yaml
         sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-community-maintained.yaml
-
-#        cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
 
         #sed '/    # wip-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
         #sed '/    # wip-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
