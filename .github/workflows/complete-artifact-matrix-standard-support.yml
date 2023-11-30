@@ -344,8 +344,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "armbian/build"
-  #BUILD_REF: "v23.11" # branch or tag or sha1
-  BUILD_REF: "${{ inputs.branch || 'main' }}"
+  BUILD_REF: "${{ inputs.branch || inputs.ref || 'main' }}" # branch or tag or sha1
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
@@ -367,12 +366,14 @@ env:
   # Added to every image build arguments.
   EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
 
+#  To ensure that only a single workflow using the same concurrency group will run at a time
 concurrency:
   group: ${{ github.run_id }}-standard-supportstable
   cancel-in-progress: false
 
 jobs:
 
+  # additional security check
   team_check:
     permissions:
       actions: write
@@ -454,7 +455,6 @@ jobs:
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
- #       if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/upload-artifact@v3
         with:
           name: assets-for-download-stable
@@ -495,7 +495,6 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
 
       - name: Save
-#        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         id: releases
         run: |
 
@@ -854,46 +853,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-2": # templated "build-artifacts-chunk-2"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-2 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -956,46 +915,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-3": # templated "build-artifacts-chunk-3"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-3 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1058,46 +977,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-4": # templated "build-artifacts-chunk-4"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-4 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1160,46 +1039,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-5": # templated "build-artifacts-chunk-5"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-5 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1262,46 +1101,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-6": # templated "build-artifacts-chunk-6"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-6 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1364,46 +1163,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-7": # templated "build-artifacts-chunk-7"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-7 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1466,46 +1225,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-8": # templated "build-artifacts-chunk-8"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-8 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1568,46 +1287,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-9": # templated "build-artifacts-chunk-9"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-9 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1670,46 +1349,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-10": # templated "build-artifacts-chunk-10"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-10 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1772,46 +1411,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-11": # templated "build-artifacts-chunk-11"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-11 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1874,46 +1473,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-12": # templated "build-artifacts-chunk-12"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-12 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -1976,46 +1535,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-13": # templated "build-artifacts-chunk-13"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-13 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2078,46 +1597,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-14": # templated "build-artifacts-chunk-14"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-14 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2180,46 +1659,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-15": # templated "build-artifacts-chunk-15"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-15 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2282,46 +1721,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-16": # templated "build-artifacts-chunk-16"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-16 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2384,46 +1783,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
   "build-artifacts-chunk-17": # templated "build-artifacts-chunk-17"
     if: ${{ github.repository_owner == 'armbian' && needs.matrix_prep.outputs.artifacts-chunk-not-empty-17 == 'yes' }}  # <-- HERE: Chunk number.
     needs: [ "matrix_prep" ]
@@ -2486,46 +1845,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build.outputs.logs_url }}"
-
-#      - name: Install SSH key
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
-#      - name: Check API rate limits
-#        run: |
-
-#          # install dependencies
-#          if ! command -v "gh" > /dev/null 2>&1; then
-#             sudo apt-get -y -qq install gh
-#          fi
-
-#          while true
-#            do
-#            API_CALLS_TOTAL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.limit')
-#            API_CALLS_LEFT=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq -r '.rate.remaining')
-#            PERCENT=$(( API_CALLS_LEFT * 100 / API_CALLS_TOTAL ))
-#            if (( $PERCENT > 30 )); then
-#                echo "API rate in good shape $PERCENT % free"
-#                exit 0
-#            fi
-#            echo "API rate lower then 30%, sleping 10m"
-#            sleep 10m
-#          done
-#
-#          # show current api rate
-#          curl -s -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${{ secrets.ACCESS_TOKEN }}" https://api.github.com/rate_limit
-#
-#      - name: Deploy debian packages to our servers
-#        if: github.event.inputs.uploadtoserver == 'armbian'
-#        timeout-minutes: 15
-#        run: |
-#
-#          mkdir -p output/debs output/debs-beta
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs
-#          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files output/debs-beta/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/partial/debs-beta
 
 # template file: 650.per-chunk-images_job.yaml
 
@@ -2610,16 +1929,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -2822,16 +2131,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -3032,16 +2331,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -3244,16 +2533,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -3454,16 +2733,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -3666,16 +2935,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -3876,16 +3135,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -4088,16 +3337,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -4298,16 +3537,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -4510,16 +3739,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -4720,16 +3939,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -4932,16 +4141,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -5142,16 +4341,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -5354,16 +4543,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -5565,16 +4744,6 @@ jobs:
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
 
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -5775,16 +4944,6 @@ jobs:
         if: always()
         run: |
           echo "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
-
-#      - name: Install SSH key for storage
-#        env:
-#          KEY_ARMBIAN_UPLOAD: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#        if: env.KEY_ARMBIAN_UPLOAD != null
-#        uses: shimataro/ssh-key-action@v2
-#        with:
-#          key: ${{ secrets.KEY_ARMBIAN_UPLOAD }}
-#          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-#          if_key_exists: replace
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -6042,49 +5201,6 @@ jobs:
           output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           # clean
           find output/. -type d -empty -delete
-
-#      - name: Generate repository
-#        if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
-#        run: |
-#
-#          # only keep latest debs in the incoming dir
-#          # prepare outgoing: setfacl -m g:docker:rwx -R outgoing/
-#          BETA="${{ github.event.inputs.nightlybuild || 'no' }}"
-#          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-#          if [[ "$BETA" == "yes" ]]; then
-#
-#              # fix permission
-#              sudo chown -R ${USER}.${USER} /outgoing/repository-beta
-#
-#              # add common
-#              if [[ "$(cat /incoming/debs-beta/status 2>/dev/null)" == "done" ]]; then
-#
-#                  # drop nightly repository
-#                  sudo rm -rf /outgoing/repository-beta/*
-#
-#                  # remove status
-#                  sudo rm -f /incoming/debs-beta/status
-#                  tools/repository/repo -i /incoming/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#
-#              fi
-#
-#              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#              tools/repository/repo -i output/debs-beta -o /outgoing/repository-beta -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository-beta/public/content.html
-#
-#              # upload repository
-#              rsync -arvc --exclude "dists" --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
-#              rsync -arvc --delete /outgoing/repository-beta/public/ ${{ secrets.HOST_UPLOAD_USER }}@stpete-mirror.armbian.com:/tank/upload/repository-beta
-#
-#          else
-#
-#              # add common
-#              if [[ "$(cat /incoming/debs/status 2>/dev/null)" == "done" ]]; then
-#                  tools/repository/repo -i /incoming/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#              fi
-#              tools/repository/repo -i output/debs -o /outgoing/repository -c update -p ${{ secrets.GPG_PASSPHRASE1 }}
-#              tools/repository/repo -i output/debs-beta -o /outgoing/repository -c html -p ${{ secrets.GPG_PASSPHRASE1 }} > /outgoing/repository/public/content.html
-#
-#          fi
 
       - name: "Run repository update action"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
