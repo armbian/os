@@ -66,7 +66,7 @@ jobs:
         for board in $BOARDS; do
         TARGET="/tmp/unsupported-hdmi.txt"
         if grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/unsupported-headless.txt"; fi
-        KERNEL_TARGET=$(grep KERNEL_TARGET $board)
+        KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
         board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
         if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }" >> $TARGET ;
         elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }" >> $TARGET ;
