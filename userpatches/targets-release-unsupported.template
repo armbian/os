@@ -22,14 +22,23 @@ common-gha-configs:
 
 lists:
 
-  unsupported: &unsupported
+  unsupported-slow-hdmi: &unsupported-slow-hdmi
     # ubuntu stable xfce desktop
-    # unsupported-hdmi
+    # unsupported-slow-hdmi
 
-  headless: &headless
+  unsupported-fast-hdmi: &unsupported-fast-hdmi
+    # debian stable minimal
+    # ubuntu stable minimal
+    # unsupported-fast-hdmi
+
+  unsupported-headless: &unsupported-headless
     # debian stable minimal
     # ubuntu stable minimal
     # unsupported-headless
+
+  unsupported-riscv64: &unsupported-riscv64
+    # ubuntu stable xfce desktop
+    # unsupported-risv64
 
 targets:
 
