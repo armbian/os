@@ -45,13 +45,13 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: khadas-edge2,image-output-oowow }
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim1s, BRANCH: legacy}
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current }
     - { BOARD: khadas-vim3l, BRANCH: current }
-    - { BOARD: khadas-vim4, BRANCH: legacy}
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: nanopi-r6s, BRANCH: edge }
