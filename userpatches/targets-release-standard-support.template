@@ -22,6 +22,36 @@ common-gha-configs:
 
 lists:
 
+  supported-slow-hdmi: &supported-slow-hdmi
+    # ubuntu stable xfce desktop
+    # supported-slow-hdmi
+
+  staging-slow-hdmi: &staging-slow-hdmi
+    # wip-slow-hdmi
+
+  supported-fast-hdmi: &supported-fast-hdmi
+    # debian stable minimal
+    # ubuntu stable minimal
+    # supported-fast-hdmi
+
+  staging-fast-hdmi: &staging-fast-hdmi
+    # wip-fast-hdmi
+
+  supported-headless: &supported-headless
+    # debian stable minimal
+    # ubuntu stable minimal
+    # supported-headless
+
+  staging-headless: &staging-headless
+    # wip-headless
+
+  supported-riscv64: &supported-riscv64
+    # ubuntu stable xfce desktop
+    # supported-riscv64
+
+  staging-riscv64: &staging-riscv64
+    # wip-riscv64-hdmi
+
   # mainly riscv userland
   special: &special
 #    - { BOARD: beaglev, BRANCH: edge }
