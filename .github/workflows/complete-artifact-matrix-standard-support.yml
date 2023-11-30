@@ -2672,21 +2672,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -2885,21 +2883,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -3098,21 +3094,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -3311,21 +3305,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -3524,21 +3516,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -3737,21 +3727,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -3950,21 +3938,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -4163,21 +4149,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -4376,21 +4360,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -4589,21 +4571,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -4802,21 +4782,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -5015,21 +4993,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -5228,21 +5204,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -5441,21 +5415,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -5654,21 +5626,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
@@ -5867,21 +5837,19 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
-             WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
+             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
              
-             #SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #"https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             #| jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             #for server in $SERVERS; do
-             #   JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             #   "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
-             #   SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-             #   False && SERVER_PATH="/dl"
-             #   echo "http://$i$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|" >> servers.txt
-             #done
+             SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
+             WEBSEEDS=$(for server in $SERVERS; do
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                False && SERVER_PATH="/dl"
+                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             done | sed 's/ \+/\n/g')
           fi
-          
-          WEBSEEDS=$(cat servers.txt | sed 's/ \+/\n/g')
           cd output/images/*/archive/
           mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
