@@ -67,25 +67,25 @@ jobs:
         TARGET="/tmp/unsupported-slow-hdmi.txt"
         BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
         echo $BOARDFAMILY
-        source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null
-        #if [[ $ARCH == riscv64 ]]; then TARGET="/tmp/unsupported-riscv64.txt";
-        #elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/unsupported-headless.txt";
-        #elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET="/tmp/unsupported-fast-hdmi.txt"
-        #fi
-        #KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
-        #board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
-        #if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }" >> $TARGET ;
-        #elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }" >> $TARGET ;
-        #elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}" >> $TARGET;
-        #fi
+        source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
+        if [[ $ARCH == riscv64 ]]; then TARGET="/tmp/unsupported-riscv64.txt";
+        elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/unsupported-headless.txt";
+        elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET="/tmp/unsupported-fast-hdmi.txt"
+        fi
+        KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
+        board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
+        if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }" >> $TARGET ;
+        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }" >> $TARGET ;
+        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}" >> $TARGET;
+        fi
         done
 
         # generate targets-release-unsupported.yaml
         cp os/userpatches/targets-release-unsupported.template os/userpatches/targets-release-unsupported.yaml
-        #sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
-        #sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
-        #sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt' os/userpatches/targets-release-unsupported.yaml
-        #sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-unsupported.yaml
 
     - name: "Generate Action Script"
       run: |
