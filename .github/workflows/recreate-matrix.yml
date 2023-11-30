@@ -77,7 +77,7 @@ jobs:
 
         # generate targets-release-unsupported.yaml
         cp os/userpatches/targets-release-unsupported.template os/userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported/r /tmp/unsupported.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-hdmi/r /tmp/unsupported.txt' os/userpatches/targets-release-unsupported.yaml
         sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-unsupported.yaml
 
     - name: "Generate Action Script"
