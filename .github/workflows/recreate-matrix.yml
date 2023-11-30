@@ -67,7 +67,7 @@ jobs:
         TARGET="/tmp/unsupported-slow-hdmi.txt"
         BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
         echo $BOARDFAMILY
-        #source build/config/sources/families/$BOARDFAMILY.conf 2>/dev/null
+        source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null
         #if [[ $ARCH == riscv64 ]]; then TARGET="/tmp/unsupported-riscv64.txt";
         #elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/unsupported-headless.txt";
         #elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET="/tmp/unsupported-fast-hdmi.txt"
