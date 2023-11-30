@@ -175,7 +175,7 @@ lists:
 
 targets:
 
-  # debian cli minimal
+  # debian testing cli minimal
 
   full-cli-stable-debian:
     enabled: yes
@@ -184,7 +184,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: sid
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
