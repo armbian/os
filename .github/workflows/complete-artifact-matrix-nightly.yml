@@ -2685,14 +2685,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -2896,14 +2896,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -3107,14 +3107,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -3318,14 +3318,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -3529,14 +3529,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -3740,14 +3740,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -3951,14 +3951,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -4162,14 +4162,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -4373,14 +4373,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -4584,14 +4584,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -4795,14 +4795,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -5006,14 +5006,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -5217,14 +5217,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -5428,14 +5428,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -5639,14 +5639,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
@@ -5850,14 +5850,14 @@ jobs:
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${i}" | jq)
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                False && SERVER_PATH="/dl"
-                echo "http://$server$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           fi
           cd output/images/*/archive/
-          mktorrent --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
+          mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
       - name: Choose random user for upload
         run: |
