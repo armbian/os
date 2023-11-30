@@ -172,11 +172,19 @@ lists:
 
   unsupported-riscv64: &unsupported-riscv64
     # ubuntu stable xfce desktop
-    # unsupported-risv64
+    # unsupported-riscv64
+    - { BOARD: beaglev, BRANCH: edge }
+    - { BOARD: licheepi-4a, BRANCH: edge }
+    - { BOARD: star64, BRANCH: edge }
+    - { BOARD: uefi-riscv64, BRANCH: current }
+    - { BOARD: unleashed, BRANCH: edge }
+    - { BOARD: unmatched, BRANCH: edge }
+    - { BOARD: visionfive, BRANCH: edge }
+    - { BOARD: visionfive2, BRANCH: edge }
 
 targets:
 
-  # debian testing cli minimal
+  # debian cli
 
   full-cli-stable-debian:
     enabled: yes
@@ -185,14 +193,15 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: sid
-      BUILD_MINIMAL: "yes"
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *unsupported
-      - *headless
+      - *unsupported-headless
+      - *unsupported-fast-hdmi
+      - *unsupported-slow-hdmi
 
-  # ubuntu cli minimal
+  # ubuntu cli
 
   full-cli-stable-ubuntu:
     enabled: yes
@@ -202,10 +211,27 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *unsupported-headless
+      - *unsupported-fast-hdmi
+      - *unsupported-slow-hdmi
+
+  # ubuntu testing cli minimal
+
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: mantic
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *headless
+      - *unsupported-riscv64
 
   # ubuntu xfce
 
@@ -223,5 +249,22 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
     items:
-      - *unsupported
+      - *unsupported-riscv64
+      - *unsupported-slow-hdmi
 
+  # ubuntu gnome
+  gnome-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *unsupported-fast-hdmi
