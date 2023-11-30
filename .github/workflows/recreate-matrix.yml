@@ -83,9 +83,18 @@ jobs:
 
         # skip boards listed in this file
         if grep $board os/userpatches/targets-automation.blacklist; then continue; fi
-        if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }" >> $TARGET ;
-        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }" >> $TARGET ;
-        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}" >> $TARGET;
+        if [[ "${KERNEL_TARGET}" == *current* ]]; then
+            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+            echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }" >> $TARGET ;
+        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then
+            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+            echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }" >> $TARGET ;
+        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then
+            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+            echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}" >> $TARGET;
         fi
         done
 
