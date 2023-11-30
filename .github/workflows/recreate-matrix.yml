@@ -65,6 +65,7 @@ jobs:
         BOARDS=$(ls -1 build/config/boards/*.{conf,csc,wip,tvb})
         rm -f /tmp/unsupported* /tmp/supported* /tmp/wip*
         for board in $BOARDS; do
+
         TARGET="/tmp/unsupported-slow-hdmi.txt"
         BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
         echo $BOARDFAMILY
@@ -79,6 +80,9 @@ jobs:
         fi
         KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
         board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
+
+        # skip boards listed in this file
+        if grep $board os/userpatches/targets-automation.blacklist; then continue; fi
         if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }" >> $TARGET ;
         elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }" >> $TARGET ;
         elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}" >> $TARGET;
