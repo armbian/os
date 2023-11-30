@@ -79,7 +79,7 @@ env:
   # For easier reuse across the multiple chunks ('armbian/build' repo)
   BUILD_REPOSITORY: "[[org_and_build_repo]]"
   #BUILD_REF: "[[build_ref]]" # branch or tag or sha1
-  BUILD_REF: "${{ inputs.branch || main }}"
+  BUILD_REF: "${{ inputs.branch || 'main' }}"
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "[[org_and_userpatches_repo]]"
