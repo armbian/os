@@ -84,7 +84,7 @@ jobs:
         fi
         done
 
-        # generate targets-release-unsupported.yaml
+        # generate targets-release-community-maintained.yaml
         cp os/userpatches/targets-release-standard-support.template os/userpatches/targets-release-standard-support.yaml
         cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
         cp os/userpatches/targets-release-nightly.template os/userpatches/targets-release-nightly.yaml
@@ -101,7 +101,7 @@ jobs:
         # Last stable branch
         LAST=$(git branch -r | grep "v2" | tail -1 | cut -d"/" -f2)
 
-        # generate targets-release-unsupported.yaml
+        # generate targets-release-community-maintained.yaml
         cp userpatches/targets-release-community-maintained.template userpatches/targets-release-community-maintained.yaml
         sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-community-maintained.yaml
         sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-community-maintained.yaml
@@ -155,7 +155,7 @@ jobs:
         # copy unsupported release templates
         #
         cp userpatches/gha/gha_config_release_unsupported.yaml userpatches/gha/gha_config.yaml
-        cp userpatches/targets-release-unsupported.yaml userpatches/targets.yaml
+        cp userpatches/targets-release-community-maintained.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
         sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
@@ -185,7 +185,7 @@ jobs:
         git config --local user.name "Armbianworker"
 
         # Update build list
-        git add userpatches/targets-release-unsupported.yaml
+        git add userpatches/targets-release-community-maintained.yaml
 
         # Add Action Scritps
         git add .github/workflows/complete-artifact-matrix-nightly.yml
