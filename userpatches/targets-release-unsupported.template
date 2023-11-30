@@ -23,20 +23,17 @@ common-gha-configs:
 lists:
 
   unsupported: &unsupported
-    # debian stable cli
     # ubuntu stable xfce desktop
     # unsupported-hdmi
 
   headless: &headless
     # debian stable minimal
-    # debian stable cli
     # ubuntu stable minimal
-    # ubuntu stable cli
     # unsupported-headless
 
 targets:
 
-  # debian cli
+  # debian cli minimal
 
   full-cli-stable-debian:
     enabled: yes
@@ -46,13 +43,13 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *unsupported
       - *headless
 
-  # ubuntu cli
+  # ubuntu cli minimal
 
   full-cli-stable-ubuntu:
     enabled: yes
@@ -62,10 +59,11 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: jammy
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *headless
+      - *unsupported
 
   # ubuntu xfce
 
