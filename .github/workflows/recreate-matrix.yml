@@ -86,7 +86,7 @@ jobs:
         cp userpatches/targets-release-unsupported.template userpatches/targets-release-unsupported.yaml
         sed -i '/    # unsupported/r /tmp/unsupported.txt' userpatches/targets-release-unsupported.yaml
         sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' userpatches/targets-release-unsupported.yaml
-        git add userpatches/targets-release-unsupported.yaml
+        git add -f userpatches/targets-release-unsupported.yaml
 
         #
         # copy nightly templates
