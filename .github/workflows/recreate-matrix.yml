@@ -73,7 +73,7 @@ jobs:
                 fi
             done > $2
         }
-        makelists "-v" "/tmp/unsupported.txt"
+        makelists "-v" "/tmp/unsupported-hdmi.txt"
         makelists "" "/tmp/unsupported-headless.txt"
 
         # generate targets-release-unsupported.yaml
