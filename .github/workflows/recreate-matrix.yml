@@ -61,24 +61,22 @@ jobs:
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
-        function makelists()
-        {
-            BOARDS=$(grep $1 'VIDEO_OUTPUT="no"' -lR build/config/boards/*.{wip,csc,tvb} | uniq)
-            for board in $BOARDS; do
-                KERNEL_TARGET=$(grep KERNEL_TARGET $board)
-                board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
-                if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }";
-                elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }";
-                elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}";
-                fi
-            done > $2
-        }
-        makelists "-v" "/tmp/unsupported-hdmi.txt"
-        makelists "" "/tmp/unsupported-headless.txt"
+        BOARDS=$(ls -1 build/config/boards/*.{wip,csc,tvb})
+        rm -f /tmp/unsupported-*
+        for board in $BOARDS; do
+        TARGET="/tmp/unsupported-hdmi.txt"
+        if grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/unsupported-headless.txt"; fi
+        KERNEL_TARGET=$(grep KERNEL_TARGET $board)
+        board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
+        if [[ "${KERNEL_TARGET}" == *current* ]]; then echo "    - { BOARD: $board, BRANCH: current }" >> $TARGET ;
+        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then echo "    - { BOARD: $board, BRANCH: edge }" >> $TARGET ;
+        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then echo "    - { BOARD: $board, BRANCH: legacy}" >> $TARGET;
+        fi
+        done
 
         # generate targets-release-unsupported.yaml
         cp os/userpatches/targets-release-unsupported.template os/userpatches/targets-release-unsupported.yaml
-        sed -i '/    # unsupported-hdmi/r /tmp/unsupported.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-hdmi/r /tmp/unsupported-hdmi.txt' os/userpatches/targets-release-unsupported.yaml
         sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-unsupported.yaml
 
     - name: "Generate Action Script"
