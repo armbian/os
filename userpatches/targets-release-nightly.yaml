@@ -85,9 +85,6 @@ lists:
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
 
-  staging-riscv64: &staging-riscv64
-    # wip-riscv64-hdmi
-
   unsupported-slow-hdmi: &unsupported-slow-hdmi
     # ubuntu stable xfce desktop
     # unsupported-slow-hdmi
@@ -257,12 +254,10 @@ targets:
       - *supported-slow-hdmi
       - *supported-fast-hdmi
       - *supported-headless
-      - *staging-riscv64
       - *unsupported-slow-hdmi
       - *unsupported-fast-hdmi
       - *unsupported-headless
       - *unsupported-riscv64
-      - *staging-riscv64
       - *virtual-boards
 
   # debian unstable minimal
@@ -284,7 +279,6 @@ targets:
       - *unsupported-slow-hdmi
       - *unsupported-fast-hdmi
       - *unsupported-headless
-      - *staging-riscv64
       - *virtual-boards
 
   # ubuntu xfce without apps
@@ -305,10 +299,8 @@ targets:
     items:
       - *supported-slow-hdmi
       - *supported-fast-hdmi
-      - *staging-riscv64
       - *unsupported-slow-hdmi
       - *unsupported-fast-hdmi
-      - *staging-riscv64
       - { BOARD: rpi4b, BRANCH: current }
 
   # debian trixie gnome desktop without 3d
