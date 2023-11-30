@@ -112,10 +112,18 @@ jobs:
         sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-community-maintained.yaml
         sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-community-maintained.yaml
 
-        #sed '/    # wip-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
-        #sed '/    # wip-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
-        #sed '/    # wip-riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
-        #sed '/    # wipunsupported-headless/r /tmp/unsupported-headless.txt'   os/userpatches/targets-release-nightly.template > os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # supported-slow-hdmi/r /tmp/supported-slow-hdmi.txt'     os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # supported-fast-hdmi/r /tmp/supported-fast-hdmi.txt'     os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # supported-riscv64/r /tmp/supported-riscv64.txt'         os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # supported-headless/r /tmp/supported-headless.txt'       os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt'   os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # wip-slow-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # wip-fast-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-nightly.yaml
+        sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-nightly.yaml
 
     - name: "Generate Action Script"
       run: |
