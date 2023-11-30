@@ -75,6 +75,11 @@ jobs:
         makelists "-v" "/tmp/unsupported.txt"
         makelists "" "/tmp/unsupported-headless.txt"
 
+        # generate targets-release-unsupported.yaml
+        cp os/userpatches/targets-release-unsupported.template os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported/r /tmp/unsupported.txt' os/userpatches/targets-release-unsupported.yaml
+        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt' os/userpatches/targets-release-unsupported.yaml
+
     - name: "Generate Action Script"
       run: |
 
@@ -164,6 +169,9 @@ jobs:
         cd ../os
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
+
+        # Update build list
+        git add userpatches/targets-release-unsupported.yaml
 
         # Add Action Scritps
         git add .github/workflows/complete-artifact-matrix-nightly.yml
