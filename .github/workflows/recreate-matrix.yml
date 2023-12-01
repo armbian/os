@@ -54,7 +54,7 @@ jobs:
         rsync -av os/userpatches/. build/userpatches/
         rm -f build/userpatches/targets.yaml
 
-    - name: "Generate Lists"
+    - name: "Generate builds lists"
       run: |
 
         # generate lists to include them
@@ -62,77 +62,141 @@ jobs:
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
-        BOARDS=$(ls -1 build/config/boards/*.{conf,csc,wip,tvb})
-        rm -f /tmp/unsupported* /tmp/supported* /tmp/wip*
-        for board in $BOARDS; do
+        function make-targets()
+        {
+        
+        # cycle all board configs but .eos (end of support, which we swithc to when it breaks)
 
-        TARGET="/tmp/unsupported-slow-hdmi.txt"
-        BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
-        echo $BOARDFAMILY
-        if [[ $board == *.conf* ]]; then SUPPORT=supported;
-        elif [[ $board == *.wip* ]]; then SUPPORT=wip;
-        else SUPPORT=unsupported; fi
-        source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
-        TARGET="/tmp/${SUPPORT}-slow-hdmi.txt"
-        if [[ $ARCH == riscv64 ]]; then TARGET="/tmp/${SUPPORT}-riscv64.txt";
-        elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET="/tmp/${SUPPORT}-headless.txt";
-        elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET="/tmp/${SUPPORT}-fast-hdmi.txt"
-        fi
-        KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
-        board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
+        # We are replacing in target yaml. copy from template
+        cp $2.template $2.yaml
 
-        # skip boards listed in this file
-        if grep $board os/userpatches/targets-automation.blacklist; then continue; fi
-        if [[ "${KERNEL_TARGET}" == *current* ]]; then
-            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-            echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }" >> $TARGET ;
-        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then
-            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-            echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }" >> $TARGET ;
-        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then
-            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-            echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}" >> $TARGET;
-        fi
-        done
+        for SECTION in $1; do
 
-        # generate yaml files
-        cp os/userpatches/targets-release-standard-support.template os/userpatches/targets-release-standard-support.yaml
-        cp os/userpatches/targets-release-community-maintained.template os/userpatches/targets-release-community-maintained.yaml
-        cp os/userpatches/targets-release-nightly.template os/userpatches/targets-release-nightly.yaml
+            # debug
+            echo "Adding: $SECTION to $2"
 
-        sed -i '/    # supported-slow-hdmi/r /tmp/supported-slow-hdmi.txt'     os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # supported-fast-hdmi/r /tmp/supported-fast-hdmi.txt'     os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # supported-riscv64/r /tmp/supported-riscv64.txt'         os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # supported-headless/r /tmp/supported-headless.txt'       os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # wip-slow-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # wip-fast-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-standard-support.yaml
-        sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-standard-support.yaml
+            OUTPUT=$(for board in $(ls -1 build/config/boards/*.{conf,csc,wip,tvb}); do
 
-        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt'   os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # wip-slow-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # wip-fast-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-community-maintained.yaml
-        sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-community-maintained.yaml
+                    # read board family and determine ARCH
+                    BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
+                    source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
+           
+                    # board status defines where it goes
+                    if [[ $board == *.conf* ]]; then SUPPORT="standard-support";
+                    elif [[ $board == *.wip* ]]; then SUPPORT="staging";
+                    else SUPPORT="community-maintained"; fi
+        
+                    # ... and board ARCH defines where it goes
+                    TARGET_SECTION="${SUPPORT}-slow-hdmi"
+                    if [[ $ARCH == riscv64 ]]; then TARGET_SECTION="${SUPPORT}-riscv64";
+                    elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET_SECTION="${SUPPORT}-headless";
+                    elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET_SECTION="${SUPPORT}-fast-hdmi"
+                    fi
 
-        sed -i '/    # supported-slow-hdmi/r /tmp/supported-slow-hdmi.txt'     os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # supported-fast-hdmi/r /tmp/supported-fast-hdmi.txt'     os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # supported-riscv64/r /tmp/supported-riscv64.txt'         os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # supported-headless/r /tmp/supported-headless.txt'       os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # unsupported-slow-hdmi/r /tmp/unsupported-slow-hdmi.txt' os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # unsupported-fast-hdmi/r /tmp/unsupported-fast-hdmi.txt' os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # unsupported-riscv64/r /tmp/unsupported-riscv64.txt'     os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # unsupported-headless/r /tmp/unsupported-headless.txt'   os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # wip-slow-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # wip-fast-hdmi/r /tmp/wip-slow-hdmi.txt'                 os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # wip-riscv64-hdmi/r /tmp/wip-slow-hdmi.txt'              os/userpatches/targets-release-nightly.yaml
-        sed -i '/    # wip-headless/r /tmp/wip-headless.txt'                   os/userpatches/targets-release-nightly.yaml
+                    # read kernel target
+                    KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
+                    # extract board name from config
+                    board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
+
+                    # skip boards listed in this file
+                    if grep -q $board os/userpatches/targets-automation.blacklist; then continue; fi
+
+                    # our default is current build target. Use it or search further
+                    if [[ $TARGET_SECTION == $SECTION ]]; then
+
+                        if [[ "${KERNEL_TARGET}" == *current* ]]; then
+
+                            # check if we have extension mapping defined
+                            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                            echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }"
+
+                        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then
+
+                            # check if we have extension mapping defined
+                            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                            echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }"
+
+                        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then
+
+                            # check if we have extension mapping defined
+                            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                            echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}"
+
+                        else
+
+                            # otherwise it must be custom kernel target
+                            EXTENSION=$(grep -P '^(?=.*'${board}')(?=.*'${KERNEL_TARGET}')' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                            echo "    - { BOARD: $board, BRANCH: ${KERNEL_TARGET}${EXTENSION}}"
+
+                        fi
+
+                    fi
+
+                done)
+
+                if [[ -n $OUTPUT ]]; then
+                    TEMPFILE=$(mktemp)
+                    (
+                    echo "  $SECTION: &$SECTION"
+                    echo "    # auto generated section"
+                    while IFS= read -r line
+                    do  
+                    echo "$line"
+                    done <<< $OUTPUT                
+                    # mark end of the section
+                    echo -e "    # end of auto generated section\n"
+                    ) > $TEMPFILE
+
+                    # since its not empty, add to the yaml file
+                    sed -i "/  # automated lists start/r $TEMPFILE" ${2}.yaml
+
+                    # add also to section
+                    sed -i -e '/  automated-section/,/items/{/items/a \ \ \ \ \ \ - *'$SECTION'' -e '}' ${2}.yaml
+                fi
+        done        
+        }
+
+        # define which sections goes into which list
+        BUILD_SECTIONS_STANDARD_SUPPORT="
+                standard-support-slow-hdmi
+                staging-slow-hdmi
+                standard-support-fast-hdmi
+                staging-fast-hdmi
+                standard-support-headless
+                staging-headless
+                supported-riscv64
+                staging-riscv64
+        "
+        BUILD_SECTIONS_COMMUNITY_MAINTAINED="
+                community-maintained-slow-hdmi
+                community-maintained-fast-hdmi
+                community-maintained-headless
+                community-maintained-riscv64
+        "
+        BUILD_SECTIONS_NIGHTLY="
+                standard-support-slow-hdmi
+                staging-slow-hdmi
+                standard-support-fast-hdmi
+                staging-fast-hdmi
+                standard-support-headless
+                staging-headless
+                supported-riscv64
+                staging-riscv64
+                community-maintained-slow-hdmi
+                community-maintained-fast-hdmi
+                community-maintained-headless
+                community-maintained-riscv64
+        "
+
+        # $1 = parts to add
+        # $2 = filename that copy from .template to .yaml
+        make-targets "${BUILD_SECTIONS_STANDARD_SUPPORT}" "os/userpatches/targets-release-standard-support"
+        make-targets "${BUILD_SECTIONS_COMMUNITY_MAINTAINED}" "os/userpatches/targets-release-community-maintained"
+        make-targets "${BUILD_SECTIONS_NIGHTLY}" "os/userpatches/targets-release-nightly"
 
     - name: "Generate Action Script"
       run: |
