@@ -30,7 +30,7 @@ lists:
     - { BOARD: unmatched, BRANCH: edge }
     - { BOARD: visionfive2, BRANCH: edge }
     - { BOARD: visionfive, BRANCH: edge }
-    # end of auto generated section 
+    # end of auto generated section
 
   community-maintained-headless: &community-maintained-headless
     # auto generated section
@@ -62,7 +62,7 @@ lists:
     - { BOARD: pinecube, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
-    # end of auto generated section 
+    # end of auto generated section
 
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
@@ -129,7 +129,7 @@ lists:
     - { BOARD: tanix-tx6, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
     - { BOARD: z28pro, BRANCH: current }
-    # end of auto generated section 
+    # end of auto generated section
 
   community-maintained-slow-hdmi: &community-maintained-slow-hdmi
     # auto generated section
@@ -161,12 +161,12 @@ lists:
     - { BOARD: sunvell-r69, BRANCH: current }
     - { BOARD: udoo, BRANCH: current }
     - { BOARD: xt-q8l-v10, BRANCH: current }
-    # end of auto generated section 
+    # end of auto generated section
 
   staging-riscv64: &staging-riscv64
     # auto generated section
     - { BOARD: licheepi-4a, BRANCH: edge }
-    # end of auto generated section 
+    # end of auto generated section
 
   standard-support-headless: &standard-support-headless
     # auto generated section
@@ -181,7 +181,7 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
-    # end of auto generated section 
+    # end of auto generated section
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
@@ -198,7 +198,7 @@ lists:
     - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: rock-5a, BRANCH: edge }
-    # end of auto generated section 
+    # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
@@ -238,7 +238,7 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: xiaomi-elish, BRANCH: sm8250, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    # end of auto generated section 
+    # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
@@ -247,7 +247,7 @@ lists:
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
-    # end of auto generated section 
+    # end of auto generated section
 
   # automated lists stop
 
