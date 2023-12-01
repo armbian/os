@@ -156,6 +156,10 @@ jobs:
 
                     # add also to section
                     sed -i -e '/  automated-section/,/items/{/items/a \ \ \ \ \ \ - *'$SECTION'' -e '}' ${2}.yaml
+                else
+                    # remove tags from manually made sections or it will exit with error
+                    sed -i '/'$SECTION'/d' ${2}.yaml
+                    echo "Removing $SECTION from $2"
                 fi
         done        
         }
