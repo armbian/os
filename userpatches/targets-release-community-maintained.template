@@ -31,7 +31,7 @@ targets:
 
   full-cli-stable-debian:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -48,7 +48,7 @@ targets:
 
   full-cli-stable-ubuntu:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -63,7 +63,7 @@ targets:
 
   minimal-cli-unstable-ubuntu:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -78,7 +78,7 @@ targets:
 
   xfce-desktop-stable-ubuntu:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -96,7 +96,7 @@ targets:
   # ubuntu gnome
   gnome-desktop-stable-ubuntu:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -113,7 +113,7 @@ targets:
   # automated section
   automated-section:
     enabled: no
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "no"
