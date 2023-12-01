@@ -159,13 +159,13 @@ jobs: # <TEMPLATE-IGNORE>
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
-      - name: Choose random user for upload
-        run: |
+      #- name: Choose random user for upload
+      #  run: |
 
-          arr[0]="${{ secrets.ACCESS_TOKEN }}"
-          arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
-          rand=$[ $RANDOM % 2 ]
-          echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
+          #arr[0]="${{ secrets.ACCESS_TOKEN }}"
+          #arr[1]="${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}"
+          #rand=$[ $RANDOM % 2 ]
+          #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
       - name: "Upload artefacts"
@@ -176,6 +176,7 @@ jobs: # <TEMPLATE-IGNORE>
         if: ${{ ( github.event.inputs.nightlybuild || [[nightlybuildDefaults]] ) == 'yes' }}
         uses: ncipollo/release-action@v1
         with:
+          repo: "${{ env.RELEASE_REPOSITORY }}"
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
@@ -185,8 +186,9 @@ jobs: # <TEMPLATE-IGNORE>
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
           artifactErrorsFailBuild: false
+          token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
-          token: ${{ env.upload_user }}
+          #token: ${{ env.upload_user }}
 
       - name: Deploy to server
         timeout-minutes: 15

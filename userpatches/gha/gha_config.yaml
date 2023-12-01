@@ -2,6 +2,7 @@ org: "armbian" # can't be an expression, only string.
 
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
+release_repo: "os"
 build_ref: "v23.05"
 script_name: "Build Artifacts and Images"
 repository_ref: "stable"

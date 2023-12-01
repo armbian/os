@@ -2,6 +2,7 @@ org: "armbian" # can't be an expression, only string.
 
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
+release_repo: "os"
 build_ref: "v23.05.2"
 script_name: "ARTIFACTS: old stable"
 concurrency_group: "${{ github.run_id }}-"

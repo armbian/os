@@ -57,6 +57,7 @@ jobs: # <TEMPLATE-IGNORE>
       - uses: ncipollo/release-action@v1
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
         with:
+          repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.version }}"
           omitBody: true
           omitName: true
