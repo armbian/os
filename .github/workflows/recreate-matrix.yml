@@ -274,7 +274,7 @@ jobs:
         sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
         # we need unique concurency id
         sed -i "s/pipeline-/unsupported/" output/info/artifact-image-complete-matrix.yml
-        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-unsupported.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-community-maintained.yml
 
 
         #
@@ -304,7 +304,7 @@ jobs:
         git add .github/workflows/complete-artifact-matrix-nightly.yml
         #git add .github/workflows/complete-artifact-matrix-old-stable.yml
         git add .github/workflows/complete-artifact-matrix-standard-support.yml
-        git add .github/workflows/complete-artifact-matrix-unsupported.yml
+        git add .github/workflows/complete-artifact-matrix-community-maintained.yml
         git add .github/workflows/complete-artifact-matrix-all.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
 
