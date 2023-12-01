@@ -1989,13 +1989,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -2024,7 +2024,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2192,13 +2192,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -2227,7 +2227,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2395,13 +2395,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -2430,7 +2430,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2598,13 +2598,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -2633,7 +2633,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2801,13 +2801,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -2836,7 +2836,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3004,13 +3004,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -3039,7 +3039,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3207,13 +3207,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -3242,7 +3242,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3410,13 +3410,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -3445,7 +3445,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3613,13 +3613,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -3648,7 +3648,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3816,13 +3816,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -3851,7 +3851,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4019,13 +4019,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -4054,7 +4054,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4222,13 +4222,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -4257,7 +4257,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4425,13 +4425,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -4460,7 +4460,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4628,13 +4628,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -4663,7 +4663,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4831,13 +4831,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -4866,7 +4866,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5034,13 +5034,13 @@ jobs:
           TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.img*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          WEBSEEDS="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-             
+
              SERVERS=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
@@ -5069,7 +5069,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == community }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
