@@ -22,23 +22,8 @@ common-gha-configs:
 
 lists:
 
-  unsupported-slow-hdmi: &unsupported-slow-hdmi
-    # ubuntu stable xfce desktop
-    # unsupported-slow-hdmi
-
-  unsupported-fast-hdmi: &unsupported-fast-hdmi
-    # debian stable minimal
-    # ubuntu stable minimal
-    # unsupported-fast-hdmi
-
-  unsupported-headless: &unsupported-headless
-    # debian stable minimal
-    # ubuntu stable minimal
-    # unsupported-headless
-
-  unsupported-riscv64: &unsupported-riscv64
-    # ubuntu stable xfce desktop
-    # unsupported-riscv64
+  # automated lists start
+  # automated lists stop
 
 targets:
 
@@ -126,3 +111,17 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *unsupported-fast-hdmi
+
+  # automated section
+  automated-section:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+  # end of automated-section:
