@@ -45,21 +45,21 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *supported-slow-hdmi
+      - *standard-support-slow-hdmi
       - *staging-slow-hdmi
-      - *supported-fast-hdmi
+      - *standard-support-fast-hdmi
       - *staging-fast-hdmi
-      - *supported-headless
+      - *standard-support-headless
       - *staging-headless
-      - *supported-riscv64
+      - *standard-support-riscv64
       - *staging-riscv64
-      - *unsupported-slow-hdmi
+      - *community-maintained-slow-hdmi
       - *staging-slow-hdmi
-      - *unsupported-fast-hdmi
+      - *community-maintained-fast-hdmi
       - *staging-fast-hdmi
-      - *unsupported-headless
+      - *community-maintained-headless
       - *staging-headless
-      - *unsupported-riscv64
+      - *community-maintained-riscv64
       - *staging-riscv64
       - *virtual-boards
 
@@ -76,19 +76,19 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *supported-slow-hdmi
+      - *standard-support-slow-hdmi
       - *staging-slow-hdmi
-      - *supported-fast-hdmi
+      - *standard-support-fast-hdmi
       - *staging-fast-hdmi
-      - *supported-headless
+      - *standard-support-headless
       - *staging-headless
-      - *unsupported-slow-hdmi
+      - *community-maintained-slow-hdmi
       - *staging-slow-hdmi
-      - *unsupported-fast-hdmi
+      - *community-maintained-fast-hdmi
       - *staging-fast-hdmi
-      - *unsupported-headless
+      - *community-maintained-headless
       - *staging-headless
-      - *unsupported-riscv64
+      - *community-maintained-riscv64
       - *staging-riscv64
       - *virtual-boards
 
@@ -108,17 +108,17 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "none"
     items:
-      - *supported-slow-hdmi
+      - *standard-support-slow-hdmi
       - *staging-slow-hdmi
-      - *supported-fast-hdmi
+      - *standard-support-fast-hdmi
       - *staging-fast-hdmi
-      - *supported-riscv64
+      - *standard-support-riscv64
       - *staging-riscv64
-      - *unsupported-slow-hdmi
+      - *community-maintained-slow-hdmi
       - *staging-slow-hdmi
-      - *unsupported-fast-hdmi
+      - *community-maintained-fast-hdmi
       - *staging-fast-hdmi
-      - *unsupported-riscv64
+      - *community-maintained-riscv64
       - *staging-riscv64
       - { BOARD: rpi4b, BRANCH: current }
 
