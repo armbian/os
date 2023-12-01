@@ -40,9 +40,9 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *unsupported-headless
-      - *unsupported-fast-hdmi
-      - *unsupported-slow-hdmi
+      - *community-maintained-headless
+      - *community-maintained-fast-hdmi
+      - *community-maintained-slow-hdmi
 
   # ubuntu cli
 
@@ -57,9 +57,9 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *unsupported-headless
-      - *unsupported-fast-hdmi
-      - *unsupported-slow-hdmi
+      - *community-maintained-headless
+      - *community-maintained-fast-hdmi
+      - *community-maintained-slow-hdmi
 
   # ubuntu testing cli minimal
 
@@ -74,7 +74,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *unsupported-riscv64
+      - *community-maintained-riscv64
 
   # ubuntu xfce
 
@@ -92,8 +92,8 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
     items:
-      - *unsupported-riscv64
-      - *unsupported-slow-hdmi
+      - *community-maintained-riscv64
+      - *community-maintained-slow-hdmi
 
   # ubuntu gnome
   gnome-desktop-stable-ubuntu:
@@ -110,7 +110,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *unsupported-fast-hdmi
+      - *community-maintained-fast-hdmi
 
   # automated section
   automated-section:
