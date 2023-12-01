@@ -73,7 +73,7 @@ jobs:
         for SECTION in $1; do
 
             # debug
-            echo "Adding: $SECTION to $2"
+            echo "Adding: $SECTION to $2" >> $GITHUB_STEP_SUMMARY
 
             OUTPUT=$(for board in $(ls -1 build/config/boards/*.{conf,csc,wip,tvb}); do
 
