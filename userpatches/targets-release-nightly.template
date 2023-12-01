@@ -69,10 +69,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *community-maintained-slow-hdmi
-      - *community-maintained-fast-hdmi
-      - *community-maintained-headless
-      - *community-maintained-riscv64
       - *staging-fast-hdmi
       - *staging-slow-hdmi
       - *staging-headless
@@ -101,9 +97,6 @@ targets:
       - *staging-slow-hdmi
       - *staging-fast-hdmi
       - *staging-riscv64
-      - *community-maintained-slow-hdmi
-      - *community-maintained-fast-hdmi
-      - *community-maintained-riscv64
       - { BOARD: rpi4b, BRANCH: current }
 
   # debian trixie gnome desktop without 3d
