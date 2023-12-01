@@ -274,19 +274,15 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-slow-hdmi
-      - *staging-slow-hdmi
       - *standard-support-fast-hdmi
       - *staging-fast-hdmi
       - *standard-support-headless
-      - *staging-headless
       - *standard-support-riscv64
       - *staging-riscv64
       - *community-maintained-slow-hdmi
-      - *staging-slow-hdmi
       - *community-maintained-fast-hdmi
       - *staging-fast-hdmi
       - *community-maintained-headless
-      - *staging-headless
       - *community-maintained-riscv64
       - *staging-riscv64
       - *virtual-boards
@@ -305,17 +301,13 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-slow-hdmi
-      - *staging-slow-hdmi
       - *standard-support-fast-hdmi
       - *staging-fast-hdmi
       - *standard-support-headless
-      - *staging-headless
       - *community-maintained-slow-hdmi
-      - *staging-slow-hdmi
       - *community-maintained-fast-hdmi
       - *staging-fast-hdmi
       - *community-maintained-headless
-      - *staging-headless
       - *community-maintained-riscv64
       - *staging-riscv64
       - *virtual-boards
@@ -337,13 +329,11 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "none"
     items:
       - *standard-support-slow-hdmi
-      - *staging-slow-hdmi
       - *standard-support-fast-hdmi
       - *staging-fast-hdmi
       - *standard-support-riscv64
       - *staging-riscv64
       - *community-maintained-slow-hdmi
-      - *staging-slow-hdmi
       - *community-maintained-fast-hdmi
       - *staging-fast-hdmi
       - *community-maintained-riscv64
