@@ -7,7 +7,7 @@ on:
     branches:
       - 'main'
     paths:
-      - "userpatches/**"
+      - "userpatches/*.template"
       - "userpatches/gha/**"
       - "userpatches/gha/chunks/**"
       - ".github/workflows/recreate-matrix.yml"
