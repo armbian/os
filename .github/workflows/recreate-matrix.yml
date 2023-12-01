@@ -265,7 +265,7 @@ jobs:
         #
         # copy unsupported release templates
         #
-        cp userpatches/gha/gha_config_release_unsupported.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/gha/gha_config_release_community_maintained.yaml userpatches/gha/gha_config.yaml
         cp userpatches/targets-release-community-maintained.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers

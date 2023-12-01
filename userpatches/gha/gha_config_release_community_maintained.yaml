@@ -12,8 +12,8 @@ team: "Release manager"
 # menu defaults
 skipImagesDefaults: "'no'"
 checkOciDefaults: "'yes'"
-nightlybuildDefaults: "'no'"
-uploadtoserverDefaults: "'armbian'"
+nightlybuildDefaults: "'yes'"
+uploadtoserverDefaults: "'github'"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"
@@ -22,7 +22,7 @@ userpatches_dir: "userpatches" # folder inside the userpatches repo; use "." if 
 targets_filename: "targets-release-community-maintained.yaml"
 
 ghcr_user: "${{ github.repository_owner }}"
-userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
+userpatches_config_for_prepare_job: "armbian-community" # use "" for no config file
 
 # repository runner
 repository_runner: "[ repository ]"
