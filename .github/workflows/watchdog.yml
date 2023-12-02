@@ -4,7 +4,7 @@
 name: Watchdog (cronjob)
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 env:
