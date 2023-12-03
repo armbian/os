@@ -1,10 +1,12 @@
 
 # template file: 050.single_header.yaml
 
-name: "Build Community Maintained Images (admin)"
+name: "Build Community Images (cronjob)"
 
 on:
-  
+  schedule:
+   - cron: '0 0 */3 * *'
+
   workflow_call:
     inputs:
       ref:                      # commit id
