@@ -3,8 +3,8 @@ org: "armbian" # can't be an expression, only string.
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
 release_repo: "community"
-build_ref: "v23.11"
-script_name: "Build Community Maintained Images (admin)"
+build_ref: "main"
+script_name: "Build Community Images (cronjob)"
 concurrency_group: "${{ github.run_id }}-pipeline-stable"
 repository_ref: "stable"
 team: "Release manager"
@@ -28,4 +28,4 @@ userpatches_config_for_prepare_job: "armbian-community" # use "" for no config f
 repository_runner: "[ repository ]"
 
 # when this should run
-cron_job: ""
+cron_job: "schedule:\n   - cron: '0 0 */3 * *'\n"
