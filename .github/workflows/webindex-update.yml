@@ -1,4 +1,4 @@
-name: Generate Download Index (admin)
+name: Generate Download Index in JSON (admin)
 on:
   repository_dispatch:
     types: ["Webindex update"]
@@ -13,7 +13,7 @@ jobs:
   Check:
 
     name: "Check membership"
-    runs-on: fast
+    runs-on: Linux
     steps:
 
       - name: "Check membership"
@@ -28,8 +28,8 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    name: "Generate Download Index"
-    runs-on: ubuntu-latest
+    name: "Generate JSON Index"
+    runs-on: Linux
     needs: Check
     steps:
 
@@ -40,47 +40,60 @@ jobs:
           fetch-depth: 1
           clean: false
 
-      - name: Generate index
-        run: |
-          A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $2" " "https://rsync.armbian.com/dl/"$5" "$3"?"$4 }' | grep "archive/" | grep -v ".txt" | sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
-          B=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g"| sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
-          for line in $A $B; do
-              SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\"//g" | sed "s/\.//g" | sed "s/\,//g" )
-              SIZE=$(echo "scale=0; $(echo $SIZE)/1024/1024" | bc -l)"Mb"
-              DATETIME=$(echo $line | cut -d"|" -f3 | sed "s/\"//g")
-              DATETIME=$(date -d "$(echo $DATETIME | sed "s/?/ /g")" +%s)
-              URL=$(echo $line | cut -d"|" -f2 | sed "s/\"//g")
-              NIGHTLY=""
-              [[ "$URL" == *"github"* ]] && NIGHTLY="_nightly"
-              NAME=$(echo $URL | cut -d"_" -f3 | awk '{print tolower($0)}')
-              sufix=$(echo $URL | rev | cut -d'.' -f 1 | rev | sed "s/^/./" | sed "s/.xz//g")
-              out_release=$(echo $URL | cut -d"_" -f4)
-              out_branch=$(echo $URL | cut -d"_" -f5)
-              out_kernel=$(echo $URL | cut -d"_" -f6-7 | cut -d"." -f1-3 | cut -d"_" -f1)
-              out_desktop=$(echo $URL | cut -d"_" -f7- | cut -d"." -f1 | cut -d"_" -f1)
-              echo "$NAME/${out_release^}_${out_branch}$([[ -n "${out_desktop}" ]] && echo "_")${out_desktop}${NIGHTLY}${sufix}|$URL|$DATETIME|$SIZE"
-          done > index.csv
-
-      - name: Download and compress torrent files
+      - name: "Install dependencies"
         run: |
 
-          ls -l
-          cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=stable --backups=1 || true
-          cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=unstable --backups=1 || true
+          if ! command -v "gh" > /dev/null 2>&1; then sudo apt-get -y -qq install gh; fi
+          if ! command -v "jc" > /dev/null 2>&1; then sudo apt-get -y -qq install jc; fi
 
-          # hack. we treat stable a bit different. Need to be unified once
-          sed -i "s|https://rsync.armbian.com/dl/||" index.csv
+      - name: "Stable builds JSON file" # adjust "exposed" property while reading from download
+        run: |
 
-          zip -qj unstable.zip unstable/*.torrent
-          zip -qj stable.zip stable/*.torrent
+          while read element; do
+            while read exposed; do
+              # fix date and size
+              SEARCH=$(echo $element | awk '{ print $3" "$4}')
+              REPLACE=$(echo $element | awk '{ print $3"T"$4"Z"}' | sed "s|/|-|g")
+              element=$(echo $element | sed "s|$SEARCH|$REPLACE|")              
+              SEARCH=$(echo $element | awk '{ print $2}')
+              REPLACE=$(echo $element | awk '{ print $2}' | awk '{gsub(/[.|,]/,"");print $NF}')
+              element=$(echo $element | sed "s|$SEARCH|$REPLACE|")
+              if [[ $element == *$exposed* ]]; then
+                echo "$element true"
+              else
+                echo "$element false"
+              fi
+            done < exposed.map
+          done <<< $(rsync -ar rsync://rsync.armbian.com/dl/) \
+          | awk '{ print "\"https://dl.armbian.com/"$4"\"|\""$3"\"|\""$2"\"|\""$5"\"" }' \
+          | grep "archive/" \
+          | sed '1s/^/"url"|"updatedAt"|"size"|"exposed"\n/' \
+          | jc --csv \
+          | jq '{"assets": .}' > standard-support.json
+
+      - name: "Nightly and community maintained"
+        run: |
+
+          gh release view --json assets --repo github.com/armbian/os        | jq > nightly.json
+          gh release view --json assets --repo github.com/armbian/community | jq > community-maintained.json
+
+      - name: "Download and compress torrent files"
+        run: |
+
+          SOURCE=$(mktemp -d)
+          DESTINATION=$(mktemp -d)
+          rsync -zqvr --include="*/archive/*.torrent" --exclude="/*/*/*" --exclude="_*/" --exclude="control" --exclude="quotes.txt" --exclude="*/all-torrents.zip" rsync://rsync.armbian.com/dl/ ${SOURCE}
+          find ${SOURCE}/. -mindepth 3 -exec mv -i -- {} ${DESTINATION}/ \;
+          zip -qj all-torrents.zip ${DESTINATION}/*.torrent
 
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: |
-            index.csv
-            stable.zip
-            unstable.zip
+            standard-support.json
+            nightly.json
+            community-maintained.json
+            all-torrents.zip
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -91,6 +104,7 @@ jobs:
 
       - name: Upload index
         run: |
-          rsync -ar --progress -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" stable.zip upload@rsync.armbian.com:/storage/www/dl/torrent/all-torrents.zip
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files stable.zip unstable.zip index.csv ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
+
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files standard-support.json nightly.json community-maintained.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json          
+
           
