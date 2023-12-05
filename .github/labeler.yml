@@ -11,6 +11,22 @@
 # Please keep the labels sorted and deduplicated.
 
 "software package":
-  - external/*
+- all:  
+  - changed-files:
+    - AnyGlobToAnyFile: ['external/*']
+  - base-branch: 'main'
 "build target":
-  - targets/*
+- all:  
+  - changed-files:
+    - AnyGlobToAnyFile: ['targets/*']
+  - base-branch: 'main'
+"live patch":
+- all:  
+  - changed-files:
+    - AnyGlobToAnyFile: ['live-patch/*']
+  - base-branch: 'main'
+"CI":
+- all:  
+  - changed-files:
+    - AnyGlobToAnyFile: ['userpatches/*']
+  - base-branch: 'main'
