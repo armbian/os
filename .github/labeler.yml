@@ -13,20 +13,20 @@
 "software package":
 - all:  
   - changed-files:
-    - AnyGlobToAnyFile: ['external/*']
+    - any-glob-to-any-file: ['external/*']
   - base-branch: 'main'
 "build target":
 - all:  
   - changed-files:
-    - AnyGlobToAnyFile: ['targets/*']
+    - any-glob-to-any-file: ['targets/*']
   - base-branch: 'main'
 "live patch":
 - all:  
   - changed-files:
-    - AnyGlobToAnyFile: ['live-patch/*']
+    - any-glob-to-any-file: ['live-patch/*']
   - base-branch: 'main'
 "CI":
 - all:  
   - changed-files:
-    - AnyGlobToAnyFile: ['userpatches/*']
+    - any-glob-to-any-file: ['userpatches/*']
   - base-branch: 'main'
