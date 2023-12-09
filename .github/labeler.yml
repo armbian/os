@@ -10,23 +10,23 @@
 #
 # Please keep the labels sorted and deduplicated.
 
-"software package":
-- all:  
+"Software package":
+- all:
   - changed-files:
     - any-glob-to-any-file: ['external/*']
   - base-branch: 'main'
-"build target":
-- all:  
+"Build target":
+- all:
   - changed-files:
     - any-glob-to-any-file: ['targets/*']
   - base-branch: 'main'
-"live patch":
-- all:  
+"Live patch":
+- all:
   - changed-files:
     - any-glob-to-any-file: ['live-patch/*']
   - base-branch: 'main'
-"CI":
-- all:  
+"Action scripts":
+- all:
   - changed-files:
     - any-glob-to-any-file: ['userpatches/*']
   - base-branch: 'main'
