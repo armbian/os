@@ -20,8 +20,8 @@ on:
         type: boolean
         description: "Use only beta repository"
         default: true
-#  repository_dispatch:
-#    types: ["Smoke tests"]
+  repository_dispatch:
+    types: ["Smoke tests"]
 
 permissions:
   contents: read
