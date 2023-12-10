@@ -90,6 +90,7 @@ on:
         - hikey960
         - hinlink-h28k
         - hinlink-h88k
+        - hinlink-ht2
         - imx7sabre
         - indiedroid-nova
         - inovato-quadra
@@ -302,6 +303,7 @@ on:
         - eliasbakken
         - engineer-80
         - glneo
+        - hoochiwetech
         - hzyitc
         - igorpecovnik
         - jeanrhum
@@ -5302,12 +5304,12 @@ jobs:
       # Cleaning releases
       #
       # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
-      - uses: dev-drprasad/delete-older-releases@v0.3.2
-        with:
-          repo: armbian/os
-          keep_latest: 16
-        env:
-          GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
+      #- uses: dev-drprasad/delete-older-releases@v0.3.2
+      #  with:
+      #    repo: armbian/os
+      #    keep_latest: 16
+      #  env:
+      #    GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
