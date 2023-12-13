@@ -28,4 +28,4 @@ userpatches_config_for_prepare_job: "armbian-community" # use "" for no config f
 repository_runner: "[ repository ]"
 
 # when this should run
-cron_job: "schedule:\n   - cron: '0 0 */3 * *'\n"
+cron_job: "schedule:\n   - cron: '0 0 * * THU'\n"
