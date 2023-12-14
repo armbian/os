@@ -29,6 +29,7 @@ targets:
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
         skip-releases: [ "sid" ] # do NOT include these releases
+        skip-branches: [ "edge" ] # temporally
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["gnome", "xfce", "cinnamon", "i3-wm"] # ONLY include these desktops
