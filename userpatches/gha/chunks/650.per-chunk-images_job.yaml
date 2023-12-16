@@ -210,7 +210,7 @@ jobs: # <TEMPLATE-IGNORE>
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
