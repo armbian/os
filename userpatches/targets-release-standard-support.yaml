@@ -25,110 +25,174 @@ lists:
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: edge }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: edge }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: edge }
+    - { BOARD: nanopi-r4s, BRANCH: current,edge}
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: edge }
+    - { BOARD: nanopiduo, BRANCH: current,edge}
+    - { BOARD: nanopiduo2, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: legacy}
+    - { BOARD: nanopiduo2, BRANCH: edge }
+    - { BOARD: nanopiduo2, BRANCH: legacy,current,edge}
     - { BOARD: orangepi-r1, BRANCH: current }
     - { BOARD: orangepi-r1, BRANCH: edge }
+    - { BOARD: orangepi-r1, BRANCH: current,edge}
     - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepi-r1plus-lts, BRANCH: edge }
-    - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: edge }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current,edge}
     - { BOARD: orangepizero, BRANCH: current }
+    - { BOARD: orangepizero, BRANCH: legacy}
     - { BOARD: orangepizero, BRANCH: edge }
+    - { BOARD: orangepizero, BRANCH: legacy,current,edge}
+    - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: orangepizero2, BRANCH: legacy}
+    - { BOARD: orangepizero2, BRANCH: edge }
+    - { BOARD: orangepizero2, BRANCH: legacy,current,edge}
     - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: orangepizeroplus, BRANCH: legacy}
     - { BOARD: orangepizeroplus, BRANCH: edge }
+    - { BOARD: orangepizeroplus, BRANCH: legacy,current,edge}
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: edge }
+    - { BOARD: rockpi-e, BRANCH: current,edge}
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
     - { BOARD: sk-am64b, BRANCH: edge }
+    - { BOARD: sk-am64b, BRANCH: current,edge}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapicm4io, BRANCH: edge }
+    - { BOARD: bananapicm4io, BRANCH: current,edge}
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: edge }
+    - { BOARD: bananapim2pro, BRANCH: current,edge}
     - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim2s, BRANCH: edge }
+    - { BOARD: bananapim2s, BRANCH: current,edge}
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: edge }
+    - { BOARD: bananapim5, BRANCH: current,edge}
     - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: bigtreetech-cb1, BRANCH: legacy}
     - { BOARD: bigtreetech-cb1, BRANCH: edge }
+    - { BOARD: bigtreetech-cb1, BRANCH: legacy,current,edge}
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: edge }
+    - { BOARD: jethubj100, BRANCH: current,edge}
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: edge }
+    - { BOARD: jethubj80, BRANCH: current,edge}
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim1, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim1, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-edge2, BRANCH: legacy,edge}
+    - { BOARD: khadas-vim1, BRANCH: current }
+    - { BOARD: khadas-vim1, BRANCH: edge }
+    - { BOARD: khadas-vim1, BRANCH: current,edge}
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim2, BRANCH: edge }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow"
-"image-output-oowow" }
-    - { BOARD: khadas-vim3, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow"
-"image-output-oowow" }
+    - { BOARD: khadas-vim2, BRANCH: current,edge}
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim3, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim3, BRANCH: current,edge}
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim3l, BRANCH: current,edge}
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lafrite, BRANCH: edge }
+    - { BOARD: lafrite, BRANCH: current,edge}
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: lepotato, BRANCH: edge }
+    - { BOARD: lepotato, BRANCH: current,edge}
+    - { BOARD: nanopi-r6s, BRANCH: legacy}
     - { BOARD: nanopi-r6s, BRANCH: edge }
+    - { BOARD: nanopi-r6s, BRANCH: legacy,edge}
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidc2, BRANCH: edge }
+    - { BOARD: odroidc2, BRANCH: current,edge}
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: edge }
+    - { BOARD: olimex-teres-a64, BRANCH: current,edge}
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: edge }
+    - { BOARD: orangepi4-lts, BRANCH: current,edge}
+    - { BOARD: orangepi5-plus, BRANCH: legacy}
     - { BOARD: orangepi5-plus, BRANCH: edge }
+    - { BOARD: orangepi5-plus, BRANCH: legacy,edge}
+    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: orangepi5, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: legacy,edge}
     - { BOARD: orangepiprime, BRANCH: current }
+    - { BOARD: orangepiprime, BRANCH: legacy}
     - { BOARD: orangepiprime, BRANCH: edge }
+    - { BOARD: orangepiprime, BRANCH: legacy,current,edge}
     - { BOARD: pine64, BRANCH: current }
+    - { BOARD: pine64, BRANCH: legacy}
     - { BOARD: pine64, BRANCH: edge }
+    - { BOARD: pine64, BRANCH: legacy,current,edge}
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: edge }
+    - { BOARD: pinebook-pro, BRANCH: current,edge}
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: edge }
+    - { BOARD: radxa-zero, BRANCH: current,edge}
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: renegade, BRANCH: edge }
+    - { BOARD: renegade, BRANCH: current,edge}
     - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: legacy}
     - { BOARD: rock-3a, BRANCH: edge }
+    - { BOARD: rock-3a, BRANCH: legacy,current,edge}
+    - { BOARD: rock-5b, BRANCH: legacy}
     - { BOARD: rock-5b, BRANCH: edge }
+    - { BOARD: rock-5b, BRANCH: legacy,edge,collabora}
     - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: edge }
+    - { BOARD: rockpi-4a, BRANCH: current,edge}
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: edge }
+    - { BOARD: rockpro64, BRANCH: current,edge}
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: edge }
+    - { BOARD: sk-tda4vm, BRANCH: current,edge}
     - { BOARD: tritium-h5, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: legacy}
     - { BOARD: tritium-h5, BRANCH: edge }
+    - { BOARD: tritium-h5, BRANCH: legacy,current,edge}
     - { BOARD: uefi-arm64, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: legacy}
     - { BOARD: uefi-arm64, BRANCH: edge }
+    - { BOARD: uefi-arm64, BRANCH: legacy,current,edge}
     - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: legacy}
     - { BOARD: uefi-x86, BRANCH: edge }
+    - { BOARD: uefi-x86, BRANCH: legacy,current,edge}
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: edge }
+    - { BOARD: odroidxu4, BRANCH: current,edge}
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: onecloud, BRANCH: edge }
+    - { BOARD: onecloud, BRANCH: current,edge}
     - { BOARD: orangepione, BRANCH: current }
+    - { BOARD: orangepione, BRANCH: legacy}
     - { BOARD: orangepione, BRANCH: edge }
+    - { BOARD: orangepione, BRANCH: legacy,current,edge}
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: edge }
+    - { BOARD: tinkerboard, BRANCH: current,edge}
     - { BOARD: tritium-h3, BRANCH: current }
+    - { BOARD: tritium-h3, BRANCH: legacy}
     - { BOARD: tritium-h3, BRANCH: edge }
+    - { BOARD: tritium-h3, BRANCH: legacy,current,edge}
     # end of auto generated section
 
   # automated lists stop
