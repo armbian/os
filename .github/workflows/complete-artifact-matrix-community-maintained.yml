@@ -1955,7 +1955,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -1974,7 +1974,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -2172,7 +2172,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2191,7 +2191,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -2389,7 +2389,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2408,7 +2408,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -2606,7 +2606,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2625,7 +2625,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -2823,7 +2823,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2842,7 +2842,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -3040,7 +3040,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3059,7 +3059,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -3257,7 +3257,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3276,7 +3276,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -3474,7 +3474,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3493,7 +3493,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -3691,7 +3691,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3710,7 +3710,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -3908,7 +3908,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3927,7 +3927,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -4125,7 +4125,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4144,7 +4144,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -4342,7 +4342,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4361,7 +4361,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -4559,7 +4559,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4578,7 +4578,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -4776,7 +4776,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4795,7 +4795,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -4993,7 +4993,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -5012,7 +5012,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
@@ -5210,7 +5210,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 15
+        timeout-minutes: 30
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -5229,7 +5229,7 @@ jobs:
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
              # upload
              rsync --progress -e \
-             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
              -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
