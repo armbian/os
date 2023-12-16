@@ -167,13 +167,9 @@ jobs:
         # define which sections goes into which list
         BUILD_SECTIONS_STANDARD_SUPPORT="
                 standard-support-slow-hdmi
-                staging-slow-hdmi
                 standard-support-fast-hdmi
-                staging-fast-hdmi
                 standard-support-headless
-                staging-headless
                 standard-support-riscv64
-                staging-riscv64
         "
         BUILD_SECTIONS_COMMUNITY_MAINTAINED="
                 community-maintained-slow-hdmi
