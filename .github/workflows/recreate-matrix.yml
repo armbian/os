@@ -58,13 +58,16 @@ jobs:
       run: |
 
         # generate lists to include them
-        ls -1 build/config/boards/*.{conf,eos,wip,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/boards.txt
+        ls -1 build/config/boards/*.{conf} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/standard-support.txt
+        ls -1 build/config/boards/*.{conf,wip} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/staging.txt
+        ls -1 build/config/boards/*.{csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/community-maintained.txt
+
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
         function make-targets()
         {
-        
+
         # cycle all board configs but .eos (end of support, which we swithc to when it breaks)
 
         # We are replacing in target yaml. copy from template
@@ -80,12 +83,12 @@ jobs:
                     # read board family and determine ARCH
                     BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
                     source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
-           
+
                     # board status defines where it goes
                     if [[ $board == *.conf* ]]; then SUPPORT="standard-support";
                     elif [[ $board == *.wip* ]]; then SUPPORT="staging";
                     else SUPPORT="community-maintained"; fi
-        
+
                     # ... and board ARCH defines where it goes
                     TARGET_SECTION="${SUPPORT}-slow-hdmi"
                     if [[ $ARCH == riscv64 ]]; then TARGET_SECTION="${SUPPORT}-riscv64";
@@ -144,9 +147,9 @@ jobs:
                     echo "  $SECTION: &$SECTION"
                     echo "    # auto generated section"
                     while IFS= read -r line
-                    do  
+                    do
                     echo "$line"
-                    done <<< $OUTPUT                
+                    done <<< $OUTPUT
                     # mark end of the section
                     echo -e "    # end of auto generated section\n"
                     ) > $TEMPFILE
@@ -161,7 +164,7 @@ jobs:
                     sed -i '/'$SECTION'/d' ${2}.yaml
                     echo "Removing $SECTION from $2"
                 fi
-        done        
+        done
         }
 
         # define which sections goes into which list
@@ -217,7 +220,7 @@ jobs:
         cp userpatches/targets-release-nightly.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards, maintainers and branches
-        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# boards/r /tmp/staging.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
 
@@ -247,7 +250,7 @@ jobs:
         cp userpatches/targets-release-standard-support.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
-        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# boards/r /tmp/standard-support.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
         # we need unique concurency id
@@ -261,7 +264,7 @@ jobs:
         cp userpatches/targets-release-community-maintained.yaml userpatches/targets.yaml
         bash ./compile.sh gha-template
         # add boards and maintainers
-        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# boards/r /tmp/community-maintained.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
         sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
         # we need unique concurency id
