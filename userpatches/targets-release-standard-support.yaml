@@ -23,6 +23,69 @@ common-gha-configs:
 lists:
 
   # automated lists start
+  standard-support-headless: &standard-support-headless
+    # auto generated section
+    - { BOARD: nanopi-r4s, BRANCH: 0 current }
+    - { BOARD: nanopiduo, BRANCH: 0 current }
+    - { BOARD: nanopiduo2, BRANCH: 0 current }
+    - { BOARD: orangepi-r1, BRANCH: 0 current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: 0 current }
+    - { BOARD: orangepizero, BRANCH: 0 current }
+    - { BOARD: orangepizero2, BRANCH: 0 current }
+    - { BOARD: orangepizeroplus, BRANCH: 0 current }
+    - { BOARD: rockpi-e, BRANCH: 0 current }
+    - { BOARD: sk-am62b, BRANCH: 0 edge }
+    - { BOARD: sk-am64b, BRANCH: 0 current }
+    # end of auto generated section
+
+  standard-support-fast-hdmi: &standard-support-fast-hdmi
+    # auto generated section
+    - { BOARD: bananapicm4io, BRANCH: 0 current }
+    - { BOARD: bananapim2pro, BRANCH: 0 current }
+    - { BOARD: bananapim2s, BRANCH: 0 current }
+    - { BOARD: bananapim5, BRANCH: 0 current }
+    - { BOARD: bigtreetech-cb1, BRANCH: 0 current }
+    - { BOARD: jethubj100, BRANCH: 0 current }
+    - { BOARD: jethubj80, BRANCH: 0 current }
+    - { BOARD: khadas-edge2, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim1, BRANCH: 0 current }
+    - { BOARD: khadas-vim1s, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim2, BRANCH: 0 current }
+    - { BOARD: khadas-vim3, BRANCH: 0 current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim3l, BRANCH: 0 current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim4, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: lafrite, BRANCH: 0 current }
+    - { BOARD: lepotato, BRANCH: 0 current }
+    - { BOARD: nanopi-r6s, BRANCH: 0 legacy}
+    - { BOARD: odroidc2, BRANCH: 0 current }
+    - { BOARD: olimex-teres-a64, BRANCH: 0 current }
+    - { BOARD: orangepi4-lts, BRANCH: 0 current }
+    - { BOARD: orangepi5-plus, BRANCH: 0 legacy}
+    - { BOARD: orangepi5, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: orangepiprime, BRANCH: 0 current }
+    - { BOARD: pine64, BRANCH: 0 current }
+    - { BOARD: pinebook-pro, BRANCH: 0 current }
+    - { BOARD: radxa-zero, BRANCH: 0 current }
+    - { BOARD: renegade, BRANCH: 0 current }
+    - { BOARD: rock-3a, BRANCH: 0 current }
+    - { BOARD: rock-5b, BRANCH: 0 edge }
+    - { BOARD: rockpi-4a, BRANCH: 0 current }
+    - { BOARD: rockpro64, BRANCH: 0 current }
+    - { BOARD: sk-tda4vm, BRANCH: 0 current }
+    - { BOARD: tritium-h5, BRANCH: 0 current }
+    - { BOARD: uefi-arm64, BRANCH: 0 current }
+    - { BOARD: uefi-x86, BRANCH: 0 current }
+    # end of auto generated section
+
+  standard-support-slow-hdmi: &standard-support-slow-hdmi
+    # auto generated section
+    - { BOARD: odroidxu4, BRANCH: 0 current }
+    - { BOARD: onecloud, BRANCH: 0 current }
+    - { BOARD: orangepione, BRANCH: 0 current }
+    - { BOARD: tinkerboard, BRANCH: 0 current }
+    - { BOARD: tritium-h3, BRANCH: 0 current }
+    # end of auto generated section
+
   # automated lists stop
 
   virtual-boards: &virtual-boards
@@ -50,6 +113,9 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
       - *virtual-boards
 
   # Debian full CLI
@@ -64,6 +130,9 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
       - *virtual-boards
 
   # Ubuntu minimal
@@ -78,6 +147,9 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
       - *virtual-boards
 
   # Ubuntu full CLI
@@ -92,6 +164,9 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
       - *virtual-boards
   
   # Full Ubuntu LTS XFCE without 3D
@@ -109,6 +184,8 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
 
   # Full Debian stable XFCE without 3D
   xfce-desktop-stable-debian:
@@ -125,6 +202,8 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
 
   # Full Ubuntu Gnome with 3d
   gnome-3d-desktop-lts-ubuntu:
@@ -141,6 +220,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-fast-hdmi
 
   # Full Debian Gnome with 3d
   gnome-3d-desktop-stable-debian:
@@ -157,6 +237,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-fast-hdmi
 
   # Full Ubuntu kde plasma with 3d
   kde-plasma-desktop-stable-ubuntu:
@@ -173,6 +254,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-fast-hdmi
 
   # Full Ubuntu i3 without 3d
   minimal-i3-desktop-stable-ubuntu:
@@ -189,6 +271,8 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
 
   # Full Ubuntu LTS Cinnamon with 3d
   cinnamon-desktop-stable-ubuntu:
@@ -205,6 +289,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-fast-hdmi
 
   #  Full Debian Cinnamon with 3d
   cinnamon-3d-desktop-stable-debian:
@@ -221,6 +306,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *standard-support-fast-hdmi
 
   # automated section
   automated-section:
@@ -234,4 +320,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-headless
+      - *standard-support-fast-hdmi
+      - *standard-support-slow-hdmi
   # end of automated-section:
