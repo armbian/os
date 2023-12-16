@@ -25,256 +25,146 @@ lists:
   # automated lists start
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
-    - { BOARD: beaglev, BRANCH: 0 edge }
-    - { BOARD: star64, BRANCH: 0 edge }
-    - { BOARD: uefi-riscv64, BRANCH: 0 current }
-    - { BOARD: uefi-riscv64, BRANCH: 1 edge }
-    - { BOARD: unleashed, BRANCH: 0 edge }
-    - { BOARD: unmatched, BRANCH: 0 edge }
-    - { BOARD: visionfive, BRANCH: 0 edge }
-    - { BOARD: visionfive2, BRANCH: 0 edge }
+    - { BOARD: beaglev, BRANCH: edge }
+    - { BOARD: star64, BRANCH: edge }
+    - { BOARD: uefi-riscv64, BRANCH: current }
+    - { BOARD: unleashed, BRANCH: edge }
+    - { BOARD: unmatched, BRANCH: edge }
+    - { BOARD: visionfive, BRANCH: edge }
+    - { BOARD: visionfive2, BRANCH: edge }
     # end of auto generated section
 
   community-maintained-headless: &community-maintained-headless
     # auto generated section
-    - { BOARD: bananapir2, BRANCH: 0 legacy}
-    - { BOARD: clearfogbase, BRANCH: 0 current }
-    - { BOARD: clearfogbase, BRANCH: 1 edge }
-    - { BOARD: clearfogpro, BRANCH: 0 current }
-    - { BOARD: clearfogpro, BRANCH: 1 edge }
-    - { BOARD: cubieboard, BRANCH: 0 current }
-    - { BOARD: cubieboard, BRANCH: 1 edge }
-    - { BOARD: espressobin, BRANCH: 0 current }
-    - { BOARD: espressobin, BRANCH: 1 edge }
-    - { BOARD: helios4, BRANCH: 0 current }
-    - { BOARD: helios4, BRANCH: 1 edge }
-    - { BOARD: lime-a33, BRANCH: 0 current }
-    - { BOARD: lime-a33, BRANCH: 1 edge }
-    - { BOARD: macchiatobin-doubleshot, BRANCH: 0 current }
-    - { BOARD: macchiatobin-doubleshot, BRANCH: 1 edge }
-    - { BOARD: melea1000, BRANCH: 0 current }
-    - { BOARD: melea1000, BRANCH: 1 edge }
-    - { BOARD: mk808c, BRANCH: 0 current }
-    - { BOARD: mk808c, BRANCH: 1 edge }
-    - { BOARD: nanopi-r1, BRANCH: 0 current }
-    - { BOARD: nanopi-r1, BRANCH: 1 edge }
-    - { BOARD: nanopi-r1s-h5, BRANCH: 0 current }
-    - { BOARD: nanopi-r1s-h5, BRANCH: 1 edge }
-    - { BOARD: nanopi-r2c, BRANCH: 0 current }
-    - { BOARD: nanopi-r2c, BRANCH: 1 edge }
-    - { BOARD: nanopi-r2s, BRANCH: 0 current }
-    - { BOARD: nanopi-r2s, BRANCH: 1 edge }
-    - { BOARD: nanopi-r4se, BRANCH: 0 current }
-    - { BOARD: nanopi-r4se, BRANCH: 1 edge }
-    - { BOARD: nanopiair, BRANCH: 0 current }
-    - { BOARD: nanopiair, BRANCH: 1 edge }
-    - { BOARD: nanopineo, BRANCH: 0 current }
-    - { BOARD: nanopineo, BRANCH: 1 edge }
-    - { BOARD: nanopineo2, BRANCH: 0 current }
-    - { BOARD: nanopineo2, BRANCH: 1 edge }
-    - { BOARD: nanopineo2black, BRANCH: 0 current }
-    - { BOARD: nanopineo2black, BRANCH: 1 edge }
-    - { BOARD: nanopineo3, BRANCH: 0 current }
-    - { BOARD: nanopineo3, BRANCH: 1 edge }
-    - { BOARD: nanopineocore2, BRANCH: 0 current }
-    - { BOARD: nanopineocore2, BRANCH: 1 edge }
-    - { BOARD: nanopineoplus2, BRANCH: 0 current }
-    - { BOARD: nanopineoplus2, BRANCH: 1 edge }
-    - { BOARD: olinux-som-a13, BRANCH: 0 current }
-    - { BOARD: olinux-som-a13, BRANCH: 1 edge }
-    - { BOARD: orangepi-r1plus, BRANCH: 0 current }
-    - { BOARD: orangepi-r1plus, BRANCH: 1 edge }
-    - { BOARD: orangepizeroplus2-h5, BRANCH: 0 current }
-    - { BOARD: orangepizeroplus2-h5, BRANCH: 1 edge }
-    - { BOARD: pinecube, BRANCH: 0 current }
-    - { BOARD: pinecube, BRANCH: 1 edge }
-    - { BOARD: rockpi-s, BRANCH: 0 current }
-    - { BOARD: rockpi-s, BRANCH: 1 edge }
-    - { BOARD: zeropi, BRANCH: 0 current }
-    - { BOARD: zeropi, BRANCH: 1 edge }
+    - { BOARD: bananapir2, BRANCH: legacy}
+    - { BOARD: clearfogbase, BRANCH: current }
+    - { BOARD: clearfogpro, BRANCH: current }
+    - { BOARD: cubieboard, BRANCH: current }
+    - { BOARD: espressobin, BRANCH: current }
+    - { BOARD: helios4, BRANCH: current }
+    - { BOARD: lime-a33, BRANCH: current }
+    - { BOARD: macchiatobin-doubleshot, BRANCH: current }
+    - { BOARD: melea1000, BRANCH: current }
+    - { BOARD: mk808c, BRANCH: current }
+    - { BOARD: nanopi-r1, BRANCH: current }
+    - { BOARD: nanopi-r1s-h5, BRANCH: current }
+    - { BOARD: nanopi-r2c, BRANCH: current }
+    - { BOARD: nanopi-r2s, BRANCH: current }
+    - { BOARD: nanopi-r4se, BRANCH: current }
+    - { BOARD: nanopiair, BRANCH: current }
+    - { BOARD: nanopineo, BRANCH: current }
+    - { BOARD: nanopineo2, BRANCH: current }
+    - { BOARD: nanopineo2black, BRANCH: current }
+    - { BOARD: nanopineo3, BRANCH: current }
+    - { BOARD: nanopineocore2, BRANCH: current }
+    - { BOARD: nanopineoplus2, BRANCH: current }
+    - { BOARD: olinux-som-a13, BRANCH: current }
+    - { BOARD: orangepi-r1plus, BRANCH: current }
+    - { BOARD: orangepizeroplus2-h5, BRANCH: current }
+    - { BOARD: pinecube, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
+    - { BOARD: zeropi, BRANCH: current }
     # end of auto generated section
 
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
-    - { BOARD: aml-s9xx-box, BRANCH: 0 current }
-    - { BOARD: aml-s9xx-box, BRANCH: 1 edge }
-    - { BOARD: armsom-w3, BRANCH: 0 legacy}
-    - { BOARD: bananapim64, BRANCH: 0 current }
-    - { BOARD: bananapim64, BRANCH: 1 edge }
-    - { BOARD: bananapir2pro, BRANCH: 0 current }
-    - { BOARD: bananapir2pro, BRANCH: 1 edge }
-    - { BOARD: clockworkpi-a06, BRANCH: 0 current }
-    - { BOARD: clockworkpi-a06, BRANCH: 1 edge }
-    - { BOARD: firefly-rk3399, BRANCH: 0 current }
-    - { BOARD: firefly-rk3399, BRANCH: 1 edge }
-    - { BOARD: helios64, BRANCH: 0 current }
-    - { BOARD: helios64, BRANCH: 1 edge }
-    - { BOARD: hikey960, BRANCH: 0 current }
-    - { BOARD: hikey960, BRANCH: 1 edge }
-    - { BOARD: hinlink-h28k, BRANCH: 0 legacy}
-    - { BOARD: hinlink-h88k, BRANCH: 0 legacy}
-    - { BOARD: hinlink-ht2, BRANCH: 0 legacy}
-    - { BOARD: indiedroid-nova, BRANCH: 0 edge }
-    - { BOARD: indiedroid-nova, BRANCH: 1 legacy}
-    - { BOARD: inovato-quadra, BRANCH: 0 current }
-    - { BOARD: inovato-quadra, BRANCH: 1 edge }
-    - { BOARD: jetson-nano, BRANCH: 0 current }
-    - { BOARD: jetson-nano, BRANCH: 1 edge }
-    - { BOARD: jp-tvbox-3566, BRANCH: 0 current }
-    - { BOARD: jp-tvbox-3566, BRANCH: 1 edge }
-    - { BOARD: khadas-edge, BRANCH: 0 current }
-    - { BOARD: khadas-edge, BRANCH: 1 edge }
-    - { BOARD: lime-a64, BRANCH: 0 current }
-    - { BOARD: lime-a64, BRANCH: 1 edge }
-    - { BOARD: mekotronics-r58x-pro, BRANCH: 0 legacy}
-    - { BOARD: nanopct4, BRANCH: 0 current }
-    - { BOARD: nanopct4, BRANCH: 1 edge }
-    - { BOARD: nanopi-r5c, BRANCH: 0 edge }
-    - { BOARD: nanopia64, BRANCH: 0 current }
-    - { BOARD: nanopia64, BRANCH: 1 edge }
-    - { BOARD: nanopik1plus, BRANCH: 0 current }
-    - { BOARD: nanopik1plus, BRANCH: 1 edge }
-    - { BOARD: nanopik2-s905, BRANCH: 0 current }
-    - { BOARD: nanopik2-s905, BRANCH: 1 edge }
-    - { BOARD: nanopim4, BRANCH: 0 current }
-    - { BOARD: nanopim4, BRANCH: 1 edge }
-    - { BOARD: nanopim4v2, BRANCH: 0 current }
-    - { BOARD: nanopim4v2, BRANCH: 1 edge }
-    - { BOARD: nanopineo4, BRANCH: 0 current }
-    - { BOARD: nanopineo4, BRANCH: 1 edge }
-    - { BOARD: odroidc4, BRANCH: 0 current }
-    - { BOARD: odroidc4, BRANCH: 1 edge }
-    - { BOARD: odroidhc4, BRANCH: 0 current }
-    - { BOARD: odroidhc4, BRANCH: 1 edge }
-    - { BOARD: odroidn2, BRANCH: 0 current }
-    - { BOARD: odroidn2, BRANCH: 1 edge }
-    - { BOARD: odroidn2l, BRANCH: 0 edge }
-    - { BOARD: orangepi-rk3399, BRANCH: 0 current }
-    - { BOARD: orangepi-rk3399, BRANCH: 1 edge }
-    - { BOARD: orangepi3-lts, BRANCH: 0 current }
-    - { BOARD: orangepi3-lts, BRANCH: 1 edge }
-    - { BOARD: orangepi3, BRANCH: 0 current }
-    - { BOARD: orangepi3, BRANCH: 1 edge }
-    - { BOARD: orangepi3b, BRANCH: 0 legacy}
-    - { BOARD: orangepi3b, BRANCH: 1 edge }
-    - { BOARD: orangepi4, BRANCH: 0 current }
-    - { BOARD: orangepi4, BRANCH: 1 edge }
-    - { BOARD: orangepilite2, BRANCH: 0 current }
-    - { BOARD: orangepilite2, BRANCH: 1 edge }
-    - { BOARD: orangepioneplus, BRANCH: 0 current }
-    - { BOARD: orangepioneplus, BRANCH: 1 edge }
-    - { BOARD: orangepipc2, BRANCH: 0 current }
-    - { BOARD: orangepipc2, BRANCH: 1 edge }
-    - { BOARD: orangepiwin, BRANCH: 0 current }
-    - { BOARD: orangepiwin, BRANCH: 1 edge }
-    - { BOARD: panther-x2, BRANCH: 0 current }
-    - { BOARD: panther-x2, BRANCH: 1 edge }
-    - { BOARD: pine64so, BRANCH: 0 current }
-    - { BOARD: pine64so, BRANCH: 1 edge }
-    - { BOARD: pinebook-a64, BRANCH: 0 current }
-    - { BOARD: pinebook-a64, BRANCH: 1 edge }
-    - { BOARD: pineh64-b, BRANCH: 0 current }
-    - { BOARD: pineh64-b, BRANCH: 1 edge }
-    - { BOARD: pineh64, BRANCH: 0 current }
-    - { BOARD: pineh64, BRANCH: 1 edge }
-    - { BOARD: quartz64a, BRANCH: 0 current }
-    - { BOARD: quartz64a, BRANCH: 1 edge }
-    - { BOARD: quartz64b, BRANCH: 0 current }
-    - { BOARD: quartz64b, BRANCH: 1 edge }
-    - { BOARD: recore, BRANCH: 0 legacy}
-    - { BOARD: recore, BRANCH: 1 current }
-    - { BOARD: rk3318-box, BRANCH: 0 current }
-    - { BOARD: rk3318-box, BRANCH: 1 edge }
-    - { BOARD: roc-rk3399-pc, BRANCH: 0 current }
-    - { BOARD: roc-rk3399-pc, BRANCH: 1 edge }
-    - { BOARD: rock-4se, BRANCH: 0 current }
-    - { BOARD: rock-4se, BRANCH: 1 edge }
-    - { BOARD: rock-5-cmio, BRANCH: 0 legacy}
-    - { BOARD: rock64, BRANCH: 0 current }
-    - { BOARD: rock64, BRANCH: 1 edge }
-    - { BOARD: rockpi-4b, BRANCH: 0 current }
-    - { BOARD: rockpi-4b, BRANCH: 1 edge }
-    - { BOARD: rockpi-4bplus, BRANCH: 0 edge }
-    - { BOARD: rockpi-4c, BRANCH: 0 current }
-    - { BOARD: rockpi-4c, BRANCH: 1 edge }
-    - { BOARD: rockpi-4cplus, BRANCH: 0 current }
-    - { BOARD: rockpi-4cplus, BRANCH: 1 edge }
-    - { BOARD: rockpi-n10, BRANCH: 0 current }
-    - { BOARD: rockpi-n10, BRANCH: 1 edge }
-    - { BOARD: station-m1, BRANCH: 0 current }
-    - { BOARD: station-m1, BRANCH: 1 edge }
-    - { BOARD: station-m2, BRANCH: 0 current }
-    - { BOARD: station-m2, BRANCH: 1 edge }
-    - { BOARD: station-m3, BRANCH: 0 legacy}
-    - { BOARD: station-p1, BRANCH: 0 current }
-    - { BOARD: station-p1, BRANCH: 1 edge }
-    - { BOARD: station-p2, BRANCH: 0 current }
-    - { BOARD: station-p2, BRANCH: 1 edge }
-    - { BOARD: tanix-tx6, BRANCH: 0 current }
-    - { BOARD: tanix-tx6, BRANCH: 1 edge }
-    - { BOARD: tinkerboard-2, BRANCH: 0 current }
-    - { BOARD: tinkerboard-2, BRANCH: 1 edge }
-    - { BOARD: z28pro, BRANCH: 0 current }
+    - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: armsom-w3, BRANCH: legacy}
+    - { BOARD: bananapim64, BRANCH: current }
+    - { BOARD: bananapir2pro, BRANCH: current }
+    - { BOARD: clockworkpi-a06, BRANCH: current }
+    - { BOARD: firefly-rk3399, BRANCH: current }
+    - { BOARD: helios64, BRANCH: current }
+    - { BOARD: hikey960, BRANCH: current }
+    - { BOARD: hinlink-h28k, BRANCH: legacy}
+    - { BOARD: hinlink-h88k, BRANCH: legacy}
+    - { BOARD: hinlink-ht2, BRANCH: legacy}
+    - { BOARD: indiedroid-nova, BRANCH: edge }
+    - { BOARD: inovato-quadra, BRANCH: current }
+    - { BOARD: jetson-nano, BRANCH: current }
+    - { BOARD: jp-tvbox-3566, BRANCH: current }
+    - { BOARD: khadas-edge, BRANCH: current }
+    - { BOARD: lime-a64, BRANCH: current }
+    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy}
+    - { BOARD: nanopct4, BRANCH: current }
+    - { BOARD: nanopi-r5c, BRANCH: edge }
+    - { BOARD: nanopia64, BRANCH: current }
+    - { BOARD: nanopik1plus, BRANCH: current }
+    - { BOARD: nanopik2-s905, BRANCH: current }
+    - { BOARD: nanopim4, BRANCH: current }
+    - { BOARD: nanopim4v2, BRANCH: current }
+    - { BOARD: nanopineo4, BRANCH: current }
+    - { BOARD: odroidc4, BRANCH: current }
+    - { BOARD: odroidhc4, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: odroidn2l, BRANCH: edge }
+    - { BOARD: orangepi-rk3399, BRANCH: current }
+    - { BOARD: orangepi3-lts, BRANCH: current }
+    - { BOARD: orangepi3, BRANCH: current }
+    - { BOARD: orangepi3b, BRANCH: legacy}
+    - { BOARD: orangepi4, BRANCH: current }
+    - { BOARD: orangepilite2, BRANCH: current }
+    - { BOARD: orangepioneplus, BRANCH: current }
+    - { BOARD: orangepipc2, BRANCH: current }
+    - { BOARD: orangepiwin, BRANCH: current }
+    - { BOARD: panther-x2, BRANCH: current }
+    - { BOARD: pine64so, BRANCH: current }
+    - { BOARD: pinebook-a64, BRANCH: current }
+    - { BOARD: pineh64-b, BRANCH: current }
+    - { BOARD: pineh64, BRANCH: current }
+    - { BOARD: quartz64a, BRANCH: current }
+    - { BOARD: quartz64b, BRANCH: current }
+    - { BOARD: recore, BRANCH: legacy}
+    - { BOARD: rk3318-box, BRANCH: current }
+    - { BOARD: roc-rk3399-pc, BRANCH: current }
+    - { BOARD: rock-4se, BRANCH: current }
+    - { BOARD: rock-5-cmio, BRANCH: legacy}
+    - { BOARD: rock64, BRANCH: current }
+    - { BOARD: rockpi-4b, BRANCH: current }
+    - { BOARD: rockpi-4bplus, BRANCH: edge }
+    - { BOARD: rockpi-4c, BRANCH: current }
+    - { BOARD: rockpi-4cplus, BRANCH: current }
+    - { BOARD: rockpi-n10, BRANCH: current }
+    - { BOARD: station-m1, BRANCH: current }
+    - { BOARD: station-m2, BRANCH: current }
+    - { BOARD: station-m3, BRANCH: legacy}
+    - { BOARD: station-p1, BRANCH: current }
+    - { BOARD: station-p2, BRANCH: current }
+    - { BOARD: tanix-tx6, BRANCH: current }
+    - { BOARD: tinkerboard-2, BRANCH: current }
+    - { BOARD: z28pro, BRANCH: current }
     # end of auto generated section
 
   community-maintained-slow-hdmi: &community-maintained-slow-hdmi
     # auto generated section
-    - { BOARD: bananapi, BRANCH: 0 current }
-    - { BOARD: bananapi, BRANCH: 1 edge }
-    - { BOARD: bananapim1plus, BRANCH: 0 current }
-    - { BOARD: bananapim1plus, BRANCH: 1 edge }
-    - { BOARD: bananapim2plus, BRANCH: 0 current }
-    - { BOARD: bananapim2plus, BRANCH: 1 edge }
-    - { BOARD: bananapim2ultra, BRANCH: 0 current }
-    - { BOARD: bananapim2ultra, BRANCH: 1 edge }
-    - { BOARD: bananapim2zero, BRANCH: 0 current }
-    - { BOARD: bananapim2zero, BRANCH: 1 edge }
-    - { BOARD: bananapim3, BRANCH: 0 current }
-    - { BOARD: bananapim3, BRANCH: 1 edge }
-    - { BOARD: bananapipro, BRANCH: 0 current }
-    - { BOARD: bananapipro, BRANCH: 1 edge }
-    - { BOARD: beelinkx2, BRANCH: 0 current }
-    - { BOARD: beelinkx2, BRANCH: 1 edge }
-    - { BOARD: cubieboard2, BRANCH: 0 current }
-    - { BOARD: cubieboard2, BRANCH: 1 edge }
-    - { BOARD: cubieboard4, BRANCH: 0 current }
-    - { BOARD: cubieboard4, BRANCH: 1 edge }
-    - { BOARD: cubietruck, BRANCH: 0 current }
-    - { BOARD: cubietruck, BRANCH: 1 edge }
-    - { BOARD: cubietruckplus, BRANCH: 0 current }
-    - { BOARD: cubietruckplus, BRANCH: 1 edge }
-    - { BOARD: cubox-i, BRANCH: 0 current }
-    - { BOARD: cubox-i, BRANCH: 1 edge }
-    - { BOARD: lime, BRANCH: 0 current }
-    - { BOARD: lime, BRANCH: 1 edge }
-    - { BOARD: lime2, BRANCH: 0 current }
-    - { BOARD: lime2, BRANCH: 1 edge }
-    - { BOARD: micro, BRANCH: 0 current }
-    - { BOARD: micro, BRANCH: 1 edge }
-    - { BOARD: orangepi2, BRANCH: 0 current }
-    - { BOARD: orangepi2, BRANCH: 1 edge }
-    - { BOARD: orangepilite, BRANCH: 0 current }
-    - { BOARD: orangepilite, BRANCH: 1 edge }
-    - { BOARD: orangepipc, BRANCH: 0 current }
-    - { BOARD: orangepipc, BRANCH: 1 edge }
-    - { BOARD: orangepipcplus, BRANCH: 0 current }
-    - { BOARD: orangepipcplus, BRANCH: 1 edge }
-    - { BOARD: orangepiplus, BRANCH: 0 current }
-    - { BOARD: orangepiplus, BRANCH: 1 edge }
-    - { BOARD: orangepiplus2e, BRANCH: 0 current }
-    - { BOARD: orangepiplus2e, BRANCH: 1 edge }
-    - { BOARD: orangepizeroplus2-h3, BRANCH: 0 current }
-    - { BOARD: orangepizeroplus2-h3, BRANCH: 1 edge }
-    - { BOARD: pcduino3, BRANCH: 0 current }
-    - { BOARD: pcduino3, BRANCH: 1 edge }
-    - { BOARD: rk322x-box, BRANCH: 0 current }
-    - { BOARD: rk322x-box, BRANCH: 1 edge }
-    - { BOARD: sunvell-r69, BRANCH: 0 current }
-    - { BOARD: sunvell-r69, BRANCH: 1 edge }
-    - { BOARD: udoo, BRANCH: 0 current }
-    - { BOARD: udoo, BRANCH: 1 edge }
-    - { BOARD: xt-q8l-v10, BRANCH: 0 current }
-    - { BOARD: xt-q8l-v10, BRANCH: 1 edge }
+    - { BOARD: bananapi, BRANCH: current }
+    - { BOARD: bananapim1plus, BRANCH: current }
+    - { BOARD: bananapim2plus, BRANCH: current }
+    - { BOARD: bananapim2ultra, BRANCH: current }
+    - { BOARD: bananapim2zero, BRANCH: current }
+    - { BOARD: bananapim3, BRANCH: current }
+    - { BOARD: bananapipro, BRANCH: current }
+    - { BOARD: beelinkx2, BRANCH: current }
+    - { BOARD: cubieboard2, BRANCH: current }
+    - { BOARD: cubieboard4, BRANCH: current }
+    - { BOARD: cubietruck, BRANCH: current }
+    - { BOARD: cubietruckplus, BRANCH: current }
+    - { BOARD: cubox-i, BRANCH: current }
+    - { BOARD: lime, BRANCH: current }
+    - { BOARD: lime2, BRANCH: current }
+    - { BOARD: micro, BRANCH: current }
+    - { BOARD: orangepi2, BRANCH: current }
+    - { BOARD: orangepilite, BRANCH: current }
+    - { BOARD: orangepipc, BRANCH: current }
+    - { BOARD: orangepipcplus, BRANCH: current }
+    - { BOARD: orangepiplus, BRANCH: current }
+    - { BOARD: orangepiplus2e, BRANCH: current }
+    - { BOARD: orangepizeroplus2-h3, BRANCH: current }
+    - { BOARD: pcduino3, BRANCH: current }
+    - { BOARD: rk322x-box, BRANCH: current }
+    - { BOARD: sunvell-r69, BRANCH: current }
+    - { BOARD: udoo, BRANCH: current }
+    - { BOARD: xt-q8l-v10, BRANCH: current }
     # end of auto generated section
 
   # automated lists stop

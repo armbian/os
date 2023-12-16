@@ -25,65 +25,65 @@ lists:
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: nanopi-r4s, BRANCH: 0 current }
-    - { BOARD: nanopiduo, BRANCH: 0 current }
-    - { BOARD: nanopiduo2, BRANCH: 0 current }
-    - { BOARD: orangepi-r1, BRANCH: 0 current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: 0 current }
-    - { BOARD: orangepizero, BRANCH: 0 current }
-    - { BOARD: orangepizero2, BRANCH: 0 current }
-    - { BOARD: orangepizeroplus, BRANCH: 0 current }
-    - { BOARD: rockpi-e, BRANCH: 0 current }
-    - { BOARD: sk-am62b, BRANCH: 0 edge }
-    - { BOARD: sk-am64b, BRANCH: 0 current }
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: current }
+    - { BOARD: orangepi-r1, BRANCH: current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
+    - { BOARD: orangepizero, BRANCH: current }
+    - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: edge }
+    - { BOARD: sk-am64b, BRANCH: current }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
-    - { BOARD: bananapicm4io, BRANCH: 0 current }
-    - { BOARD: bananapim2pro, BRANCH: 0 current }
-    - { BOARD: bananapim2s, BRANCH: 0 current }
-    - { BOARD: bananapim5, BRANCH: 0 current }
-    - { BOARD: bigtreetech-cb1, BRANCH: 0 current }
-    - { BOARD: jethubj100, BRANCH: 0 current }
-    - { BOARD: jethubj80, BRANCH: 0 current }
-    - { BOARD: khadas-edge2, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
-    - { BOARD: khadas-vim1, BRANCH: 0 current }
-    - { BOARD: khadas-vim1s, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
-    - { BOARD: khadas-vim2, BRANCH: 0 current }
-    - { BOARD: khadas-vim3, BRANCH: 0 current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim3l, BRANCH: 0 current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim4, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
-    - { BOARD: lafrite, BRANCH: 0 current }
-    - { BOARD: lepotato, BRANCH: 0 current }
-    - { BOARD: nanopi-r6s, BRANCH: 0 legacy}
-    - { BOARD: odroidc2, BRANCH: 0 current }
-    - { BOARD: olimex-teres-a64, BRANCH: 0 current }
-    - { BOARD: orangepi4-lts, BRANCH: 0 current }
-    - { BOARD: orangepi5-plus, BRANCH: 0 legacy}
-    - { BOARD: orangepi5, BRANCH: 0 legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: orangepiprime, BRANCH: 0 current }
-    - { BOARD: pine64, BRANCH: 0 current }
-    - { BOARD: pinebook-pro, BRANCH: 0 current }
-    - { BOARD: radxa-zero, BRANCH: 0 current }
-    - { BOARD: renegade, BRANCH: 0 current }
-    - { BOARD: rock-3a, BRANCH: 0 current }
-    - { BOARD: rock-5b, BRANCH: 0 edge }
-    - { BOARD: rockpi-4a, BRANCH: 0 current }
-    - { BOARD: rockpro64, BRANCH: 0 current }
-    - { BOARD: sk-tda4vm, BRANCH: 0 current }
-    - { BOARD: tritium-h5, BRANCH: 0 current }
-    - { BOARD: uefi-arm64, BRANCH: 0 current }
-    - { BOARD: uefi-x86, BRANCH: 0 current }
+    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: current }
+    - { BOARD: bananapim2s, BRANCH: current }
+    - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: jethubj100, BRANCH: current }
+    - { BOARD: jethubj80, BRANCH: current }
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim1, BRANCH: current }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim2, BRANCH: current }
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: lafrite, BRANCH: current }
+    - { BOARD: lepotato, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: legacy}
+    - { BOARD: odroidc2, BRANCH: current }
+    - { BOARD: olimex-teres-a64, BRANCH: current }
+    - { BOARD: orangepi4-lts, BRANCH: current }
+    - { BOARD: orangepi5-plus, BRANCH: legacy}
+    - { BOARD: orangepi5, BRANCH: legacy}
+    - { BOARD: orangepiprime, BRANCH: current }
+    - { BOARD: pine64, BRANCH: current }
+    - { BOARD: pinebook-pro, BRANCH: current }
+    - { BOARD: radxa-zero, BRANCH: current }
+    - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-5b, BRANCH: edge }
+    - { BOARD: rockpi-4a, BRANCH: current }
+    - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: sk-tda4vm, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
-    - { BOARD: odroidxu4, BRANCH: 0 current }
-    - { BOARD: onecloud, BRANCH: 0 current }
-    - { BOARD: orangepione, BRANCH: 0 current }
-    - { BOARD: tinkerboard, BRANCH: 0 current }
-    - { BOARD: tritium-h3, BRANCH: 0 current }
+    - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: onecloud, BRANCH: current }
+    - { BOARD: orangepione, BRANCH: current }
+    - { BOARD: tinkerboard, BRANCH: current }
+    - { BOARD: tritium-h3, BRANCH: current }
     # end of auto generated section
 
   # automated lists stop
