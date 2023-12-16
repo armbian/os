@@ -23,11 +23,6 @@ common-gha-configs:
 lists:
 
   # automated lists start
-  staging-riscv64: &staging-riscv64
-    # auto generated section
-    - { BOARD: licheepi-4a, BRANCH: edge }
-    # end of auto generated section
-
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: nanopi-r4s, BRANCH: current }
@@ -41,23 +36,6 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
-    # end of auto generated section
-
-  staging-fast-hdmi: &staging-fast-hdmi
-    # auto generated section
-    - { BOARD: fxblox-rk1, BRANCH: legacy}
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x, BRANCH: legacy}
-    - { BOARD: mixtile-blade3, BRANCH: legacy}
-    - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopi-r5s, BRANCH: edge }
-    - { BOARD: odroidm1, BRANCH: current }
-    - { BOARD: qemu-uboot-arm64, BRANCH: current }
-    - { BOARD: qemu-uboot-x86, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: radxa-zero2, BRANCH: current }
-    - { BOARD: rock-5a, BRANCH: edge }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -606,9 +584,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *staging-riscv64
       - *standard-support-headless
-      - *staging-fast-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-slow-hdmi
   # end of automated-section:
