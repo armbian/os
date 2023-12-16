@@ -111,7 +111,7 @@ jobs:
 
                     # our default is current build target. Use it or search further
                     if [[ $TARGET_SECTION == $SECTION ]]; then
-                    VARIANTS=1
+                    VARIANTS=0
                     for targets in ${KERNEL_TARGET}; do
 
                             if [[ "${targets}" == current && $VARIANTS -lt $3 ]]; then
