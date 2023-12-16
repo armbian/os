@@ -111,10 +111,10 @@ jobs:
 
                     # our default is current build target. Use it or search further
                     if [[ $TARGET_SECTION == $SECTION ]]; then
-                    VARIANTS=0
+                    VARIANTS=1
                     for targets in ${KERNEL_TARGET}; do
 
-                            if [[ "${targets}" == current && $VARIANTS -le $3 ]]; then
+                            if [[ "${targets}" == current && $VARIANTS -lt $3 ]]; then
                                 # check if we have extension mapping defined
                                 EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                 if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
@@ -122,7 +122,7 @@ jobs:
                                 VARIANTS=$((VARIANTS+1))
                             fi
 
-                            if [[ "${targets}" == edge && $VARIANTS -le $3 ]]; then
+                            if [[ "${targets}" == edge && $VARIANTS -lt $3 ]]; then
                                # check if we have extension mapping defined
                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
@@ -130,7 +130,7 @@ jobs:
                                VARIANTS=$((VARIANTS+1))
                             fi
 
-                            if [[ "${targets}" == legacy && $VARIANTS -le $3 ]]; then
+                            if [[ "${targets}" == legacy && $VARIANTS -lt $3 ]]; then
                                # check if we have extension mapping defined
                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
