@@ -251,7 +251,7 @@ targets:
 
   # automated section
   automated-section:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
