@@ -2050,15 +2050,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2253,15 +2267,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2456,15 +2484,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2659,15 +2701,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2862,15 +2918,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3065,15 +3135,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3268,15 +3352,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3471,15 +3569,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3674,15 +3786,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3877,15 +4003,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4080,15 +4220,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4283,15 +4437,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4486,15 +4654,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4689,15 +4871,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4892,15 +5088,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5095,15 +5305,29 @@ jobs:
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
 
-      - name: Deploy to server
+      - name: Deploy to servers
         timeout-minutes: 15
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-          #rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -rv output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/storage2/dl
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -rv output/images/ upload@rsync.armbian.com:/storage/incoming
+
+          # read servers data from NetBox database
+          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
+          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | \
+          while read i; do
+             SERVER_URL=$(echo $i | cut -d "," -f1)
+             SERVER_PORT=$(echo $i | cut -d "," -f3)
+             SERVER_PATH=$(echo $i | cut -d "," -f2)
+             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # upload
+             rsync --progress -e \
+             "ssh -i /home/igorp/.ssh/UPL -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+          done
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
