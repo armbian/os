@@ -1972,6 +1972,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -2189,6 +2191,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -2406,6 +2410,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -2623,6 +2629,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -2840,6 +2848,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -3057,6 +3067,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -3274,6 +3286,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -3491,6 +3505,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -3708,6 +3724,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -3925,6 +3943,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -4142,6 +4162,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -4359,6 +4381,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -4576,6 +4600,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -4793,6 +4819,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -5010,6 +5038,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
@@ -5227,6 +5257,8 @@ jobs:
              SERVER_PORT=$(echo $i | cut -d "," -f3)
              SERVER_PATH=$(echo $i | cut -d "," -f2)
              SERVER_USERNAME=$(echo $i | cut -d "," -f4)
+             # clean
+             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
