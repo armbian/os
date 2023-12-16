@@ -97,7 +97,12 @@ jobs:
                     fi
 
                     # read kernel target
-                    KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2)
+                    if [[ $(grep KERNEL_TARGET $board | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
+                       KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2 | awk -F, '{ print $2,$3,$1 }')
+                    else
+                       KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2 | sed "s/,/ /g")
+                    fi
+
                     # extract board name from config
                     board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
 
@@ -107,9 +112,9 @@ jobs:
                     # our default is current build target. Use it or search further
                     if [[ $TARGET_SECTION == $SECTION ]]; then
                     VARIANTS=0
-                    for targets in ${KERNEL_TARGET//,/ }; do
+                    for targets in ${KERNEL_TARGET}; do
 
-                            if [[ "${targets}" == current && $VARIANTS -le 2 ]]; then
+                            if [[ "${targets}" == current && $VARIANTS -le $3 ]]; then
                                 # check if we have extension mapping defined
                                 EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                 if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
@@ -117,7 +122,7 @@ jobs:
                                 VARIANTS=$((VARIANTS+1))
                             fi
 
-                            if [[ "${targets}" == edge && $VARIANTS -le 2 ]]; then
+                            if [[ "${targets}" == edge && $VARIANTS -le $3 ]]; then
                                # check if we have extension mapping defined
                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
@@ -125,7 +130,7 @@ jobs:
                                VARIANTS=$((VARIANTS+1))
                             fi
 
-                            if [[ "${targets}" == legacy && $VARIANTS -le 2 ]]; then
+                            if [[ "${targets}" == legacy && $VARIANTS -le $3 ]]; then
                                # check if we have extension mapping defined
                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
@@ -197,9 +202,10 @@ jobs:
 
         # $1 = parts to add
         # $2 = filename that copy from .template to .yaml
-        make-targets "${BUILD_SECTIONS_STANDARD_SUPPORT}" "os/userpatches/targets-release-standard-support"
-        make-targets "${BUILD_SECTIONS_COMMUNITY_MAINTAINED}" "os/userpatches/targets-release-community-maintained"
-        make-targets "${BUILD_SECTIONS_NIGHTLY}" "os/userpatches/targets-release-nightly"
+        # $3 = how many to build 1 or 2 (current,edge,legacy; current,legacy)
+        make-targets "${BUILD_SECTIONS_STANDARD_SUPPORT}" "os/userpatches/targets-release-standard-support" "1"
+        make-targets "${BUILD_SECTIONS_COMMUNITY_MAINTAINED}" "os/userpatches/targets-release-community-maintained" "2"
+        make-targets "${BUILD_SECTIONS_NIGHTLY}" "os/userpatches/targets-release-nightly" "2"
 
     - name: "Generate Action Script"
       run: |
