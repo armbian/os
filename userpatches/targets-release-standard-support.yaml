@@ -88,149 +88,20 @@ lists:
 
   # automated lists stop
 
-  # mainly riscv userland
-  special: &special
-#    - { BOARD: beaglev, BRANCH: edge }
-#    - { BOARD: mangopi-mq, BRANCH: edge }
-#    - { BOARD: nezha, BRANCH: edge }
-#    - { BOARD: star64, BRANCH: edge }
-#    - { BOARD: unleashed, BRANCH: edge }
-#    - { BOARD: unmatched, BRANCH: edge }
-#    - { BOARD: visionfive, BRANCH: edge }
-#    - { BOARD: visionfive2, BRANCH: edge }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: uefi-riscv64, BRANCH: edge }
-
   virtual-boards: &virtual-boards
     # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
     - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
     - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
     - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
     - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-
-  full-desktop: &full-desktop
-    # debian stable minimal
-    # debian stable cli
-    # debian stable xfce desktop
-    # debian stable cinnamon desktop
-    # ubuntu stable minimal
-    # ubuntu stable cli
-    # ubuntu stable xfce desktop
-    # ubuntu stable i3 desktop
-    # ubuntu stable gnome desktop
-
-    - { BOARD: aml-s9xx-box, BRANCH: current }
-    - { BOARD: bananapim5, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: current }
-    - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim2, BRANCH: current }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: uefi-arm64, BRANCH: current }
-
-  full-desktop-3d: &full-desktop-3d
-    # debian stable minimal
-    # debian stable cli
-    # debian stable xfce desktop
-    # debian stable cinnamon desktop
-    # ubuntu stable minimal
-    # ubuntu stable cli
-    # ubuntu stable i3 desktop
-    # ubuntu stable gnome desktop with 3D support enabled
-
-    - { BOARD: firefly-rk3399, BRANCH: current }
-    - { BOARD: inovato-quadra, BRANCH: current }
-    - { BOARD: lafrite, BRANCH: current }
-    - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: odroidm1, BRANCH: edge }
-    - { BOARD: orangepi3-lts, BRANCH: current }
-    - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: pinebook-pro, BRANCH: current }
-    - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rockpro64, BRANCH: current }
-    - { BOARD: uefi-arm64, BRANCH: current }
-    - { BOARD: uefi-x86, BRANCH: current }
-
-  light-desktop: &light-desktop
-    # debian stable minimal
-    # debian stable cli
-    # debian stable xfce desktop
-    # ubuntu stable minimal
-    # ubuntu stable cli
-    # ubuntu stable i3 desktop
-    # ubuntu stable xfce desktop
-
-    - { BOARD: bigtreetech-cb1, BRANCH: legacy }
-    - { BOARD: bananapim2s, BRANCH: current }
-    - { BOARD: onecloud, BRANCH: current }
-    - { BOARD: rk322x-box, BRANCH: current }
-    - { BOARD: rk3318-box, BRANCH: current }
-    - { BOARD: radxa-zero, BRANCH: current }
-    - { BOARD: sk-tda4vm, BRANCH: current }
-
-  light-desktop-3d: &light-desktop-3d
-    # debian stable minimal
-    # debian stable cli
-    # debian stable xfce desktop
-    # ubuntu stable minimal
-    # ubuntu stable cli
-    # ubuntu stable i3 desktop
-    # ubuntu stable xfce desktop with 3D support enabled
-
-    - { BOARD: bananapim2ultra, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: current }
-    - { BOARD: bananapim2s, BRANCH: current }
-    - { BOARD: odroidxu4, BRANCH: current }
-    - { BOARD: onecloud, BRANCH: current }
-    - { BOARD: olimex-teres-a64, BRANCH: current }
-    - { BOARD: rk322x-box, BRANCH: current }
-    - { BOARD: rk3318-box, BRANCH: current }
-    - { BOARD: pine64, BRANCH: current }
-    - { BOARD: radxa-zero, BRANCH: current }
-    - { BOARD: tinkerboard, BRANCH: current }
-    - { BOARD: tritium-h3, BRANCH: current }
-    - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: pine64, BRANCH: current }
-
-  headless: &headless
-    # debian stable minimal
-    # debian stable cli
-    # ubuntu stable minimal
-    # ubuntu stable cli
-
-    - { BOARD: bananapicm4io, BRANCH: current }
-    - { BOARD: jethubj100, BRANCH: current }
-    - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: rock-5a, BRANCH: edge }
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: edge }
-    - { BOARD: orangepi5-plus, BRANCH: edge }
-    - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopi-r6s, BRANCH: edge }
-    - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopi-r5s, BRANCH: edge }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: orangepizero, BRANCH: current }
-    - { BOARD: orangepizeroplus, BRANCH: current }
-    - { BOARD: pine64so, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: rockpi-s, BRANCH: current }
-    - { BOARD: zeropi, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-qcow2" }
+    - { BOARD: uefi-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-qcow2" }
+    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
 targets:
 
-  # debian minimal
-
+  # Debian minimal
   minimal-cli-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -242,15 +113,12 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - *special
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *virtual-boards
 
-  # debian cli
-
+  # Debian full CLI
   full-cli-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -262,46 +130,12 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - *special
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
       - *virtual-boards
-      - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-      - { BOARD: rock-5a, BRANCH: legacy }
-      - { BOARD: rock-5b, BRANCH: legacy }
-      - { BOARD: mixtile-blade3, BRANCH: legacy }
-      - { BOARD: orangepi5, BRANCH: legacy }
-      - { BOARD: orangepi5-plus, BRANCH: legacy }
-      - { BOARD: nanopct6, BRANCH: legacy }
-      - { BOARD: nanopi-r6s, BRANCH: legacy }
-      - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
-      - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
-      - { BOARD: mekotronics-r58x, BRANCH: legacy }
-      - { BOARD: mekotronics-r58x-pro, BRANCH: legacy }
 
-  # debian xfce without apps
-
-  xfce-barebone-desktop-stable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: ""
-    items:
-      - *special
-
-  # ubuntu minimal
-
+  # Ubuntu minimal
   minimal-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -313,16 +147,12 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - *special
-      - { BOARD: rpi4b, BRANCH: current }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *virtual-boards
 
-  # ubuntu cli
-
+  # Ubuntu full CLI
   full-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -334,65 +164,13 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *full-desktop
-      - *full-desktop-3d
-      - *light-desktop
-      - *light-desktop-3d
-      - *headless
-      - *special
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
       - *virtual-boards
-      - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
-      - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-      - { BOARD: mixtile-blade3, BRANCH: legacy }
-      - { BOARD: rock-5a, BRANCH: legacy }
-      - { BOARD: rock-5b, BRANCH: legacy }
-      - { BOARD: nanopct6, BRANCH: legacy }
-      - { BOARD: nanopi-r6s, BRANCH: legacy }
-      - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
-      - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
-      - { BOARD: mekotronics-r58x, BRANCH: legacy }
-      - { BOARD: mekotronics-r58x-pro, BRANCH: legacy }
-
-  # ubuntu xfce without apps
-
-  xfce-barebone-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: ""
-    items:
-      - *special
-
-  # ubuntu xfce with 3d
-
-  xfce-3d-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *light-desktop-3d
-
-  # ubuntu xfce
-
-  xfce-desktop-stable-ubuntu:
+  
+  # Full Ubuntu LTS XFCE without 3D
+  xfce-desktop-lts-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -406,12 +184,10 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
-      - *light-desktop
-      - { BOARD: rpi4b, BRANCH: current }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
 
-  # debian xfce
-
+  # Full Debian stable XFCE without 3D
   xfce-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -426,13 +202,11 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
-      - *full-desktop-3d
-      - *light-desktop
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
 
-  # ubuntu gnome desktop without 3d
-
-  gnome-desktop-stable-ubuntu:
+  # Full Ubuntu Gnome with 3d
+  gnome-3d-desktop-lts-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -444,22 +218,11 @@ targets:
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
-      - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
-      - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: mixtile-blade3 , BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: rock-5a, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: rock-5b, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: nanopct6, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - *standard-support-fast-hdmi
 
-  # debian gnome desktop with 3d
-
+  # Full Debian Gnome with 3d
   gnome-3d-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -472,12 +235,11 @@ targets:
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop-3d
+      - *standard-support-fast-hdmi
 
-  # ubuntu kde plasma with 3d
-
+  # Full Ubuntu kde plasma with 3d
   kde-plasma-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -492,11 +254,9 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current }
-      - { BOARD: uefi-x86, BRANCH: current }
+      - *standard-support-fast-hdmi
 
-  # i3 desktop without 3d
-
+  # Full Ubuntu i3 without 3d
   minimal-i3-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -511,33 +271,27 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
-      - *full-desktop-3d
-      - *light-desktop
-      - *light-desktop-3d
-      - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
 
-  # cinnamon desktop without 3d
-
-  cinnamon-desktop-stable-debian:
+  # Full Ubuntu LTS Cinnamon with 3d
+  cinnamon-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: jammy
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop
+      - *standard-support-fast-hdmi
 
-  # cinnamon desktop with 3d
-
+  #  Full Debian Cinnamon with 3d
   cinnamon-3d-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -552,25 +306,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *full-desktop-3d
-
-  # debian trixie gnome desktop without 3d
-  gnome-desktop-latest-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: trixie
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "gnome"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      # Attention, no list reference here, just a specific board.
-      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - *standard-support-fast-hdmi
 
   # automated section
   automated-section:
