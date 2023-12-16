@@ -107,35 +107,29 @@ jobs:
                     # our default is current build target. Use it or search further
                     if [[ $TARGET_SECTION == $SECTION ]]; then
 
-                        if [[ "${KERNEL_TARGET}" == *current* ]]; then
+                            if [[ "${KERNEL_TARGET}" == *current* ]]; then
+                                # check if we have extension mapping defined
+                                EXTENSION=$(grep -P '^(?=.*'$board')(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                                echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }"
+                            fi
 
-                            # check if we have extension mapping defined
-                            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-                            echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }"
-
-                        elif [[ "${KERNEL_TARGET}" == *edge* ]]; then
-
-                            # check if we have extension mapping defined
-                            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-                            echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }"
-
-                        elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then
-
-                            # check if we have extension mapping defined
-                            EXTENSION=$(grep -P '^(?=.*'$board')(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-                            echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}"
-
-                        else
-
-                            # otherwise it must be custom kernel target
-                            EXTENSION=$(grep -P '^(?=.*'${board}')(?=.*'${KERNEL_TARGET}')' os/userpatches/targets-extensions.map | cut -d"=" -f2)
-                            if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-                            echo "    - { BOARD: $board, BRANCH: ${KERNEL_TARGET}${EXTENSION}}"
-
-                        fi
+                            if [[ "${KERNEL_TARGET}" == *edge* ]]; then
+                               # check if we have extension mapping defined
+                               EXTENSION=$(grep -P '^(?=.*'$board')(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                               echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }"
+                            elif [[ "${KERNEL_TARGET}" == *legacy* ]]; then
+                               # check if we have extension mapping defined
+                               EXTENSION=$(grep -P '^(?=.*'$board')(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                               echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}"
+                            else
+                               # otherwise it must be custom kernel target
+                               EXTENSION=$(grep -P '^(?=.*'${board}')(?=.*'${KERNEL_TARGET}')' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                               echo "    - { BOARD: $board, BRANCH: ${KERNEL_TARGET}${EXTENSION}}"
+                            fi
 
                     fi
 
