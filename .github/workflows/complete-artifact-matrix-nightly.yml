@@ -77,33 +77,33 @@ on:
         - mekotronics-r58x
         - mixtile-blade3
         - nanopct6
-        - nanopiduo2
-        - nanopiduo
         - nanopi-r4s
         - nanopi-r5s
         - nanopi-r6s
+        - nanopiduo
+        - nanopiduo2
         - odroidc2
         - odroidm1
         - odroidxu4
         - olimex-teres-a64
         - onecloud
-        - orangepi4-lts
-        - orangepi5
-        - orangepi5-plus
-        - orangepione
-        - orangepiprime
         - orangepi-r1
         - orangepi-r1plus-lts
-        - orangepizero2
+        - orangepi4-lts
+        - orangepi5-plus
+        - orangepi5
+        - orangepione
+        - orangepiprime
         - orangepizero
+        - orangepizero2
         - orangepizeroplus
         - pine64
         - pinebook-pro
         - qemu-uboot-arm64
         - qemu-uboot-x86
         - radxa-e25
-        - radxa-zero2
         - radxa-zero
+        - radxa-zero2
         - renegade
         - rock-3a
         - rock-5a
@@ -131,9 +131,19 @@ on:
         # maintainers
         - 150balbes
         - 1ubuntuuser
-        - AaronNGray
-        - adeepn
         - AGM1968
+        - AaronNGray
+        - DylanHP
+        - Kreyren
+        - ManoftheSea
+        - Manouchehri
+        - NicoD-SBC
+        - PanderMusubi
+        - StephenGraf
+        - TRSx80
+        - Tonymac32
+        - ZazaBR
+        - adeepn
         - ahoneybun
         - amazingfate
         - bigtreetech
@@ -143,7 +153,6 @@ on:
         - chainsx
         - clee
         - devdotnetorg
-        - DylanHP
         - echatzip
         - efectn
         - eliasbakken
@@ -156,30 +165,21 @@ on:
         - joekhoobyar
         - joshaspinall
         - krachlatte
-        - Kreyren
         - lanefu
         - lbmendes
         - linhz0hz
         - mahdichi
-        - ManoftheSea
-        - Manouchehri
         - monkaBlyat
-        - NicoD-SBC
-        - PanderMusubi
         - paolosabatino
         - pyavitz
         - rpardini
         - schwar3kat
         - sgjava
         - sputnik2019
-        - StephenGraf
         - teknoid
-        - Tonymac32
-        - TRSx80
         - utlark
         - vamzii
         - viraniac
-        - ZazaBR
         - all
         default: 'all'
       targetsFilterInclude:
@@ -1906,7 +1906,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2125,7 +2125,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2344,7 +2344,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2563,7 +2563,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2782,7 +2782,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3001,7 +3001,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3220,7 +3220,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3439,7 +3439,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3658,7 +3658,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3877,7 +3877,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4096,7 +4096,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4315,7 +4315,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4534,7 +4534,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4753,7 +4753,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4972,7 +4972,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -5191,7 +5191,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 30
+        timeout-minutes: 60
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
