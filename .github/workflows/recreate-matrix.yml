@@ -106,8 +106,9 @@ jobs:
 
                     # our default is current build target. Use it or search further
                     if [[ $TARGET_SECTION == $SECTION ]]; then
+                    VARIANTS=0
                     for targets in ${KERNEL_TARGET//,/ }; do
-                            VARIANTS=0
+
                             if [[ "${targets}" == current ]]; then
                                 # check if we have extension mapping defined
                                 EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
@@ -129,9 +130,7 @@ jobs:
                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}"
-
                             fi
-
 
                             if [[ ! "$targets" =~ ^(legacy|current|edge)$ ]]; then
                                # otherwise it must be custom kernel target
