@@ -8,6 +8,8 @@ on:
       - 'main'
     paths:
       - "userpatches/*.template"
+      - "userpatches/*.map"
+      - "userpatches/*.blacklist"
       - "userpatches/gha/**"
       - "userpatches/gha/chunks/**"
       - ".github/workflows/recreate-matrix.yml"
