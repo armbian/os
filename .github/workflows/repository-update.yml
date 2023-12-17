@@ -45,7 +45,7 @@ jobs:
     with:
       ACCESS_NAME: armbian
       #BUILD_RUNNER: "ubuntu-latest"
-      BUILD_RUNNER: "Linux"
+      BUILD_RUNNER: "X64"
     secrets:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
