@@ -67,18 +67,6 @@ jobs:
     runs-on: repository
     steps:
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
-
-      - name: "Prepare for ${{ matrix.repository }}"
-        run: |
-        
-         tree /incoming/${{ matrix.repository }}
-
       - name: "Clean beta repository"
         run: |
         
@@ -101,6 +89,7 @@ jobs:
 
       - name: "Build repository ${{ matrix.repository }}"
         run: |
+
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
           sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
@@ -158,7 +147,6 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
       - name: What to sync?
@@ -198,9 +186,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
-
 
       - name: What to sync?
         run: |
