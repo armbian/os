@@ -1906,7 +1906,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2125,7 +2125,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2344,7 +2344,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2563,7 +2563,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -2782,7 +2782,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3001,7 +3001,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3220,7 +3220,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3439,7 +3439,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3658,7 +3658,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -3877,7 +3877,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4096,7 +4096,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4315,7 +4315,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4534,7 +4534,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4753,7 +4753,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -4972,7 +4972,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
@@ -5191,7 +5191,7 @@ jobs:
           #token: ${{ env.upload_user }}
 
       - name: Deploy to servers
-        timeout-minutes: 60
+        timeout-minutes: 240
         if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
