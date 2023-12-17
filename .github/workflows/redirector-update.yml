@@ -122,7 +122,7 @@ jobs:
 
           SERVER_URL=$(echo "${{ matrix.node }}" | cut -d"," -f1)
           SERVER_ID=$(echo "${{ matrix.node }}" | cut -d"," -f2)
-          ORIGIN=$(timeout 30 curl --retry 5 -s https://imola.armbian.com/beta/control || true)
+          ORIGIN=$(timeout 30 curl --retry 5 -s https://rsync.armbian.com/beta/control || true)
           CHECK=$(timeout 30 curl --retry 5 -s https://${SERVER_URL}/control || true)
           rm -rf downloads/*
           if [[ "$ORIGIN" == "$CHECK" ]]; then
