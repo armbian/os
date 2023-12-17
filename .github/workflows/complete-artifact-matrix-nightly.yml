@@ -1928,7 +1928,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -2147,7 +2147,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -2366,7 +2366,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -2585,7 +2585,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -2804,7 +2804,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -3023,7 +3023,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -3242,7 +3242,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -3461,7 +3461,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -3680,7 +3680,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -3899,7 +3899,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -4118,7 +4118,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -4337,7 +4337,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -4556,7 +4556,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -4775,7 +4775,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -4994,7 +4994,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
@@ -5213,7 +5213,7 @@ jobs:
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rv output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
           done
 
       # cleaning self hosted runners
