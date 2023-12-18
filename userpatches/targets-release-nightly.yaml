@@ -62,8 +62,6 @@ lists:
     - { BOARD: nanopct6, BRANCH: edge }
     - { BOARD: nanopct6, BRANCH: legacy}
     - { BOARD: nanopi-r5s, BRANCH: edge }
-    - { BOARD: odroidm1, BRANCH: current }
-    - { BOARD: odroidm1, BRANCH: edge }
     - { BOARD: qemu-uboot-arm64, BRANCH: current }
     - { BOARD: qemu-uboot-arm64, BRANCH: edge }
     - { BOARD: qemu-uboot-x86, BRANCH: current }
@@ -112,6 +110,10 @@ lists:
     - { BOARD: nanopi-r6s, BRANCH: edge }
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidc2, BRANCH: edge }
+    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: odroidm1, BRANCH: edge }
+    - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: edge }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
