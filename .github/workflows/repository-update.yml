@@ -103,12 +103,12 @@ jobs:
           # cleaning is optional so lets apply some magic as we don't want this at every rebuild
           day=$( date +%d )
           if [ "$day" = "01" ] || [ "$day" = "15" ]; then
-              tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
+              tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
           fi
           # add from incoming
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
           # create index
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
 
   Prepare:
     name: "Upload to servers"
