@@ -10,27 +10,28 @@
 </p>
 
 
-# What does this project do?
+## What does this project do?
 
-- Keeps build framework [packages artifacts](https://github.com/orgs/armbian/packages) cache up to date
+- Builds quarterly [stable](https://www.armbian.com/download/), daily [rolling](https://github.com/armbian/os/releases/latest) and weekly [community](https://github.com/armbian/community/releases/latest) OS images
+- Keeps build framework [packages artifacts](https://github.com/orgs/armbian/packages) cache up to date to secure fast rebuild process
 - Keeps stable [apt.armbian.com](https://apt.armbian.com) and nightly [beta.armbian.com](https://beta.armbian.com) packages repository up to date
-- Builds [nightly](https://github.com/armbian/os/releases) and [stable images](https://www.armbian.com/download/) and uploads them to Armbian CDN
 - Keep synchronizing the selection of [3rd party](external) applications with Armbian repositories
 - Tests install of all packages added onto stable and testing Debian and Ubuntu releases
+- Tests packages upgrade sucess on real hardware
 
-# How to enable images?
+## How to enable images?
 
-If you want to enable build configurations, edit [yaml config files](userpatches) and send a pull request. ([example](https://github.com/armbian/os/commit/70f3be4f3d96e9a301be751d3ecf3a24394356f9) )
+Build lists are generated [automatic](https://github.com/armbian/os/blob/main/.github/workflows/recreate-matrix.yml#L59-L211C94) based on [support policy](https://docs.armbian.com/User-Guide_Board-Support-Rules/) and with help of [templates](userpatches/), .blacklist and .map files.
 
-# When is this happening?
+## When is this happening?
 
 - Artifacts cache is updated every eight hours, starting at 0:00 AM UTC
-- Repository update starts after **artifacts cache update** is done succesfully.
-- Smoke tests starts **manually**.
-- Nightly images are build once per day, at 2:00 AM UTC, or if [build config is changed](https://github.com/armbian/os/blob/main/userpatches/targets-release-nightly.yaml)
+- Repository update starts after artifacts cache update is done succesfully
+- Smoke tests starts once per day at 5:30 AM UTC
+- Nightly images are build once per day, at 2:00 AM UTC, or if [build config / template is changed](https://github.com/armbian/os/blob/main/userpatches/targets-release-nightly.yaml)
 - Manually, when Armbian [release manager](https://github.com/orgs/armbian/teams/release-manager) executes a build action
 
-# Latest smoke tests results:
+## Latest smoke tests results:
 
 - installs **kernels**, **device tree blob** and **headers**
 - runs **network** (iperf) and **computing performance** tests (7z benchmark)
@@ -58,9 +59,9 @@ Device has to be always on and easily accesible for you to re-image in case of f
 
 ## Download prebuilt images
 
-- [quarterly released **supported** builds](https://www.armbian.com/download/?device_support=Standard%20support)
-- [quarterly released **community maintained** builds](https://www.armbian.com/download/?device_support=Community%20maintained)
+- [quarterly released **standard support** builds](https://www.armbian.com/download/?device_support=Standard%20support)
 - [automatic released **rolling release** builds](https://github.com/armbian/os/releases/latest) (daily or when code changes)
+- [weekly released **community maintained** builds](https://github.com/armbian/community/releases/latest)
 
 ## Support
 
