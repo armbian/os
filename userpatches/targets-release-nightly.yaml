@@ -188,7 +188,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: mantic
+      RELEASE: noble
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -225,7 +225,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: mantic
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
