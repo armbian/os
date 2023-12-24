@@ -69,6 +69,7 @@ lists:
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
     - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: armsom-sige7, BRANCH: legacy}
     - { BOARD: armsom-w3, BRANCH: legacy}
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
