@@ -5390,7 +5390,7 @@ jobs:
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
 
       # Delete artifact
-      - uses: geekyeggo/delete-artifact@v2
+      - uses: geekyeggo/delete-artifact@v4
         with:
           name: assets-for-download-stable
           failOnError: false
