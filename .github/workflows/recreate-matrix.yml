@@ -60,7 +60,7 @@ jobs:
       run: |
 
         cat <<- EOF > os/.github/workflows/complete-artifact-one-by-one.yml
-        name: "Build one by one"
+        name: "Build One by One (anyone)"
         on:
           workflow_dispatch:
             inputs:
