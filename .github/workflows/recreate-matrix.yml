@@ -116,7 +116,7 @@ jobs:
                 options:
         EOF
         # generate lists to include them
-        ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' >> os/.github/workflows/complete-artifact-one-by-one.yml
+        ls -1 build/config/boards/*.{conf,wip,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' >> os/.github/workflows/complete-artifact-one-by-one.yml
 
         cat <<- EOF >> os/.github/workflows/complete-artifact-one-by-one.yml
         jobs:
