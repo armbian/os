@@ -19,6 +19,7 @@ jobs:
         repository: armbian/os
         fetch-depth: 0
         clean: false
+        path: os
 
     - name: Checkout Armbian Framework
       uses: actions/checkout@v4
@@ -31,7 +32,7 @@ jobs:
     - name: "Generate builds lists"
       run: |
 
-        cat <<- EOF > .github/workflows/complete-artifact-one-by-one.yml
+        cat <<- EOF > os/.github/workflows/complete-artifact-one-by-one.yml
         name: "Build one by one"
         on:
           workflow_dispatch:
@@ -88,10 +89,9 @@ jobs:
                 options:
         EOF
         # generate lists to include them
-        ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' \
-        >> .github/workflows/complete-artifact-one-by-one.yml
+        ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' >> os/.github/workflows/complete-artifact-one-by-one.yml
 
-        cat <<- EOF >> .github/workflows/complete-artifact-one-by-one.yml
+        cat <<- EOF >> os/.github/workflows/complete-artifact-one-by-one.yml
         jobs:
 
           build:
@@ -113,10 +113,11 @@ jobs:
                   armbian_pgp_password:       "${{ '\${{secrets.GPG_PASSPHRASE1}}' }}"
         EOF
 
+        cd os
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
         git add .github/workflows/complete-artifact-one-by-one.yml
-        git commit --allow-empty -m "Update ony by one list" -a
+        git commit --allow-empty -m "Update ony by one" -a
 
     - name: Push changes
       uses: ad-m/github-push-action@master
@@ -124,4 +125,4 @@ jobs:
         github_token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
         repository: armbian/os
         branch: ${{ github.ref }}
-        directory: .
+        directory: os
