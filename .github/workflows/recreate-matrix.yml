@@ -59,6 +59,90 @@ jobs:
     - name: "Generate builds lists"
       run: |
 
+        cat <<- EOF > os/.github/workflows/complete-artifact-one-by-one.yml
+        name: "Build one by one"
+        on:
+          workflow_dispatch:
+            inputs:
+
+              armbian_target:
+                type: choice
+                description: 'Build'
+                required: false
+                options:
+                - kernel
+                - build
+                default: build
+
+              armbian_kernel_branch:
+                type: choice
+                description: 'Kernel branch'
+                options:
+                - legacy
+                - current
+                - edge
+                default: 'current'
+
+              armbian_release:
+                type: choice
+                description: 'Userspace'
+                options:
+                - jammy
+                - bookworm
+                - trixie
+                default: 'jammy'
+
+              armbian_ui:
+                type: choice
+                description: 'User interface (not all works)'
+                options:
+                - minimal
+                - server
+                - xfce
+                - gnome
+                - cinnamon
+                - i3-wm
+                - kde-plasma
+                default: 'minimal'
+
+              armbian_version:
+                description: 'Version'
+                required: false
+                default: ''
+
+              armbian_board:
+                type: choice
+                description: 'Board'
+                options:
+        EOF
+        # generate lists to include them
+        ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' >> os/.github/workflows/complete-artifact-one-by-one.yml
+
+        cat <<- EOF >> os/.github/workflows/complete-artifact-one-by-one.yml
+        jobs:
+
+          build:
+            name: "Build Armbian"
+            runs-on: ubuntu-latest
+            steps:
+
+              - uses: armbian/build@AR-1459
+                with:
+                  armbian_token:              "${{ '\${{secrets.GITHUB_TOKEN}}' }}"
+                  armbian_target:             "${{ '\${{inputs.armbian_target}}' }}"
+                  armbian_release:            "${{ '\${{inputs.armbian_release}}' }}"
+                  armbian_kernel_branch:      "${{ '\${{inputs.armbian_kernel_branch}}' }}"
+                  armbian_ui:                 "${{ '\${{inputs.armbian_ui}}' }}"
+                  armbian_board:              "${{ '\${{inputs.armbian_board}}' }}"
+                  armbian_release_tittle:     "Armbian SDK"
+                  armbian_release_body:       "Virtual images for x86 and arm64"
+                  armbian_pgp_key:            "${{ '\${{secrets.GPG_KEY1}}' }}"
+                  armbian_pgp_password:       "${{ '\${{secrets.GPG_PASSPHRASE1}}' }}"
+        EOF
+
+    - name: "Generate builds lists"
+      run: |
+
         # generate lists to include them
         ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/standard-support.txt
         ls -1 build/config/boards/*.{conf,wip} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/staging.txt
@@ -314,6 +398,7 @@ jobs:
         git add .github/workflows/complete-artifact-matrix-standard-support.yml
         git add .github/workflows/complete-artifact-matrix-community-maintained.yml
         git add .github/workflows/complete-artifact-matrix-all.yml
+        git add .github/workflows/complete-artifact-one-by-one.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
 
     - name: Push changes
