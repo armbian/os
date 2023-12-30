@@ -124,3 +124,4 @@ jobs:
         github_token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
         repository: armbian/os
         branch: ${{ github.ref }}
+        directory: .
