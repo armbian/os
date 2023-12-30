@@ -88,7 +88,7 @@ jobs:
                 options:
         EOF
         # generate lists to include them
-        ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' |
+        ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' \
         >> .github/workflows/complete-artifact-one-by-one.yml
 
         cat <<- EOF >> .github/workflows/complete-artifact-one-by-one.yml
