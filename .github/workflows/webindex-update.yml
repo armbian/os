@@ -70,7 +70,7 @@ jobs:
               done < exposed.map
               echo "${BOARD,,}|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$KERNEL_BRANCH|$EXPOSED|$IMAGE_TYPE|$EXTENSION"
 
-          done | sed '1s/^/"board"|"url"|"updated"|"size"|"branch"|"exposed"|"type"|"extension"\n/' | jc --csv | jq '{"assets": .}' | xz -c > all-images.json.xz
+          done | sed '1s/^/"board"|"url"|"updated"|"size"|"branch"|"exposed"|"type"|"extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
 
       - name: "Download and compress torrent files"
         run: |
@@ -85,7 +85,7 @@ jobs:
         with:
           name: artifacts
           path: |
-            all-images.json.xz
+            all-images.json
             all-torrents.zip
 
       - name: Install SSH key
