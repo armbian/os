@@ -46,36 +46,31 @@ jobs:
           if ! command -v "gh" > /dev/null 2>&1; then sudo apt-get -y -qq install gh; fi
           if ! command -v "jc" > /dev/null 2>&1; then sudo apt-get -y -qq install jc; fi
 
-      - name: "Stable builds JSON file" # adjust "exposed" property while reading from download
+      - name: "Build JSON file" # adjust "exposed" property while reading from download
         run: |
 
-          while read element; do
-            while read exposed; do
-              # fix date and size
-              SEARCH=$(echo $element | awk '{ print $3" "$4}')
-              REPLACE=$(echo $element | awk '{ print $3"T"$4"Z"}' | sed "s|/|-|g")
-              element=$(echo $element | sed "s|$SEARCH|$REPLACE|")              
-              SEARCH=$(echo $element | awk '{ print $2}')
-              REPLACE=$(echo $element | awk '{ print $2}' | awk '{gsub(/[.|,]/,"");print $NF}')
-              element=$(echo $element | sed "s|$SEARCH|$REPLACE|")
-              if [[ $element == *$exposed* ]]; then
-                echo "$element true"
-              else
-                echo "$element false"
-              fi
-            done < exposed.map
-          done <<< $(rsync -ar rsync://rsync.armbian.com/dl/) \
-          | awk '{ print "\"https://dl.armbian.com/"$4"\"|\""$3"\"|\""$2"\"|\""$5"\"" }' \
-          | grep "archive/" \
-          | sed '1s/^/"url"|"updatedAt"|"size"|"exposed"\n/' \
-          | jc --csv \
-          | jq '{"assets": .}' > standard-support.json
+          # prepare feeds
+          A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
+          B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
+          C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
 
-      - name: "Nightly and community maintained"
-        run: |
+          # join all in one file and compress
+          for line in $A $B $C; do
 
-          gh release view --json assets --repo github.com/armbian/os        | jq > nightly.json
-          gh release view --json assets --repo github.com/armbian/community | jq > community-maintained.json
+              BOARD=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f2)
+              IMAGE_SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\.//g")
+              KERNEL_BRANCH=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4)
+              IMAGE_URL=$(echo $line | cut -d"|" -f2)
+              EXTENSION=$(echo ${IMAGE_URL##*.})
+              IMAGE_TYPE=$(echo $IMAGE_URL | cut -d"/" -f5)
+              IMAGE_CREATED=$(echo $line | cut -d"|" -f3 | sed "s/\//-/g")
+              EXPOSED=false
+              while read exposed; do
+                [[ $IMAGE_URL == *$exposed* ]] && EXPOSED=true
+              done < exposed.map
+              echo "${BOARD,,}|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$KERNEL_BRANCH|$EXPOSED|$IMAGE_TYPE|$EXTENSION"
+
+          done | sed '1s/^/"board"|"url"|"updated"|"size"|"branch"|"exposed"|"type"|"extension"\n/' | jc --csv | jq '{"assets": .}' | xz -c > all-images.json.xz
 
       - name: "Download and compress torrent files"
         run: |
@@ -90,9 +85,7 @@ jobs:
         with:
           name: artifacts
           path: |
-            standard-support.json
-            nightly.json
-            community-maintained.json
+            all-images.json.xz
             all-torrents.zip
 
       - name: Install SSH key
@@ -105,6 +98,6 @@ jobs:
       - name: Upload index
         run: |
 
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files standard-support.json nightly.json community-maintained.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json          
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files all-images.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
 
           
