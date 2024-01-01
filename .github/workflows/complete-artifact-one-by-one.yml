@@ -109,6 +109,7 @@ on:
         - lime
         - lime2
         - macchiatobin-doubleshot
+        - mangopi-m28k
         - mekotronics-r58-minipc
         - mekotronics-r58x-4g
         - mekotronics-r58x-pro
@@ -178,6 +179,7 @@ on:
         - orangepiwin
         - orangepizero
         - orangepizero2
+        - orangepizero3
         - orangepizeroplus
         - orangepizeroplus2-h3
         - orangepizeroplus2-h5
@@ -251,7 +253,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@AR-1459
+      - uses: armbian/build@v23.11.2
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"

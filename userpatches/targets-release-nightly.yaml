@@ -41,8 +41,6 @@ lists:
     - { BOARD: orangepi-r1plus-lts, BRANCH: edge }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: edge }
-    - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: edge }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: edge }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -62,6 +60,8 @@ lists:
     - { BOARD: nanopct6, BRANCH: edge }
     - { BOARD: nanopct6, BRANCH: legacy}
     - { BOARD: nanopi-r5s, BRANCH: edge }
+    - { BOARD: orangepizero3, BRANCH: current }
+    - { BOARD: orangepizero3, BRANCH: edge }
     - { BOARD: qemu-uboot-arm64, BRANCH: current }
     - { BOARD: qemu-uboot-arm64, BRANCH: edge }
     - { BOARD: qemu-uboot-x86, BRANCH: current }
@@ -125,6 +125,8 @@ lists:
     - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
+    - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: orangepizero2, BRANCH: edge }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: pine64, BRANCH: edge }
     - { BOARD: pinebook-pro, BRANCH: current }
