@@ -58,7 +58,7 @@ jobs:
           for line in $A $B $C; do
 
               BOARD=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f2)
-              IMAGE_SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\.//g")
+              IMAGE_SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\.//g" | sed "s/\,//g")
               KERNEL_BRANCH=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4)
               IMAGE_RELEASE=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f3)
               IMAGE_URL=$(echo $line | cut -d"|" -f2)
