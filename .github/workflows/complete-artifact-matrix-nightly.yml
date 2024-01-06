@@ -355,7 +355,7 @@ jobs:
               &nbsp;
               </p>" > body.html
 
-      - uses: ncipollo/release-action@v1
+      - uses: ncipollo/release-action@v1.13.0
         if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
