@@ -23,7 +23,7 @@ lists:
   # automated lists start
   staging-riscv64: &staging-riscv64
     # auto generated section
-    - { BOARD: licheepi-4a, BRANCH: legacy}
+    - { BOARD: licheepi-4a, BRANCH: current }
     - { BOARD: licheepi-4a, BRANCH: edge }
     # end of auto generated section
 

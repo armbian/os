@@ -1768,7 +1768,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -1987,7 +1987,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2206,7 +2206,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2425,7 +2425,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2644,7 +2644,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2863,7 +2863,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3082,7 +3082,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3301,7 +3301,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3520,7 +3520,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3739,7 +3739,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3958,7 +3958,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4177,7 +4177,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4396,7 +4396,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4615,7 +4615,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4834,7 +4834,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -5053,7 +5053,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 45
+        timeout-minutes: 60
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
