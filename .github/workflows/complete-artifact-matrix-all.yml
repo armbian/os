@@ -402,25 +402,6 @@ jobs:
     runs-on: [ "ubuntu-latest" ]
     steps:
 
-      # Cleaning self hosted runners
-      #- name: Runner clean
-      #  uses: armbian/actions/runner-clean@main
-
-      - name: "Clean old releases"
-        uses: sgpublic/delete-release-action@v1.1
-        with:
-          repo: "armbian/${{ env.RELEASE_REPOSITORY }}"
-          release-drop: true
-          release-keep-count: 3
-          release-drop-tag: true
-          pre-release-drop: true
-          pre-release-keep-count: -1
-          pre-release-drop-tag: true
-          draft-drop: true
-          draft-drop-count: -1
-        env:
-          GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
-
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
