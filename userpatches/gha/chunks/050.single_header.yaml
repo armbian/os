@@ -138,8 +138,9 @@ jobs:
       - name: "Clean old releases"
         uses: sgpublic/delete-release-action@v1.1
         with:
+          repo: "armbian/${{ env.RELEASE_REPOSITORY }}"
           release-drop: true
-          release-keep-count: 14
+          release-keep-count: 3
           release-drop-tag: true
           pre-release-drop: true
           pre-release-keep-count: -1
