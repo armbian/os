@@ -79,9 +79,9 @@ function post_install_kernel_debs__add_home_assistant_debs_to_image() {
 			MACHINE=tinker
 		;;
 # breaks with /usr/sbin/grub-probe: error: failed to get canonical path of `tmpfs'
-#                amd64)
-#			MACHINE=generic-x86-64
-#		;;
+                amd64)
+			MACHINE=generic-x86-64
+		;;
 		arm64)
 			MACHINE=odroid-n2
                 ;;
