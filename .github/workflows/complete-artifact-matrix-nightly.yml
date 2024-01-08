@@ -297,7 +297,7 @@ jobs:
 #        if: ${{ ! github.event.inputs.versionOverride }}
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v5.0.0
+        uses: TriPSs/conventional-changelog-action@v5.1.0
         with:
           github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'
