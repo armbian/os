@@ -24,6 +24,7 @@ function extension_prepare_config__home_assistant() {
 	fi
 
 	declare -g HA_OS_AGENT_ARCH="${ARCH}"
+	[[ "${ARCH}" == "armhf" ]] && declare -g HA_OS_AGENT_ARCH="armv7"
 	[[ "${ARCH}" == "arm64" ]] && declare -g HA_OS_AGENT_ARCH="aarch64"
 	[[ "${ARCH}" == "amd64" ]] && declare -g HA_OS_AGENT_ARCH="x86_64"
 
