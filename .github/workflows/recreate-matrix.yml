@@ -354,6 +354,21 @@ jobs:
         sed -i "s/pipeline-/standard-support/" output/info/artifact-image-complete-matrix.yml
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-standard-support.yml
 
+
+        #
+        # copy apps release templates
+        #
+        cp userpatches/gha/gha_config_release_apps.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-release-apps.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/standard-support.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/apps/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-apps.yml
+
         #
         # copy unsupported release templates
         #
@@ -390,6 +405,7 @@ jobs:
         # Update build list
         git add userpatches/targets-release-standard-support.yaml
         git add userpatches/targets-release-community-maintained.yaml
+        git add userpatches/targets-release-apps.yaml
         git add userpatches/targets-release-nightly.yaml
 
         # Add Action Scritps
@@ -397,6 +413,7 @@ jobs:
         #git add .github/workflows/complete-artifact-matrix-old-stable.yml
         git add .github/workflows/complete-artifact-matrix-standard-support.yml
         git add .github/workflows/complete-artifact-matrix-community-maintained.yml
+        git add .github/workflows/complete-artifact-matrix-apps.yml
         git add .github/workflows/complete-artifact-matrix-all.yml
         git add .github/workflows/complete-artifact-one-by-one.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
