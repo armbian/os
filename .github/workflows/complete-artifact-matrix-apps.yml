@@ -42,7 +42,6 @@ on:
         # branches
         - main
         - v23.11
-        - AR-1657
         default: 'main'
       board:
         type: choice
@@ -176,7 +175,7 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        default: 'yes'
+        default: 'no'
       uploadtoserver:
         description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
         required: false
@@ -263,7 +262,7 @@ jobs:
           echo "file=nightly" >> $GITHUB_OUTPUT
           echo "skip_tag=false" >> $GITHUB_OUTPUT
           echo "pre_release=true" >> $GITHUB_OUTPUT
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
               echo "file=stable" >> $GITHUB_OUTPUT
               echo "skip_tag=true" >> $GITHUB_OUTPUT
               echo "pre_release=false" >> $GITHUB_OUTPUT
@@ -331,7 +330,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.nightlybuild || 'no') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.VERSION_OVERRIDE }}"
@@ -437,12 +436,12 @@ jobs:
           bash ./compile.sh gha-matrix armbian-images \
           REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
-          BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
+          BETA=${{ github.event.inputs.nightlybuild || 'no' }} \
           CLEAN_INFO=yes \
           CLEAN_MATRIX=yes \
           MATRIX_ARTIFACT_CHUNKS=17 \
           MATRIX_IMAGE_CHUNKS=16 \
-          CHECK_OCI=${{ github.event.inputs.checkOci || 'yes' }} \
+          CHECK_OCI=${{ github.event.inputs.checkOci || 'no' }} \
           TARGETS_FILENAME="targets-release-apps.yaml" \
           SKIP_IMAGES=${{ github.event.inputs.skipImages || 'no'}} \
           ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes # IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
@@ -1836,7 +1835,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -1868,7 +1867,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2055,7 +2054,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -2087,7 +2086,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2274,7 +2273,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -2306,7 +2305,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2493,7 +2492,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -2525,7 +2524,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2712,7 +2711,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -2744,7 +2743,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2931,7 +2930,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -2963,7 +2962,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3150,7 +3149,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -3182,7 +3181,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3369,7 +3368,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -3401,7 +3400,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3588,7 +3587,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -3620,7 +3619,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3807,7 +3806,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -3839,7 +3838,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4026,7 +4025,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -4058,7 +4057,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4245,7 +4244,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -4277,7 +4276,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4464,7 +4463,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -4496,7 +4495,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4683,7 +4682,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -4715,7 +4714,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4902,7 +4901,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -4934,7 +4933,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5121,7 +5120,7 @@ jobs:
           WEBSEEDS="https://github.com/armbian/distribution/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
              # add seeds from different regions
              #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
@@ -5153,7 +5152,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5296,7 +5295,7 @@ jobs:
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'no' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -5362,7 +5361,7 @@ jobs:
   closing:
     name: "Footer"
     runs-on: ubuntu-latest
-    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || 'yes') == 'yes' }}
+    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || 'no') == 'yes' }}
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
@@ -5411,7 +5410,7 @@ jobs:
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' && (github.event.inputs.nightlybuild || 'yes') == 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' && (github.event.inputs.nightlybuild || 'no') == 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.version }}"

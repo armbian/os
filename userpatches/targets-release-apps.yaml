@@ -22,9 +22,7 @@ common-gha-configs:
 
 lists:
 
-  # automated lists start
-  standard-support-headless: &standard-support-headless
-    # auto generated section
+  home-assistant: &home-assistant
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
@@ -35,10 +33,6 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
-    # end of auto generated section
-
-  standard-support-fast-hdmi: &standard-support-fast-hdmi
-    # auto generated section
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim2s, BRANCH: current }
@@ -46,27 +40,25 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim2, BRANCH: current }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
+    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: nanopi-r6s, BRANCH: legacy}
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi5-plus, BRANCH: legacy}
     - { BOARD: orangepi5, BRANCH: legacy}
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
-    - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: current }
@@ -77,20 +69,11 @@ lists:
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: uefi-arm64, BRANCH: current }
-    - { BOARD: uefi-x86, BRANCH: current }
-    # end of auto generated section
-
-  standard-support-slow-hdmi: &standard-support-slow-hdmi
-    # auto generated section
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
-    # end of auto generated section
-
-  # automated lists stop
 
 targets:
 
@@ -107,6 +90,4 @@ targets:
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "ha"
     items:
-      - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
-      - *standard-support-headless
+      - *home-assistant
