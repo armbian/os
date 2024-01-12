@@ -2025,7 +2025,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2244,7 +2244,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2463,7 +2463,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2682,7 +2682,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2901,7 +2901,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3120,7 +3120,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3339,7 +3339,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3558,7 +3558,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3777,7 +3777,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3996,7 +3996,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4215,7 +4215,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4434,7 +4434,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4653,7 +4653,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4872,7 +4872,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5091,7 +5091,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5310,7 +5310,7 @@ jobs:
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
