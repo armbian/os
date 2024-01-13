@@ -66,9 +66,9 @@ on:
         - clearfogbase
         - clearfogpro
         - clockworkpi-a06
-        - cubieboard
         - cubieboard2
         - cubieboard4
+        - cubieboard
         - cubietruck
         - cubietruckplus
         - cubox-i
@@ -84,10 +84,10 @@ on:
         - inovato-quadra
         - jetson-nano
         - khadas-edge
+        - lime2
         - lime-a33
         - lime-a64
         - lime
-        - lime2
         - macchiatobin-doubleshot
         - mangopi-m28k
         - mekotronics-r58x-pro
@@ -95,44 +95,44 @@ on:
         - micro
         - mk808c
         - nanopct4
-        - nanopi-r1
-        - nanopi-r1s-h5
-        - nanopi-r2c
-        - nanopi-r2s
-        - nanopi-r4se
-        - nanopi-r5c
         - nanopia64
         - nanopiair
         - nanopik1plus
         - nanopik2-s905
         - nanopim4
         - nanopim4v2
-        - nanopineo
-        - nanopineo2
         - nanopineo2black
+        - nanopineo2
         - nanopineo3
         - nanopineo4
         - nanopineocore2
+        - nanopineo
         - nanopineoplus2
+        - nanopi-r1
+        - nanopi-r1s-h5
+        - nanopi-r2c
+        - nanopi-r2s
+        - nanopi-r4se
+        - nanopi-r5c
         - odroidc4
         - odroidhc4
         - odroidn2l
         - olinux-som-a13
+        - orangepi2
+        - orangepi3b
+        - orangepi3
+        - orangepi3-lts
+        - orangepi4
+        - orangepilite2
+        - orangepilite
+        - orangepioneplus
+        - orangepipc2
+        - orangepipc
+        - orangepipcplus
+        - orangepiplus2e
+        - orangepiplus
         - orangepi-r1plus
         - orangepi-rk3399
-        - orangepi2
-        - orangepi3-lts
-        - orangepi3
-        - orangepi3b
-        - orangepi4
-        - orangepilite
-        - orangepilite2
-        - orangepioneplus
-        - orangepipc
-        - orangepipc2
-        - orangepipcplus
-        - orangepiplus
-        - orangepiplus2e
         - orangepiwin
         - orangepizeroplus2-h3
         - orangepizeroplus2-h5
@@ -146,7 +146,6 @@ on:
         - quartz64a
         - quartz64b
         - recore
-        - roc-rk3399-pc
         - rock-4se
         - rock-5-cmio
         - rock64
@@ -156,6 +155,7 @@ on:
         - rockpi-4cplus
         - rockpi-n10
         - rockpi-s
+        - roc-rk3399-pc
         - star64
         - station-m1
         - station-m2
@@ -167,8 +167,8 @@ on:
         - uefi-riscv64
         - unleashed
         - unmatched
-        - visionfive
         - visionfive2
+        - visionfive
         - wsl2-arm64
         - wsl2-x86
         - zeropi
@@ -181,20 +181,9 @@ on:
         # maintainers
         - 150balbes
         - 1ubuntuuser
-        - AGM1968
         - AaronNGray
-        - DylanHP
-        - Kreyren
-        - ManoftheSea
-        - Manouchehri
-        - NicoD-SBC
-        - PanderMusubi
-        - StephenGraf
-        - TRSx80
-        - Tonymac32
-        - Z-Keven
-        - ZazaBR
         - adeepn
+        - AGM1968
         - ahoneybun
         - amazingfate
         - bigtreetech
@@ -204,6 +193,7 @@ on:
         - chainsx
         - clee
         - devdotnetorg
+        - DylanHP
         - echatzip
         - efectn
         - eliasbakken
@@ -216,21 +206,31 @@ on:
         - joekhoobyar
         - joshaspinall
         - krachlatte
+        - Kreyren
         - lanefu
         - lbmendes
         - linhz0hz
         - mahdichi
+        - ManoftheSea
+        - Manouchehri
         - monkaBlyat
+        - NicoD-SBC
+        - PanderMusubi
         - paolosabatino
         - pyavitz
         - rpardini
         - schwar3kat
         - sgjava
         - sputnik2019
+        - StephenGraf
         - teknoid
+        - Tonymac32
+        - TRSx80
         - utlark
         - vamzii
         - viraniac
+        - ZazaBR
+        - Z-Keven
         - all
         default: 'all'
       targetsFilterInclude:
@@ -759,7 +759,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -821,7 +821,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -883,7 +883,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -945,7 +945,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1007,7 +1007,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1069,7 +1069,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1131,7 +1131,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1193,7 +1193,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1255,7 +1255,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1317,7 +1317,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1379,7 +1379,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1441,7 +1441,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1503,7 +1503,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1565,7 +1565,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1627,7 +1627,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1689,7 +1689,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1751,7 +1751,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 45
+        timeout-minutes: 60
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
