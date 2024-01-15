@@ -25,9 +25,9 @@ lists:
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: orangepi-r1, BRANCH: current }
     - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
@@ -61,8 +61,8 @@ lists:
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: legacy}
     - { BOARD: orangepi5-plus, BRANCH: legacy}
+    - { BOARD: orangepi5, BRANCH: legacy}
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }

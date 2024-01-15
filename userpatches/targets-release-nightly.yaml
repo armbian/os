@@ -29,12 +29,12 @@ lists:
 
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: edge }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: edge }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: edge }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: edge }
+    - { BOARD: nanopiduo2, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: edge }
     - { BOARD: orangepi-r1, BRANCH: current }
     - { BOARD: orangepi-r1, BRANCH: edge }
     - { BOARD: orangepi-r1plus-lts, BRANCH: current }
@@ -120,10 +120,10 @@ lists:
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: legacy}
-    - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepi5-plus, BRANCH: legacy}
     - { BOARD: orangepi5-plus, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: legacy}
+    - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
     - { BOARD: orangepizero2, BRANCH: current }
