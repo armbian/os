@@ -53,27 +53,35 @@ jobs:
           A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
           B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
+          D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
 
           # join all in one file and compress
-          for line in $A $B $C; do
+          for line in $A $B $C $D; do
 
               BOARD=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f2)
               IMAGE_SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\.//g" | sed "s/\,//g")
               KERNEL_BRANCH=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4)
               IMAGE_RELEASE=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f3)
               IMAGE_URL=$(echo $line | cut -d"|" -f2)
-              IMAGE_TARGET=$(echo $IMAGE_URL | cut -d"|" -f2 | grep "minimal\|desktop" | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4- | grep -Po '_[a-z].*' | cut -d"." -f1 | sed "s/_//" | sed "s/_desktop//")
+              # workarounds
+              STEP_A=1
+              STEP_B=2
+              [[ $IMAGE_URL == *i3-wm* || $IMAGE_URL == *kde-plasma* ]] && STEP_A=2 && STEP_B=4
+              IMAGE_TARGET=$(echo $IMAGE_URL | cut -d"|" -f2 | grep "minimal\|desktop" | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4- | grep -Po '_[a-z].*' | cut -d"." -f1 | sed "s/_//" | sed "s/_desktop//" | cut -d"-" -f1,${STEP_A})
+              IMAGE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed "s/rc[0-9]_//g" | cut -d"_" -f4- | cut -d"-" -f${STEP_B}- | cut -d"_" -f1 | cut -d"." -f1)
+              [[ $IMAGE_EXTENSION == $KERNEL_BRANCH || $IMAGE_EXTENSION == minimal ]] && unset IMAGE_EXTENSION
               [[ -z ${IMAGE_TARGET} ]] && IMAGE_TARGET="server"
-              EXTENSION=$(echo ${IMAGE_URL##*.})
+              FILE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed "s/_sm8250-xiaomi-elish//" | sed "s/-rc[0-9]//g" | rev | cut -d"_" -f1 | rev | sed 's/.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)//' | sed "s/desktop.\|minimal.//")
               IMAGE_TYPE=$(echo $IMAGE_URL | cut -d"/" -f5)
               IMAGE_CREATED=$(echo $line | cut -d"|" -f3 | sed "s/\//-/g")
               EXPOSED=false
+              # check if image is exposed
               while read exposed; do
                 [[ $IMAGE_URL == *$exposed* ]] && EXPOSED=true
               done < exposed.map
-              echo "${BOARD,,}|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$EXPOSED|$IMAGE_TYPE|$EXTENSION"
+              echo "${BOARD,,}|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
 
-          done | sed '1s/^/"board"|"url"|"updated"|"size"|"release"|"branch"|"target"|"exposed"|"type"|"extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
+          done | sed '1s/^/"board"|"url"|"updated"|"size"|"release"|"branch"|"target"|"application"|"exposed"|"type"|"extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
 
       - name: "Download and compress torrent files"
         run: |
