@@ -112,6 +112,7 @@ on:
         - rock-5b
         - rockpi-4a
         - rockpi-e
+        - rockpi-s
         - rockpro64
         - rpi4b
         - rpi5b
@@ -1901,7 +1902,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -2120,7 +2121,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -2339,7 +2340,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -2558,7 +2559,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -2777,7 +2778,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -2996,7 +2997,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -3215,7 +3216,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -3434,7 +3435,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -3653,7 +3654,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -3872,7 +3873,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -4091,7 +4092,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -4310,7 +4311,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -4529,7 +4530,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -4748,7 +4749,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -4967,7 +4968,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
@@ -5186,7 +5187,7 @@ jobs:
           makeLatest: false
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifactErrorsFailBuild: false
+          artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
           #token: ${{ secrets.ACCESS_TOKEN }}
           #token: ${{ env.upload_user }}
