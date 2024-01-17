@@ -1922,7 +1922,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2021,7 +2021,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -2141,7 +2141,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2240,7 +2240,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -2360,7 +2360,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2459,7 +2459,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -2579,7 +2579,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2678,7 +2678,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -2798,7 +2798,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2897,7 +2897,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -3017,7 +3017,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3116,7 +3116,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -3236,7 +3236,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3335,7 +3335,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -3455,7 +3455,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3554,7 +3554,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -3674,7 +3674,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3773,7 +3773,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -3893,7 +3893,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3992,7 +3992,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -4112,7 +4112,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4211,7 +4211,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -4331,7 +4331,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4430,7 +4430,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -4550,7 +4550,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4649,7 +4649,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -4769,7 +4769,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4868,7 +4868,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -4988,7 +4988,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -5087,7 +5087,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
@@ -5207,7 +5207,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -5306,7 +5306,7 @@ jobs:
 
 
       - name: "Upload artefacts"
-        timeout-minutes: 15
+        timeout-minutes: 25
         #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
         #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
         #if: (${{ github.event.inputs.uploadtoserver || 'github' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'github' }}  == 'both')
