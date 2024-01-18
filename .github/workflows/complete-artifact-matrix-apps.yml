@@ -1875,7 +1875,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -2094,7 +2094,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -2313,7 +2313,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -2532,7 +2532,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -2751,7 +2751,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -2970,7 +2970,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -3189,7 +3189,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -3408,7 +3408,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -3627,7 +3627,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -3846,7 +3846,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -4065,7 +4065,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -4284,7 +4284,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -4503,7 +4503,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -4722,7 +4722,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -4941,7 +4941,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
@@ -5160,7 +5160,7 @@ jobs:
           artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
-          replacesArtifacts: false
+          replacesArtifacts: true
           omitName: true
           makeLatest: false
           omitPrereleaseDuringUpdate: true
