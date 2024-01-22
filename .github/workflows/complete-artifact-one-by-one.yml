@@ -26,8 +26,10 @@ on:
         description: 'Userspace'
         options:
         - jammy
+        - mantic
         - bookworm
         - trixie
+        - sid
         default: 'jammy'
 
       armbian_ui:
@@ -229,6 +231,7 @@ on:
         - station-p1
         - station-p2
         - thinkpad-x13s
+        - tinker-edge-r
         - tinkerboard-2
         - tinkerboard
         - tritium-h3
