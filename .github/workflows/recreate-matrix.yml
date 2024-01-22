@@ -88,8 +88,10 @@ jobs:
                 description: 'Userspace'
                 options:
                 - jammy
+                - mantic
                 - bookworm
                 - trixie
+                - sid
                 default: 'jammy'
 
               armbian_ui:
