@@ -70,15 +70,15 @@ jobs:
           b=$(echo $1 | rev | cut -d"/" -f1 | rev | cut -d"." -f1)
           I=0
           for bs in $(cat /tmp/stable.txt | grep ${b}/); do
-              GNOME=$(echo $bs | grep "$2" | grep _gnome | grep jammy | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+              GNOME=$(echo $bs | grep "$2" | grep _gnome | grep jammy | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/')
               [[ -n $GNOME ]] && echo $GNOME && I=$(( I + 1 ))
-              XFCE=$(echo $bs | grep $2 | grep _xfce | grep jammy | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+              XFCE=$(echo $bs | grep $2 | grep _xfce | grep jammy | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/')
               [[ -n $XFCE ]] && echo $XFCE && I=$(( I + 1 ))
-              SERVER=$(echo $bs | grep $2 | grep -v "minimal\|desktop" | grep bookworm | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+              SERVER=$(echo $bs | grep $2 | grep -v "minimal\|desktop" | grep bookworm | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/' )
               [[ -n ${SERVER} ]] && echo $SERVER && I=$(( I + 1 ))
               [[ $I -eq 2 ]] && break
           done
-          JAMMYCLI=$(cat /tmp/stable.txt | grep $b | grep $2 | grep -v "minimal\|desktop" | grep jammy | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+          JAMMYCLI=$(cat /tmp/stable.txt  | grep $b | grep $2 | grep -v "minimal\|desktop" | grep jammy | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/' )
           [[ $I -lt 2 && -n $JAMMYCLI ]] && echo "$JAMMYCLI"
           return 2
           }
@@ -139,7 +139,7 @@ jobs:
               EXPOSED=false
               # check if image is exposed
               while read exposed; do
-                [[ $IMAGE_URL == *$exposed* ]] && EXPOSED=true
+                [[ $IMAGE_URL =~ $exposed ]] && EXPOSED=true
               done < os/exposed.map
               echo "${BOARD,,}|$ARMBIAN_VERSION|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
 
