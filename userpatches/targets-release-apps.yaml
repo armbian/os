@@ -24,12 +24,6 @@ lists:
 
   home-assistant: &home-assistant
     - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
-    - { BOARD: orangepizero, BRANCH: current }
-    - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
@@ -38,8 +32,6 @@ lists:
     - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
-    - { BOARD: jethubj100, BRANCH: current }
-    - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
@@ -50,17 +42,9 @@ lists:
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: nanopi-r6s, BRANCH: legacy}
-    - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current }
-    - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5-plus, BRANCH: legacy}
-    - { BOARD: orangepi5, BRANCH: legacy}
-    - { BOARD: orangepiprime, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: pine64, BRANCH: current }
-    - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5b, BRANCH: edge }
@@ -70,11 +54,8 @@ lists:
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
-    - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
-    - { BOARD: tritium-h3, BRANCH: current }
 
 targets:
 
