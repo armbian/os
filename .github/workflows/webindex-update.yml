@@ -139,7 +139,7 @@ jobs:
               EXPOSED=false
               # check if image is exposed
               while read exposed; do
-                [[ $IMAGE_URL =~ $exposed ]] && EXPOSED=true
+                [[ $IMAGE_URL =~ $exposed ]] && EXPOSED=true && echo "Exposed=$IMAGE_URL">> $GITHUB_STEP_SUMMARY
               done < os/exposed.map
               echo "${BOARD,,}|$ARMBIAN_VERSION|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
 
