@@ -32,6 +32,13 @@ jobs:
     runs-on: Linux
     needs: Check
     steps:
+      - name: Checkout build framework repository
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/build
+          fetch-depth: 1
+          clean: false
+          path: build
 
       - name: Checkout OS repository
         uses: actions/checkout@v4
@@ -39,12 +46,66 @@ jobs:
           repository: armbian/os
           fetch-depth: 1
           clean: false
+          path: os
 
       - name: "Install dependencies"
         run: |
 
           if ! command -v "gh" > /dev/null 2>&1; then sudo apt-get -y -qq install gh; fi
           if ! command -v "jc" > /dev/null 2>&1; then sudo apt-get -y -qq install jc; fi
+
+      - name: "Generate map file"
+        run: |
+
+          # make sure its cleaned
+          rm -f exposed.map.autoproposal
+
+          # get all stable files we provide
+          rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
+
+          # generate map entries
+          # $1 = board
+          # $2 = branch
+          function check_targets(){
+          b=$(echo $1 | rev | cut -d"/" -f1 | rev | cut -d"." -f1)
+          I=0
+          for bs in $(cat /tmp/stable.txt | grep ${b}/); do
+              GNOME=$(echo $bs | grep "$2" | grep _gnome | grep jammy | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+              [[ -n $GNOME ]] && echo $GNOME && I=$(( I + 1 ))
+              XFCE=$(echo $bs | grep $2 | grep _xfce | grep jammy | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+              [[ -n $XFCE ]] && echo $XFCE && I=$(( I + 1 ))
+              SERVER=$(echo $bs | grep $2 | grep -v "minimal\|desktop" | grep bookworm | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+              [[ -n ${SERVER} ]] && echo $SERVER && I=$(( I + 1 ))
+              [[ $I -eq 2 ]] && break
+          done
+          JAMMYCLI=$(cat /tmp/stable.txt | grep $b | grep $2 | grep -v "minimal\|desktop" | grep jammy | cut -d"_" -f3- | rev | cut -d"." -f3- | rev | sed "s/rc[0-9]//g" | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/*/')
+          [[ $I -lt 2 && -n $JAMMYCLI ]] && echo "$JAMMYCLI"
+          return 2
+          }
+
+          for board in $(ls -1 build/config/boards/*.{conf,csc,wip,tvb}); do
+             # read kernel target
+             if [[ $(grep KERNEL_TARGET -w $board | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
+                KERNEL_TARGET=$(grep KERNEL_TARGET -w $board | cut -d '"' -f 2 | awk -F, '{ print $1,$3,$2 }')
+              else
+                KERNEL_TARGET=$(grep KERNEL_TARGET -w $board | cut -d '"' -f 2 | sed "s/,/ /g")
+             fi
+             VARIANTS=0
+             for targets in ${KERNEL_TARGET}; do
+                if [[ "${targets}" == current && $VARIANTS -lt 2 ]]; then
+                        check_targets "$board" "current"
+                        VARIANTS=$((VARIANTS+$?))
+                fi
+                if [[ "${targets}" == legacy && $VARIANTS -lt 2 ]]; then
+                        check_targets "$board" "legacy"
+                        VARIANTS=$((VARIANTS+$?))
+                fi
+                if [[ "${targets}" == edge && $VARIANTS -lt 2 ]]; then
+                        check_targets "$board" "edge"
+                        VARIANTS=$((VARIANTS+$?))
+                fi
+             done || true
+          done | tee -a > exposed.map.autoproposal
 
       - name: "Build JSON file" # adjust "exposed" property while reading from download
         run: |
@@ -79,7 +140,7 @@ jobs:
               # check if image is exposed
               while read exposed; do
                 [[ $IMAGE_URL == *$exposed* ]] && EXPOSED=true
-              done < exposed.map
+              done < os/exposed.map
               echo "${BOARD,,}|$ARMBIAN_VERSION|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
 
           done | sed '1s/^/"board_slug"|"armbian_version"|"file_url"|"file_updated"|"file_size"|"distro_release"|"kernel_branch"|"image_variant"|"preinstalled_application"|"promoted"|"download_repository"|"file_extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
@@ -99,6 +160,7 @@ jobs:
           path: |
             all-images.json
             all-torrents.zip
+            exposed.map.autoproposal
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
