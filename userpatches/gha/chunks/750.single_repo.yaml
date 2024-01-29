@@ -138,7 +138,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: "Run repository update action"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'yes' }}
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/os

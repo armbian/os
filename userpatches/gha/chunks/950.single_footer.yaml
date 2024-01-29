@@ -12,7 +12,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: "Run webindex update action"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/os
