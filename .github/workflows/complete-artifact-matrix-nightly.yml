@@ -5362,7 +5362,7 @@ jobs:
 
       - name: "Run repository update action"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/os
@@ -5390,7 +5390,7 @@ jobs:
 
       - name: "Run webindex update action"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/os
