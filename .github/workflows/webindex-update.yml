@@ -53,6 +53,7 @@ jobs:
 
           if ! command -v "gh" > /dev/null 2>&1; then sudo apt-get -y -qq install gh; fi
           if ! command -v "jc" > /dev/null 2>&1; then sudo apt-get -y -qq install jc; fi
+          if ! command -v "zip" > /dev/null 2>&1; then sudo apt-get -y -qq install zip; fi
 
       - name: "Generate map file"
         run: |
