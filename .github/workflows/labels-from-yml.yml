@@ -23,7 +23,7 @@ jobs:
         name: Run Labeler
         uses: crazy-max/ghaction-github-labeler@v5
         with:
-          github-token: ${{ secrets.ACCESS_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           yaml-file: .github/labels.yml
           dry-run: ${{ github.event_name == 'pull_request' }}
           exclude: |
