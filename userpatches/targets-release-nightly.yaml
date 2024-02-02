@@ -21,12 +21,6 @@ common-gha-configs:
 lists:
 
   # automated lists start
-  staging-riscv64: &staging-riscv64
-    # auto generated section
-    - { BOARD: licheepi-4a, BRANCH: current }
-    - { BOARD: licheepi-4a, BRANCH: edge }
-    # end of auto generated section
-
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: nanopi-r4s, BRANCH: current }
@@ -77,6 +71,7 @@ lists:
     - { BOARD: rock-5a, BRANCH: edge }
     - { BOARD: rock-5a, BRANCH: legacy}
     - { BOARD: wdk2023, BRANCH: wdk2023}
+    - { BOARD: xiaomi-umi, BRANCH: sm8250}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -200,7 +195,6 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-headless
-      - *staging-riscv64
       - *virtual-boards
 
   # debian unstable minimal
@@ -220,7 +214,6 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *staging-fast-hdmi
-      - *staging-riscv64
       - *virtual-boards
 
   # ubuntu unstable without apps
@@ -242,7 +235,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *staging-fast-hdmi
-      - *staging-riscv64
       - { BOARD: rpi4b, BRANCH: current }
 
   # debian trixie gnome desktop without 3d
@@ -276,7 +268,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *staging-riscv64
       - *standard-support-headless
       - *staging-fast-hdmi
       - *standard-support-fast-hdmi

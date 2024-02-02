@@ -26,6 +26,7 @@ lists:
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
     - { BOARD: beaglev, BRANCH: edge }
+    - { BOARD: licheepi-4a, BRANCH: current }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: unleashed, BRANCH: edge }
