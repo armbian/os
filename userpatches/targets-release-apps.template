@@ -22,6 +22,13 @@ common-gha-configs:
 
 lists:
 
+  armbian-security: &armbian-security
+    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: rpi4b, BRANCH: current }
+    - { BOARD: rpi5b, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
+
   home-assistant: &home-assistant
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -73,3 +80,18 @@ targets:
       ENABLE_EXTENSIONS: "ha"
     items:
       - *home-assistant
+
+  # Armbian security
+  cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      ENABLE_EXTENSIONS: "kali"
+    items:
+      - *armbian-security
