@@ -29,6 +29,8 @@ lists:
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
 
+targets:
+
   # Armbian security
   cli-unstable-debian:
     enabled: yes
