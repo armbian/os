@@ -89,9 +89,11 @@ function post_install_kernel_debs__add_home_assistant_debs_to_image() {
 		exit_with_error "Home Assistant Supervised is not supported on ${ARCH} architecture"
 		;;
 	esac
-	# install HA supervised
-	chroot_sdcard MACHINE=${MACHINE} BYPASS_OS_CHECK=true dpkg -i "/opt/hainstall/${HA_SUPERVISED_FILENAME}"
+        # hack os-release to say its Debian and HA won't complain that its unsupported OS
+        sed -i 's/^PRETTY_NAME=".*/PRETTY_NAME="Debian GNU\/Linux 12 (bookworm)"/g' "${SDCARD}/etc/os-release"
 
+        # install HA supervised
+        chroot_sdcard MACHINE=${MACHINE} dpkg -i "/opt/hainstall/${HA_SUPERVISED_FILENAME}"
 }
 
 function image_specific_armbian_env_ready__set_cgroupsv1_in_armbianEnvTxt() {
