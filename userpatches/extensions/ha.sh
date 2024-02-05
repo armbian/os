@@ -38,10 +38,10 @@ function extension_prepare_config__home_assistant() {
 	declare -g HA_OS_AGENT_URL="https://github.com/home-assistant/os-agent/releases/download/${HA_OS_AGENT_VERSION}/${HA_OS_AGENT_FILENAME}"
 	declare -g HA_OS_AGENT_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_OS_AGENT_FILENAME}"
 
-	# Fetch supervised repostory from release 1.6.0, patch it to disable Grub update and install
+	# Download supervised repostory from release 1.6.0, patch it to disable Grub update and install
 	# Without this patch, installation breaks with /usr/sbin/grub-probe: error: failed to get canonical path of `tmpfs'
-	fetch_from_repo "https://github.com/home-assistant/supervised-installer" "supervised-installer" "commit:c99ffd00fcb32c06fc4140040c9ee7e919becce9"
-	cd "${SRC}"/cache/sources/supervised-installer || exit
+	run_host_command_logged wget --progress=dot:giga -qO- "https://github.com/home-assistant/supervised-installer/archive/refs/tags/1.6.0.tar.gz" | tar xvz -C "${SRC}"/cache/sources/
+	cd "${SRC}"/cache/sources/supervised-installer-1.6.0 || exit
 
 	# Updating grup fails in chroot and we do it later anyway
 	sed -i "/update-grub/d" homeassistant-supervised/DEBIAN/postinst
