@@ -1,8 +1,8 @@
 enable_extension "docker-ce"
 
-function extension_prepare_config__home_assistant() {
-	display_alert "Target image will be a Home Assistant Supervised deploy" "${EXTENSION}" "info"
+function pre_customize_image__500_add_ha_to_image() {
 
+	display_alert "Target image will be a Home Assistant Supervised deploy" "${EXTENSION}" "info"
 	case "${RELEASE}" in
 		bullseye | bookworm | trixie)
 			display_alert "Setting up Home Assistant Supervised on Debian ${RELEASE}" "${EXTENSION}" "info"
@@ -38,10 +38,10 @@ function extension_prepare_config__home_assistant() {
 	declare -g HA_OS_AGENT_URL="https://github.com/home-assistant/os-agent/releases/download/${HA_OS_AGENT_VERSION}/${HA_OS_AGENT_FILENAME}"
 	declare -g HA_OS_AGENT_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_OS_AGENT_FILENAME}"
 
-	# Download supervised repostory from release 1.6.0, patch it to disable Grub update and install
+	# Fetch supervised repostory from release 1.6.0, patch it to disable Grub update and install
 	# Without this patch, installation breaks with /usr/sbin/grub-probe: error: failed to get canonical path of `tmpfs'
-	run_host_command_logged wget --progress=dot:giga -qO- "https://github.com/home-assistant/supervised-installer/archive/refs/tags/1.6.0.tar.gz" | tar xvz -C "${SRC}"/cache/sources/
-	cd "${SRC}"/cache/sources/supervised-installer-1.6.0 || exit
+	fetch_from_repo "https://github.com/home-assistant/supervised-installer" "supervised-installer" "commit:c99ffd00fcb32c06fc4140040c9ee7e919becce9"
+	cd "${SRC}"/cache/sources/supervised-installer || exit
 
 	# Updating grup fails in chroot and we do it later anyway
 	sed -i "/update-grub/d" homeassistant-supervised/DEBIAN/postinst
@@ -51,13 +51,13 @@ function extension_prepare_config__home_assistant() {
 	dpkg-deb -v --build --root-owner-group homeassistant-supervised
 
 	# supervised deb: all
-	declare -g HA_SUPERVISED_VERSION="1.6.1"
+	declare -g HA_SUPERVISED_VERSION="1.6.0"
 	declare -g HA_SUPERVISED_FILENAME="homeassistant-supervised_${HA_SUPERVISED_VERSION}.deb"
 	declare -g HA_SUPERVISED_URL="https://github.com/home-assistant/supervised-installer/releases/download/${HA_SUPERVISED_VERSION}/homeassistant-supervised.deb"
 	declare -g HA_SUPERVISED_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_SUPERVISED_FILENAME}"
 
 	display_alert "Adding HA dependency packages" "${EXTENSION}" "info"
-	add_packages_to_image systemd-journal-remote apparmor cifs-utils
+	chroot_sdcard_apt_get_install systemd-journal-remote apparmor cifs-utils
 
 	EXTRA_IMAGE_SUFFIXES+=("-homeassistant") # global array
 
@@ -81,9 +81,6 @@ function extension_prepare_config__home_assistant() {
 		run_host_command_logged wget --progress=dot:giga --output-document="${HA_SUPERVISED_CACHE_FILE}" "${HA_SUPERVISED_URL}"
 	fi
 
-}
-
-function post_install_kernel_debs__add_home_assistant_debs_to_image() {
 	display_alert "Adding Home Assistant debs to image" "${EXTENSION}" "info"
 	run_host_command_logged mkdir -p "${SDCARD}"/opt/hainstall
 	run_host_command_logged cp -pv "${HA_OS_AGENT_CACHE_FILE}" "${SDCARD}/opt/hainstall/${HA_OS_AGENT_FILENAME}"
