@@ -1,27 +1,32 @@
 enable_extension "docker-ce"
 
-function pre_customize_image__500_add_ha_to_image() {
-
+function extension_prepare_config__home_assistant() {
 	display_alert "Target image will be a Home Assistant Supervised deploy" "${EXTENSION}" "info"
-	case "${RELEASE}" in
-		bullseye | bookworm | trixie)
-			display_alert "Setting up Home Assistant Supervised on Debian ${RELEASE}" "${EXTENSION}" "info"
-			;;
-		*)
-			exit_with_error "Home Assistant Supervised is not supported on ${DISTRIBUTION} ${RELEASE}"
-			;;
-	esac
+        case "${RELEASE}" in
+                bullseye | bookworm | trixie)
+                        display_alert "Setting up Home Assistant Supervised on Debian ${RELEASE}" "${EXTENSION}" "info"
+                        ;;
+                *)
+                        exit_with_error "Home Assistant Supervised is not supported on ${DISTRIBUTION} ${RELEASE}"
+                        ;;
+        esac
+
+        EXTRA_IMAGE_SUFFIXES+=("-homeassistant") # global array
+
+}
+
+function pre_customize_image__500_add_ha_to_image() {
 
 	# HA-Supervised wants cgroupsv1, no idea why, but such is life.
 	declare -g GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} systemd.unified_cgroup_hierarchy=false" # GRUB version
 	declare -g HA_UBOOT_EXTRAARGS="systemd.unified_cgroup_hierarchy=false"                                       # u-boot version, applied below
 
-	# We need extra space in the rootfs for the Java build machine
-	display_alert "Adding extra space" "current extra: ${EXTRA_ROOTFS_MIB_SIZE}" "info"
-	if [[ ${EXTRA_ROOTFS_MIB_SIZE} -le 512 ]]; then
-		declare -g EXTRA_ROOTFS_MIB_SIZE=512
-		display_alert "Setting new EXTRA_ROOTFS_MIB_SIZE: ${EXTRA_ROOTFS_MIB_SIZE}" "${EXTENSION}" "info"
-	fi
+        # We need extra space in the rootfs for the Java build machine
+        display_alert "Adding extra space" "current extra: ${EXTRA_ROOTFS_MIB_SIZE}" "info"
+        if [[ ${EXTRA_ROOTFS_MIB_SIZE} -le 512 ]]; then
+                declare -g EXTRA_ROOTFS_MIB_SIZE=512
+                display_alert "Setting new EXTRA_ROOTFS_MIB_SIZE: ${EXTRA_ROOTFS_MIB_SIZE}" "${EXTENSION}" "info"
+        fi
 
 	declare -g HA_OS_AGENT_ARCH="${ARCH}"
 	[[ "${ARCH}" == "armhf" ]] && declare -g HA_OS_AGENT_ARCH="armv7"
@@ -58,10 +63,6 @@ function pre_customize_image__500_add_ha_to_image() {
 
 	display_alert "Adding HA dependency packages" "${EXTENSION}" "info"
 	chroot_sdcard_apt_get_install systemd-journal-remote apparmor cifs-utils nfs-common
-
-	EXTRA_IMAGE_SUFFIXES+=("-homeassistant") # global array
-
-	[[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
 
 	display_alert "Fetching Home Assistant debs" "${EXTENSION}" "info"
 	mkdir -p "${HA_OS_AGENT_CACHE_DIR}"
