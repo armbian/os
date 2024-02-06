@@ -4,7 +4,7 @@ function extension_prepare_config__openhab() {
 	display_alert "Target image will have OpenHab preinstalled" "${EXTENSION}" "info"
 }
 
-function pre_install_kernel_debs(){
+function pre_install_kernel_debs__install_openhab_packages(){
 	display_alert "Adding gpg-key for Zulu and OpenHab repository" "${EXTENSION}" "info"
 	run_host_command_logged curl --max-time 60 -4 -fsSL "https://repos.azul.com/azul-repo.key" "|" gpg --dearmor -o "${SDCARD}"/usr/share/keyrings/azul.gpg
 	run_host_command_logged curl --max-time 60 -4 -fsSL "https://openhab.jfrog.io/artifactory/api/gpg/key/public" "|" gpg --dearmor -o "${SDCARD}"/usr/share/keyrings/openhab.gpg
