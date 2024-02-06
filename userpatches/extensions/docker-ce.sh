@@ -2,7 +2,7 @@ function extension_prepare_config__docker() {
 	display_alert "Target image will have Docker Inc. preinstalled" "${EXTENSION}" "info"
 }
 
-function pre_install_kernel_debs(){
+function pre_install_kernel_debs__install_docker_packages(){
 	display_alert "Adding Docker Inc. package for release ${RELEASE}" "${EXTENSION}" "info"
 
 	display_alert "Adding gpg-key for Docker Inc." "${EXTENSION}" "info"

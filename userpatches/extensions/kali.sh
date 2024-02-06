@@ -5,7 +5,7 @@ function extension_prepare_config__docker() {
 	display_alert "Target image will have Kali repository preinstalled" "${EXTENSION}" "info"
 }
 
-function pre_install_kernel_debs(){
+function pre_install_kernel_debs__install_kali_packages(){
 	display_alert "Adding gpg-key for Kali repository" "${EXTENSION}" "info"
 	run_host_command_logged curl --max-time 60 -4 -fsSL "https://archive.kali.org/archive-key.asc" "|" gpg --dearmor -o "${SDCARD}"/usr/share/keyrings/kali.gpg
 
