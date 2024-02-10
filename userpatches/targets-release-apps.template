@@ -53,9 +53,6 @@ lists:
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
@@ -63,8 +60,8 @@ lists:
     - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
-# broken    - { BOARD: uefi-x86, BRANCH: current }
-# broken    - { BOARD: uefi-arm64, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
 
   openhab: &openhab
     - { BOARD: nanopi-r4s, BRANCH: current }
@@ -82,17 +79,11 @@ lists:
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
-    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: legacy}
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current }
-    - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
@@ -106,7 +97,7 @@ targets:
   # Home assistant
   minimal-cli-stable-debian:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-apps ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -121,7 +112,7 @@ targets:
   # OpenHab
   cli-stable-debian:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-apps ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -136,7 +127,7 @@ targets:
   # Armbian security
   cli-unstable-debian:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-apps ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
