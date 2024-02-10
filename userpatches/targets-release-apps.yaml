@@ -22,7 +22,73 @@ common-gha-configs:
 
 lists:
 
+  armbian-security: &armbian-security
+    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: rpi4b, BRANCH: current }
+    - { BOARD: rpi5b, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
+
   home-assistant: &home-assistant
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: edge }
+    - { BOARD: sk-am64b, BRANCH: current }
+    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: current }
+    - { BOARD: bananapim2s, BRANCH: current }
+    - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
+    - { BOARD: khadas-vim1, BRANCH: current }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
+    - { BOARD: khadas-vim2, BRANCH: current }
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
+    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
+    - { BOARD: lafrite, BRANCH: current }
+    - { BOARD: lepotato, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: legacy}
+    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: odroidn2l, BRANCH: current }
+    - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: rpi4b, BRANCH: current }
+    - { BOARD: rpi5b, BRANCH: current }
+    - { BOARD: sk-tda4vm, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: current }
+    - { BOARD: onecloud, BRANCH: current }
+    - { BOARD: tinkerboard, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
+
+  openhab: &openhab
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: edge }
+    - { BOARD: sk-am64b, BRANCH: current }
+    - { BOARD: bananapicm4io, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: current }
+    - { BOARD: bananapim2s, BRANCH: current }
+    - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
+    - { BOARD: khadas-vim1, BRANCH: current }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
+    - { BOARD: khadas-vim2, BRANCH: current }
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
+    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,ha" }
+    - { BOARD: lafrite, BRANCH: current }
+    - { BOARD: lepotato, BRANCH: current }
+    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: odroidn2l, BRANCH: current }
+    - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: rpi4b, BRANCH: current }
+    - { BOARD: rpi5b, BRANCH: current }
+    - { BOARD: sk-tda4vm, BRANCH: current }
+    - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
 
@@ -31,7 +97,7 @@ targets:
   # Home assistant
   minimal-cli-stable-debian:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-apps ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -42,3 +108,33 @@ targets:
       ENABLE_EXTENSIONS: "ha"
     items:
       - *home-assistant
+
+  # OpenHab
+  cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-apps ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      ENABLE_EXTENSIONS: "openhab"
+    items:
+      - *openhab
+
+  # Armbian security
+  cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-apps ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+      ENABLE_EXTENSIONS: "kali"
+    items:
+      - *armbian-security
