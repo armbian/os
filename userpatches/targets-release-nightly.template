@@ -1,0 +1,131 @@
+#
+# Armbian release template for automated generation. DO NOT EDIT .yaml files. Edit .template
+#
+
+common-gha-configs:
+  armbian-gha: &armbian-gha
+    runners:
+      default: "ubuntu-latest"
+      by-name:
+        kernel: [ "self-hosted", "Linux", "alfa" ]
+        uboot: [ "self-hosted", "Linux", "fast", "X64" ]
+        armbian-bsp-cli: [ "fast" ]
+      by-name-and-arch:
+        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
+        rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
+        image-arm64: [ "images" ]
+        image-riscv64: [ "self-hosted", "Linux", "fast", "X64" ]
+
+lists:
+
+  # automated lists start
+  # automated lists stop
+
+  virtual-boards: &virtual-boards
+    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
+    - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
+    - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
+
+targets:
+
+  # ubuntu unstable minimal
+
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *standard-support-headless
+      - *standard-support-riscv64
+      - *staging-headless
+      - *staging-riscv64
+      - *virtual-boards
+
+  # debian unstable minimal
+
+  minimal-cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *staging-fast-hdmi
+      - *staging-slow-hdmi
+      - *staging-headless
+      - *staging-riscv64
+      - *virtual-boards
+
+  # ubuntu unstable without apps
+
+  xfce-barebone-desktop-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "none"
+    items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-riscv64
+      - *staging-slow-hdmi
+      - *staging-fast-hdmi
+      - *staging-riscv64
+      - { BOARD: rpi4b, BRANCH: current }
+
+  # debian trixie gnome desktop without 3d
+  gnome-desktop-latest-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      # Attention, no list reference here, just a specific board.
+      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
+
+  # automated section
+  automated-section:
+    enabled: no
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+  # end of automated-section:

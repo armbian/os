@@ -2,10 +2,12 @@ org: "armbian" # can't be an expression, only string.
 
 # armbian/build coordinates
 org_and_build_repo: "armbian/build"
+release_repo: "os"
 build_ref: "main"
 script_name: "Build Nightly Images (cronjob)"
-concurrency_group: "pipeline-nightly"
+concurrency_group: "pipeline"
 repository_ref: "nightly"
+team: "Release manager"
 
 # menu defaults
 skipImagesDefaults: "'no'"
@@ -26,4 +28,4 @@ userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
 repository_runner: "[ repository ]"
 
 # when this should run
-cron_job: "schedule:\n   - cron: '00 4 * * *'\n  push:\n    branches:\n      - 'main'\n    paths:\n      - 'userpatches/targets-release-nightly.yaml'"
+cron_job: "schedule:\n   - cron: '00 2 * * *'\n  push:\n    branches:\n      - 'main'\n    paths:\n      - 'userpatches/targets-release-nightly.yaml'"

@@ -1,9 +1,9 @@
-name: Generate Download Index (admin)
+name: Generate Download Index in JSON (admin)
 on:
   repository_dispatch:
     types: ["Webindex update"]
   workflow_dispatch:
-        
+
 concurrency:
   group: webindex
   cancel-in-progress: false
@@ -13,7 +13,7 @@ jobs:
   Check:
 
     name: "Check membership"
-    runs-on: fast
+    runs-on: Linux
     steps:
 
       - name: "Check membership"
@@ -21,65 +21,150 @@ jobs:
         with:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEAM: "Release manager"
 
   Webindex:
-  
+
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-    name: "Generate Download Index"
-    runs-on: ubuntu-latest
+
+    name: "Generate JSON Index"
+    runs-on: Linux
     needs: Check
     steps:
+      - name: Checkout build framework repository
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/build
+          fetch-depth: 1
+          clean: false
+          path: build
 
       - name: Checkout OS repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: armbian/os
           fetch-depth: 1
           clean: false
+          path: os
 
-      - name: Generate index
-        run: |
-          A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $2" " "https://dl.armbian.com/"$5" "$3"?"$4 }' | grep "archive/" | grep -v ".txt" | sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
-          B=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g"| sed -e 's| |"\|"|g' -e 's|^|"|g' -e 's|$|"|g')
-          for line in $A $B; do
-              SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\"//g" | sed "s/\.//g" | sed "s/\,//g" )
-              SIZE=$(echo "scale=0; $(echo $SIZE)/1024/1024" | bc -l)"Mb"
-              DATETIME=$(echo $line | cut -d"|" -f3 | sed "s/\"//g")
-              DATETIME=$(date -d "$(echo $DATETIME | sed "s/?/ /g")" +%s)
-              URL=$(echo $line | cut -d"|" -f2 | sed "s/\"//g")
-              NIGHTLY=""
-              [[ "$URL" == *"github"* ]] && NIGHTLY="_nightly"
-              NAME=$(echo $URL | cut -d"_" -f3 | awk '{print tolower($0)}')
-              sufix=$(echo $URL | rev | cut -d'.' -f 1 | rev | sed "s/^/./" | sed "s/.xz//g")
-              out_release=$(echo $URL | cut -d"_" -f4)
-              out_branch=$(echo $URL | cut -d"_" -f5)
-              out_kernel=$(echo $URL | cut -d"_" -f6-7 | cut -d"." -f1-3 | cut -d"_" -f1)
-              out_desktop=$(echo $URL | cut -d"_" -f7- | cut -d"." -f1 | cut -d"_" -f1)
-              echo "$NAME/${out_release^}_${out_branch}$([[ -n "${out_desktop}" ]] && echo "_")${out_desktop}${NIGHTLY}${sufix}|$URL|$DATETIME|$SIZE"
-          done > index.csv
-
-      - name: Download and compress torrent files
+      - name: "Install dependencies"
         run: |
 
-          ls -l
-          cat index.csv | grep torrent | grep -v trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=stable --backups=1 || true
-          cat index.csv | grep torrent | grep trunk | cut -d"|" -f2 | xargs -n 1 -P 8 wget --tries=50 --directory-prefix=unstable --backups=1 || true
-          
-          # hack. we treat stable a bit different. Need to be unified once
-          sed -i "s|https://dl.armbian.com/||" index.csv
-          
-          zip -qj unstable.zip unstable/*.torrent
-          zip -qj stable.zip stable/*.torrent
+          if ! command -v "gh" > /dev/null 2>&1; then sudo apt-get -y -qq install gh; fi
+          if ! command -v "jc" > /dev/null 2>&1; then sudo apt-get -y -qq install jc; fi
+          if ! command -v "zip" > /dev/null 2>&1; then sudo apt-get -y -qq install zip; fi
 
-      - uses: actions/upload-artifact@v3
+      - name: "Generate map file"
+        run: |
+
+          # make sure its cleaned
+          rm -f exposed.map.autoproposal
+
+          # get all stable files we provide
+          rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
+
+          # generate map entries
+          # $1 = board
+          # $2 = branch
+          function check_targets(){
+          b=$(echo $1 | rev | cut -d"/" -f1 | rev | cut -d"." -f1)
+          I=0
+          for bs in $(cat /tmp/stable.txt | grep ${b}/); do
+              GNOME=$(echo $bs | grep "$2" | grep _gnome | grep jammy | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/')
+              [[ -n $GNOME ]] && echo $GNOME && I=$(( I + 1 ))
+              XFCE=$(echo $bs | grep $2 | grep _xfce | grep jammy | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/')
+              [[ -n $XFCE ]] && echo $XFCE && I=$(( I + 1 ))
+              SERVER=$(echo $bs | grep $2 | grep -v "minimal\|desktop" | grep bookworm | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/' )
+              [[ -n ${SERVER} ]] && echo $SERVER && I=$(( I + 1 ))
+              [[ $I -eq 2 ]] && break
+          done
+          JAMMYCLI=$(cat /tmp/stable.txt  | grep $b | grep $2 | grep -v "minimal\|desktop" | grep jammy | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)_/_[0-9].*/' | sed 's/[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)/_[0-9]*\.[0-9]*\.[0-9]*/' )
+          [[ $I -lt 2 && -n $JAMMYCLI ]] && echo "$JAMMYCLI"
+          return $I
+          }
+
+          for board in $(ls -1 build/config/boards/*.{conf,csc,wip,tvb}); do
+             # read kernel target
+             if [[ $(grep KERNEL_TARGET -w $board | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
+                KERNEL_TARGET=$(grep KERNEL_TARGET -w $board | cut -d '"' -f 2 | awk -F, '{ print $1,$3,$2 }')
+              else
+                KERNEL_TARGET=$(grep KERNEL_TARGET -w $board | cut -d '"' -f 2 | sed "s/,/ /g")
+             fi
+             VARIANTS=0
+             for targets in ${KERNEL_TARGET}; do
+                if [[ "${targets}" == current && $VARIANTS -lt 2 ]]; then
+                        check_targets "$board" "current"
+                        VARIANTS=$((VARIANTS+$?))
+                fi
+                if [[ "${targets}" == legacy && $VARIANTS -lt 2 ]]; then
+                        check_targets "$board" "legacy"
+                        VARIANTS=$((VARIANTS+$?))
+                fi
+                if [[ "${targets}" == edge && $VARIANTS -lt 2 ]]; then
+                        check_targets "$board" "edge"
+                        VARIANTS=$((VARIANTS+$?))
+                fi
+             done || true
+          done | tee -a > exposed.map.autoproposal
+          #
+          # Lets fix this and go back to manual in case of troubles
+          cp exposed.map.autoproposal os/exposed.map
+
+      - name: "Build JSON file" # adjust "exposed" property while reading from download
+        run: |
+
+          # prepare feeds
+          A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
+          B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
+          C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
+          D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
+
+          # join all in one file and compress
+          for line in $A $B $C $D; do
+
+              BOARD=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f2)
+              ARMBIAN_VERSION=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f1)
+              IMAGE_SIZE=$(echo $line | cut -d"|" -f1 | sed "s/\.//g" | sed "s/\,//g")
+              KERNEL_BRANCH=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4)
+              IMAGE_RELEASE=$(echo $line | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f3)
+              IMAGE_URL=$(echo $line | cut -d"|" -f2)
+              # workarounds
+              STEP_A=1
+              STEP_B=2
+              [[ $IMAGE_URL == *i3-wm* || $IMAGE_URL == *kde-plasma* ]] && STEP_A=2 && STEP_B=4
+              IMAGE_TARGET=$(echo $IMAGE_URL | cut -d"|" -f2 | grep "minimal\|desktop" | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4- | grep -Po '_[a-z].*' | cut -d"." -f1 | sed "s/_//" | sed "s/_desktop//" | cut -d"-" -f1,${STEP_A})
+              IMAGE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed "s/_sm8250-xiaomi-elish//" | sed "s/rc[0-9]//g" | cut -d"_" -f4- | cut -d"-" -f${STEP_B}- | cut -d"_" -f1 | cut -d"." -f1)
+              [[ $IMAGE_EXTENSION == $KERNEL_BRANCH || $IMAGE_EXTENSION == ${IMAGE_TARGET} || $IMAGE_EXTENSION =~ boot|csot|boe ]] && unset IMAGE_EXTENSION
+              [[ -z ${IMAGE_TARGET} ]] && IMAGE_TARGET="server"
+              FILE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed "s/_sm8250-xiaomi-elish//" | sed "s/-rc[0-9]//g" | rev | cut -d"_" -f1 | rev | sed 's/.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)//' | sed "s/desktop.\|minimal.//")
+              IMAGE_TYPE=$(echo $IMAGE_URL | cut -d"/" -f5)
+              IMAGE_CREATED=$(echo $line | cut -d"|" -f3 | sed "s/\//-/g")
+              EXPOSED=false
+              # check if image is exposed
+              while read exposed; do
+                [[ $IMAGE_URL =~ $exposed ]] && EXPOSED=true && echo "Exposed=$IMAGE_URL">> $GITHUB_STEP_SUMMARY
+              done < os/exposed.map
+              echo "${BOARD,,}|$ARMBIAN_VERSION|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
+
+          done | sed '1s/^/"board_slug"|"armbian_version"|"file_url"|"file_updated"|"file_size"|"distro_release"|"kernel_branch"|"image_variant"|"preinstalled_application"|"promoted"|"download_repository"|"file_extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
+
+      - name: "Download and compress torrent files"
+        run: |
+
+          SOURCE=$(mktemp -d)
+          DESTINATION=$(mktemp -d)
+          rsync -zqvr --include="*/archive/*.torrent" --exclude="/*/*/*" --exclude="_*/" --exclude="control" --exclude="quotes.txt" --exclude="*/all-torrents.zip" rsync://rsync.armbian.com/dl/ ${SOURCE}
+          find ${SOURCE}/. -mindepth 3 -exec mv -i -- {} ${DESTINATION}/ \;
+          zip -qj all-torrents.zip ${DESTINATION}/*.torrent
+
+      - uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: |
-            index.csv
-            stable.zip
-            unstable.zip
+            all-images.json
+            all-torrents.zip
+            exposed.map.autoproposal
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -90,4 +175,5 @@ jobs:
 
       - name: Upload index
         run: |
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files stable.zip unstable.zip index.csv ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
+
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files all-images.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json

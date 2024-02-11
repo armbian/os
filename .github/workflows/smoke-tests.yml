@@ -1,9 +1,11 @@
-name: Smoke tests (repository update)
+name: Smoke tests (cronjob)
 #
 # Runs varios tests with latest nighly codebase on a real hardware
 #
 
 on:
+  schedule:
+   - cron: '30 5 * * *'
   workflow_dispatch:
     inputs:
       gitbranch:
@@ -14,11 +16,19 @@ on:
         type: boolean
         description: "Power Management"
         default: true
+      betaonly:
+        type: boolean
+        description: "Use only beta repository"
+        default: true
   repository_dispatch:
     types: ["Smoke tests"]
 
 permissions:
   contents: read
+
+concurrency:
+  group: smoke
+  cancel-in-progress: false
 
 jobs:
 
@@ -36,6 +46,7 @@ jobs:
       with:
         ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TEAM: "Release manager"
 
   Smoke:
     needs: Teamcheck
@@ -56,3 +67,4 @@ jobs:
     with:
       GITBRANCH: "${{ github.event.inputs.gitbranch || 'main' }}"
       PWRMNGMT: "${{ github.event.inputs.powermanagement || 'true' }}"
+      BETAONLY:  "${{ github.event.inputs.betaonly || 'true' }}"

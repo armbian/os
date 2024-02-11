@@ -4,7 +4,7 @@
 name: Watchdog (cronjob)
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 env:
@@ -23,12 +23,12 @@ jobs:
       matrix:
 
         # list scripts you want to watch and execute failed jobs x-times
-        script: ["repository-update","build-rootfs","complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-stable"]
-    
+        script: ["repository-update","complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-standard-support","complete-artifact-matrix-community-maintained","complete-artifact-matrix-apps"]
+
     name: rerun
     runs-on: ubuntu-latest
     steps:
-    
+
       - name: "Restart ${{ matrix.script }}.yml"
         run: |
 

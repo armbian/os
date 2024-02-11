@@ -51,7 +51,7 @@ jobs:
       
     name: "Check ORG Team Membership"
     if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
 
     - name: "Check membership"
@@ -59,13 +59,14 @@ jobs:
       with:
         ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TEAM: "Release manager"
 
   Prepare:
     needs: Teamcheck
     name: "Enable cloud runners"
     outputs:
       matrix: ${{steps.machine-number.outputs.matrix}}
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
 
       - name: Determine changed kernels
@@ -74,7 +75,7 @@ jobs:
           echo "matrix=$(for x in $(seq -w 0 $(( ${{ github.event.inputs.machine_count }} - 1 ))); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
   Enable:
     name: "Cloud VM"
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     needs: Prepare
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
     timeout-minutes: 10
@@ -101,7 +102,7 @@ jobs:
   sleeping:
     name: "Sleeping"
     needs: Enable
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
      
       - name: Sleeping "${{ github.event.inputs.period }}"
@@ -111,7 +112,7 @@ jobs:
     #if: always()
     name: "Disable cloud runners"
     needs: sleeping
-    runs-on: ubuntu-latest
+    runs-on: [Linux, X64]
     steps:
      
       - name: Enable Hetzner Virtual Machines

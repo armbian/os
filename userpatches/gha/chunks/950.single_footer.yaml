@@ -6,50 +6,61 @@ jobs: # <TEMPLATE-IGNORE>
   closing:
     name: "Footer"
     runs-on: ubuntu-latest
-    if: ${{ !failure() && !cancelled() }}
+    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
-      - name: Download all workflow run artifacts
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
-        uses: actions/download-artifact@v3
+      - name: "Run webindex update action"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+        uses: peter-evans/repository-dispatch@v3
         with:
-          name: assets-for-download
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/os
+          event-type: "Webindex update"
+
+      - name: "Download all workflow run artifacts"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: assets-for-download-[[repository_ref]]
           path: downloads
 
-      - name: Read version
+      - name: "Read version"
         run: |
 
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
 
+      # Delete artifact
       - uses: geekyeggo/delete-artifact@v2
         with:
-          name: assets-for-download
+          name: assets-for-download-[[repository_ref]]
           failOnError: false
 
-#      # Cleaning releases
-#      - uses: dev-drprasad/delete-older-releases@v0.2.1
-#        with:
-#          repo: armbian/os
-#          keep_latest: 32
-#          delete_tag_pattern: trunk
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Cleaning releases
+      #
+      # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
+      #- uses: dev-drprasad/delete-older-releases@v0.3.2
+      #  with:
+      #    repo: armbian/os
+      #    keep_latest: 16
+      #  env:
+      #    GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
-        uses: igorjs/gh-actions-clean-workflow@v3
+        uses: igorjs/gh-actions-clean-workflow@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          days_old: 14
+          token: "${{ env.GH_TOKEN }}"
+          days_old: 7
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
         with:
+          repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.version }}"
           omitBody: true
           omitName: true
           allowUpdates: true
           makeLatest: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: "${{ env.GH_TOKEN }}"

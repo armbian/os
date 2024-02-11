@@ -1,0 +1,127 @@
+#
+# Armbian release template for automated generation. DO NOT EDIT .yaml files. Edit .template
+#
+
+common-gha-configs:
+  armbian-gha: &armbian-gha
+    runners:
+      default: "ubuntu-latest" # or a ["tag", "list"]
+      by-name:
+        kernel: [ "self-hosted", "Linux", "alfa" ]
+        uboot: [ "self-hosted", "Linux", "fast", "X64" ]
+        armbian-bsp-cli: [ "fast" ]
+      by-name-and-arch:
+        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
+        rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
+        image-armhf: [ "self-hosted", "Linux", 'fast' ]
+        image-arm64: [ "self-hosted", "Linux", 'fast' ]
+        image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
+        image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
+
+lists:
+
+  # automated lists start
+  # automated lists stop
+
+targets:
+
+  # debian cli
+
+  full-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *community-maintained-headless
+      - *community-maintained-fast-hdmi
+      - *community-maintained-slow-hdmi
+      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
+
+  # ubuntu cli
+
+  full-cli-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *community-maintained-headless
+
+  # ubuntu testing cli minimal
+
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: mantic
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *community-maintained-riscv64
+
+  # ubuntu xfce
+
+  xfce-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
+    items:
+      - *community-maintained-riscv64
+      - *community-maintained-slow-hdmi
+
+  # ubuntu gnome
+  gnome-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *community-maintained-fast-hdmi
+      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
+
+  # automated section
+  automated-section:
+    enabled: no
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+  # end of automated-section:
