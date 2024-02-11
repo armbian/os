@@ -48,14 +48,14 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
-    - { BOARD: fxblox-rk1, BRANCH: legacy}
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x, BRANCH: legacy}
-    - { BOARD: mixtile-blade3, BRANCH: legacy}
+    - { BOARD: fxblox-rk1, BRANCH: legacy }
+    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy }
+    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy }
+    - { BOARD: mekotronics-r58x, BRANCH: legacy }
+    - { BOARD: mixtile-blade3, BRANCH: legacy }
     - { BOARD: mixtile-blade3, BRANCH: edge }
     - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopct6, BRANCH: legacy}
+    - { BOARD: nanopct6, BRANCH: legacy }
     - { BOARD: nanopi-r5s, BRANCH: current }
     - { BOARD: nanopi-r5s, BRANCH: edge }
     - { BOARD: qemu-uboot-arm64, BRANCH: current }
@@ -67,7 +67,7 @@ lists:
     - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: radxa-zero2, BRANCH: edge }
     - { BOARD: rock-5a, BRANCH: edge }
-    - { BOARD: rock-5a, BRANCH: legacy}
+    - { BOARD: rock-5a, BRANCH: legacy }
     - { BOARD: wdk2023, BRANCH: wdk2023}
     - { BOARD: xiaomi-umi, BRANCH: sm8250}
     # end of auto generated section
@@ -88,23 +88,23 @@ lists:
     - { BOARD: jethubj100, BRANCH: edge }
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: edge }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: edge }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim2, BRANCH: edge }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lafrite, BRANCH: edge }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: lepotato, BRANCH: edge }
-    - { BOARD: nanopi-r6s, BRANCH: legacy}
+    - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: nanopi-r6s, BRANCH: edge }
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidc2, BRANCH: edge }
@@ -116,9 +116,9 @@ lists:
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: edge }
-    - { BOARD: orangepi5-plus, BRANCH: legacy}
+    - { BOARD: orangepi5-plus, BRANCH: legacy }
     - { BOARD: orangepi5-plus, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: legacy}
+    - { BOARD: orangepi5, BRANCH: legacy }
     - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
@@ -135,7 +135,7 @@ lists:
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: edge }
     - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rock-5b, BRANCH: legacy}
+    - { BOARD: rock-5b, BRANCH: legacy }
     - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: edge }
     - { BOARD: rockpro64, BRANCH: current }

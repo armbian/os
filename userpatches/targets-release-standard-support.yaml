@@ -47,23 +47,23 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: legacy}
+    - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5-plus, BRANCH: legacy}
-    - { BOARD: orangepi5, BRANCH: legacy}
+    - { BOARD: orangepi5-plus, BRANCH: legacy }
+    - { BOARD: orangepi5, BRANCH: legacy }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
