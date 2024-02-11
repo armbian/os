@@ -16,6 +16,7 @@
 - Keeps build framework [packages artifacts](https://github.com/orgs/armbian/packages) cache up to date to secure fast rebuild process
 - Keeps stable [apt.armbian.com](https://apt.armbian.com) and nightly [beta.armbian.com](https://beta.armbian.com) packages repository up to date
 - Keep synchronizing the selection of [3rd party](external) applications with Armbian repositories
+- Reversion Firefox, Thunderbird and Chromium to higher (9) epoch version then its Snapd counterparts (1)
 - Tests install of all packages added onto stable and testing Debian and Ubuntu releases
 - Tests packages upgrade sucess on real hardware
 
