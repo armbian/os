@@ -222,7 +222,7 @@ jobs:
                                # check if we have extension mapping defined
                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-                               echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}"
+                               echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION} }"
                                VARIANTS=$((VARIANTS+1))
                             fi
 
