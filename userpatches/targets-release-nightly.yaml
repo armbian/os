@@ -88,10 +88,9 @@ lists:
     - { BOARD: jethubj100, BRANCH: edge }
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: edge }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"
-"amazingfated-rk3588" }
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,amazingfated-rk3588" }
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow"
-"amazingfated-rk3588" }
+"image-output-oowow,amazingfated-rk3588" }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: edge }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
