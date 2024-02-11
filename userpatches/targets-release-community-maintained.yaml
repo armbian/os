@@ -190,7 +190,6 @@ targets:
       - *community-maintained-headless
       - *community-maintained-fast-hdmi
       - *community-maintained-slow-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
 
   # ubuntu cli
 
@@ -257,7 +256,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *community-maintained-fast-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
 
   # automated section
   automated-section:

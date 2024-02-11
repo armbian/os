@@ -233,7 +233,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *staging-fast-hdmi
-      - { BOARD: rpi4b, BRANCH: current }
 
   # debian trixie gnome desktop without 3d
   gnome-desktop-latest-debian:
