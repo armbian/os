@@ -28,7 +28,7 @@ jobs:
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
-      BUILD_RUNNER: ${{ inputs.BUILD_RUNNER }} || "ubuntu-latest"
+      BUILD_RUNNER: ubuntu-latest
       REFERENCE: ${{ github.event.pull_request.head.sha }}
     secrets:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
