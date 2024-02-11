@@ -204,7 +204,7 @@ jobs:
 
                             if [[ "${targets}" == current && $VARIANTS -lt $3 ]]; then
                                 # check if we have extension mapping defined
-                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                 if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                 echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }"
                                 VARIANTS=$((VARIANTS+1))
@@ -212,7 +212,7 @@ jobs:
 
                             if [[ "${targets}" == edge && $VARIANTS -lt $3 ]]; then
                                # check if we have extension mapping defined
-                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*edge:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }"
                                VARIANTS=$((VARIANTS+1))
@@ -220,7 +220,7 @@ jobs:
 
                             if [[ "${targets}" == legacy && $VARIANTS -lt $3 ]]; then
                                # check if we have extension mapping defined
-                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION} }"
                                VARIANTS=$((VARIANTS+1))
@@ -228,7 +228,7 @@ jobs:
 
                             if [[ ! "$targets" =~ ^(legacy|current|edge)$ && $targets != collabora ]]; then
                                # otherwise it must be custom kernel target
-                               EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}')' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}':)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                echo "    - { BOARD: $board, BRANCH: ${targets}${EXTENSION}}"
                             fi
