@@ -28,7 +28,6 @@ lists:
 targets:
 
   # debian cli
-
   full-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -45,7 +44,6 @@ targets:
       - *community-maintained-slow-hdmi
 
   # ubuntu cli
-
   full-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -59,8 +57,7 @@ targets:
     items:
       - *community-maintained-headless
 
-  # ubuntu testing cli minimal
-
+  # ubuntu unstable cli minimal
   minimal-cli-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -68,14 +65,13 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: mantic
+      RELEASE: noble
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-riscv64
 
   # ubuntu xfce
-
   xfce-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]

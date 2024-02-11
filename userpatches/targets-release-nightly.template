@@ -33,7 +33,6 @@ lists:
 targets:
 
   # ubuntu unstable minimal
-
   minimal-cli-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -52,7 +51,6 @@ targets:
       - *virtual-boards
 
   # debian unstable minimal
-
   minimal-cli-unstable-debian:
     enabled: yes
     configs: [ armbian-images ]
