@@ -147,13 +147,6 @@ lists:
 
   # automated lists stop
 
-  virtual-boards: &virtual-boards
-    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
-    - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-
 targets:
 
   # ubuntu unstable minimal
@@ -170,7 +163,6 @@ targets:
     items:
       - *standard-support-headless
       - *staging-headless
-      - *virtual-boards
 
   # debian unstable minimal
   minimal-cli-unstable-debian:
@@ -189,10 +181,8 @@ targets:
       - *standard-support-headless
       - *staging-fast-hdmi
       - *staging-headless
-      - *virtual-boards
 
   # ubuntu unstable without apps
-
   xfce-barebone-desktop-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]

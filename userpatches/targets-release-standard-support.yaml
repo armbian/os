@@ -88,17 +88,6 @@ lists:
 
   # automated lists stop
 
-  virtual-boards: &virtual-boards
-    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
-    - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: uefi-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-qcow2" }
-    - { BOARD: uefi-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-qcow2" }
-    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-
 targets:
 
   # Debian minimal
@@ -116,7 +105,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
 
   # Debian full CLI
   full-cli-stable-debian:
@@ -133,7 +121,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
 
   # Ubuntu minimal
   minimal-cli-stable-ubuntu:
@@ -150,7 +137,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
@@ -167,7 +153,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
   
   # Full Ubuntu LTS XFCE without 3D
   xfce-desktop-lts-ubuntu:
