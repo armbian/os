@@ -36,7 +36,7 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-headless
