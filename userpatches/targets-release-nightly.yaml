@@ -21,18 +21,23 @@ common-gha-configs:
 lists:
 
   # automated lists start
+  staging-headless: &staging-headless
+    # auto generated section
+    - { BOARD: rock-s0, BRANCH: edge }
+    - { BOARD: rock-s0, BRANCH: current }
+    - { BOARD: rock-s0, BRANCH: KERNEL_TEST_TARGET=$KERNEL_TARGET}
+    # end of auto generated section
+
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopi-r4s, BRANCH: edge }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: edge }
+    - { BOARD: helios4, BRANCH: current }
+    - { BOARD: helios4, BRANCH: edge }
     - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: edge }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1, BRANCH: edge }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: edge }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: edge }
+    - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: nanopi-r4s, BRANCH: edge }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: edge }
     - { BOARD: orangepizeroplus, BRANCH: current }
@@ -48,26 +53,6 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
-    - { BOARD: fxblox-rk1, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: mixtile-blade3, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: mixtile-blade3, BRANCH: edge }
-    - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopct6, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: nanopi-r5s, BRANCH: current }
-    - { BOARD: nanopi-r5s, BRANCH: edge }
-    - { BOARD: qemu-uboot-arm64, BRANCH: current }
-    - { BOARD: qemu-uboot-arm64, BRANCH: edge }
-    - { BOARD: qemu-uboot-x86, BRANCH: current }
-    - { BOARD: qemu-uboot-x86, BRANCH: edge }
-    - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: radxa-e25, BRANCH: edge }
-    - { BOARD: radxa-zero2, BRANCH: current }
-    - { BOARD: radxa-zero2, BRANCH: edge }
-    - { BOARD: rock-5a, BRANCH: edge }
-    - { BOARD: rock-5a, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: wdk2023, BRANCH: wdk2023}
     - { BOARD: xiaomi-umi, BRANCH: sm8250}
     # end of auto generated section
@@ -104,8 +89,6 @@ lists:
     - { BOARD: lafrite, BRANCH: edge }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: lepotato, BRANCH: edge }
-    - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: nanopi-r6s, BRANCH: edge }
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidc2, BRANCH: edge }
     - { BOARD: odroidm1, BRANCH: current }
@@ -116,10 +99,10 @@ lists:
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: edge }
-    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: orangepi5-plus, BRANCH: edge }
     - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepi5, BRANCH: edge }
+    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5-plus, BRANCH: edge }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
     - { BOARD: orangepizero2, BRANCH: current }
@@ -132,12 +115,6 @@ lists:
     - { BOARD: radxa-zero, BRANCH: edge }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: renegade, BRANCH: edge }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: edge }
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rock-5b, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: rockpi-4a, BRANCH: current }
-    - { BOARD: rockpi-4a, BRANCH: edge }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: edge }
     - { BOARD: rpi4b, BRANCH: current }
@@ -192,6 +169,7 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-headless
+      - *staging-headless
       - *virtual-boards
 
   # debian unstable minimal
@@ -210,6 +188,7 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *staging-fast-hdmi
+      - *staging-headless
       - *virtual-boards
 
   # ubuntu unstable without apps
@@ -263,6 +242,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *staging-headless
       - *standard-support-headless
       - *staging-fast-hdmi
       - *standard-support-fast-hdmi

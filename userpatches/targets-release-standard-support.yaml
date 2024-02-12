@@ -25,11 +25,10 @@ lists:
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -56,23 +55,19 @@ lists:
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
