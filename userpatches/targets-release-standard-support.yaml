@@ -15,10 +15,10 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-        image-armhf: [ "self-hosted", "Linux", 'fast' ]
-        image-arm64: [ "self-hosted", "Linux", 'fast' ]
-        image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
-        image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
+        image-armhf: [ "self-hosted", "Linux", 'ARM64' ]
+        image-arm64: [ "self-hosted", "Linux", 'images' ]
+        image-amd64: [ "self-hosted", "Linux", 'images', "X64" ]
+        image-riscv64: [ "self-hosted", "Linux", 'images', "X64" ]
 
 lists:
 
@@ -26,9 +26,9 @@ lists:
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: helios4, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -60,8 +60,8 @@ lists:
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
