@@ -16,6 +16,7 @@ function extension_prepare_config__amazingfated_rk3588() {
         [[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
         [[ "${RELEASE}" != "jammy" ]] && return 0
 	[[ "${BRANCH}" != "legacy" ]] && return 0
+        [[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
 
 	display_alert "Preparing amazingfated's rk3588 extension" "${EXTENSION}" "info"
 	# Add to the image suffix.
@@ -27,6 +28,7 @@ function post_install_kernel_debs__amazingfated_rk358() {
 
         [[ "${RELEASE}" != "jammy" ]] && return 0
 	[[ "${BRANCH}" != "legacy" ]] && return 0
+        [[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
 
 	display_alert "Adding amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard add-apt-repository ppa:liujianfeng1994/panfork-mesa --yes --no-update
@@ -35,10 +37,7 @@ function post_install_kernel_debs__amazingfated_rk358() {
 	display_alert "Updating sources list, after amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
-	declare -a pkgs=(mali-g610-firmware)
-	if [[ "${BUILD_DESKTOP}" == "yes" ]]; then
-		pkgs+=(chromium-browser libwidevinecdm rockchip-multimedia-config)
-	fi
+	declare -a pkgs=(mali-g610-firmware chromium-browser libwidevinecdm rockchip-multimedia-config)
 
 	display_alert "Installing amazingfated's rk3588 packages" "${EXTENSION} :: ${pkgs[*]}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
