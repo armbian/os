@@ -66,9 +66,9 @@ on:
         - clearfogbase
         - clearfogpro
         - clockworkpi-a06
-        - cubieboard
         - cubieboard2
         - cubieboard4
+        - cubieboard
         - cubietruck
         - cubietruckplus
         - cubox-i
@@ -85,22 +85,35 @@ on:
         - jetson-nano
         - khadas-edge
         - licheepi-4a
+        - lime2
         - lime-a33
         - lime-a64
         - lime
-        - lime2
         - macchiatobin-doubleshot
         - mangopi-m28k
         - mekotronics-r58-minipc
         - mekotronics-r58x-4g
-        - mekotronics-r58x-pro
         - mekotronics-r58x
+        - mekotronics-r58x-pro
         - melea1000
         - micro
         - mixtile-blade3
         - mk808c
         - nanopct4
         - nanopct6
+        - nanopia64
+        - nanopiair
+        - nanopik1plus
+        - nanopik2-s905
+        - nanopim4
+        - nanopim4v2
+        - nanopineo2black
+        - nanopineo2
+        - nanopineo3
+        - nanopineo4
+        - nanopineocore2
+        - nanopineo
+        - nanopineoplus2
         - nanopi-r1
         - nanopi-r1s-h5
         - nanopi-r2c
@@ -109,40 +122,27 @@ on:
         - nanopi-r5c
         - nanopi-r5s
         - nanopi-r6s
-        - nanopia64
-        - nanopiair
-        - nanopik1plus
-        - nanopik2-s905
-        - nanopim4
-        - nanopim4v2
-        - nanopineo
-        - nanopineo2
-        - nanopineo2black
-        - nanopineo3
-        - nanopineo4
-        - nanopineocore2
-        - nanopineoplus2
         - odroidc4
         - odroidhc4
         - odroidn2l
         - olinux-som-a13
-        - orangepi-r1
-        - orangepi-r1plus-lts
-        - orangepi-r1plus
-        - orangepi-rk3399
         - orangepi2
-        - orangepi3-lts
-        - orangepi3
         - orangepi3b
+        - orangepi3
+        - orangepi3-lts
         - orangepi4
-        - orangepilite
         - orangepilite2
+        - orangepilite
         - orangepioneplus
-        - orangepipc
         - orangepipc2
+        - orangepipc
         - orangepipcplus
-        - orangepiplus
         - orangepiplus2e
+        - orangepiplus
+        - orangepi-r1
+        - orangepi-r1plus
+        - orangepi-r1plus-lts
+        - orangepi-rk3399
         - orangepiwin
         - orangepizero3
         - orangepizeroplus2-h3
@@ -161,12 +161,11 @@ on:
         - radxa-e25
         - radxa-zero2
         - recore
-        - roc-rk3399-pc
         - rock-3a
         - rock-4se
-        - rock-5-cmio
         - rock-5a
         - rock-5b
+        - rock-5-cmio
         - rock64
         - rockpi-4a
         - rockpi-4b
@@ -174,20 +173,21 @@ on:
         - rockpi-4c
         - rockpi-4cplus
         - rockpi-n10
+        - roc-rk3399-pc
         - star64
         - station-m1
         - station-m2
         - station-m3
         - station-p1
         - station-p2
-        - tinker-edge-r
         - tinkerboard-2
+        - tinker-edge-r
         - udoo
         - uefi-riscv64
         - unleashed
         - unmatched
-        - visionfive
         - visionfive2
+        - visionfive
         - wsl2-arm64
         - wsl2-x86
         - zeropi
@@ -200,21 +200,9 @@ on:
         # maintainers
         - 150balbes
         - 1ubuntuuser
-        - AGM1968
         - AaronNGray
-        - DylanHP
-        - FantasyGmm
-        - Kreyren
-        - ManoftheSea
-        - Manouchehri
-        - NicoD-SBC
-        - PanderMusubi
-        - StephenGraf
-        - TRSx80
-        - Tonymac32
-        - Z-Keven
-        - ZazaBR
         - adeepn
+        - AGM1968
         - ahoneybun
         - amazingfate
         - bigtreetech
@@ -224,10 +212,12 @@ on:
         - chainsx
         - clee
         - devdotnetorg
+        - DylanHP
         - echatzip
         - efectn
         - eliasbakken
         - engineer-80
+        - FantasyGmm
         - glneo
         - hoochiwetech
         - hzyitc
@@ -236,21 +226,31 @@ on:
         - joekhoobyar
         - joshaspinall
         - krachlatte
+        - Kreyren
         - lanefu
         - lbmendes
         - linhz0hz
         - mahdichi
+        - ManoftheSea
+        - Manouchehri
         - monkaBlyat
+        - NicoD-SBC
+        - PanderMusubi
         - paolosabatino
         - pyavitz
         - rpardini
         - schwar3kat
         - sgjava
         - sputnik2019
+        - StephenGraf
         - teknoid
+        - Tonymac32
+        - TRSx80
         - utlark
         - vamzii
         - viraniac
+        - ZazaBR
+        - Z-Keven
         - all
         default: 'all'
       targetsFilterInclude:
