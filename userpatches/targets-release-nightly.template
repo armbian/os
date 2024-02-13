@@ -23,6 +23,14 @@ lists:
   # automated lists start
   # automated lists stop
 
+  virtual-boards: &virtual-boards
+    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
+    # Qemu with u-boot
+    - { BOARD: wsl2-arm64, BRANCH: current }
+    - { BOARD: wsl2-x86, BRANCH: current }
+    - { BOARD: qemu-uboot-arm64, BRANCH: current }
+    - { BOARD: qemu-uboot-x86, BRANCH: current }
+
 targets:
 
   # ubuntu unstable minimal
@@ -41,6 +49,7 @@ targets:
       - *standard-support-riscv64
       - *staging-headless
       - *staging-riscv64
+      - *virtual-boards
 
   # debian unstable minimal
   minimal-cli-unstable-debian:
@@ -61,6 +70,7 @@ targets:
       - *staging-slow-hdmi
       - *staging-headless
       - *staging-riscv64
+      - *virtual-boards
 
   # ubuntu unstable without apps
   xfce-barebone-desktop-unstable-ubuntu:
