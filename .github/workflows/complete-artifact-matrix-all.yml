@@ -42,7 +42,7 @@ on:
         options:
         # branches
         - main
-        - v23.11
+        - v24.02
         default: 'main'
       board:
         type: choice
@@ -274,6 +274,7 @@ on:
         - AGM1968
         - AaronNGray
         - DylanHP
+        - FantasyGmm
         - Kreyren
         - ManoftheSea
         - Manouchehri
@@ -433,7 +434,7 @@ jobs:
 #        if: ${{ ! github.event.inputs.versionOverride }}
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v5.1.0
+        uses: TriPSs/conventional-changelog-action@v5.2.0
         with:
           github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'
@@ -1981,7 +1982,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -2200,7 +2202,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -2419,7 +2422,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -2638,7 +2642,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -2857,7 +2862,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -3076,7 +3082,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -3295,7 +3302,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -3514,7 +3522,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -3733,7 +3742,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -3952,7 +3962,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -4171,7 +4182,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -4390,7 +4402,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -4609,7 +4622,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -4828,7 +4842,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -5047,7 +5062,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3
@@ -5266,7 +5282,8 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.img*.xz || \
+          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.zip
 
       - name: Generate torrent
         timeout-minutes: 3

@@ -28,7 +28,6 @@ lists:
 targets:
 
   # debian cli
-
   full-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -37,16 +36,14 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-headless
       - *community-maintained-fast-hdmi
       - *community-maintained-slow-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
 
   # ubuntu cli
-
   full-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -60,8 +57,7 @@ targets:
     items:
       - *community-maintained-headless
 
-  # ubuntu testing cli minimal
-
+  # ubuntu unstable cli minimal
   minimal-cli-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -69,14 +65,13 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: mantic
+      RELEASE: noble
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-riscv64
 
   # ubuntu xfce
-
   xfce-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -110,7 +105,23 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *community-maintained-fast-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
+
+  # Full Ubuntu LTS Cinnamon with 3d
+  cinnamon-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "cinnamon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # automated section
   automated-section:

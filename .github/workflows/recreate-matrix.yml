@@ -148,7 +148,7 @@ jobs:
         # generate lists to include them
         ls -1 build/config/boards/*.conf | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/standard-support.txt
         ls -1 build/config/boards/*.{conf,wip} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/staging.txt
-        ls -1 build/config/boards/*.csc | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/community-maintained.txt
+        ls -1 build/config/boards/*.{tvb,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/community-maintained.txt
 
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
@@ -204,7 +204,7 @@ jobs:
 
                             if [[ "${targets}" == current && $VARIANTS -lt $3 ]]; then
                                 # check if we have extension mapping defined
-                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                                EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*current:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                 if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                 echo "    - { BOARD: $board, BRANCH: current${EXTENSION} }"
                                 VARIANTS=$((VARIANTS+1))
@@ -212,7 +212,7 @@ jobs:
 
                             if [[ "${targets}" == edge && $VARIANTS -lt $3 ]]; then
                                # check if we have extension mapping defined
-                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*edge)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*edge:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                echo "    - { BOARD: $board, BRANCH: edge${EXTENSION} }"
                                VARIANTS=$((VARIANTS+1))
@@ -220,15 +220,15 @@ jobs:
 
                             if [[ "${targets}" == legacy && $VARIANTS -lt $3 ]]; then
                                # check if we have extension mapping defined
-                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*legacy:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
-                               echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION}}"
+                               echo "    - { BOARD: $board, BRANCH: legacy${EXTENSION} }"
                                VARIANTS=$((VARIANTS+1))
                             fi
 
                             if [[ ! "$targets" =~ ^(legacy|current|edge)$ && $targets != collabora ]]; then
                                # otherwise it must be custom kernel target
-                               EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}')' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}':)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
                                echo "    - { BOARD: $board, BRANCH: ${targets}${EXTENSION}}"
                             fi

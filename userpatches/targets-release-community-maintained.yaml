@@ -26,6 +26,7 @@ lists:
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
     - { BOARD: beaglev, BRANCH: edge }
+    - { BOARD: licheepi-4a, BRANCH: current }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: unleashed, BRANCH: edge }
@@ -36,12 +37,11 @@ lists:
 
   community-maintained-headless: &community-maintained-headless
     # auto generated section
-    - { BOARD: bananapir2, BRANCH: legacy}
+    - { BOARD: bananapir2, BRANCH: legacy }
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
     - { BOARD: espressobin, BRANCH: current }
-    - { BOARD: helios4, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: macchiatobin-doubleshot, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
@@ -59,6 +59,8 @@ lists:
     - { BOARD: nanopineocore2, BRANCH: current }
     - { BOARD: nanopineoplus2, BRANCH: current }
     - { BOARD: olinux-som-a13, BRANCH: current }
+    - { BOARD: orangepi-r1, BRANCH: current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepi-r1plus, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
@@ -68,27 +70,35 @@ lists:
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
     - { BOARD: aml-s9xx-box, BRANCH: current }
-    - { BOARD: armsom-sige7, BRANCH: legacy}
-    - { BOARD: armsom-w3, BRANCH: legacy}
+    - { BOARD: armsom-sige7, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: armsom-w3, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
     - { BOARD: firefly-rk3399, BRANCH: current }
+    - { BOARD: fxblox-rk1, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
-    - { BOARD: hinlink-h28k, BRANCH: legacy}
-    - { BOARD: hinlink-h88k, BRANCH: legacy}
-    - { BOARD: hinlink-ht2, BRANCH: legacy}
+    - { BOARD: hinlink-h28k, BRANCH: legacy }
+    - { BOARD: hinlink-h88k, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: hinlink-ht2, BRANCH: legacy }
     - { BOARD: indiedroid-nova, BRANCH: edge }
     - { BOARD: inovato-quadra, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: jp-tvbox-3566, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: lime-a64, BRANCH: current }
-    - { BOARD: mangopi-m28k, BRANCH: legacy}
-    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy}
+    - { BOARD: mangopi-m28k, BRANCH: legacy }
+    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: mekotronics-r58x, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: mixtile-blade3, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: nanopct4, BRANCH: current }
+    - { BOARD: nanopct6, BRANCH: edge }
     - { BOARD: nanopi-r5c, BRANCH: current }
+    - { BOARD: nanopi-r5s, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
@@ -97,16 +107,17 @@ lists:
     - { BOARD: nanopineo4, BRANCH: current }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
-    - { BOARD: odroidn2l, BRANCH: edge }
+    - { BOARD: odroidn2l, BRANCH: current }
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
-    - { BOARD: orangepi3b, BRANCH: legacy}
+    - { BOARD: orangepi3b, BRANCH: legacy }
     - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current }
     - { BOARD: orangepiwin, BRANCH: current }
+    - { BOARD: orangepizero3, BRANCH: current }
     - { BOARD: panther-x2, BRANCH: current }
     - { BOARD: pine64so, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
@@ -114,12 +125,18 @@ lists:
     - { BOARD: pineh64, BRANCH: current }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
-    - { BOARD: recore, BRANCH: legacy}
+    - { BOARD: radxa-e25, BRANCH: current }
+    - { BOARD: radxa-zero2, BRANCH: current }
+    - { BOARD: recore, BRANCH: legacy }
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
-    - { BOARD: rock-5-cmio, BRANCH: legacy}
+    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: rock-5a, BRANCH: edge }
+    - { BOARD: rock-5b, BRANCH: edge }
     - { BOARD: rock64, BRANCH: current }
+    - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4b, BRANCH: current }
     - { BOARD: rockpi-4bplus, BRANCH: edge }
     - { BOARD: rockpi-4c, BRANCH: current }
@@ -127,7 +144,7 @@ lists:
     - { BOARD: rockpi-n10, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy}
+    - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
     - { BOARD: tanix-tx6, BRANCH: current }
@@ -173,7 +190,6 @@ lists:
 targets:
 
   # debian cli
-
   full-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -182,16 +198,14 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-headless
       - *community-maintained-fast-hdmi
       - *community-maintained-slow-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
 
   # ubuntu cli
-
   full-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -205,8 +219,7 @@ targets:
     items:
       - *community-maintained-headless
 
-  # ubuntu testing cli minimal
-
+  # ubuntu unstable cli minimal
   minimal-cli-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -214,14 +227,13 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: mantic
+      RELEASE: noble
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-riscv64
 
   # ubuntu xfce
-
   xfce-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -255,7 +267,23 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *community-maintained-fast-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: edge } # custom add, remove once we bump current to 6.6
+
+  # Full Ubuntu LTS Cinnamon with 3d
+  cinnamon-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "cinnamon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # automated section
   automated-section:

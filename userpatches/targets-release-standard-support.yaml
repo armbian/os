@@ -11,25 +11,24 @@ common-gha-configs:
         uboot: [ "self-hosted", "Linux", "fast", "X64" ]
         armbian-bsp-cli: [ "fast" ]
       by-name-and-arch:
-        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
-        rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
+        rootfs-armhf: [ "self-hosted", "Linux", "aarch64" ]
+        rootfs-arm64: [ "self-hosted", "Linux", "aarch64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-        image-armhf: [ "self-hosted", "Linux", 'fast' ]
-        image-arm64: [ "self-hosted", "Linux", 'fast' ]
-        image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
-        image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
+        image-armhf: [ "self-hosted", "Linux", 'aarch64' ]
+        image-arm64: [ "self-hosted", "Linux", 'images' ]
+        image-amd64: [ "self-hosted", "Linux", 'images', "X64" ]
+        image-riscv64: [ "self-hosted", "Linux", 'images', "X64" ]
 
 lists:
 
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
+    - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -47,32 +46,28 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,amazingfated-rk3588" }
     - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow"}
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: legacy}
     - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5-plus, BRANCH: legacy}
-    - { BOARD: orangepi5, BRANCH: legacy}
+    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
-    - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
@@ -93,17 +88,6 @@ lists:
 
   # automated lists stop
 
-  virtual-boards: &virtual-boards
-    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
-    - { BOARD: wsl2-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: wsl2-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-vhd" }
-    - { BOARD: uefi-arm64, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-qcow2" }
-    - { BOARD: uefi-x86, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-qcow2" }
-    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-
 targets:
 
   # Debian minimal
@@ -121,7 +105,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
 
   # Debian full CLI
   full-cli-stable-debian:
@@ -138,7 +121,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
 
   # Ubuntu minimal
   minimal-cli-stable-ubuntu:
@@ -155,7 +137,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
@@ -172,7 +153,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *virtual-boards
   
   # Full Ubuntu LTS XFCE without 3D
   xfce-desktop-lts-ubuntu:
