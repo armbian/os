@@ -109,7 +109,7 @@ jobs:
           done | tee -a > exposed.map.autoproposal
           #
           # Lets fix this and go back to manual in case of troubles
-          cp exposed.map.autoproposal os/exposed.map
+          # cp exposed.map.autoproposal os/exposed.map
 
       - name: "Build JSON file" # adjust "exposed" property while reading from download
         run: |
