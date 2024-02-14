@@ -32,12 +32,12 @@ lists:
     # auto generated section
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: helios4, BRANCH: edge }
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: edge }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: edge }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: edge }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: edge }
+    - { BOARD: nanopiduo2, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: edge }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: edge }
     - { BOARD: orangepizeroplus, BRANCH: current }
@@ -99,10 +99,10 @@ lists:
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepi5-plus, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
     - { BOARD: orangepizero2, BRANCH: current }
