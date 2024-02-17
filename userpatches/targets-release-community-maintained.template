@@ -109,7 +109,7 @@ targets:
   # Full Ubuntu LTS Cinnamon with 3d
   cinnamon-desktop-stable-ubuntu:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
