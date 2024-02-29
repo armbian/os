@@ -5421,7 +5421,7 @@ jobs:
               sudo rm -rf /outgoing/repository-beta/*
               # sync to stable from the list
               rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" --include-from=userpatches.repo/stable-repo.sync \
-              --exclude='*' --progress -va output/debs-beta/. \
+              --exclude='*' --progress -va output/debs*/. \
               ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           fi
 
