@@ -24,7 +24,7 @@ jobs:
 ###################################################################################################
 
   Test-debs-beta:
-    name: "Check debs-bets mirrors"
+    name: "Check debs-beta mirrors"
     needs: Check
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
