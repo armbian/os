@@ -102,9 +102,140 @@ jobs:
           # remove certain and custom package
           # cleaning is optional so lets apply some magic as we don't want this at every rebuild
           day=$( date +%d )
-          if [ "$day" = "01" ] || [ "$day" = "15" ]; then
-              tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% firefox*)|Name (% thunderbird*)|code|codium|Name (% google-chrome*)|Name (% box64*)|Name (% box86*)|chromium-browser|zoom|gh${PKG_REMOVE}"
-          fi
+          #if [ "$day" = "01" ] || [ "$day" = "15" ]; then
+              # delete older packages
+              declare -A delete_packages
+              DELETE_AFTER="22.08"
+              delete_packages=(
+                    ["openhab"]="% *"
+                    ["microsoft-edge-stable"]="% *"
+                    ["firefox*"]="% *"
+                    ["thunderbird*"]="% *"
+                    ["code"]="% *"
+                    ["codium"]="% *"
+                    ["google-chrome"]="% *"
+                    ["box64*"]="% *"
+                    ["box86*"]="% *"
+                    ["chromium*"]="% *"
+                    ["zoom"]="99999"
+                    ["gh"]="99999"
+                    ["brave-browser"]="% *"
+                    ["zfsutils-linux"]="<= 2.2.1"
+                    ["libzfsbootenv1linux"]="<= 2.2.1"
+                    ["libzfslinux-dev"]="<= 2.2.1"
+                    ["libnvpair3linux"]="<= 2.2.1"
+                    ["libzfs4linux"]="<= 2.2.1"
+                    ["libzpool5linux"]="<= 2.2.1"
+                    ["libuutil3linux"]="<= 2.2.1"
+                    ["zfs-dkms"]="<= 2.2.1"
+                    ["zfs-zed"]="<= 2.2.1"
+                    ["zfs-test"]="<= 2.2.1"
+                    ["zfs-dracut"]="<= 2.2.1"
+                    ["zfs-initramfs"]="<= 2.2.1"
+                    ["libpam-zfs"]="<= 2.2.1"
+                    ["system-monitoring-center"]="<= 2.25.1"
+                    ["cockpit-file-sharing"]="<= 3.3.4"
+                    ["nala"]="<= 0.12.0"
+                    ["pacstall"]="<= 4.3.1"
+                    ["balena-etcher"]="<= 1.18.8"
+                    ["armbian-bsp-cli"]="<= ${DELETE_AFTER}"
+                    ["armbian-firmware"]="<= ${DELETE_AFTER}"
+                    ["armbian-config"]="<= ${DELETE_AFTER}"
+                    ["armbian-zsh"]="<= ${DELETE_AFTER}"
+                    ["armbian-plymouth-theme"]="<= ${DELETE_AFTER}"
+                    ["armbian-*-desktop"]="<= ${DELETE_AFTER}"
+                    ["linux-u-boot-*-*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-sunxi*"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-sunxi*"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-sunxi*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-rockchip*"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-rockchip*"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-rockchip*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-arm64"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-arm64"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-arm64"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-x86"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-x86"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-bcm271*"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-bcm271*"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-bcm271*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-imx6"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-imx6"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-imx6"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-meson*"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-meson*"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-meson*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-mvebu*"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-mvebu*"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-mvebu*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-virtual"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-virtual"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-virtual"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-odroidxu4"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-odroidxu4"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-odroidxu4"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-rk3568-odroid"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-rk3568-odroid"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-rk3568-odroid"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-riscv64"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-riscv64"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-riscv64"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-rk322x"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-rk322x"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-rk322x"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-rk35xx"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-rk35xx"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-rk35xx"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-media"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-media"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-media"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-legacy-sun50iw9"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-legacy-sun50iw9"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-legacy-sun50iw9"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-station-*"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-station-*"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-station-*"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-*-jetson-nano"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-*-jetson-nano"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-*-jetson-nano"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-legacy-rk3399"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-legacy-rk3399"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-legacy-rk3399"]="<= ${DELETE_AFTER}"
+
+                    ["linux-image-legacy-mt7623"]="<= ${DELETE_AFTER}"
+                    ["linux-dtb-legacy-mt7623"]="<= ${DELETE_AFTER}"
+                    ["linux-headers-legacy-mt7623"]="<= ${DELETE_AFTER}"
+
+              )
+              # Loop over the array of packages
+              for key in "${!delete_packages[@]}"
+              do
+                tools/repository/repo \
+                -i /incoming/${{ matrix.repository }} \
+                -o /outgoing/${TARGET} \
+                -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble \
+                -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% $key*), \$Version (${delete_packages[$key]})"
+              done
+          #fi
           # add from incoming
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
           # create index
