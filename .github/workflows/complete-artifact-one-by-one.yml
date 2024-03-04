@@ -259,7 +259,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v23.11.2
+      - uses: armbian/build@v24.2.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
