@@ -49,6 +49,7 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
+    - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: xiaomi-umi, BRANCH: sm8250}
     # end of auto generated section
 
