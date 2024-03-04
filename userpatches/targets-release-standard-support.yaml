@@ -39,9 +39,11 @@ lists:
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
+    - { BOARD: ayn-odin2, BRANCH: sm8550}
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim2s, BRANCH: current }
+    - { BOARD: bananapim4zero, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
