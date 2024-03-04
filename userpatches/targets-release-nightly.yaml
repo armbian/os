@@ -21,13 +21,6 @@ common-gha-configs:
 lists:
 
   # automated lists start
-  staging-headless: &staging-headless
-    # auto generated section
-    - { BOARD: rock-s0, BRANCH: edge }
-    - { BOARD: rock-s0, BRANCH: current }
-    - { BOARD: rock-s0, BRANCH: KERNEL_TEST_TARGET=$KERNEL_TARGET}
-    # end of auto generated section
-
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: helios4, BRANCH: current }
@@ -42,6 +35,9 @@ lists:
     - { BOARD: orangepizero, BRANCH: edge }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: edge }
+    - { BOARD: rock-s0, BRANCH: edge }
+    - { BOARD: rock-s0, BRANCH: current }
+    - { BOARD: rock-s0, BRANCH: KERNEL_TEST_TARGET=$KERNEL_TARGET}
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: edge }
     - { BOARD: rockpi-s, BRANCH: current }
@@ -172,7 +168,6 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-headless
-      - *staging-headless
       - *virtual-boards
 
   # debian unstable minimal
@@ -191,7 +186,6 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *staging-fast-hdmi
-      - *staging-headless
       - *virtual-boards
 
   # ubuntu unstable without apps
@@ -244,7 +238,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *staging-headless
       - *standard-support-headless
       - *staging-fast-hdmi
       - *standard-support-fast-hdmi

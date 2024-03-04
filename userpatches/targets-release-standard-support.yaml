@@ -31,6 +31,8 @@ lists:
     - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: rock-s0, BRANCH: edge }
+    - { BOARD: rock-s0, BRANCH: KERNEL_TEST_TARGET=$KERNEL_TARGET}
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
