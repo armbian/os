@@ -3,6 +3,8 @@
 #
 name: Recreate Matrix (push)
 on:
+  schedule:
+   - cron: '00 5 * * *'
   push:
     branches:
       - 'main'
