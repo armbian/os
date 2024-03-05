@@ -66,6 +66,8 @@ lists:
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: rock-5a, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: rock-5b, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
