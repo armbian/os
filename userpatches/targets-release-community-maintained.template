@@ -15,8 +15,7 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-        image-armhf: [ "self-hosted", "Linux", 'fast' ]
-        image-arm64: [ "self-hosted", "Linux", 'fast' ]
+        image-arm64: [ "images" ]
         image-amd64: [ "self-hosted", "Linux", 'fast', "X64" ]
         image-riscv64: [ "self-hosted", "Linux", 'fast', "X64" ]
 
