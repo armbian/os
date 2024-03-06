@@ -72,8 +72,9 @@ lists:
     - { BOARD: jethubj100, BRANCH: edge }
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: edge }
-    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,amazingfated-rk3588" }
+    - { BOARD: khadas-edge2, BRANCH: vendor}
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,amazingfated-rk3588" }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: edge }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
@@ -98,10 +99,12 @@ lists:
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: edge }
-    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5-plus, BRANCH: vendor}
     - { BOARD: orangepi5-plus, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: orangepi5, BRANCH: vendor}
     - { BOARD: orangepi5, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
     - { BOARD: orangepizero2, BRANCH: current }
@@ -110,6 +113,8 @@ lists:
     - { BOARD: pine64, BRANCH: edge }
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: edge }
+    - { BOARD: qemu-uefi-x86, BRANCH: current }
+    - { BOARD: qemu-uefi-x86, BRANCH: edge }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: edge }
     - { BOARD: renegade, BRANCH: current }
