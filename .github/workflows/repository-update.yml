@@ -237,9 +237,9 @@ jobs:
               done
           fi
           # add from incoming
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
           # create index
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
+          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
 
   Prepare:
     name: "Upload to servers"
