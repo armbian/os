@@ -49,6 +49,8 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
+    - { BOARD: mba8mpxl-ras314, BRANCH: current }
+    - { BOARD: mba8mpxl, BRANCH: current }
     - { BOARD: xiaomi-umi, BRANCH: sm8250}
     # end of auto generated section
 
@@ -211,6 +213,29 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *staging-fast-hdmi
+
+  # ubuntu stable with kde neon
+  kde-neon-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "kde-neon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      # Attention, no list reference here, just a specific board.
+      - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
+      - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+      - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
+      - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+      - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
+      - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
 
   # debian trixie gnome desktop without 3d
   gnome-desktop-latest-debian:
