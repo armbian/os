@@ -83,8 +83,14 @@ lists:
     - { BOARD: hikey960, BRANCH: current }
     - { BOARD: hinlink-h28k, BRANCH: legacy }
     - { BOARD: hinlink-h28k, BRANCH: vendor}
+    - { BOARD: hinlink-h66k, BRANCH: legacy }
+    - { BOARD: hinlink-h66k, BRANCH: vendor}
+    - { BOARD: hinlink-h68k, BRANCH: legacy }
+    - { BOARD: hinlink-h68k, BRANCH: vendor}
     - { BOARD: hinlink-h88k, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: hinlink-h88k, BRANCH: edge }
+    - { BOARD: hinlink-hnas, BRANCH: legacy }
+    - { BOARD: hinlink-hnas, BRANCH: vendor}
     - { BOARD: hinlink-ht2, BRANCH: legacy }
     - { BOARD: hinlink-ht2, BRANCH: vendor}
     - { BOARD: indiedroid-nova, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
