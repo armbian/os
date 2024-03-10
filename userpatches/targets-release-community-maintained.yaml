@@ -30,8 +30,8 @@ lists:
     - { BOARD: uefi-riscv64, BRANCH: current }
     - { BOARD: unleashed, BRANCH: edge }
     - { BOARD: unmatched, BRANCH: edge }
-    - { BOARD: visionfive, BRANCH: edge }
     - { BOARD: visionfive2, BRANCH: edge }
+    - { BOARD: visionfive, BRANCH: edge }
     # end of auto generated section
 
   community-maintained-headless: &community-maintained-headless
@@ -45,22 +45,22 @@ lists:
     - { BOARD: macchiatobin-doubleshot, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
     - { BOARD: mk808c, BRANCH: current }
+    - { BOARD: nanopiair, BRANCH: current }
+    - { BOARD: nanopineo2black, BRANCH: current }
+    - { BOARD: nanopineo2, BRANCH: current }
+    - { BOARD: nanopineo3, BRANCH: current }
+    - { BOARD: nanopineocore2, BRANCH: current }
+    - { BOARD: nanopineo, BRANCH: current }
+    - { BOARD: nanopineoplus2, BRANCH: current }
     - { BOARD: nanopi-r1, BRANCH: current }
     - { BOARD: nanopi-r1s-h5, BRANCH: current }
     - { BOARD: nanopi-r2c, BRANCH: current }
     - { BOARD: nanopi-r2s, BRANCH: current }
     - { BOARD: nanopi-r4se, BRANCH: current }
-    - { BOARD: nanopiair, BRANCH: current }
-    - { BOARD: nanopineo, BRANCH: current }
-    - { BOARD: nanopineo2, BRANCH: current }
-    - { BOARD: nanopineo2black, BRANCH: current }
-    - { BOARD: nanopineo3, BRANCH: current }
-    - { BOARD: nanopineocore2, BRANCH: current }
-    - { BOARD: nanopineoplus2, BRANCH: current }
     - { BOARD: olinux-som-a13, BRANCH: current }
     - { BOARD: orangepi-r1, BRANCH: current }
-    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepi-r1plus, BRANCH: current }
+    - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
@@ -106,10 +106,10 @@ lists:
     - { BOARD: mekotronics-r58-minipc, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: mekotronics-r58x-4g, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: mekotronics-r58x-4g, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
-    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x-pro, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: mekotronics-r58x, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
     - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
+    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: mekotronics-r58x-pro, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: mixtile-blade3, BRANCH: edge }
     - { BOARD: nanopc-cm3588-nas, BRANCH: legacy }
@@ -117,28 +117,28 @@ lists:
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopi-r5c, BRANCH: current }
-    - { BOARD: nanopi-r5s, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
-    - { BOARD: nanopi-r6s, BRANCH: edge }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
     - { BOARD: nanopim4, BRANCH: current }
     - { BOARD: nanopim4v2, BRANCH: current }
     - { BOARD: nanopineo4, BRANCH: current }
+    - { BOARD: nanopi-r5c, BRANCH: current }
+    - { BOARD: nanopi-r5s, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
+    - { BOARD: nanopi-r6s, BRANCH: edge }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current }
-    - { BOARD: orangepi-rk3399, BRANCH: current }
-    - { BOARD: orangepi3-lts, BRANCH: current }
-    - { BOARD: orangepi3, BRANCH: current }
     - { BOARD: orangepi3b, BRANCH: vendor}
     - { BOARD: orangepi3b, BRANCH: edge }
+    - { BOARD: orangepi3, BRANCH: current }
+    - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi4, BRANCH: current }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current }
+    - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepiwin, BRANCH: current }
     - { BOARD: orangepizero3, BRANCH: current }
     - { BOARD: panther-x2, BRANCH: current }
@@ -154,17 +154,16 @@ lists:
     - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: recore, BRANCH: legacy }
     - { BOARD: rk3318-box, BRANCH: current }
-    - { BOARD: roc-rk3399-pc, BRANCH: current }
     - { BOARD: rock-3a, BRANCH: vendor}
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
-    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-    - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: rock-5a, BRANCH: edge }
     - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: rock-5b, BRANCH: edge }
+    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+    - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4b, BRANCH: current }
@@ -172,6 +171,7 @@ lists:
     - { BOARD: rockpi-4c, BRANCH: current }
     - { BOARD: rockpi-4cplus, BRANCH: current }
     - { BOARD: rockpi-n10, BRANCH: current }
+    - { BOARD: roc-rk3399-pc, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: current }
     - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
@@ -179,8 +179,8 @@ lists:
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
     - { BOARD: tanix-tx6, BRANCH: current }
-    - { BOARD: tinker-edge-r, BRANCH: current }
     - { BOARD: tinkerboard-2, BRANCH: current }
+    - { BOARD: tinker-edge-r, BRANCH: current }
     - { BOARD: wdk2023, BRANCH: wdk2023}
     - { BOARD: z28pro, BRANCH: current }
     # end of auto generated section
@@ -200,15 +200,15 @@ lists:
     - { BOARD: cubietruck, BRANCH: current }
     - { BOARD: cubietruckplus, BRANCH: current }
     - { BOARD: cubox-i, BRANCH: current }
-    - { BOARD: lime, BRANCH: current }
     - { BOARD: lime2, BRANCH: current }
+    - { BOARD: lime, BRANCH: current }
     - { BOARD: olimex-a20-olinuxino-micro, BRANCH: current }
     - { BOARD: orangepi2, BRANCH: current }
     - { BOARD: orangepilite, BRANCH: current }
     - { BOARD: orangepipc, BRANCH: current }
     - { BOARD: orangepipcplus, BRANCH: current }
-    - { BOARD: orangepiplus, BRANCH: current }
     - { BOARD: orangepiplus2e, BRANCH: current }
+    - { BOARD: orangepiplus, BRANCH: current }
     - { BOARD: orangepizeroplus2-h3, BRANCH: current }
     - { BOARD: pcduino3, BRANCH: current }
     - { BOARD: rk322x-box, BRANCH: current }
