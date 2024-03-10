@@ -5,22 +5,27 @@
 #
 
 # This add's amazingfate's PPAs to the the image, and installs all needed packages.
-# It only works on LINUXFAMILY="rk3588-legacy" and RELEASE=jammy and BRANCH=legacy
+# It only works on LINUXFAMILY="rk3588-legacy" and RELEASE=jammy and BRANCH=legacy/vendor
 # if on a desktop, installs more useful packages, and tries to coerce lightdm to use gtk-greeter and a Wayland session.
 function extension_prepare_config__amazingfated_rk3588() {
+
+	display_alert "Preparing amazingfated's rk3588 extension" "${EXTENSION}" "info"
+	# Add to the image suffix.
+	EXTRA_IMAGE_SUFFIXES+=("-amazingfated") # global array
+
+	[[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
 
 	if [[ "${LINUXFAMILY}" != "rockchip-rk3588" && "${LINUXFAMILY}" != "rk35xx" ]]; then
 		exit_with_error "${EXTENSION} only works on LINUXFAMILY=rockchip-rk3588/rk35xx, currently on '${LINUXFAMILY}'"
 	fi
 
-        [[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
-        [[ "${RELEASE}" != "jammy" ]] && return 0
-	[[ "${BRANCH}" != "legacy" ]] && return 0
-        [[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
+	if [[ "${BRANCH}" != "legacy" && "${BRANCH}" != "vendor" ]]; then
+		exit_with_error "${EXTENSION} only works on BRANCH=legacy or BRANCH=vendor, currently on '${BRANCH}'"
+	fi
 
-	display_alert "Preparing amazingfated's rk3588 extension" "${EXTENSION}" "info"
-	# Add to the image suffix.
-	EXTRA_IMAGE_SUFFIXES+=("-amazingfated") # global array
+	if [[ "${RELEASE}" != "jammy" ]]; then
+		exit_with_error "${EXTENSION} only works on RELEASE=jammy, currently on '${RELEASE}'"
+	fi
 
 }
 
