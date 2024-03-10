@@ -13,7 +13,6 @@ common-gha-configs:
       by-name-and-arch:
         rootfs-armhf: [ "self-hosted", "Linux", "ARM64" ]
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" ]
-        rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
 
 targets:
@@ -28,10 +27,10 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        skip-releases: [ "sid" ] # do NOT include these releases
+        skip-releases: [ "sid", "bullseye", "focal" , "kinetic", "lunar"] # do NOT include these releases
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
-        only-desktops: ["gnome", "xfce", "cinnamon", "i3-wm"] # ONLY include these desktops
+        only-desktops: ["gnome", "xfce", "cinnamon", "i3-wm", "kde-neon"] # ONLY include these desktops
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops, one per desktop_variations below; 'eos' ones are always skipped
