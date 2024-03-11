@@ -229,6 +229,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       # Attention, no list reference here, just specific boards.
+      - { BOARD: uefi-x86, BRANCH: current }
       - { BOARD: rpi4b, BRANCH: current }
       - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
       - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
