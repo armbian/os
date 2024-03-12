@@ -148,7 +148,7 @@ jobs: # <TEMPLATE-IGNORE>
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             [[ -z "${SERVERS}" ]] && SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"
+             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
