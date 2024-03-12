@@ -69,9 +69,9 @@ on:
         - khadas-vim4
         - lafrite
         - lepotato
-        - nanopi-r4s
-        - nanopiduo
         - nanopiduo2
+        - nanopiduo
+        - nanopi-r4s
         - odroidc2
         - odroidm1
         - odroidn2
@@ -79,22 +79,22 @@ on:
         - olimex-teres-a64
         - onecloud
         - orangepi4-lts
-        - orangepi5-plus
         - orangepi5
+        - orangepi5-plus
         - orangepione
         - orangepiprime
-        - orangepizero
         - orangepizero2
+        - orangepizero
         - orangepizeroplus
         - pine64
         - pinebook-pro
         - qemu-uefi-x86
         - radxa-zero
         - renegade
-        - rock-s0
         - rockpi-e
         - rockpi-s
         - rockpro64
+        - rock-s0
         - rpi4b
         - rpi5b
         - sk-am62b
@@ -115,23 +115,9 @@ on:
         # maintainers
         - 150balbes
         - 1ubuntuuser
-        - AGM1968
         - AaronNGray
-        - DylanHP
-        - FantasyGmm
-        - Heisath
-        - Kreyren
-        - ManoftheSea
-        - Manouchehri
-        - NicoD-SBC
-        - PanderMusubi
-        - PeterChrz
-        - StephenGraf
-        - TRSx80
-        - Tonymac32
-        - Z-Keven
-        - ZazaBR
         - adeepn
+        - AGM1968
         - ahoneybun
         - amazingfate
         - bigtreetech
@@ -142,11 +128,14 @@ on:
         - clee
         - davidandreoletti
         - devdotnetorg
+        - DylanHP
         - echatzip
         - efectn
         - eliasbakken
         - engineer-80
+        - FantasyGmm
         - glneo
+        - Heisath
         - hoochiwetech
         - hzyitc
         - igorpecovnik
@@ -154,21 +143,32 @@ on:
         - joekhoobyar
         - joshaspinall
         - krachlatte
+        - Kreyren
         - lanefu
         - lbmendes
         - linhz0hz
         - mahdichi
+        - ManoftheSea
+        - Manouchehri
         - monkaBlyat
+        - NicoD-SBC
+        - PanderMusubi
         - paolosabatino
+        - PeterChrz
         - pyavitz
         - rpardini
         - schwar3kat
         - sgjava
         - sputnik2019
+        - StephenGraf
         - teknoid
+        - Tonymac32
+        - TRSx80
         - utlark
         - vamzii
         - viraniac
+        - ZazaBR
+        - Z-Keven
         - all
         default: 'all'
       targetsFilterInclude:
@@ -476,6 +476,11 @@ jobs:
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
           "Accept: application/json; indent=4" "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
           | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.csv
+
+          timeout 10 curl -s -H "Authorization: Token ${TOKEN}" -H \
+          "Accept: application/json; indent=4" "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+          | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|dl|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
+          | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-download.csv
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
@@ -1865,14 +1870,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2072,14 +2074,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2279,14 +2278,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2486,14 +2482,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2693,14 +2686,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2900,14 +2890,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3107,14 +3094,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3314,14 +3298,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3521,14 +3502,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3728,14 +3706,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3935,14 +3910,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4142,14 +4114,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4349,14 +4318,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4556,14 +4522,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4763,14 +4726,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4970,14 +4930,11 @@ jobs:
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
 
-             SERVERS=$(cat output/info/servers.csv)
-             WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+             WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
+             do
+             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
