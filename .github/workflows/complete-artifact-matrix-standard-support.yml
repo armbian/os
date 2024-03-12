@@ -461,7 +461,14 @@ jobs:
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
           "Accept: application/json; indent=4" "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/servers.txt
+          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.json
+          for server in $(cat build/output/info/servers.json | jq '.results[] | .name' | grep -v null | sed "s/\"//g"); do
+                JSON=$(curl -s -H "Authorization: Token $TOKEN" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
+                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
+                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
+                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}archive\/${FILE},|"
+          done | sed 's/ \+/\n/g' > build/output/info/servers-with-path.json
 
       # Store output/info folder in a GitHub Actions artifact
       - uses: actions/upload-artifact@v4
