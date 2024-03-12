@@ -1846,7 +1846,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2066,7 +2072,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2286,7 +2298,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2506,7 +2524,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2726,7 +2750,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2946,7 +2976,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3166,7 +3202,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3386,7 +3428,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3606,7 +3654,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3826,7 +3880,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4046,7 +4106,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4266,7 +4332,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4486,7 +4558,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4706,7 +4784,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4926,7 +5010,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -5146,7 +5236,13 @@ jobs:
              SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
              "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
              | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org"; fi
+             if [ -z "${SERVERS}" ]; then
+                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
+                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
+                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
+                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
+                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
+             fi
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
