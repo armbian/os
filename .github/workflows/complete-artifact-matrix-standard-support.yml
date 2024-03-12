@@ -455,23 +455,27 @@ jobs:
         run: |
           echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
 
-      - name: Prepare torrent weburls
+      # clone the torrent lists
+      - name: Checkout torrent lists
+        uses: actions/checkout@v4
+        with:
+          repository: XIU2/TrackersListCollection
+          clean: false
+          ref: master
+          path: trackerslist.repo
+          fetch-depth: ${{ matrix.fdepth }}
+
+      - name: Get server list from NetBox
         id: prepare-urls
         run: |
 
+          cp trackerslist.repo/best.txt build/output/info/best-torrent-servers.txt
+
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
           "Accept: application/json; indent=4" "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.json
+          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.csv
 
-          for server in $(cat build/output/info/servers.json | jq '.results[] | .name' | grep -v null | sed "s/\"//g"); do
-                JSON=$(curl -s -H "Authorization: Token $TOKEN" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
-                SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
-                if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
-                echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}archive\/${FILE},|"
-          done | sed 's/ \+/\n/g' > build/output/info/servers-with-path.json
-
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
           | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
           | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-upload.csv
@@ -1868,10 +1872,9 @@ jobs:
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             SERVERS=$(cat output/info/servers.txt)
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
+                JSON=$(cat build/output/info/servers-with-path.json)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
                 if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
                 echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
