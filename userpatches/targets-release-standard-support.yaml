@@ -300,6 +300,23 @@ targets:
     items:
       - *standard-support-fast-hdmi
 
+  # ubuntu stable with KDE neon and no office (images will go over 2Gb GH file limit)
+  kde-neon-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "kde-neon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,email,programming,remote_desktop"
+    items:
+      - *standard-support-fast-hdmi
+
   # automated section
   automated-section:
     enabled: no
