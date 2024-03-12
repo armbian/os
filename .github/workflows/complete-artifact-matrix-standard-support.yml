@@ -455,6 +455,14 @@ jobs:
         run: |
           echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
 
+      - name: Prepare torrent weburls
+        id: prepare-urls
+        run: |
+
+          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/servers.txt
+
       # Store output/info folder in a GitHub Actions artifact
       - uses: actions/upload-artifact@v4
         name: Upload output/info as GitHub Artifact
@@ -1829,6 +1837,13 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
@@ -1840,19 +1855,7 @@ jobs:
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
-
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.txt)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
