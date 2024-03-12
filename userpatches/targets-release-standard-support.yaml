@@ -68,6 +68,8 @@ lists:
     - { BOARD: uefi-x86, BRANCH: current }
     # end of auto generated section
 
+targets:
+
   # ubuntu stable with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
     enabled: yes
