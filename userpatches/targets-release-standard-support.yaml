@@ -97,7 +97,5 @@ lists:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *standard-support-headless
       - *standard-support-fast-hdmi
-      - *standard-support-slow-hdmi
   # end of automated-section:
