@@ -388,6 +388,16 @@ jobs:
           clean: false # true is default.
           path: userpatches
 
+      # clone the torrent lists
+      - name: "Checkout torrent lists"
+        uses: actions/checkout@v4
+        with:
+          repository: XIU2/TrackersListCollection
+          clean: false
+          ref: master # true is default
+          path: trackerslist
+          fetch-depth: 1
+
       - name: "grab the sha1 of the latest commit of the build repo ${{ env.BUILD_REPOSITORY }}#${{ env.BUILD_REF }}"
         id: latest-commit
         run: |
@@ -455,21 +465,11 @@ jobs:
         run: |
           echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       - name: Get server list from NetBox
         id: prepare-urls
         run: |
 
-          cp trackerslist.repo/best.txt build/output/info/best-torrent-servers.txt
+          cp trackerslist/best.txt build/output/info/best-torrent-servers.txt
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
           "Accept: application/json; indent=4" "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
@@ -1759,16 +1759,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -1787,7 +1777,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -1865,16 +1855,18 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
+
              SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
-                JSON=$(cat build/output/info/servers-with-path.json)
+                JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
+                "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
                 SERVER_PATH=$(echo "${JSON}" | jq '.results[] | .custom_fields["download_path_images"]' | sed "s/\"//g")
                 if [ "${SERVER_PATH}" == "null" ]; then SERVER_PATH="dl"; fi
                 echo "http://$server/$SERVER_PATH/" | sed "s|$|${BOARD}\/archive\/${FILE},|"
@@ -1921,12 +1913,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -1979,16 +1966,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -2007,7 +1984,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -2074,30 +2051,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2147,12 +2120,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -2205,16 +2173,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -2233,7 +2191,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -2300,30 +2258,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2373,12 +2327,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -2431,16 +2380,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -2459,7 +2398,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -2526,30 +2465,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2599,12 +2534,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -2657,16 +2587,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -2685,7 +2605,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -2752,30 +2672,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -2825,12 +2741,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -2883,16 +2794,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -2911,7 +2812,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -2978,30 +2879,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3051,12 +2948,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -3109,16 +3001,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -3137,7 +3019,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -3204,30 +3086,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3277,12 +3155,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -3335,16 +3208,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -3363,7 +3226,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -3430,30 +3293,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3503,12 +3362,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -3561,16 +3415,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -3589,7 +3433,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -3656,30 +3500,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3729,12 +3569,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -3787,16 +3622,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -3815,7 +3640,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -3882,30 +3707,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -3955,12 +3776,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -4013,16 +3829,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -4041,7 +3847,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -4108,30 +3914,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4181,12 +3983,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -4239,16 +4036,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -4267,7 +4054,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -4334,30 +4121,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4407,12 +4190,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -4465,16 +4243,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -4493,7 +4261,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -4560,30 +4328,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4633,12 +4397,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -4691,16 +4450,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -4719,7 +4468,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -4786,30 +4535,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -4859,12 +4604,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -4917,16 +4657,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -4945,7 +4675,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -5012,30 +4742,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -5085,12 +4811,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
@@ -5143,16 +4864,6 @@ jobs:
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
-      # clone the torrent lists
-      - name: Checkout torrent lists
-        uses: actions/checkout@v4
-        with:
-          repository: XIU2/TrackersListCollection
-          clean: false
-          ref: master
-          path: trackerslist.repo
-          fetch-depth: ${{ matrix.fdepth }}
-
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -5171,7 +4882,7 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
-      - name: Cleanup leftover output
+      - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
 
@@ -5238,30 +4949,26 @@ jobs:
 
           echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz
 
+      # Download the artifacts (output/info) produced by the prepare-matrix job.
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-info-json
+          path: output/info
+
       - name: Generate torrent
         timeout-minutes: 3
         run: |
 
-          TRACKERS=$(cat trackerslist.repo/best.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
+          TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
           WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-             # add seeds from different regions
-             #WEBSEEDS=$(curl -sq http://redirect.armbian.com/mirrors | jq -Mr '.' | grep http | tr -d \"," " | sort | uniq | sed "s|$|${BOARD}\/archive\/${FILE},|")
 
-             SERVERS=$(timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-             "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-             | jq '.results[] | .name' | grep -v null | sed "s/\"//g")
-             if [ -z "${SERVERS}" ]; then
-                 SERVERS="armbian.chi.auroradev.org armbian.hosthatch.com armbian.lv.auroradev.org armbian.systemonachip.net au.mirrors.naho.moe au.sbcmirror.org \
-                 es.sbcmirror.org fastmirror.pp.ua fi.mirror.armbian.de jp.mirrors.naho.moe kr.mirrors.naho.moe k-space.ee.armbian.com mirror-eu-de1.armbian.airframes.io \
-                 mirror.iscas.ac.cn mirrors.aliyun.com mirrors.bfsu.edu.cn mirrors.dotsrc.org mirrors.jevincanders.net mirrors.netix.net mirrors.nju.edu.cn mirrors.shanghaitech.edu.cn \
-                 mirrors.tuna.tsinghua.edu.cn mirrors.ustc.edu.cn mirror-us-phx1.armbian.airframes.io mirror-us-sea1.armbian.airframes.io mirror-us-sea2.armbian.airframes.io \
-                 mirror-us-stl1.armbian.airframes.io mirror.vinehost.net/armbian mirror.yandex.ru/mirrors/armbian repo.jing.rocks sg.sbcmirror.org stpete-mirror.armbian.com xogium.performanceservers.nl"
-             fi
+             SERVERS=$(cat output/info/servers.csv)
              WEBSEEDS=$(for server in $SERVERS; do
                 JSON=$(curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
                 "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${server}" | jq)
@@ -5311,12 +5018,7 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
-
-          # read servers data from NetBox database
-          curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R | \
+          cat output/info/servers-upload.csv | \
           while read i; do
              SERVER_URL=$(echo $i | cut -d "," -f1)
              SERVER_PORT=$(echo $i | cut -d "," -f3)
