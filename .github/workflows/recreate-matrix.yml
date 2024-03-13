@@ -148,7 +148,7 @@ jobs:
       run: |
 
         # generate lists to include them
-        find build/config/boards/*.{conf,wip,tvb,csc} ! '(' -name '*.eos' ')' | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/standard-support.txt
+        find build/config/boards/*.{conf,wip,tvb,csc} ! '(' -name '*.eos' ')' | cut -d"/" -f4 | cut -d"." -f1 | uniq | sort | sed 's/.*/        - &/' > /tmp/standard-support.txt
         cp /tmp/standard-support.txt /tmp/staging.txt
         cp /tmp/standard-support.txt /tmp/community-maintained.txt
         #ls -1 build/config/boards/*.{conf,wip} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/staging.txt
