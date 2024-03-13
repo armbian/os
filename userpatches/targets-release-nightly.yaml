@@ -51,6 +51,7 @@ lists:
     # auto generated section
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
+    - { BOARD: thinkpad-x13s, BRANCH: sc8280xp}
     - { BOARD: xiaomi-umi, BRANCH: sm8250}
     # end of auto generated section
 
@@ -125,6 +126,8 @@ lists:
     - { BOARD: rpi4b, BRANCH: edge }
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: edge }
+    - { BOARD: sk-am68, BRANCH: current }
+    - { BOARD: sk-am68, BRANCH: edge }
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: edge }
     - { BOARD: tritium-h5, BRANCH: current }
@@ -133,6 +136,7 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: edge }
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: edge }
+    - { BOARD: xiaomi-elish, BRANCH: sm8250}
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
