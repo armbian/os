@@ -250,6 +250,27 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,email,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
+      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
+
+  # debian trixie gnome desktop without 3d
+  gnome-desktop-latest-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      # Attention, no list reference here, just a specific board.
+      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
 
   # automated section
   automated-section:
