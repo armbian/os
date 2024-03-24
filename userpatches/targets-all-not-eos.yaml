@@ -39,6 +39,7 @@ targets:
           - [ 3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop ] # 3d + all
           - [ browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop ] # all except 3d
           - [ 3dsupport,browsers,email,programming,remote_desktop ] # limited desktop
+          - [ desktop_tools,internet,languages,multimedia,remote_desktop ] # limited desktop
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           arm64: [ { BOARD: "uefi-arm64", BRANCH: "current" } ]
           armhf: [ { BOARD: "tinkerboard", BRANCH: "current" } ]
