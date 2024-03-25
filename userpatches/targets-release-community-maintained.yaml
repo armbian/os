@@ -222,7 +222,7 @@ lists:
 targets:
 
   # debian cli minimal
-  full-cli-stable-debian:
+  minimal-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
@@ -252,7 +252,7 @@ targets:
      - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # debian xfce
-  xfce-desktop-stable-ubuntu:
+  xfce-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
@@ -269,7 +269,7 @@ targets:
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # debian gnome
-  gnome-desktop-stable-ubuntu:
+  gnome-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
@@ -314,19 +314,6 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-riscv64
-
-  # ubuntu unstable cli
-  minimal-cli-unstable-ubuntu:
-    enabled: yes
-    configs: [ armbian-community ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # ubuntu xfce
@@ -368,7 +355,7 @@ targets:
       - *community-maintained-fast-hdmi
 
   # ubuntu unstable xfce
-  xfce-desktop-stable-ubuntu:
+  xfce-desktop-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
@@ -386,7 +373,7 @@ targets:
 
 
   # ubuntu unstable gnome
-  gnome-desktop-stable-ubuntu:
+  gnome-desktop-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
