@@ -221,7 +221,7 @@ lists:
 
 targets:
 
-  # debian cli
+  # debian cli minimal
   full-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -237,6 +237,54 @@ targets:
       - *community-maintained-fast-hdmi
       - *community-maintained-slow-hdmi
 
+  # debian cli
+  full-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+     - { BOARD: aml-s9xx-box, BRANCH: current }
+
+  # debian xfce
+  xfce-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
+
+  # debian gnome
+  gnome-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
+
   # ubuntu cli
   full-cli-stable-ubuntu:
     enabled: yes
@@ -250,6 +298,8 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-headless
+      - { BOARD: aml-s9xx-box, BRANCH: current }
+      - { BOARD: aml-s9xx-box, BRANCH: edge }
 
   # ubuntu unstable cli minimal
   minimal-cli-unstable-ubuntu:
@@ -264,6 +314,20 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-riscv64
+
+  # ubuntu unstable cli
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # ubuntu xfce
   xfce-desktop-stable-ubuntu:
@@ -282,6 +346,9 @@ targets:
     items:
       - *community-maintained-riscv64
       - *community-maintained-slow-hdmi
+      - { BOARD: aml-s9xx-box, BRANCH: current }
+      - { BOARD: aml-s9xx-box, BRANCH: edge }
+
 
   # ubuntu gnome
   gnome-desktop-stable-ubuntu:
@@ -299,6 +366,42 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *community-maintained-fast-hdmi
+
+  # ubuntu unstable xfce
+  xfce-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
+
+
+  # ubuntu unstable gnome
+  gnome-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: current }
+
 
   # Full Ubuntu LTS Cinnamon with 3d
   cinnamon-desktop-stable-ubuntu:
