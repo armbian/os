@@ -35,7 +35,7 @@ targets:
 
   # ubuntu unstable minimal
   minimal-cli-unstable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -74,7 +74,7 @@ targets:
 
   # ubuntu unstable without apps
   xfce-barebone-desktop-unstable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
