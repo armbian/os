@@ -108,6 +108,38 @@ function pre_customize_image__500_add_ha_to_image() {
 	# install HA supervised
 	chroot_sdcard MACHINE=${MACHINE} dpkg -i "/opt/hainstall/${HA_SUPERVISED_FILENAME}"
 
+	# workarounding supervisor loosing healthy state https://github.com/home-assistant/supervisor/issues/4381
+	cat <<- SUPERVISOR_FIX > "${SDCARD}/usr/local/bin/supervisor_fix.sh"
+	#!/bin/bash
+	while true; do
+		if ha supervisor info 2>&1 | grep -q "healthy: false"; then
+			echo "Unhealthy detected, restarting" | systemd-cat -t $(basename "$0") -p emerg
+			systemctl restart hassio-supervisor.service
+			sleep 600
+		else
+			sleep 5
+		fi
+	done
+	SUPERVISOR_FIX
+
+	# add executable bit
+	run_host_command_logged chmod +x "${SDCARD}/usr/local/bin/supervisor_fix.sh"
+
+	# generate service file to run this script
+	cat <<- SUPERVISOR_FIX_SERVICE > "${SDCARD}/etc/systemd/system/supervisor-fix.service"
+	[Unit]
+	Description=Supervisor Unhealthy Fix
+
+	[Service]
+	ExecStart=/usr/local/bin/supervisor_fix.sh
+
+	[Install]
+	WantedBy=multi-user.target
+	SUPERVISOR_FIX_SERVICE
+
+	# enable service
+	chroot_sdcard systemctl enable supervisor-fix
+
 }
 
 function image_specific_armbian_env_ready__set_cgroupsv1_in_armbianEnvTxt() {
