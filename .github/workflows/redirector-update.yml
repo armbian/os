@@ -417,7 +417,7 @@ jobs:
           ls -l downloads
           ls -l *.mmdb
 
-      - uses: geekyeggo/delete-artifact@v2
+      - uses: geekyeggo/delete-artifact@v5
         with:
           name: |
             redirector-config
