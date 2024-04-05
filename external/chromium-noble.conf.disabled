@@ -1,9 +1,0 @@
-URL="https://ppa.launchpadcontent.net/savoury1/chromium/ubuntu"
-KEY=jammy
-RELEASE=noble
-TARGET=desktop
-METHOD=aptly
-INSTALL=chromium-browser
-GLOB="Name (% chromium-browser) | Name (% chromium-browser-l10n) | Name (% chromium-chromedriver) | Name (% chromium-codecs-ffmpeg-extra) | Name (% chromium-codecs-ffmpeg)"
-ARCH=amd64
-REPOSITORY=BS
