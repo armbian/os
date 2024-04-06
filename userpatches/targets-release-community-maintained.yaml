@@ -112,8 +112,8 @@ lists:
     - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: mixtile-blade3, BRANCH: edge }
-    - { BOARD: nanopc-cm3588-nas, BRANCH: legacy }
     - { BOARD: nanopc-cm3588-nas, BRANCH: vendor}
+    - { BOARD: nanopc-cm3588-nas, BRANCH: edge }
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: nanopct6, BRANCH: edge }
