@@ -157,6 +157,16 @@ jobs:
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
         git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
+        function enable_extension()
+        {
+        :
+        }
+
+        function display_alert()
+        {
+        :
+        }
+
         function make-targets()
         {
 
@@ -173,7 +183,8 @@ jobs:
             OUTPUT=$(for board in $(ls -1 build/config/boards/*.{conf,csc,wip,tvb}); do
 
                     # read board family and determine ARCH
-                    BOARDFAMILY=$(grep BOARDFAMILY $board | cut -d '"' -f 2)
+                    SRC=$(pwd)/build
+                    source $board
                     source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
 
                     # board status defines where it goes
@@ -189,10 +200,10 @@ jobs:
                     fi
 
                     # read kernel target
-                    if [[ $(grep KERNEL_TARGET $board | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
-                       KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2 | awk -F, '{ print $2,$3,$1 }')
+                    if [[ $(echo $KERNEL_TARGET | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
+                       KERNEL_TARGET=$(echo $KERNEL_TARGET | cut -d '"' -f 2 | awk -F, '{ print $2,$3,$1 }')
                     else
-                       KERNEL_TARGET=$(grep KERNEL_TARGET $board | cut -d '"' -f 2 | sed "s/,/ /g")
+                       KERNEL_TARGET=$(echo $KERNEL_TARGET | cut -d '"' -f 2 | sed "s/,/ /g")
                     fi
 
                     # extract board name from config
