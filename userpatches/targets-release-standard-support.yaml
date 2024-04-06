@@ -26,15 +26,14 @@ lists:
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: helios4, BRANCH: current }
-    - { BOARD: nanopiduo2, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
+    - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
+    - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
-    - { BOARD: rock-s0, BRANCH: edge }
-    - { BOARD: rock-s0, BRANCH: KERNEL_TEST_TARGET=$KERNEL_TARGET}
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
     # end of auto generated section
@@ -47,6 +46,8 @@ lists:
     - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim4zero, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
+    - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: bananapim7, BRANCH: edge }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
@@ -64,10 +65,10 @@ lists:
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: orangepi5-plus, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: orangepi5, BRANCH: edge }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
