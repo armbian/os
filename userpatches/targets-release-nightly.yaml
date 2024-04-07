@@ -70,7 +70,6 @@ lists:
     - { BOARD: bananapim5, BRANCH: edge }
     - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: bananapim7, BRANCH: edge }
-    - { BOARD: bananapim7, BRANCH: legacy }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: bigtreetech-cb1, BRANCH: edge }
     - { BOARD: jethubj100, BRANCH: current }
@@ -105,10 +104,8 @@ lists:
     - { BOARD: orangepi4-lts, BRANCH: edge }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: orangepi5-plus, BRANCH: edge }
-    - { BOARD: orangepi5-plus, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
     - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: orangepi5, BRANCH: edge }
-    - { BOARD: orangepi5, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiprime, BRANCH: edge }
     - { BOARD: orangepizero2, BRANCH: current }
