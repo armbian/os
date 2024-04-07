@@ -201,7 +201,7 @@ jobs:
 
                     # read kernel target
                     if [[ $(echo $KERNEL_TARGET | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
-                       KERNEL_TARGET=$(echo $KERNEL_TARGET | cut -d '"' -f 2 | awk -F, '{ print $2,$3,$1 }')
+                       KERNEL_TARGET=$(echo $KERNEL_TARGET | cut -d '"' -f 2 | awk -F, '{ print $2,$3 }')
                     else
                        KERNEL_TARGET=$(echo $KERNEL_TARGET | cut -d '"' -f 2 | sed "s/,/ /g")
                     fi
