@@ -108,7 +108,7 @@ targets:
 
   # ubuntu unstable cli minimal
   minimal-cli-unstable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
@@ -161,7 +161,7 @@ targets:
 
   # ubuntu unstable xfce
   xfce-desktop-unstable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
@@ -179,7 +179,7 @@ targets:
 
   # ubuntu unstable gnome
   gnome-desktop-unstable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
