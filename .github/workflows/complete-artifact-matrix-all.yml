@@ -5143,7 +5143,7 @@ jobs:
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
-        uses: igorjs/gh-actions-clean-workflow@v4
+        uses: igorjs/gh-actions-clean-workflow@v5
         with:
           token: "${{ env.GH_TOKEN }}"
           days_old: 7
