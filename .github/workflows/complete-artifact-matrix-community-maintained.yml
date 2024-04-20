@@ -113,9 +113,9 @@ on:
         - lepotato
         - licheepi-4a
         - lime
+        - lime2
         - lime-a33
         - lime-a64
-        - lime2
         - macchiatobin-doubleshot
         - mangopi-m28k
         - mba8mpxl
@@ -130,15 +130,6 @@ on:
         - nanopc-cm3588-nas
         - nanopct4
         - nanopct6
-        - nanopi-r1
-        - nanopi-r1s-h5
-        - nanopi-r2c
-        - nanopi-r2s
-        - nanopi-r4s
-        - nanopi-r4se
-        - nanopi-r5c
-        - nanopi-r5s
-        - nanopi-r6s
         - nanopia64
         - nanopiair
         - nanopiduo
@@ -154,6 +145,15 @@ on:
         - nanopineo4
         - nanopineocore2
         - nanopineoplus2
+        - nanopi-r1
+        - nanopi-r1s-h5
+        - nanopi-r2c
+        - nanopi-r2s
+        - nanopi-r4s
+        - nanopi-r4se
+        - nanopi-r5c
+        - nanopi-r5s
+        - nanopi-r6s
         - odroidc2
         - odroidc4
         - odroidhc4
@@ -165,14 +165,10 @@ on:
         - olimex-teres-a64
         - olinux-som-a13
         - onecloud
-        - orangepi-r1
-        - orangepi-r1plus
-        - orangepi-r1plus-lts
-        - orangepi-rk3399
         - orangepi2
         - orangepi3
-        - orangepi3-lts
         - orangepi3b
+        - orangepi3-lts
         - orangepi4
         - orangepi4-lts
         - orangepi5
@@ -187,6 +183,10 @@ on:
         - orangepiplus
         - orangepiplus2e
         - orangepiprime
+        - orangepi-r1
+        - orangepi-r1plus
+        - orangepi-r1plus-lts
+        - orangepi-rk3399
         - orangepiwin
         - orangepizero
         - orangepizero2
@@ -217,14 +217,12 @@ on:
         - renegade
         - rk322x-box
         - rk3318-box
-        - roc-rk3399-pc
         - rock-3a
         - rock-3c
         - rock-4se
-        - rock-5-cmio
         - rock-5a
         - rock-5b
-        - rock-s0
+        - rock-5-cmio
         - rock64
         - rockpi-4a
         - rockpi-4b
@@ -235,6 +233,8 @@ on:
         - rockpi-n10
         - rockpi-s
         - rockpro64
+        - rock-s0
+        - roc-rk3399-pc
         - rpi4b
         - rpi5b
         - sk-am62b
@@ -250,9 +250,9 @@ on:
         - sunvell-r69
         - tanix-tx6
         - thinkpad-x13s
-        - tinker-edge-r
         - tinkerboard
         - tinkerboard-2
+        - tinker-edge-r
         - tritium-h3
         - tritium-h5
         - udoo
@@ -281,24 +281,9 @@ on:
         # maintainers
         - 150balbes
         - 1ubuntuuser
-        - AGM1968
         - AaronNGray
-        - DylanHP
-        - FantasyGmm
-        - Heisath
-        - Kreyren
-        - ManoftheSea
-        - Manouchehri
-        - NicoD-SBC
-        - PanderMusubi
-        - PeterChrz
-        - Radxa
-        - StephenGraf
-        - TRSx80
-        - Tonymac32
-        - Z-Keven
-        - ZazaBR
         - adeepn
+        - AGM1968
         - ahoneybun
         - amazingfate
         - bigtreetech
@@ -309,11 +294,14 @@ on:
         - clee
         - davidandreoletti
         - devdotnetorg
+        - DylanHP
         - echatzip
         - efectn
         - eliasbakken
         - engineer-80
+        - FantasyGmm
         - glneo
+        - Heisath
         - hoochiwetech
         - hzyitc
         - igorpecovnik
@@ -321,21 +309,33 @@ on:
         - joekhoobyar
         - joshaspinall
         - krachlatte
+        - Kreyren
         - lanefu
         - lbmendes
         - linhz0hz
         - mahdichi
+        - ManoftheSea
+        - Manouchehri
         - monkaBlyat
+        - NicoD-SBC
+        - PanderMusubi
         - paolosabatino
+        - PeterChrz
         - pyavitz
+        - Radxa
         - rpardini
         - schwar3kat
         - sgjava
         - sputnik2019
+        - StephenGraf
         - teknoid
+        - Tonymac32
+        - TRSx80
         - utlark
         - vamzii
         - viraniac
+        - ZazaBR
+        - Z-Keven
         - all
         default: 'all'
       targetsFilterInclude:
