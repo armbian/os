@@ -73,7 +73,7 @@ lists:
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: edge }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,mesa-oibaf" }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: edge }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
