@@ -42,7 +42,7 @@ lists:
     - { BOARD: bananapim2s, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
+    - { BOARD: khadas-edge2, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim2, BRANCH: current }
@@ -60,9 +60,6 @@ lists:
     - { BOARD: orangepi5-plus, BRANCH: legacy }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
-    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "ha"}
-    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "ha"}
-    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "ha"}    
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
