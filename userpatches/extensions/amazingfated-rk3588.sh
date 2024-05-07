@@ -43,7 +43,7 @@ function post_install_kernel_debs__amazingfated_rk358() {
 	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
 
 	display_alert "Upgrading amazingfated's rk3588 packages" "${EXTENSION}" "info"
-	ok, do_with_retries 3 chroot_sdcard_apt_get dist-upgrade
+	do_with_retries 3 chroot_sdcard_apt_get dist-upgrade
 
 	display_alert "Installed amazingfated's rk3588 packages" "${EXTENSION}" "info"
 
