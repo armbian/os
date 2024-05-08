@@ -21,6 +21,11 @@ function pre_customize_image__500_add_ha_to_image() {
 	declare -g GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} systemd.unified_cgroup_hierarchy=false" # GRUB version
 	declare -g HA_UBOOT_EXTRAARGS="systemd.unified_cgroup_hierarchy=false"                                       # u-boot version, applied below
 
+	# Rockchip vendor kernel needs some additional arguments to work right
+	if [[ ${BRANCH} == "vendor" && ${BOARDFAMILY} == "rockchip-rk3588" ]]; then
+		declare -g HA_UBOOT_EXTRAARGS="systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor"
+	fi
+
         # We need extra space in the rootfs for the Java build machine
         display_alert "Adding extra space" "current extra: ${EXTRA_ROOTFS_MIB_SIZE}" "info"
         if [[ ${EXTRA_ROOTFS_MIB_SIZE} -le 512 ]]; then
