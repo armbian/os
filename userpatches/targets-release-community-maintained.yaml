@@ -72,6 +72,7 @@ lists:
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
     - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: armsom-sige1, BRANCH: vendor}
     - { BOARD: armsom-sige7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: armsom-sige7, BRANCH: edge }
     - { BOARD: armsom-w3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
@@ -165,6 +166,8 @@ lists:
     - { BOARD: rock-4se, BRANCH: current }
     - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
     - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: rock-5-itx, BRANCH: legacy }
+    - { BOARD: rock-5-itx, BRANCH: vendor}
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5a, BRANCH: edge }
     - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
