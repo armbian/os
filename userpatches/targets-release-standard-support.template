@@ -61,6 +61,23 @@ targets:
       - *standard-support-headless
       - *standard-support-riscv64
 
+  # Ubuntu old stable full CLI
+  full-cli-old-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *standard-support-riscv64
+
   # Ubuntu minimal
   minimal-cli-stable-ubuntu:
     enabled: yes
@@ -69,7 +86,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -86,7 +103,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
@@ -97,6 +114,24 @@ targets:
   
   # Full Ubuntu LTS XFCE without 3D
   xfce-desktop-lts-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+
+  # Full Ubuntu LTS XFCE without 3D
+  xfce-desktop-lts-ubuntu-old-stable:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -139,7 +174,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
@@ -173,7 +208,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "kde-plasma"
       BUILD_DESKTOP: "yes"
@@ -190,7 +225,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "i3-wm"
       BUILD_DESKTOP: "yes"
@@ -208,7 +243,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
