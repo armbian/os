@@ -172,7 +172,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: "aml-s9xx-box" }
+      - { BOARD: "aml-s9xx-box" , BRANCH: current }
       - *standard-support-headless
       - *virtual-boards
 
@@ -188,7 +188,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: "aml-s9xx-box" }
+      - { BOARD: "aml-s9xx-box", BRANCH: current }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
