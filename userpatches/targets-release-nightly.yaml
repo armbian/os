@@ -27,8 +27,6 @@ lists:
     - { BOARD: helios4, BRANCH: edge }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: edge }
-    - { BOARD: nanopiduo, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: edge }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: edge }
     - { BOARD: rock-s0, BRANCH: current }
@@ -46,8 +44,6 @@ lists:
     # auto generated section
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
-    - { BOARD: radxa-zero3, BRANCH: legacy }
-    - { BOARD: radxa-zero3, BRANCH: vendor}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -114,8 +110,18 @@ lists:
     - { BOARD: qemu-uefi-x86, BRANCH: edge }
     - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: edge }
+    - { BOARD: radxa-zero3, BRANCH: legacy }
+    - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: renegade, BRANCH: edge }
+    - { BOARD: rock-5-itx, BRANCH: legacy }
+    - { BOARD: rock-5-itx, BRANCH: vendor}
+    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: rock-5a, BRANCH: edge }
+    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: rock-5b, BRANCH: edge }
+    - { BOARD: rock-5c, BRANCH: vendor}
+    - { BOARD: rock-5c, BRANCH: edge }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: edge }
     - { BOARD: rpi4b, BRANCH: current }

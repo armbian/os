@@ -27,7 +27,6 @@ lists:
     # auto generated section
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -75,7 +74,17 @@ lists:
     - { BOARD: pinebook-pro, BRANCH: current }
     - { BOARD: qemu-uefi-x86, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current }
+    - { BOARD: radxa-zero3, BRANCH: legacy }
+    - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rock-5-itx, BRANCH: legacy }
+    - { BOARD: rock-5-itx, BRANCH: vendor}
+    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: rock-5a, BRANCH: edge }
+    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: rock-5b, BRANCH: edge }
+    - { BOARD: rock-5c, BRANCH: vendor}
+    - { BOARD: rock-5c, BRANCH: edge }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }

@@ -51,6 +51,7 @@ lists:
     - { BOARD: nanopi-r2s, BRANCH: current }
     - { BOARD: nanopi-r4se, BRANCH: current }
     - { BOARD: nanopiair, BRANCH: current }
+    - { BOARD: nanopiduo, BRANCH: current }
     - { BOARD: nanopiduo2, BRANCH: current }
     - { BOARD: nanopineo, BRANCH: current }
     - { BOARD: nanopineo2, BRANCH: current }
@@ -166,14 +167,6 @@ lists:
     - { BOARD: rock-4se, BRANCH: current }
     - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
     - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: rock-5-itx, BRANCH: legacy }
-    - { BOARD: rock-5-itx, BRANCH: vendor}
-    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: rock-5a, BRANCH: edge }
-    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rock-5c, BRANCH: vendor}
-    - { BOARD: rock-5c, BRANCH: edge }
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current }
     - { BOARD: rockpi-4b, BRANCH: current }
@@ -209,10 +202,10 @@ lists:
     - { BOARD: cubieboard2, BRANCH: current }
     - { BOARD: cubieboard4, BRANCH: current }
     - { BOARD: cubietruck, BRANCH: current }
-    - { BOARD: cubietruckplus, BRANCH: current }
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: lime, BRANCH: current }
     - { BOARD: lime2, BRANCH: current }
+    - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: olimex-a20-olinuxino-micro, BRANCH: current }
     - { BOARD: orangepi2, BRANCH: current }
     - { BOARD: orangepilite, BRANCH: current }
