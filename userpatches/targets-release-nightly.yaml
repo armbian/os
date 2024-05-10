@@ -293,7 +293,7 @@ targets:
       # Attention, no list reference here, just a specific board.
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: sm8250 }
-      - { BOARD: wdk2023.csc, BRANCH: wdk2023 }
+      - { BOARD: wdk2023, BRANCH: wdk2023 }
 
   # automated section
   automated-section:
