@@ -41,10 +41,11 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - { BOARD: "aml-s9xx-box" }
       - *standard-support-headless
       - *standard-support-riscv64
       - *staging-headless
@@ -63,6 +64,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - { BOARD: "aml-s9xx-box" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
@@ -80,7 +82,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
@@ -146,11 +148,15 @@ targets:
       # Attention, no list reference here, just specific boards.
       - { BOARD: uefi-x86, BRANCH: current }
       - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
-      - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-      - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
-      - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588"}
-      - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "amazingfated-rk3588" }
+      - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+      - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+      - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+      - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+      - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
 
   # debian trixie gnome desktop without 3d
   gnome-desktop-latest-debian:
@@ -170,6 +176,7 @@ targets:
       # Attention, no list reference here, just a specific board.
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: sm8250 }
+      - { BOARD: wdk2023.csc, BRANCH: wdk2023 }
 
   # automated section
   automated-section:
