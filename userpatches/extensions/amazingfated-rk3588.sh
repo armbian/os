@@ -34,10 +34,24 @@ function post_install_kernel_debs__amazingfated_rk358() {
 	do_with_retries 3 chroot_sdcard add-apt-repository ppa:liujianfeng1994/panfork-mesa --yes --no-update
 	do_with_retries 3 chroot_sdcard add-apt-repository ppa:liujianfeng1994/rockchip-multimedia --yes --no-update
 
+	display_alert "Pinning amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
+
+	cat > "${SDCARD}"/etc/apt/preferences.d/amazingfated-rk3588-panfork-pin <<EOF
+Package: *
+Pin: release o=LP-PPA-liujianfeng1994-panfork-mesa
+Pin-Priority: 1001
+EOF
+
+	cat > "${SDCARD}"/etc/apt/preferences.d/amazingfated-rk3588-rockchip-multimedia-pin <<EOF
+Package: *
+Pin: release o=LP-PPA-liujianfeng1994-rockchip-multimedia
+Pin-Priority: 1001
+EOF
+
 	display_alert "Updating sources list, after amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
-	declare -a pkgs=(mali-g610-firmware chromium-browser libwidevinecdm rockchip-multimedia-config)
+	declare -a pkgs=(mali-g610-firmware chromium-browser gstreamer1.0-rockchip1 libv4l-rkmpp libwidevinecdm rockchip-multimedia-config)
 
 	display_alert "Installing amazingfated's rk3588 packages" "${EXTENSION} :: ${pkgs[*]}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
