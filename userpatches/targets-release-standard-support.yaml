@@ -65,9 +65,9 @@ lists:
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: orangepi5-plus, BRANCH: edge }
+    - { BOARD: orangepi5-plus, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: orangepi5, BRANCH: edge }
+    - { BOARD: orangepi5, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: pine64, BRANCH: current }
