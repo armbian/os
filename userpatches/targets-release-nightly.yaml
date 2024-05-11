@@ -71,27 +71,27 @@ lists:
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: edge }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,mesa-oibaf" }
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1, BRANCH: edge }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
     - { BOARD: khadas-vim2, BRANCH: edge }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim3, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim3l, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: khadas-vim3, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: khadas-vim3l, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lafrite, BRANCH: edge }
     - { BOARD: lepotato, BRANCH: current }
     - { BOARD: lepotato, BRANCH: edge }
-    - { BOARD: odroidc2, BRANCH: current }
-    - { BOARD: odroidc2, BRANCH: edge }
-    - { BOARD: odroidm1, BRANCH: current }
-    - { BOARD: odroidm1, BRANCH: edge }
-    - { BOARD: odroidn2, BRANCH: current }
-    - { BOARD: odroidn2, BRANCH: edge }
+    - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: odroidc2, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: odroidm1, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
+    - { BOARD: odroidn2, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
@@ -116,13 +116,13 @@ lists:
     - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: renegade, BRANCH: edge }
-    - { BOARD: rock-5-itx, BRANCH: legacy }
-    - { BOARD: rock-5-itx, BRANCH: vendor}
+    - { BOARD: rock-5-itx, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+    - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5a, BRANCH: edge }
     - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5b, BRANCH: edge }
-    - { BOARD: rock-5c, BRANCH: vendor}
+    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5c, BRANCH: edge }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: edge }
