@@ -51,7 +51,6 @@ lists:
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
     - { BOARD: avaota-a1, BRANCH: legacy }
-    - { BOARD: ayn-odin2, BRANCH: sm8550}
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapicm4io, BRANCH: edge }
     - { BOARD: bananapim2pro, BRANCH: current }
@@ -302,6 +301,7 @@ targets:
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: sm8250 }
       - { BOARD: wdk2023, BRANCH: wdk2023 }
+      - { BOARD: ayn-odin2, BRANCH: sm8550 }
 
   # automated section
   automated-section:
