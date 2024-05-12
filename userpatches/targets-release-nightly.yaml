@@ -24,20 +24,13 @@ lists:
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: helios4, BRANCH: current }
-    - { BOARD: helios4, BRANCH: edge }
     - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: nanopi-r4s, BRANCH: edge }
     - { BOARD: orangepizeroplus, BRANCH: current }
-    - { BOARD: orangepizeroplus, BRANCH: edge }
     - { BOARD: rock-s0, BRANCH: current }
-    - { BOARD: rock-s0, BRANCH: edge }
     - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: rockpi-e, BRANCH: edge }
     - { BOARD: rockpi-s, BRANCH: current }
-    - { BOARD: rockpi-s, BRANCH: edge }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
-    - { BOARD: sk-am64b, BRANCH: edge }
     # end of auto generated section
 
   staging-fast-hdmi: &staging-fast-hdmi
@@ -52,69 +45,43 @@ lists:
     # auto generated section
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current }
-    - { BOARD: bananapicm4io, BRANCH: edge }
     - { BOARD: bananapim2pro, BRANCH: current }
-    - { BOARD: bananapim2pro, BRANCH: edge }
     - { BOARD: bananapim2s, BRANCH: current }
-    - { BOARD: bananapim2s, BRANCH: edge }
     - { BOARD: bananapim4zero, BRANCH: current }
-    - { BOARD: bananapim4zero, BRANCH: edge }
     - { BOARD: bananapim5, BRANCH: current }
-    - { BOARD: bananapim5, BRANCH: edge }
     - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: bananapim7, BRANCH: edge }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
-    - { BOARD: bigtreetech-cb1, BRANCH: edge }
     - { BOARD: jethubj100, BRANCH: current }
-    - { BOARD: jethubj100, BRANCH: edge }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: jethubj80, BRANCH: edge }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: khadas-vim1, BRANCH: current }
-    - { BOARD: khadas-vim1, BRANCH: edge }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim2, BRANCH: current }
-    - { BOARD: khadas-vim2, BRANCH: edge }
     - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
-    - { BOARD: khadas-vim3, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
-    - { BOARD: khadas-vim3l, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current }
-    - { BOARD: lafrite, BRANCH: edge }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: lepotato, BRANCH: edge }
     - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
-    - { BOARD: odroidc2, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
-    - { BOARD: odroidm1, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
-    - { BOARD: odroidn2, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
-    - { BOARD: olimex-teres-a64, BRANCH: edge }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi4-lts, BRANCH: edge }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: orangepi5-plus, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: orangepi5, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-oibaf" }
     - { BOARD: orangepizero2, BRANCH: current }
-    - { BOARD: orangepizero2, BRANCH: edge }
     - { BOARD: phytiumpi, BRANCH: legacy }
-    - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
-    - { BOARD: pine64, BRANCH: edge }
     - { BOARD: pinebook-pro, BRANCH: current }
-    - { BOARD: pinebook-pro, BRANCH: edge }
     - { BOARD: qemu-uefi-x86, BRANCH: current }
-    - { BOARD: qemu-uefi-x86, BRANCH: edge }
     - { BOARD: radxa-zero, BRANCH: current }
-    - { BOARD: radxa-zero, BRANCH: edge }
     - { BOARD: radxa-zero3, BRANCH: legacy }
     - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: renegade, BRANCH: current }
-    - { BOARD: renegade, BRANCH: edge }
     - { BOARD: rock-5-itx, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
@@ -124,35 +91,22 @@ lists:
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
     - { BOARD: rock-5c, BRANCH: edge }
     - { BOARD: rockpro64, BRANCH: current }
-    - { BOARD: rockpro64, BRANCH: edge }
     - { BOARD: rpi4b, BRANCH: current }
-    - { BOARD: rpi4b, BRANCH: edge }
     - { BOARD: sk-am68, BRANCH: current }
-    - { BOARD: sk-am68, BRANCH: edge }
     - { BOARD: sk-tda4vm, BRANCH: current }
-    - { BOARD: sk-tda4vm, BRANCH: edge }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: tritium-h5, BRANCH: edge }
     - { BOARD: uefi-arm64, BRANCH: current }
-    - { BOARD: uefi-arm64, BRANCH: edge }
     - { BOARD: uefi-x86, BRANCH: current }
-    - { BOARD: uefi-x86, BRANCH: edge }
     - { BOARD: xiaomi-umi, BRANCH: current }
-    - { BOARD: xiaomi-umi, BRANCH: edge }
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
     - { BOARD: odroidxu4, BRANCH: current }
-    - { BOARD: odroidxu4, BRANCH: edge }
     - { BOARD: onecloud, BRANCH: current }
-    - { BOARD: onecloud, BRANCH: edge }
     - { BOARD: orangepione, BRANCH: current }
-    - { BOARD: orangepione, BRANCH: edge }
     - { BOARD: tinkerboard, BRANCH: current }
-    - { BOARD: tinkerboard, BRANCH: edge }
     - { BOARD: tritium-h3, BRANCH: current }
-    - { BOARD: tritium-h3, BRANCH: edge }
     # end of auto generated section
 
   # automated lists stop
@@ -220,23 +174,6 @@ targets:
       - *standard-support-slow-hdmi
       - *staging-fast-hdmi
 
-  # ubuntu stable with kde neon and no office (images will go over 2Gb GH file limit)
-  kde-neon-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "kde-neon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers"
-    items:
-      - *standard-support-fast-hdmi
-
   # ubuntu noble gnome desktop
   gnome-desktop-stable-ubuntu:
     enabled: yes
@@ -252,7 +189,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      # Attention, no list reference here, just a specific board.
+      - *standard-support-fast-hdmi
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: sm8250 }
       - { BOARD: wdk2023, BRANCH: wdk2023 }
