@@ -193,6 +193,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *community-maintained-fast-hdmi
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
 

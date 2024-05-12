@@ -90,45 +90,10 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "none"
     items:
       - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
       - *standard-support-riscv64
       - *staging-slow-hdmi
       - *staging-fast-hdmi
       - *staging-riscv64
-
-  # experimental https://github.com/armbian/build/pull/6459
-  vendor-boogie-panthor:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      BRANCH: "vendor-boogie-panthor"
-      BUILD_MINIMAL: "no"
-      RELEASE: "jammy"
-      DESKTOP_ENVIRONMENT: "kde-neon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers" # space or comma separated
-    items:
-      - { BOARD: "hinlink-h88k" }
-      - { BOARD: "indiedroid-nova" }
-      - { BOARD: "mekotronics-r58-minipc" }
-      - { BOARD: "mekotronics-r58x" }
-      - { BOARD: "mekotronics-r58x-4g" }
-      - { BOARD: "mekotronics-r58x-pro" }
-      - { BOARD: "mixtile-blade3" }
-      - { BOARD: "nanopct6" }
-      - { BOARD: "orangepi5" }
-      - { BOARD: "orangepi5-plus" }
-      - { BOARD: "rock-5a" }
-      - { BOARD: "rock-5b" }
-      - { BOARD: "armsom-sige7" }
-      - { BOARD: "nanopc-cm3588-nas" }
-      - { BOARD: "orangepi3b" }
-      - { BOARD: "radxa-zero3" }
-      - { BOARD: "rock-3a" }
 
   # ubuntu stable with kde neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
@@ -145,27 +110,17 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers"
     items:
-      # Attention, no list reference here, just specific boards.
-      - { BOARD: uefi-x86, BRANCH: current }
-      - { BOARD: rpi4b, BRANCH: current }
-      - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-      - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-      - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-      - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-      - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-      - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+      - *standard-support-fast-hdmi
 
-  # debian trixie gnome desktop without 3d
-  gnome-desktop-latest-debian:
+  # ubuntu noble gnome desktop
+  gnome-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: trixie
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
