@@ -14,7 +14,7 @@ function extension_prepare_config__amazingfated_rk3588() {
 	fi
 
         [[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
-        [[ "${RELEASE}" != "jammy" ]] && return 0
+        [[ "${RELEASE}" != "jammy" && "${RELEASE}" != "noble" ]] && return 0
 	[[ "${BRANCH}" != "legacy" && "${BRANCH}" != "vendor" ]] && return 0
         [[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
 
@@ -26,7 +26,7 @@ function extension_prepare_config__amazingfated_rk3588() {
 
 function post_install_kernel_debs__amazingfated_rk358() {
 
-        [[ "${RELEASE}" != "jammy" ]] && return 0
+        [[ "${RELEASE}" != "jammy" && "${RELEASE}" != "noble" ]] && return 0
 	[[ "${BRANCH}" != "legacy" && "${BRANCH}" != "vendor" ]] && return 0
         [[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
 
