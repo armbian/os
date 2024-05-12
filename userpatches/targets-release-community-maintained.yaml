@@ -270,6 +270,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
     items:
+      - *community-maintained-fast-hdmi
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # debian gnome
