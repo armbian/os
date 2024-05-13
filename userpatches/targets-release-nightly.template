@@ -132,6 +132,26 @@ targets:
       - { BOARD: wdk2023, BRANCH: wdk2023 }
       - { BOARD: ayn-odin2, BRANCH: sm8550 }
 
+  # ubuntu stable with KDE neon and no office (images will go over 2Gb GH file limit)
+  kde-neon-desktop-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "kde-neon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,email,programming,remote_desktop"
+    items:
+      - *standard-support-fast-hdmi
+      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
+      - { BOARD: wdk2023, BRANCH: wdk2023 }
+
   # automated section
   automated-section:
     enabled: no
