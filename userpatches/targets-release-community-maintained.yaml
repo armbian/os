@@ -125,7 +125,7 @@ lists:
     - { BOARD: nanopi-r5c, BRANCH: current }
     - { BOARD: nanopi-r5s, BRANCH: current }
     - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: nanopi-r6s, BRANCH: edge }
+    - { BOARD: nanopi-r6s, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-oibaf" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
