@@ -224,7 +224,7 @@ targets:
       DESKTOP_ENVIRONMENT: "kde-neon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,email,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,email"
     items:
       - *standard-support-fast-hdmi
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
