@@ -48,6 +48,24 @@ function post_install_kernel_debs__amazingfated_rk358() {
 	Pin-Priority: 1001
 	EOF
 
+        # Ubuntu oracular workaround
+        local url_to_check='https://ppa.launchpadcontent.net/liujianfeng1994/panfork-mesa/ubuntu/dists/${RELEASE}/Release'
+        if curl -o/dev/null -sfIL "$url_to_check" 2>&1; then
+                :
+        else
+                display_alert "Converting to generic sources list due to missing release file" "${EXTENSION}" "info"
+                sed -i "s/${RELEASE}/jammy/g" "${SDCARD}"/etc/apt/sources.list.d/liujianfeng1994-ubuntu-panfork-mesa-"${RELEASE}".*
+        fi
+
+
+        local url_to_check='https://ppa.launchpadcontent.net/liujianfeng1994/rockchip-multimedia/ubuntu/dists/${RELEASE}/Release'
+        if curl -o/dev/null -sfIL "$url_to_check" 2>&1; then
+                :
+        else
+                display_alert "Converting to generic sources list due to missing release file" "${EXTENSION}" "info"
+                sed -i "s/${RELEASE}/jammy/g" "${SDCARD}"/etc/apt/sources.list.d/liujianfeng1994-ubuntu-rockchip-multimedia-"${RELEASE}".*
+        fi
+
 	display_alert "Updating sources list, after amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
