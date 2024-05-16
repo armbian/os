@@ -174,6 +174,7 @@ lists:
     - { BOARD: rockpi-n10, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
+    - { BOARD: station-m2, BRANCH: vendor}
     - { BOARD: station-m2, BRANCH: current }
     - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
     - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
