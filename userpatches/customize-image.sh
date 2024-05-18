@@ -24,7 +24,7 @@ echo "Customizing $BOARD $BOARD_VENDOR"
 # Implement them to build script
 
 
-# remove those sources as we ship them
+echo "Remove MS and GH sources as we ship them via our repo"
 [[ -f /etc/apt/sources.list.d/vscode.list ]] && rm -f /etc/apt/sources.list.d/vscode.list
 [[ -f /etc/apt/sources.list.d/githubcli.list ]] && rm -f /etc/apt/sources.list.d/githubcli.list
 
