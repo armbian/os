@@ -112,7 +112,7 @@ targets:
       - *standard-support-headless
       - *standard-support-riscv64
   
-  # Full Ubuntu LTS XFCE without 3D
+  # Full Ubuntu LTS XFCE
   xfce-desktop-lts-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -130,7 +130,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
 
-  # Full Ubuntu LTS XFCE without 3D
+  # Full Ubuntu old LTS XFCE
   xfce-desktop-lts-ubuntu-old-stable:
     enabled: yes
     configs: [ armbian-images ]
@@ -148,7 +148,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
 
-  # Full Debian stable XFCE without 3D
+  # Full Debian stable XFCE
   xfce-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -166,7 +166,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
 
-  # Full Ubuntu Gnome with 3d
+  # Full Ubuntu Gnome
   gnome-3d-desktop-lts-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -179,11 +179,11 @@ targets:
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
 
-  # Full Debian Gnome with 3d
+  # Full Debian Gnome
   gnome-3d-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -196,11 +196,11 @@ targets:
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
 
-  # Full Ubuntu kde plasma with 3d
+  # Full Ubuntu old LTS KDE plasma
   kde-plasma-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -208,16 +208,16 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: jammy
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "kde-plasma"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
 
-  # Full Ubuntu i3 without 3d
+  # Full Ubuntu old LTS i3-wm
   minimal-i3-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -225,7 +225,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: jammy
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "i3-wm"
       BUILD_DESKTOP: "yes"
@@ -235,7 +235,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
 
-  # Full Ubuntu LTS Cinnamon with 3d
+  # Full Ubuntu LTS Cinnamon
   cinnamon-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -248,7 +248,7 @@ targets:
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
 
@@ -265,11 +265,11 @@ targets:
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
 
-  # ubuntu stable with KDE neon and no office (images will go over 2Gb GH file limit)
+  # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -282,7 +282,7 @@ targets:
       DESKTOP_ENVIRONMENT: "kde-neon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,email,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,email,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
