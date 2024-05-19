@@ -72,7 +72,7 @@ function post_install_kernel_debs__amazingfated_rk358() {
 	declare -a pkgs=(mali-g610-firmware chromium-browser gstreamer1.0-rockchip1 libv4l-rkmpp libwidevinecdm rockchip-multimedia-config)
 
 	display_alert "Installing amazingfated's rk3588 packages" "${EXTENSION} :: ${pkgs[*]}" "info"
-	do_with_retries 3 chroot_sdcard_apt_get_install "${pkgs[@]}"
+	do_with_retries 3 chroot_sdcard_apt_get_install --allow-downgrades "${pkgs[@]}"
 
 	display_alert "Upgrading amazingfated's rk3588 packages" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get dist-upgrade
