@@ -277,7 +277,7 @@ targets:
 
   # Full Ubuntu old LTS KDE plasma
   kde-plasma-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
