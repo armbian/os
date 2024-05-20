@@ -10,7 +10,6 @@ function extension_prepare_config__3d() {
 
 	[[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
 	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
-	EXTRA_IMAGE_SUFFIXES+=("-3d") # Add to the image suffix. # global array
 
 }
 
@@ -29,6 +28,8 @@ function post_install_kernel_debs__3d() {
 
 	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx)$ && "$BRANCH" =~ ^(legacy)$ && "${RELEASE}" =~ ^(jammy)$ ]]; then
 
+		EXTRA_IMAGE_SUFFIXES+=("-panfork") # Add to the image suffix. # global array
+
 		display_alert "Adding amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
 		do_with_retries 3 chroot_sdcard add-apt-repository ppa:liujianfeng1994/panfork-mesa --yes --no-update
 
@@ -40,6 +41,8 @@ function post_install_kernel_debs__3d() {
 		EOF
 
 	elif [[ "${DISTRIBUTION}" == "Ubuntu" ]]; then
+
+		EXTRA_IMAGE_SUFFIXES+=("-oibaf") # Add to the image suffix. # global array
 
 		display_alert "Adding oibaf PPAs" "${EXTENSION}" "info"
 		do_with_retries 3 chroot_sdcard add-apt-repository ppa:oibaf/graphics-drivers --yes --no-update
@@ -56,7 +59,7 @@ function post_install_kernel_debs__3d() {
 	# This should work on all distributions where mesa
 	[[ "${LINUXFAMILY}" == "rockchip-rk3588" && "${LINUXFAMILY}" == "rk35xx" && "$BRANCH" == vendor ]] && declare -g DEFAULT_OVERLAYS="panthor-gpu"
 
-	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx|rockchip64)$ && "${RELEASE}" =~ ^(jammy|noble)$ ]]; then
+	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx|rockchip64)$ && "${RELEASE}" =~ ^(jammy|noble)$ && "$BRANCH" =~ ^(legacy|vendor)$ ]]; then
 
 		pkgs+=("rockchip-multimedia-config" "chromium-browser" "libv4l-rkmpp" "gstreamer1.0-rockchip")
 		if [[ "${RELEASE}" == "jammy" ]]; then
