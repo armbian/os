@@ -15,7 +15,10 @@ function extension_prepare_config__3d() {
 
 function post_install_kernel_debs__3d() {
 
-	declare -a pkgs=("mesa-utils" "mesa-utils-extra" "libglx-mesa0" "libgl1-mesa-dri" "glmark2" "glmark2-wayland" "glmark2-x11" "glmark2-es2-wayland" "glmark2-es2" "glmark2-es2-x11")
+	declare -a pkgs=("mesa-utils" "mesa-utils-extra" "libglx-mesa0" "libgl1-mesa-dri" "glmark2" "glmark2-wayland" "glmark2-es2-wayland" "glmark2-es2")
+
+	# x11gl benchmark came late to ubuntu
+	[[ "${RELEASE}" != jammy ]] && pkgs+=("glmark2-x11" "glmark2-es2-x11")
 
 	# Do not install those packages on CLI images
 	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
