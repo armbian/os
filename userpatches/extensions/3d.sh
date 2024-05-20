@@ -5,9 +5,21 @@
 # Enables 3D and multimedia acceleration for Debian and Ubuntu
 #
 
-function post_install_kernel_debs__3d() {
+function extension_prepare_config__3d() {
 
-	display_alert "Enabling 3d if possible" "${EXTENSION}" "info"
+	[[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
+	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
+
+	# set suffix
+	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx)$ && "$BRANCH" =~ ^(legacy)$ && "${RELEASE}" =~ ^(jammy)$ ]]; then
+                EXTRA_IMAGE_SUFFIXES+=("-panfork") # Add to the image suffix. # global array
+        elif [[ "${DISTRIBUTION}" == "Ubuntu" ]]; then
+                EXTRA_IMAGE_SUFFIXES+=("-oibaf")
+	fi
+
+}
+
+function post_install_kernel_debs__3d() {
 
 	# Silently deny old releases which are not supported but are still in the system
 	[[ "${RELEASE}" =~ ^(bullseye|buster|focal)$ ]] && return 0
