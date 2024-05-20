@@ -40,7 +40,6 @@ lists:
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
-    - { BOARD: espressobin, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: macchiatobin-doubleshot, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
@@ -74,17 +73,17 @@ lists:
     # auto generated section
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: armsom-sige1, BRANCH: vendor}
-    - { BOARD: armsom-sige7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: armsom-sige7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: armsom-sige7, BRANCH: edge }
-    - { BOARD: armsom-w3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: armsom-w3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: armsom-w3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: armsom-w3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
     - { BOARD: coolpi-cm5, BRANCH: edge }
     - { BOARD: firefly-rk3399, BRANCH: current }
-    - { BOARD: fxblox-rk1, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: fxblox-rk1, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: fxblox-rk1, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: fxblox-rk1, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: h96-tvbox-3566, BRANCH: current }
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
@@ -94,13 +93,13 @@ lists:
     - { BOARD: hinlink-h66k, BRANCH: vendor}
     - { BOARD: hinlink-h68k, BRANCH: legacy }
     - { BOARD: hinlink-h68k, BRANCH: vendor}
-    - { BOARD: hinlink-h88k, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: hinlink-h88k, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: hinlink-h88k, BRANCH: edge }
     - { BOARD: hinlink-hnas, BRANCH: legacy }
     - { BOARD: hinlink-hnas, BRANCH: vendor}
     - { BOARD: hinlink-ht2, BRANCH: legacy }
     - { BOARD: hinlink-ht2, BRANCH: vendor}
-    - { BOARD: indiedroid-nova, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: indiedroid-nova, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: inovato-quadra, BRANCH: current }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: jp-tvbox-3566, BRANCH: current }
@@ -108,25 +107,25 @@ lists:
     - { BOARD: lime-a64, BRANCH: current }
     - { BOARD: mangopi-m28k, BRANCH: legacy }
     - { BOARD: mangopi-m28k, BRANCH: vendor}
-    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58-minipc, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x-4g, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x-pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: mekotronics-r58x, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: mekotronics-r58-minipc, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: mekotronics-r58-minipc, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
+    - { BOARD: mekotronics-r58x-4g, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: mekotronics-r58x-4g, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
+    - { BOARD: mekotronics-r58x-pro, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: mekotronics-r58x-pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
+    - { BOARD: mekotronics-r58x, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
+    - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: mixtile-blade3, BRANCH: edge }
     - { BOARD: nanopc-cm3588-nas, BRANCH: vendor}
     - { BOARD: nanopc-cm3588-nas, BRANCH: edge }
     - { BOARD: nanopct4, BRANCH: current }
-    - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: nanopct6, BRANCH: edge }
     - { BOARD: nanopi-r5c, BRANCH: current }
     - { BOARD: nanopi-r5s, BRANCH: current }
-    - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
-    - { BOARD: nanopi-r6s, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-oibaf" }
+    - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
+    - { BOARD: nanopi-r6s, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
@@ -135,7 +134,7 @@ lists:
     - { BOARD: nanopineo4, BRANCH: current }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
-    - { BOARD: odroidn2l, BRANCH: current, ENABLE_EXTENSIONS: "mesa-oibaf" }
+    - { BOARD: odroidn2l, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
@@ -164,7 +163,7 @@ lists:
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
-    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
+    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
     - { BOARD: rock-5-cmio, BRANCH: vendor}
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current }
@@ -177,8 +176,8 @@ lists:
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: vendor}
     - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588" }
-    - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,amazingfated-rk3588"}
+    - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
+    - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
     - { BOARD: tanix-tx6, BRANCH: current }
