@@ -3,18 +3,11 @@
 # Armbian build framework extension
 #
 # Enables 3D and multimedia acceleration for Debian and Ubuntu
-# - 
 #
 
-function extension_prepare_config__3d() {
-
-	[[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
-	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
-	display_alert "Enabling" "${EXTENSION}" "info"
-
-}
-
 function post_install_kernel_debs__3d() {
+
+	display_alert "Enabling 3d if possible" "${EXTENSION}" "info"
 
 	# Silently deny old releases which are not supported but are still in the system
 	[[ "${RELEASE}" =~ ^(bullseye|buster|focal)$ ]] && return 0
