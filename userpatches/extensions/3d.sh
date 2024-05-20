@@ -9,6 +9,7 @@
 function extension_prepare_config__3d() {
 
 	[[ "${BUILDING_IMAGE}" != "yes" ]] && return 0
+	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
 	EXTRA_IMAGE_SUFFIXES+=("-3d") # Add to the image suffix. # global array
 
 }
