@@ -59,7 +59,7 @@ function post_install_kernel_debs__3d() {
 	# This should work on all distributions where mesa
 	[[ "${LINUXFAMILY}" == "rockchip-rk3588" && "${LINUXFAMILY}" == "rk35xx" && "$BRANCH" == vendor ]] && declare -g DEFAULT_OVERLAYS="panthor-gpu"
 
-	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx|rockchip64)$ && "${RELEASE}" =~ ^(jammy|noble)$ && "$BRANCH" =~ ^(legacy|vendor)$ ]]; then
+	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx)$ && "${RELEASE}" =~ ^(jammy|noble)$ && "${BRANCH}" =~ ^(legacy|vendor)$ ]]; then
 
 		pkgs+=("rockchip-multimedia-config" "chromium-browser" "libv4l-rkmpp" "gstreamer1.0-rockchip")
 		if [[ "${RELEASE}" == "jammy" ]]; then
