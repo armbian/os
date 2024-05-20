@@ -27,6 +27,7 @@ echo "Customizing $BOARD $BOARD_VENDOR"
 echo "Remove MS and GH sources as we ship them via our repo"
 [[ -f /etc/apt/sources.list.d/vscode.list ]] && rm -f /etc/apt/sources.list.d/vscode.list
 [[ -f /etc/apt/sources.list.d/githubcli.list ]] && rm -f /etc/apt/sources.list.d/githubcli.list
+stat -t -- /etc/apt/sources.list.d/oibaf-ubuntu-graphics-drivers-*.* >/dev/null 2>&1 && rm -f /etc/apt/sources.list.d/oibaf-ubuntu-graphics-drivers-*.*
 
 # release based
 	case $RELEASE in
