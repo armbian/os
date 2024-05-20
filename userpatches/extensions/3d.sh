@@ -89,12 +89,4 @@ function post_install_kernel_debs__3d() {
 	display_alert "Upgrading Mesa packages" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get dist-upgrade
 
-	display_alert "Installed Mesa packages" "${EXTENSION}" "info"
-
-}
-
-function post_install_kernel_debs__multimedia(){
-
-	display_alert "Installing multimedia" "${EXTENSION}" "info"
-
 }
