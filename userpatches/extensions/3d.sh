@@ -15,16 +15,16 @@ function extension_prepare_config__3d() {
 
 function post_install_kernel_debs__3d() {
 
+	# Silently deny old releases which are not supported but are still in the system
+	[[ "${RELEASE}" =~ ^(bullseye|buster|focal)$ ]] && return 0
+
+	# Do not install those packages on CLI and minimal images
+	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
+
 	declare -a pkgs=("mesa-utils" "mesa-utils-extra" "libglx-mesa0" "libgl1-mesa-dri" "glmark2" "glmark2-wayland" "glmark2-es2-wayland" "glmark2-es2")
 
 	# x11gl benchmark came late to ubuntu
 	[[ "${RELEASE}" != jammy ]] && pkgs+=("glmark2-x11" "glmark2-es2-x11")
-
-	# Do not install those packages on CLI images
-	[[ "${BUILD_DESKTOP}" != "yes" ]] && return 0
-
-	# Old releases whcih are not supported but are still in the system
-	[[ "${RELEASE}" =~ ^(bullseye|buster|focal)$ ]] && return 0
 
 	if [[ "${LINUXFAMILY}" =~ ^(rockchip-rk3588|rk35xx)$ && "$BRANCH" =~ ^(legacy)$ && "${RELEASE}" =~ ^(jammy)$ ]]; then
 
