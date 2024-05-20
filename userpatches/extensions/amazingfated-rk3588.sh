@@ -57,19 +57,19 @@ function post_install_kernel_debs__amazingfated_rk358() {
                 sed -i "s/${RELEASE}/jammy/g" "${SDCARD}"/etc/apt/sources.list.d/liujianfeng1994-ubuntu-panfork-mesa-"${RELEASE}".*
         fi
 
-
-        local url_to_check='https://ppa.launchpadcontent.net/liujianfeng1994/rockchip-multimedia/ubuntu/dists/${RELEASE}/Release'
-        if curl -o/dev/null -sfIL "$url_to_check" 2>&1; then
-                :
-        else
-                display_alert "Converting to generic sources list due to missing release file" "${EXTENSION}" "info"
-                sed -i "s/${RELEASE}/jammy/g" "${SDCARD}"/etc/apt/sources.list.d/liujianfeng1994-ubuntu-rockchip-multimedia-"${RELEASE}".*
+        if [[ ${RELEASE} == "oracular" ]]; then
+            display_alert "Converting to generic sources list due to missing release file" "${EXTENSION}" "info"
+            sed -i "s/oracular/noble/g" "${SDCARD}"/etc/apt/sources.list.d/liujianfeng1994-ubuntu-rockchip-multimedia-"${RELEASE}".*
         fi
 
 	display_alert "Updating sources list, after amazingfated's rk3588 PPAs" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
 
-	declare -a pkgs=(mali-g610-firmware chromium-browser gstreamer1.0-rockchip1 libv4l-rkmpp libwidevinecdm rockchip-multimedia-config)
+	declare -a pkgs=(mali-g610-firmware chromium-browser gstreamer1.0-rockchip1 libv4l-rkmpp rockchip-multimedia-config)
+
+	if [[ ${RELEASE} == "jammy" ]]; then
+           pkgs+=('libwidevinecdm')
+        fi
 
 	display_alert "Installing amazingfated's rk3588 packages" "${EXTENSION} :: ${pkgs[*]}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_install --allow-downgrades "${pkgs[@]}"
