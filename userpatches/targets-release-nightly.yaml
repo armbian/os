@@ -37,66 +37,66 @@ lists:
     # auto generated section
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
-    - { BOARD: orangepi5pro, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
-    - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
+    - { BOARD: orangepi5pro, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
     - { BOARD: avaota-a1, BRANCH: legacy }
-    - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: bananapim7, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: bananapim7, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,3d"}
-    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,3d" }
-    - { BOARD: khadas-vim1, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
+    - { BOARD: khadas-vim1, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim2, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,3d" }
-    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,3d" }
+    - { BOARD: khadas-vim2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
+    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
-    - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: orangepi5-plus, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: orangepi5, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: orangepi5-plus, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: orangepi5, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: phytiumpi, BRANCH: legacy }
-    - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: qemu-uefi-x86, BRANCH: current }
-    - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-zero3, BRANCH: legacy }
     - { BOARD: radxa-zero3, BRANCH: vendor}
-    - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: rock-5-itx, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d" }
-    - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: rock-5a, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: rock-5b, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,3d"}
-    - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5-itx, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: rock-5a, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: rock-5b, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
-    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "3d" }
+    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: xiaomi-umi, BRANCH: current }
     # end of auto generated section
 
