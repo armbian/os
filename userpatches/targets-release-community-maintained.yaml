@@ -72,6 +72,7 @@ lists:
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
     - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: armsom-sige1, BRANCH: vendor}
     - { BOARD: armsom-sige7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: armsom-sige7, BRANCH: edge }
