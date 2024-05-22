@@ -123,16 +123,16 @@ lists:
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopi-r5c, BRANCH: current }
-    - { BOARD: nanopi-r5s, BRANCH: current }
+    - { BOARD: nanopi-r5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: nanopi-r6s, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
-    - { BOARD: nanopim4, BRANCH: current }
-    - { BOARD: nanopim4v2, BRANCH: current }
-    - { BOARD: nanopineo4, BRANCH: current }
+    - { BOARD: nanopim4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopineo4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
