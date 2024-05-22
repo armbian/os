@@ -158,7 +158,7 @@ targets:
 
   # ubuntu unstable without apps
   xfce-barebone-desktop-unstable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
