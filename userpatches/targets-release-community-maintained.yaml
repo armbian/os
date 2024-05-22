@@ -139,7 +139,7 @@ lists:
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
-    - { BOARD: orangepi4, BRANCH: current }
+    - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current }
@@ -150,8 +150,8 @@ lists:
     - { BOARD: panther-x2, BRANCH: current }
     - { BOARD: pine64so, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
-    - { BOARD: pineh64-b, BRANCH: current }
-    - { BOARD: pineh64, BRANCH: current }
+    - { BOARD: pineh64-b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: pineh64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
     - { BOARD: radxa-e25, BRANCH: vendor}
@@ -167,12 +167,12 @@ lists:
     - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5-cmio, BRANCH: vendor}
     - { BOARD: rock64, BRANCH: current }
-    - { BOARD: rockpi-4a, BRANCH: current }
-    - { BOARD: rockpi-4b, BRANCH: current }
-    - { BOARD: rockpi-4bplus, BRANCH: edge }
-    - { BOARD: rockpi-4c, BRANCH: current }
-    - { BOARD: rockpi-4cplus, BRANCH: current }
-    - { BOARD: rockpi-n10, BRANCH: current }
+    - { BOARD: rockpi-4a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4bplus, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4c, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4cplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-n10, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: vendor}
