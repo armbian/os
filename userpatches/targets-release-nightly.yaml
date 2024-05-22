@@ -37,8 +37,8 @@ lists:
     # auto generated section
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
-    - { BOARD: orangepi5pro, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: orangepi5pro, BRANCH: legacy }
+    - { BOARD: orangepi5pro, BRANCH: vendor}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi

@@ -164,8 +164,8 @@ lists:
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
-    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5-cmio, BRANCH: vendor}
+    - { BOARD: rock-5-cmio, BRANCH: legacy }
+    - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-4b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -177,7 +177,7 @@ lists:
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: vendor}
     - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: station-m3, BRANCH: legacy }
     - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
