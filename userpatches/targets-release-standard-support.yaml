@@ -210,7 +210,7 @@ targets:
 
   # Full Ubuntu old LTS KDE plasma
   kde-plasma-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -247,7 +247,7 @@ targets:
   # Without office as otherwise images will go over 2Gb GH file limit!
   #
   kde-neon-desktop-stable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
