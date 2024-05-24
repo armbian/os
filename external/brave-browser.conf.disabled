@@ -1,9 +1,0 @@
-URL="https://brave-browser-apt-release.s3.brave.com stable main"
-KEY="main"
-RELEASE=all
-TARGET=desktop
-METHOD=aptly
-INSTALL="brave-browser brave-keyring"
-GLOB="Name (% brave-browser), \$Version (>= 1.63.165) | Name (% brave-keyring), \$Version (>= 1.16)"
-ARCH=arm64:amd64
-REPOSITORY=BS
