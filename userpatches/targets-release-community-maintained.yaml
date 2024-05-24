@@ -72,6 +72,7 @@ lists:
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
     - { BOARD: aml-s9xx-box, BRANCH: current }
+    - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: armsom-sige1, BRANCH: vendor}
     - { BOARD: armsom-sige7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: armsom-sige7, BRANCH: edge }
@@ -122,23 +123,23 @@ lists:
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: nanopct6, BRANCH: edge }
-    - { BOARD: nanopi-r5c, BRANCH: current }
-    - { BOARD: nanopi-r5s, BRANCH: current }
+    - { BOARD: nanopi-r5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: nanopi-r6s, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
-    - { BOARD: nanopim4, BRANCH: current }
-    - { BOARD: nanopim4v2, BRANCH: current }
-    - { BOARD: nanopineo4, BRANCH: current }
+    - { BOARD: nanopim4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopineo4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
-    - { BOARD: orangepi4, BRANCH: current }
+    - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current }
@@ -149,8 +150,8 @@ lists:
     - { BOARD: panther-x2, BRANCH: current }
     - { BOARD: pine64so, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
-    - { BOARD: pineh64-b, BRANCH: current }
-    - { BOARD: pineh64, BRANCH: current }
+    - { BOARD: pineh64-b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: pineh64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
     - { BOARD: radxa-e25, BRANCH: vendor}
@@ -163,20 +164,20 @@ lists:
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-3c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
-    - { BOARD: rock-5-cmio, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5-cmio, BRANCH: vendor}
+    - { BOARD: rock-5-cmio, BRANCH: legacy }
+    - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock64, BRANCH: current }
-    - { BOARD: rockpi-4a, BRANCH: current }
-    - { BOARD: rockpi-4b, BRANCH: current }
-    - { BOARD: rockpi-4bplus, BRANCH: edge }
-    - { BOARD: rockpi-4c, BRANCH: current }
-    - { BOARD: rockpi-4cplus, BRANCH: current }
-    - { BOARD: rockpi-n10, BRANCH: current }
+    - { BOARD: rockpi-4a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4bplus, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4c, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-4cplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpi-n10, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: vendor}
     - { BOARD: station-m2, BRANCH: current }
-    - { BOARD: station-m3, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: station-m3, BRANCH: legacy }
     - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: station-p1, BRANCH: current }
     - { BOARD: station-p2, BRANCH: current }
