@@ -98,7 +98,6 @@ lists:
     - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: xiaomi-umi, BRANCH: current }
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
