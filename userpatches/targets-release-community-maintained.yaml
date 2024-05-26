@@ -106,6 +106,7 @@ lists:
     - { BOARD: jp-tvbox-3566, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: lime-a64, BRANCH: current }
+    - { BOARD: lubancat2, BRANCH: edge }
     - { BOARD: mangopi-m28k, BRANCH: legacy }
     - { BOARD: mangopi-m28k, BRANCH: vendor}
     - { BOARD: mekotronics-r58-minipc, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -270,7 +271,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
     items:
-      - *community-maintained-fast-hdmi
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # debian gnome
@@ -409,7 +409,7 @@ targets:
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "3dsupport,browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
