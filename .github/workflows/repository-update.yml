@@ -102,7 +102,7 @@ jobs:
           # remove certain and custom package
           # cleaning is optional so lets apply some magic as we don't want this at every rebuild
           day=$( date +%d )
-          #if [ "$day" = "01" ] || [ "$day" = "15" ]; then
+          if [ "$day" = "01" ] || [ "$day" = "15" ]; then
               # delete older packages
               declare -A delete_packages
               DELETE_AFTER="22.08"
@@ -120,19 +120,19 @@ jobs:
                     ["zoom"]="99999"
                     ["gh"]="99999"
                     ["brave-browser"]="% *"
-                    ["zfsutils-linux"]="<= 2.2.4"
-                    ["libzfsbootenv1linux"]="<= 2.2.4"
-                    ["libzfslinux-dev"]="<= 2.2.4"
-                    ["libnvpair3linux"]="<= 2.2.4"
-                    ["libzfs4linux"]="<= 2.2.4"
-                    ["libzpool5linux"]="<= 2.2.4"
-                    ["libuutil3linux"]="<= 2.2.4"
-                    ["zfs-dkms"]="<= 2.2.4"
-                    ["zfs-zed"]="<= 2.2.4"
-                    ["zfs-test"]="<= 2.2.4"
-                    ["zfs-dracut"]="<= 2.2.4"
-                    ["zfs-initramfs"]="<= 2.2.4"
-                    ["libpam-zfs"]="<= 2.2.4"
+                    ["zfsutils-linux"]="<= 2.2.1"
+                    ["libzfsbootenv1linux"]="<= 2.2.1"
+                    ["libzfslinux-dev"]="<= 2.2.1"
+                    ["libnvpair3linux"]="<= 2.2.1"
+                    ["libzfs4linux"]="<= 2.2.1"
+                    ["libzpool5linux"]="<= 2.2.1"
+                    ["libuutil3linux"]="<= 2.2.1"
+                    ["zfs-dkms"]="<= 2.2.1"
+                    ["zfs-zed"]="<= 2.2.1"
+                    ["zfs-test"]="<= 2.2.1"
+                    ["zfs-dracut"]="<= 2.2.1"
+                    ["zfs-initramfs"]="<= 2.2.1"
+                    ["libpam-zfs"]="<= 2.2.1"
                     ["system-monitoring-center"]="<= 2.25.1"
                     ["cockpit-file-sharing"]="<= 3.3.4"
                     ["nala"]="<= 0.12.0"
@@ -232,10 +232,10 @@ jobs:
                 tools/repository/repo \
                 -i /incoming/${{ matrix.repository }} \
                 -o /outgoing/${TARGET} \
-                -r buster,bullseye,bookworm,trixie,sid,focal,kinetic,jammy,lunar,mantic,noble \
+                -r bookworm,trixie,sid,focal,kinetic,jammy,noble,oracular \
                 -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% $key*), \$Version (${delete_packages[$key]})"
               done
-          #fi
+          fi
           # add from incoming
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
           # create index
