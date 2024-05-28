@@ -44,7 +44,7 @@ jobs:
     uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
     with:
       ACCESS_NAME: armbian
-      BUILD_RUNNER: "fast"
+      BUILD_RUNNER: "ubuntu-latest"
     secrets:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
