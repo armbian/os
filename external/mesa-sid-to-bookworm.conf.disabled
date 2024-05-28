@@ -1,9 +1,0 @@
-URL=http://deb.debian.org/debian
-KEY="unstable main"
-RELEASE=bookworm
-TARGET=desktop
-METHOD=aptly
-INSTALL="libegl-mesa0 libgl1-mesa-dri mesa-utils mesa-utils-bin"
-GLOB="Name (% libegl-mesa0) | Name (% libglx-mesa0) | Name (% libgl1-mesa-dri) | Name (% mesa-utils) | Name (% mesa-utils-bin) | Name (% libgbm1) | Name (% libglapi-mesa) | Name (% libx11-xcb1) | Name (% libx11-6) | Name (% libllvm17) | Name (% libzstd1)"
-ARCH=armhf:arm64:amd64
-REPOSITORY=B
