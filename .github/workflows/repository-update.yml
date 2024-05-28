@@ -25,7 +25,7 @@ jobs:
 
   Check:
 
-    name: "Check membership"
+    name: "Check membership" # Only release manager can execute this manually
     runs-on: fast
     steps:
 
@@ -41,11 +41,10 @@ jobs:
     needs: Check
 
     if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
+    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@AR-2345
     with:
       ACCESS_NAME: armbian
       BUILD_RUNNER: "ubuntu-latest"
-      #BUILD_RUNNER: "X64"
     secrets:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
