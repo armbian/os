@@ -266,7 +266,7 @@ jobs:
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
-      max-parallel: 4
+      max-parallel: 8
       fail-fast: false
       matrix:
 
@@ -307,7 +307,7 @@ jobs:
     if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
     timeout-minutes: 60
     strategy:
-      max-parallel: 4
+      max-parallel: 8
       fail-fast: false
       matrix:
 
