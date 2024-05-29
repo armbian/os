@@ -259,7 +259,7 @@ jobs:
 
   Sync:
     name: "Files"
-    runs-on: repository
+    runs-on: repository-sync
     needs: Prepare
     outputs:
       matrix: ${{needs.Prepare.outputs.matrix}}
@@ -302,7 +302,7 @@ jobs:
 
   Index:
     name: "Index"
-    runs-on: repository
+    runs-on: repository-sync
     needs: Sync
     if: ${{ needs.Sync.outputs.matrix != '[]' && needs.Sync.outputs.matrix != '' }}
     timeout-minutes: 60
