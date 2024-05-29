@@ -67,12 +67,12 @@ jobs:
     runs-on: repository
     steps:
 
-      - name: "Clean beta repository"
-        run: |
-        
-          if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
-            sudo rm -rf /outgoing/repository-beta/{public,db,pool}
-          fi
+      #- name: "Clean beta repository"
+      #  run: |
+      #  
+      #    if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
+      #      sudo rm -rf /outgoing/repository-beta/{public,db,pool}
+      #    fi
 
       - name: Checkout build repository
         uses: actions/checkout@v4
