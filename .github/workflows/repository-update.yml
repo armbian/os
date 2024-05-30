@@ -69,9 +69,9 @@ jobs:
 
       - name: "Clean beta repository"
         run: |
-        
+
           if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
-            sudo rm -rf /outgoing/repository-beta/{db,pool}
+            sudo rm -rf /outgoing/repository-beta/*
           fi
 
       - name: Checkout build repository
