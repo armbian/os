@@ -75,7 +75,6 @@ lists:
     - { BOARD: orangepi5, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: phytiumpi, BRANCH: legacy }
-    - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: qemu-uefi-x86, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -90,8 +89,6 @@ lists:
     - { BOARD: rock-5b, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: sweet-potato, BRANCH: current }
