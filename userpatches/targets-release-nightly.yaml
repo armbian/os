@@ -154,6 +154,19 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *staging-fast-hdmi
+
+  # debian stable minimal
+  minimal-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
       - *virtual-boards
 
   # ubuntu unstable without apps
