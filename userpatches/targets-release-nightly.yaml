@@ -189,7 +189,7 @@ targets:
 
   # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
