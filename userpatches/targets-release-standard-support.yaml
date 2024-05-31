@@ -71,7 +71,6 @@ lists:
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: qemu-uefi-x86, BRANCH: current }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-zero3, BRANCH: legacy }
     - { BOARD: radxa-zero3, BRANCH: vendor}
@@ -90,8 +89,6 @@ lists:
     - { BOARD: sk-tda4vm, BRANCH: current }
     - { BOARD: sweet-potato, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
-    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
