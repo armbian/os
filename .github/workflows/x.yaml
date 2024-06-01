@@ -30,8 +30,7 @@ jobs:
           [[ "${{ inputs.REFERENCE }}" =~ ^(main|)$ ]] && packages=$(find os/external/*.conf -printf '%f\n' | cut -d"." -f1)
           for i in ${packages[@]}; do
               . os/external/${i}.conf
-              #[[ -z $INSTALL ]] && continue
-              #[[ "${ARCH}" != *amd64* ]] && continue
+              if [[ -z "${INSTALL}" && "${ARCH}" == *amd64* ]]; then
               if [[ $RELEASE != all ]]; then
                   dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
                   elements=($(echo $RELEASE | tr ':' "\n"))
@@ -45,6 +44,7 @@ jobs:
               for j in ${dockerimages[@]}; do
               echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
               done
+              fi
           done | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
