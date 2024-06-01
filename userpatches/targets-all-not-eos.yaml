@@ -30,7 +30,7 @@ targets:
         skip-releases: [ "sid", "bullseye", "focal" , "mantic", "kinetic", "lunar", "trixie" ] # do NOT include these releases
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
-        only-desktops: ["gnome", "xfce", "cinnamon", "i3-wm", "kde-neon"] # ONLY include these desktops
+        only-desktops: ["gnome", "xfce", "cinnamon", "i3-wm" ] # ONLY include these desktops
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops, one per desktop_variations below; 'eos' ones are always skipped
