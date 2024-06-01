@@ -33,7 +33,13 @@ jobs:
               [[ -z $INSTALL ]] && continue
               dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
               if [[ $RELEASE != all ]]; then
-              dockerimages=("debian:bookworm")
+
+                  elements=($(echo $RELEASE | tr ':' "\n"))
+                  for SELECTED_RELEASE in "${elements[@]}"; do
+                      [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
+                      dockerimages=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
+                  done
+              
               fi              
               for j in ${dockerimages[@]}; do
                 echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
