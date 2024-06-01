@@ -30,6 +30,7 @@ jobs:
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
               source os/external/${i}.conf
+              [[ -z $INSTALL ]] && continue
               dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
               for j in ${dockerimages[@]}; do
                 echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
