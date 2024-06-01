@@ -25,11 +25,15 @@ jobs:
         id: json
         run: |
 
+          dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
               . os/external/${i}.conf
               if [[ -n "${INSTALL}"  && "${ARCH}" == *amd64* ]]; then
-              echo "${i} -> $INSTALL"
+              if [[ $RELEASE != all ]]; then
+              for j in ${dockerimages[@]}; do
+              echo "${i} -> $j -> $INSTALL"
+              done
               fi
           done
 
