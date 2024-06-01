@@ -26,7 +26,7 @@ jobs:
         run: |
 
           sudo apt -y install coreutils
-          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          #echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           packages=($(grep -rw os/external/*.conf -e 'amd64' | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
               source os/external/${i}.conf
@@ -47,8 +47,8 @@ jobs:
               echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
               done
 
-          done | jq -s >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          done | jq -s #>> $GITHUB_OUTPUT
+          #echo 'EOF' >> $GITHUB_OUTPUT
 
  gradle:
     needs: test
