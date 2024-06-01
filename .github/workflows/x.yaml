@@ -34,7 +34,7 @@ jobs:
 
           
           for i in "${packages[@]}"; do
-              out=$dockerimages
+              out=("${dockerimages[@]}")
               source os/external/${i}.conf
               [[ -z $INSTALL ]] && continue
               
