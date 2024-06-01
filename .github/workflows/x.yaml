@@ -41,8 +41,9 @@ jobs:
               if [[ $RELEASE != all ]]; then
 
                   elements=($(echo $RELEASE | tr ':' "\n"))
-                  echo $elements
+
                   for SELECTED_RELEASE in "${elements[@]}"; do
+                      echo $SELECTED_RELEASE
                       [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
                       out+=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
                   done
