@@ -30,21 +30,9 @@ jobs:
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
               source os/external/${i}.conf
-
-              if [[ $RELEASE != all ]]; then
-                  dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
-                  elements=($(echo $RELEASE | tr ':' "\n"))
-                  for SELECTED_RELEASE in "${elements[@]}"; do
-                      [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
-                      dockerimages=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
-                  done
-
-                  dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
-                else
-                  dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
-              fi
+              dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
               for j in ${dockerimages[@]}; do
-              echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
+                echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
               done
 
           done | jq -s #>> $GITHUB_OUTPUT
