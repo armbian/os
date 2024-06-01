@@ -27,8 +27,10 @@ jobs:
 
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
-              . os/external/${i}.conf              
-          echo "${i} -> $INSTALL"
+              . os/external/${i}.conf
+              if [[ -n "${INSTALL}"  && "${ARCH}" == *amd64* ]]; then
+              echo "${i} -> $INSTALL"
+              fi
           done
 
  gradle:
