@@ -32,6 +32,9 @@ jobs:
               source os/external/${i}.conf
               [[ -z $INSTALL ]] && continue
               dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
+              if [[ $RELEASE != all ]]; then
+              dockerimages=("debian:bookworm")
+              fi              
               for j in ${dockerimages[@]}; do
                 echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
               done
