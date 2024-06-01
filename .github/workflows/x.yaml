@@ -1,0 +1,70 @@
+name: Testxxx
+on:
+  workflow_dispatch:
+
+jobs:
+
+ test:
+
+    name: "Test"
+    runs-on: ubuntu-latest
+    outputs:
+      max-parallel: 18
+      matrix:  ${{steps.json.outputs.JSON_CONTENT}}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/os
+          path: os
+          fetch-depth: '2'
+          clean: false
+
+      - name: "Make JSON"
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          packages=$(echo ${{ steps.changed-files.outputs.all_changed_files }}  | tr " " "\n" | cut -d"." -f1 | cut -d"/" -f2)
+          [[ "${{ inputs.REFERENCE }}" =~ ^(main|)$ ]] && packages=$(find os/external/*.conf -printf '%f\n' | cut -d"." -f1)
+          for i in ${packages[@]}; do
+              . os/external/${i}.conf
+              [[ -z $INSTALL ]] && continue
+              [[ "${ARCH}" != *amd64* ]] && continue
+              if [[ $RELEASE != all ]]; then
+                  dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
+                  elements=($(echo $RELEASE | tr ':' "\n"))
+                  for SELECTED_RELEASE in "${elements[@]}"; do
+                      [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
+                      dockerimages=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
+                  done
+                else
+                  dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
+              fi
+              for j in ${dockerimages[@]}; do
+              echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
+              done
+          done | jq -s >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+ gradle:
+    needs: test
+    strategy:
+      fail-fast: false
+      max-parallel: 32
+      matrix:
+        image: ${{ fromJSON(needs.test.outputs.matrix) }}
+
+    name: "I"
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    container:
+        image: "${{ matrix.image.image }}"
+    steps:
+
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: assets-for-download
+          path: downloads
