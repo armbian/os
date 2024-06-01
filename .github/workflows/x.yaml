@@ -39,6 +39,10 @@ jobs:
                   fi
                   done
               done
+              else
+              for j in ${dockerimages[@]}; do
+              echo "${i} -> $j -> $INSTALL"
+              done
               fi
               fi
           done
