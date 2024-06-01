@@ -26,22 +26,28 @@ jobs:
         run: |
 
           ls -l os/external/
+
+          dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
+          
           #echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
+
+          
           for i in "${packages[@]}"; do
+              out=$dockerimages
               source os/external/${i}.conf
               [[ -z $INSTALL ]] && continue
-              dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
+              
               if [[ $RELEASE != all ]]; then
 
                   elements=($(echo $RELEASE | tr ':' "\n"))
                   for SELECTED_RELEASE in "${elements[@]}"; do
                       [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
-                      dockerimages=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
+                      out=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
                   done
               
               fi              
-              for j in ${dockerimages[@]}; do
+              for j in ${out[@]}; do
                 echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
               done
 
