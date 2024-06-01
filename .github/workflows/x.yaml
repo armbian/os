@@ -27,7 +27,8 @@ jobs:
 
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
-          echo "${i}"
+              . os/external/${i}.conf              
+          echo "${i} -> $INSTALL"
           done
 
  gradle:
