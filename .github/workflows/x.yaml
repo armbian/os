@@ -43,7 +43,7 @@ jobs:
                   elements=($(echo $RELEASE | tr ':' "\n"))
                   for SELECTED_RELEASE in "${elements[@]}"; do
                       [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
-                      out=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
+                      out+=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
                   done
               
               fi              
