@@ -27,7 +27,7 @@ jobs:
 
           sudo apt -y install coreutils
           #echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          packages=($(grep -rw os/external/*.conf -e 'amd64' | cut -d"/" -f3 | cut -d"." -f1))
+          packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
               source os/external/${i}.conf
 
