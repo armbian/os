@@ -29,7 +29,7 @@ jobs:
           packages=$(echo ${{ steps.changed-files.outputs.all_changed_files }}  | tr " " "\n" | cut -d"." -f1 | cut -d"/" -f2)
           [[ "${{ inputs.REFERENCE }}" =~ ^(main|)$ ]] && packages=$(find os/external/*.conf -printf '%f\n' | cut -d"." -f1)
           for i in ${packages[@]}; do
-              . os/external/${i}.conf
+              source os/external/${i}.conf
               if [[ -n "${INSTALL}" && "${ARCH}" == *amd64* ]]; then
               if [[ $RELEASE != all ]]; then
                   dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
