@@ -38,6 +38,8 @@ jobs:
                       [[ $SELECTED_RELEASE == "oracular" ]] && SELECTED_RELEASE="noble"
                       dockerimages=($(printf '%s\n' "${dockerimages[@]}" | grep "$SELECTED_RELEASE"))
                   done
+
+                  dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
                 else
                   dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
               fi
