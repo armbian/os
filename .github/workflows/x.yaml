@@ -25,24 +25,32 @@ jobs:
         id: json
         run: |
 
+          # define docker images where we will run test install
           dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
+          
+          # read packages and loop them
           packages=($(grep -rw os/external/*.conf -e amd64 | cut -d"/" -f3 | cut -d"." -f1))
           for i in "${packages[@]}"; do
+
+              # read config file
               . os/external/${i}.conf
+
+              # for now, we can only do amd64 test installs
               if [[ -n "${INSTALL}"  && "${ARCH}" == *amd64* ]]; then
+              # if we speficy releases, we need to loop docker images and use if there is a match
               if [[ $RELEASE != all ]]; then
               for j in ${dockerimages[@]}; do
                   elements=($(echo $RELEASE | tr ':' "\n"))
                   for SELECTED_RELEASE in "${elements[@]}"; do
-                  if [[ $j == *"${SELECTED_RELEASE}"* ]]; then
-                  echo "${i} -> $j -> $INSTALL"
-                  fi
+                      if [[ $j == *"${SELECTED_RELEASE}"* ]]; then
+                          echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
+                      fi
                   done
               done
               else
-              for j in ${dockerimages[@]}; do
-              echo "${i} -> $j -> $INSTALL"
-              done
+                  for j in ${dockerimages[@]}; do
+                      echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
+                  done
               fi
               fi
           done
