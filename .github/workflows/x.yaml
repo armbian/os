@@ -32,7 +32,12 @@ jobs:
               if [[ -n "${INSTALL}"  && "${ARCH}" == *amd64* ]]; then
               if [[ $RELEASE != all ]]; then
               for j in ${dockerimages[@]}; do
-              echo "${i} -> $j -> $INSTALL"
+                  elements=($(echo $RELEASE | tr ':' "\n"))
+                  for SELECTED_RELEASE in "${elements[@]}"; do
+                  if [[ $j == *"${SELECTED_RELEASE}"* ]]; then
+                  echo "${i} -> $j -> $INSTALL"
+                  fi
+                  done
               done
               fi
               fi
