@@ -26,11 +26,10 @@ jobs:
         run: |
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          packages=$(echo ${{ steps.changed-files.outputs.all_changed_files }}  | tr " " "\n" | cut -d"." -f1 | cut -d"/" -f2)
-          [[ "${{ inputs.REFERENCE }}" =~ ^(main|)$ ]] && packages=$(grep -rw os/external/*.conf -e 'amd64' | cut -d"/" -f3 | cut -d"." -f1)
-          for i in ${packages[@]}; do
+          packages=$(grep -rw os/external/*.conf -e 'amd64' | cut -d"/" -f3 | cut -d"." -f1)
+          for i in "${packages[@]}"; do
               source os/external/${i}.conf
-              #if [[ -n "${INSTALL}" && "${ARCH}" == *amd64* ]]; then
+
               if [[ $RELEASE != all ]]; then
                   dockerimages=("debian:bookworm" "ubuntu:jammy" "ubuntu:noble")
                   elements=($(echo $RELEASE | tr ':' "\n"))
@@ -44,7 +43,7 @@ jobs:
               for j in ${dockerimages[@]}; do
               echo "{\"package\":\"${i}\",\"image\":\"$j\"}"
               done
-              #fi
+
           done | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
