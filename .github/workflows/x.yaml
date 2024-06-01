@@ -32,7 +32,7 @@ jobs:
           for i in "${packages[@]}"; do
               out=("${dockerimages[@]}")
               source os/external/${i}.conf
-              [[ -z $INSTALL ]] && continue
+              [[ -z "$INSTALL" ]] && continue
               if [[ $RELEASE != all ]]; then
                   elements=($(echo $RELEASE | tr ':' "\n"))
                   for SELECTED_RELEASE in "${elements[@]}"; do
