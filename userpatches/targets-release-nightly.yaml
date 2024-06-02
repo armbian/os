@@ -23,7 +23,6 @@ lists:
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
-    - { BOARD: helios4, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
@@ -67,7 +66,6 @@ lists:
     - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: orangepi5-plus, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
