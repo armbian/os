@@ -3,13 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        type: choice
         description: 'Framework build branch'
-        options:
-        # branches
-        - main
-        - v24.05
         default: 'main'
+        type: string
 
 jobs:
 
