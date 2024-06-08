@@ -118,10 +118,9 @@ jobs:
           mkdir -pv build/userpatches
           rsync -av userpatches/userpatches/. build/userpatches/
 
-      - name: Matrix => (${{ matrix.release }} ${{ matrix.desktop}})
+      - name: "Release => ${{ matrix.release }} Desktop => ${{ matrix.desktop}})"
         run: |
-          echo ${{ matrix.release }}
-          echo ${{ matrix.desktop }}
+
           cd build
 
           BUILD_DESKTOP=yes
@@ -143,7 +142,8 @@ jobs:
           EXPERT=yes \
           KERNEL_CONFIGURE=no \
           RELEASE=${{ matrix.release }} \
-          SHARE_LOG=yes
+          SHARE_LOG=yes \
+          UPLOAD_TO_OCI_ONLY=yes
           
           # Upload to server for executing run test
           #rsync -arvc --rsync-path="mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
