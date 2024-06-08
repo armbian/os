@@ -1,1 +1,149 @@
-#placeholder
+name: "Full distro test builds"
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: choice
+        description: 'Framework build branch'
+        options:
+        # branches
+        - main
+        - v24.05
+        default: 'main'
+
+jobs:
+
+  prepare:
+    name: "JSON"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix:  ${{steps.json.outputs.JSON_CONTENT}}
+    steps:
+      - name: "Checkout Armbian build Framework"
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/build
+          ref:  main
+          clean: false
+          fetch-depth: 1
+          path: build
+
+      - name: "Install SSH key"
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: "Cleanup upload folder"
+        id: json
+        run: |
+
+          ssh upload@netcup.armbian.com "rm -rf /var/www/netcup.armbian.com/html/qemutestbuilds/*"
+
+      - name: "Make JSON"
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          releases=($(grep supported build/config/distributions/*/support | cut -d"/" -f4))
+
+          # add addtional ones
+          releases+=(trixie)
+
+          for i in ${releases[@]}; do
+              desktops=($(grep supported build/config/desktop/jammy/environments/*/support | cut -d"/" -f6))
+              desktops+=(cli minimal)
+                  for j in ${desktops[@]}; do
+                      echo "{\"release\":\"${i}\",\"desktop\":\"$j\"}"
+                  done
+              done | jq -s >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  gradle:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 32
+      matrix:
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    name: "Build Qemu"
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+
+      # Cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
+      - name: "Install SSH key"
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: Free Github Runner
+        uses: descriptinc/free-disk-space@main
+        with:
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
+      # clone the build system repo (`armbian/build`)
+      - name: Checkout build repo
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/build
+          ref: ${{ inputs.ref || inputs.branch || 'main' }}
+          fetch-depth: 0
+          clean: false
+          path: build
+
+      # clone the userpatches repo (`armbian/os`)
+      - name: "Checkout userpatches repo"
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/os
+          fetch-depth: 0
+          clean: false
+          path: userpatches
+
+      - name: "Put userpatches in place, and remove userpatches repo"
+        run: |
+
+          mkdir -pv build/userpatches
+          rsync -av userpatches/userpatches/. build/userpatches/
+
+      - name: Matrix => (${{ matrix.release }} ${{ matrix.desktop}})
+        run: |
+          echo ${{ matrix.release }}
+          echo ${{ matrix.desktop }}
+          cd build
+
+          BUILD_DESKTOP=yes
+          BUILD_MINIMAL=no
+          DESKTOP_ENVIRONMENT=${{ matrix.desktop }}
+          [[ "${{ matrix.desktop }}" == minimal ]] && BUILD_MINIMAL=yes && BUILD_DESKTOP=no && unset DESKTOP_ENVIRONMENT
+          [[ "${{ matrix.desktop }}" == cli ]] && BUILD_MINIMAL=no && BUILD_DESKTOP=no && unset DESKTOP_ENVIRONMENT
+
+          bash ./compile.sh armbian-images \
+          IMAGE_XZ_COMPRESSION_RATIO=1 \
+          BOARD=uefi-x86 \
+          BRANCH=current \
+          BUILD_DESKTOP="${BUILD_DESKTOP}" \
+          BUILD_MINIMAL="${BUILD_MINIMAL}" \
+          DESKTOP_APPGROUPS_SELECTED= \
+          DESKTOP_ENVIRONMENT="${DESKTOP_ENVIRONMENT}" \
+          DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base \
+          ENABLE_EXTENSIONS=image-output-qcow2,v4l2loopback-dkms,mesa-vpu \
+          EXPERT=yes \
+          KERNEL_CONFIGURE=no \
+          RELEASE=${{ matrix.release }} \
+          SHARE_LOG=yes
+
+          rsync -arvc --rsync-path="mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
