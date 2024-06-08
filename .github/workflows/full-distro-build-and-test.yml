@@ -28,6 +28,19 @@ jobs:
           fetch-depth: 1
           path: build
 
+      - name: "Install SSH key"
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
+      - name: "Cleanup upload folder"
+        id: json
+        run: |
+
+          ssh upload@netcup.armbian.com "rm -rf /var/www/netcup.armbian.com/html/qemutestbuilds/*"
+
       - name: "Make JSON"
         id: json
         run: |
@@ -132,5 +145,5 @@ jobs:
           KERNEL_CONFIGURE=no \
           RELEASE=${{ matrix.release }} \
           SHARE_LOG=yes
-
-          rsync -arvc --rsync-path="rm -rf /var/www/netcup.armbian.com/html/qemutestbuilds/* && mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ inputs.HOST_USER }}@${{ inputs.HOST_DEPLOY }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
+          
+          rsync -arvc --rsync-path="mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
