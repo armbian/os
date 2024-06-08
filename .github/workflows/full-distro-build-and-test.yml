@@ -42,10 +42,6 @@ jobs:
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           releases=($(grep "supported\|csc" build/config/distributions/*/support | cut -d"/" -f4))
-
-          # add addtional ones
-          releases+=(trixie)
-
           for i in ${releases[@]}; do
               desktops=($(grep "supported\|csc" build/config/desktop/${i}/environments/*/support | cut -d"/" -f6))
               desktops+=(cli minimal)
