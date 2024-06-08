@@ -19,6 +19,7 @@
 - Reversion Firefox, Thunderbird and Chromium to higher (9) epoch version then its Snapd counterparts (1)
 - Tests install of all packages added onto stable and testing Debian and Ubuntu releases
 - Tests packages upgrade sucess on real hardware
+- Tests build [supported and community supported desktops](https://github.com/armbian/os/actions/workflows/full-distro-build-and-test.yml)
 
 ## How to enable images?
 
