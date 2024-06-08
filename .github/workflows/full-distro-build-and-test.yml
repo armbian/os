@@ -69,7 +69,7 @@ jobs:
 
     name: "Build Qemu"
     timeout-minutes: 10
-    runs-on: images
+    runs-on: [ images, X64 ]
     steps:
 
       # Cleaning self hosted runners
