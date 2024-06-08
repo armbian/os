@@ -51,7 +51,7 @@ jobs:
           releases+=(trixie)
 
           for i in ${releases[@]}; do
-              desktops=($(grep "supported\|csc" build/config/desktop/jammy/environments/*/support | cut -d"/" -f6))
+              desktops=($(grep "supported\|csc" build/config/desktop/${i}/environments/*/support | cut -d"/" -f6))
               desktops+=(cli minimal)
                   for j in ${desktops[@]}; do
                       echo "{\"release\":\"${i}\",\"desktop\":\"$j\"}"
