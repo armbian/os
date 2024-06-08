@@ -145,5 +145,5 @@ jobs:
           KERNEL_CONFIGURE=no \
           RELEASE=${{ matrix.release }} \
           SHARE_LOG=yes
-
+          
           rsync -arvc --rsync-path="mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
