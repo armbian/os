@@ -69,7 +69,7 @@ jobs:
 
     name: "Build Qemu"
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: images
     steps:
 
       # Cleaning self hosted runners
