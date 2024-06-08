@@ -36,7 +36,6 @@ jobs:
           if_key_exists: replace
 
       - name: "Cleanup upload folder"
-        id: json
         run: |
 
           ssh upload@netcup.armbian.com "rm -rf /var/www/netcup.armbian.com/html/qemutestbuilds/*"
