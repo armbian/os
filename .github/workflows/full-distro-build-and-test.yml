@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: armbian/build
-          ref:  main
+          ref: ${{ inputs.ref || inputs.branch || 'main' }}
           clean: false
           fetch-depth: 1
           path: build
