@@ -60,7 +60,7 @@ jobs:
         include: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
     name: "Build Qemu"
-    timeout-minutes: 30
+    timeout-minutes: 60
     runs-on: [ images, X64 ]
     steps:
 
@@ -144,6 +144,8 @@ jobs:
           RELEASE=${{ matrix.release }} \
           SHARE_LOG=yes \
           UPLOAD_TO_OCI_ONLY=yes
-          
-          # Upload to server for executing run test
+
+          # To do:
+          #  - test deploy images and take screenshots
+          #  - upload to server for executing run test
           #rsync -arvc --rsync-path="mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
