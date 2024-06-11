@@ -66,8 +66,8 @@ jobs:
         with:
           owner: 'armbian'
           repo: 'build'
-          tag: "${{ env.VERSION_OVERRIDE }}"
-          name: "${{ env.VERSION_OVERRIDE }}"
+          tag: "v${{ env.VERSION_OVERRIDE }}"
+          name: "v${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "true"
           prerelease: "false"
           makeLatest: "true"
