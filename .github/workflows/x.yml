@@ -45,7 +45,8 @@ jobs:
               - <a href='https://github.com/armbian/os/wiki/Enable-build-configuration'>How to change type of images that are provided by Armbian</a>?
               - How to switch between <a href='https://www.armbian.com/newsflash/armbian-leaflet-25/' target=_blank>stable and rolling release</a>?
 
-              Please note that Armbian Rolling Releases are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well.
+              Please note that Armbian Rolling Releases are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. 
+              Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
               </p>" > body.html
 
       - name: Read version from file if nor overriden
