@@ -38,7 +38,7 @@ jobs:
           cat "nightly.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
           
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'yes') != 'yes' }}
+        #if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
           repo: "${{ env.BUILD_REPOSITORY }}"
           tag: "${{ env.VERSION_OVERRIDE }}"
