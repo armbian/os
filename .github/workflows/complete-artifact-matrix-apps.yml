@@ -503,21 +503,20 @@ jobs:
         run: |
             echo "
               <p align='center'>
-              <a href='https://www.armbian.com'>
+              <a href='https://www.armbian.com/download/'>
               <img src='https://raw.githubusercontent.com/armbian/.github/master/profile/tux-two.png' width='400'></a></p>
-              <h1 align=center>Rolling releases</h1>
+              <h1 align=center>Armbian Rolling releases</h1>
               <p align=center>
-              <a href='https://www.armbian.com'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
-              <a href='https://www.armbian.com'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+              <a href='https://www.armbian.com/download/'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+              <a href='https://www.armbian.com/download/'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
               </p>
               <br>
 
               - rolling releases are available at the bottom of <a href='https://www.armbian.com/download/' target=_blanks>official download pages</a>
-              - if you want to change automated builds variants, edit <a href='https://github.com/armbian/os/tree/main/userpatches'>.yaml files</a>
-              - for old builds with unknown support status check <a href='https://archive.armbian.com' target=_blank>archives</a>
+              - <a href='https://github.com/armbian/os/wiki/Enable-build-configuration'>How to change type of images that are provided by Armbian</a>?
+              - How to switch between <a href='https://www.armbian.com/newsflash/armbian-leaflet-25/' target=_blank>stable and rolling release</a>?
 
-              <br>
-              &nbsp;
+              Please note that <b>Armbian Rolling Releases</a> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>.
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
@@ -531,6 +530,22 @@ jobs:
           allowUpdates: true
           removeArtifacts: true
           token: ${{ env.GH_TOKEN }}
+
+      # Generate tag and releases on build framework repository
+      - uses: ncipollo/release-action@v1
+        if: ${{ (github.event.inputs.nightlybuild || 'no') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
+        with:
+          owner: 'armbian'
+          repo: 'build'
+          tag: "${{ env.VERSION_OVERRIDE }}"
+          name: "${{ env.VERSION_OVERRIDE }}"
+          generateReleaseNotes: "true"
+          prerelease: "false"
+          makeLatest: "true"
+          bodyFile: "body.html"
+          allowUpdates: "false"
+          skipIfReleaseExists: "true"
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Save
         id: releases
