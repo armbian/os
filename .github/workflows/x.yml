@@ -36,7 +36,7 @@ jobs:
           #cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
           cat "nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-          cat "nightly.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
+          cat "nightly.json" | jq '.version' | sed "s/\"//g" > downloads/version
           
       - uses: ncipollo/release-action@v1
         #if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'yes') != 'yes' }}
@@ -47,4 +47,4 @@ jobs:
           generateReleaseNotes: "true"
           prerelease: "true"
           allowUpdates: true
-          token: ${{ env.GH_TOKEN }}          
+          token: ${{ secrets.RELEASE_TOKEN }}        
