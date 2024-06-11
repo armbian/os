@@ -29,7 +29,6 @@ jobs:
           clean: false # true is default.
 
       - name: "Generate body file"
-        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         run: |
             echo "
               <p align='center'>
