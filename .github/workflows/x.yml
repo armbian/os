@@ -1,8 +1,10 @@
-name: "Build All Artifacts (cronjob)"
+name: "Build weekly release log"
 
 on:
   workflow_dispatch:
-
+  schedule:
+   - cron: '0 0 * * MON'
+   
 env:
   
   BUILD_REPOSITORY: "armbian/build"
