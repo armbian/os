@@ -9,6 +9,7 @@ env:
   USERPATCHES_REPOSITORY: "armbian/os"
   USERPATCHES_REF: "main" # branch or tag or sha1
   USERPATCHES_DIR: "userpatches" # folder inside USERPATCHES_REPOSITORY
+  GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
 
 jobs:
 
