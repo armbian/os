@@ -47,5 +47,5 @@ jobs:
           name: "${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "true"
           prerelease: "true"
-          allowUpdates: true
+          allowUpdates: "false"
           token: ${{ secrets.RELEASE_TOKEN }}        
