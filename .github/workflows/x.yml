@@ -41,7 +41,8 @@ jobs:
       - uses: ncipollo/release-action@v1
         #if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
-          repo: "${{ env.BUILD_REPOSITORY }}"
+          owner: 'armbian'
+          repo: 'build'
           tag: "${{ env.VERSION_OVERRIDE }}"
           name: "${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "true"
