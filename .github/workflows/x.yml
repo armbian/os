@@ -48,4 +48,5 @@ jobs:
           generateReleaseNotes: "true"
           prerelease: "true"
           allowUpdates: "false"
+          skipIfReleaseExists: "true"
           token: ${{ secrets.RELEASE_TOKEN }}        
