@@ -34,6 +34,7 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
+    - { BOARD: jethubj200, BRANCH: current }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
     - { BOARD: orangepi5pro, BRANCH: legacy }
