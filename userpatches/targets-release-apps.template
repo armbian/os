@@ -24,6 +24,7 @@ lists:
 
   armbian-security: &armbian-security
     - { BOARD: bananapim7, BRANCH: vendor }
+    - { BOARD: inovato-quadra, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,kali"}
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,kali"}
@@ -65,6 +66,7 @@ lists:
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim7, BRANCH: vendor }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: inovato-quadra, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
