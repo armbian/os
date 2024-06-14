@@ -50,6 +50,22 @@ jobs:
               Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
               </p>" > body.html
 
+      # Generate tag and releases on armbian-config repository
+      - uses: ncipollo/release-action@v1
+        #if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'yes') != 'yes' }}
+        with:
+          owner: 'armbian'
+          repo: 'config'
+          tag: "v${{ env.VERSION_OVERRIDE }}"
+          name: "v${{ env.VERSION_OVERRIDE }}"
+          generateReleaseNotes: "true"
+          prerelease: "false"
+          makeLatest: "true"
+          bodyFile: "body.html"
+          allowUpdates: "false"
+          skipIfReleaseExists: "true"
+          token: ${{ secrets.RELEASE_TOKEN }}
+
       - name: Read version from file if nor overriden
         if: ${{ ! github.event.inputs.versionOverride }}
         run: |
