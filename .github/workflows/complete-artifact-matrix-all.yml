@@ -455,7 +455,9 @@ jobs:
 
       - name: Update scripts
         run: |
-          cp build/output/info/git_sources.json .
+          cd userpatches
+          cp ../build/output/info/git_sources.json .
+          
           sudo chown -R $USER:$USER .git
           if git status --porcelain | grep .; then
              git config --global user.email "info@armbian.com"
