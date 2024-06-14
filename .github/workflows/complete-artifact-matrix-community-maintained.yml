@@ -437,7 +437,7 @@ jobs:
   version_prep:
     needs: team_check
     name: "Bump version"
-    runs-on: [ "ubuntu-latest" ]
+    runs-on: [ "self-hosted", "Linux", 'super' ]
     steps:
 
       # Clone the userpatches repo (`armbian/os`)
@@ -449,6 +449,41 @@ jobs:
           ref: ${{ env.USERPATCHES_REF }}
           fetch-depth: 0
           clean: false # true is default.
+
+      # clone the build system repo (`armbian/build`)
+      - name: Checkout build repo
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ env.BUILD_REF }}
+          fetch-depth: 0
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+          path: build
+
+      - name: Prepare Git_sources JSON
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        run: |
+
+          cd build
+          bash ./compile.sh targets
+          cat output/info/git_sources.json
+          cp output/info/git_sources.json ..
+
+      - name: Update scripts
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        run: |
+
+          sudo chown -R $USER:$USER .git
+          if git status --porcelain | grep .; then
+             git config --global user.email "info@armbian.com"
+             git config --global user.name "Armbianworker"
+             git config pull.rebase false
+             git pull
+             git add git_sources.json
+             git commit --allow-empty -m "Update external GIT commits"
+             git push
+          fi
 
       - name: Determine version
         id: versionfile
