@@ -402,7 +402,7 @@ jobs:
           cd build
 
 
-          bash ./compile.sh ./compile.sh targets armbian-images
+          bash ./compile.sh targets armbian-images
           cat output/info/git_sources.json
           cp output/info/git_sources.json ../userpatches/
 
