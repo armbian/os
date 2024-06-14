@@ -211,6 +211,38 @@ jobs:
           fetch-depth: 0
           clean: false # true is default.
 
+      # clone the build system repo (`armbian/build`)
+      - name: Checkout build repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.BUILD_REPOSITORY }}
+          ref: ${{ env.BUILD_REF }}
+          fetch-depth: 0
+          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+          path: build
+          
+      - name: Prepare Git_sources JSON
+        run: |
+        
+          cd build
+          bash ./compile.sh targets armbian-images
+          cat output/info/git_sources.json
+          cp output/info/git_sources.json ..
+          
+      - name: Update scripts
+        run: |
+          sudo chown -R $USER:$USER .git
+          if git status --porcelain | grep .; then
+             git config --global user.email "info@armbian.com"
+             git config --global user.name "Armbianworker"
+             git config pull.rebase false
+             git pull
+             git add git_sources.json
+             git commit --allow-empty -m "Update runners status"
+             git push
+          fi
+
+
       - name: Determine version
         id: versionfile
         run: |
@@ -297,6 +329,7 @@ jobs:
           allowUpdates: true
           removeArtifacts: true
           token: ${{ env.GH_TOKEN }}
+          artifacts: "git_sources.json"
 
       - name: Save
         id: releases
@@ -401,12 +434,7 @@ jobs:
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
 
-
-          bash ./compile.sh targets armbian-images
-          cat output/info/git_sources.json
-          cp output/info/git_sources.json ../userpatches/
-
-          
+        
           bash ./compile.sh gha-matrix armbian-images \
           REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
@@ -454,20 +482,6 @@ jobs:
 
       - name: chown cache memoize/oci back to normal user
         run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
-
-      - name: Update scripts
-        run: |
-          cd userpatches
-          sudo chown -R $USER:$USER .git
-          if git status --porcelain | grep .; then
-             git config --global user.email "info@armbian.com"
-             git config --global user.name "Armbianworker"
-             git config pull.rebase false
-             git pull
-             git add git_sources.json
-             git commit --allow-empty -m "Update runners status"
-             git push
-          fi
 
     outputs:
 
