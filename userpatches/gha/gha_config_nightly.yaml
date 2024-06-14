@@ -5,7 +5,8 @@ org_and_build_repo: "armbian/build"
 release_repo: "os"
 build_ref: "main"
 script_name: "Build Nightly Images (cronjob)"
-concurrency_group: "pipeline"
+#concurrency_group: "pipeline"
+concurrency_group: "${{ github.run_id }}-pipeline-nightly
 repository_ref: "nightly"
 team: "Release manager"
 
