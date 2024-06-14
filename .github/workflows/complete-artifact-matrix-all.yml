@@ -400,6 +400,11 @@ jobs:
 
           # this sets outputs "artifact-matrix" #and "image-matrix"
           cd build
+
+
+          ./compile.sh targets 
+
+          
           bash ./compile.sh gha-matrix armbian-images \
           REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
@@ -447,6 +452,20 @@ jobs:
 
       - name: chown cache memoize/oci back to normal user
         run: sudo chown -R $USER:$USER build/cache/memoize build/cache/oci/positive
+
+      - name: Update scripts
+        run: |
+          cp build/output/info/git_sources.json .
+          sudo chown -R $USER:$USER .git
+          if git status --porcelain | grep .; then
+             git config --global user.email "info@armbian.com"
+             git config --global user.name "Armbianworker"
+             git config pull.rebase false
+             git pull
+             git add git_sources.json
+             git commit --allow-empty -m "Update runners status"
+             git push
+          fi
 
     outputs:
 
