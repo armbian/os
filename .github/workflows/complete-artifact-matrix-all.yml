@@ -402,7 +402,8 @@ jobs:
           cd build
 
 
-          ./compile.sh targets 
+          ./compile.sh targets
+           cp output/info/git_sources.json ../userpatches/
 
           
           bash ./compile.sh gha-matrix armbian-images \
@@ -456,8 +457,6 @@ jobs:
       - name: Update scripts
         run: |
           cd userpatches
-          cp ../build/output/info/git_sources.json .
-          
           sudo chown -R $USER:$USER .git
           if git status --porcelain | grep .; then
              git config --global user.email "info@armbian.com"
