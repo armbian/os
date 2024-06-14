@@ -198,7 +198,7 @@ jobs:
   version_prep:
     needs: team_check
     name: "Bump version"
-    runs-on: [ "ubuntu-latest" ]
+    runs-on: [ "self-hosted", "Linux", 'super' ]
     steps:
 
       # Clone the userpatches repo (`armbian/os`)
