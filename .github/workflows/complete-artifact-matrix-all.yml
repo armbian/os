@@ -225,7 +225,7 @@ jobs:
         run: |
         
           cd build
-          bash ./compile.sh targets armbian-images
+          bash ./compile.sh targets
           cat output/info/git_sources.json
           cp output/info/git_sources.json ..
           
