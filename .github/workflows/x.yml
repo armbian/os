@@ -30,6 +30,16 @@ jobs:
           fetch-depth: 0
           clean: false # true is default.
 
+      - name: Read version from file if nor overriden
+        if: ${{ ! github.event.inputs.versionOverride }}
+        run: |
+          mkdir -p downloads
+          #cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          #cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
+
+          cat "nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          cat "nightly.json" | jq '.version' | sed "s/\"//g" > downloads/version
+
       - name: "Generate body file"
         run: |
             echo "
@@ -81,17 +91,6 @@ jobs:
           allowUpdates: "false"
           skipIfReleaseExists: "true"
           token: ${{ secrets.RELEASE_TOKEN }}
-
-
-      - name: Read version from file if nor overriden
-        if: ${{ ! github.event.inputs.versionOverride }}
-        run: |
-          mkdir -p downloads
-          #cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-          #cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
-
-          cat "nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-          cat "nightly.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       # Generate tag and releases on build framework repository
       - uses: ncipollo/release-action@v1
