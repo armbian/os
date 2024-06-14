@@ -402,8 +402,9 @@ jobs:
           cd build
 
 
-          ./compile.sh targets
-           cp output/info/git_sources.json ../userpatches/
+          bash ./compile.sh ./compile.sh targets armbian-images
+          cat output/info/git_sources.json
+          cp output/info/git_sources.json ../userpatches/
 
           
           bash ./compile.sh gha-matrix armbian-images \
