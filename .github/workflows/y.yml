@@ -30,7 +30,7 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
-    name: "Build Qemu"
+    name: "Get logs"
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -39,3 +39,11 @@ jobs:
         run: |
           echo ""
         
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ matrix.source }}
+          ref: ${{ matrix.branch }}
+          clean: false
+          fetch-depth: 0
+          path: check
