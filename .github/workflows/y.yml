@@ -99,11 +99,12 @@ jobs:
           repository: armbian/os
           fetch-depth: 0
           clean: false
+          path: os
 
       - name: "Read nightly version from file"
         run: |
           
-          cat "nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          cat "os/nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
 
       - name: "Generate body file"
         run: |
@@ -127,6 +128,7 @@ jobs:
               </p>
               
               ## What's Changed" > body.html
+             find -name "*.txt" -exec cat {} \;
              find -name "*.txt" -exec cat {} \; >> body.html
 
       - uses: ncipollo/release-action@v1
