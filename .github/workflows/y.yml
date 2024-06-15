@@ -124,8 +124,10 @@ jobs:
               - How to switch between <a href='https://www.armbian.com/newsflash/armbian-leaflet-25/' target=_blank>stable and rolling release</a>?
 
               Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
-              </p>" > body.html
-             find -name "*.txt" -exec cat {} \; >> budy.html
+              </p>
+              
+              ## What's Changed" > body.html
+             find -name "*.txt" -exec cat {} \; >> body.html
 
       - uses: ncipollo/release-action@v1
         with:
