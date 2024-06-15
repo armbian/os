@@ -63,13 +63,21 @@ jobs:
           fi
           #git -C check log ${{ matrix.sha1 }}..HEAD --oneline
 
-      - name: Upload resoults
-        uses: actions/upload-artifact@v4
+#      - name: Upload resoults
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: logs
+#          path: artifact
+#          if-no-files-found: ignore
+
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
         with:
           name: logs
           path: artifact
           if-no-files-found: ignore
-          merge-multiple: true
+          pattern: artifact/*.txt
+          
 
   make:
     needs: gradle
