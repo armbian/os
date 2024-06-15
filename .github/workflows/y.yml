@@ -64,7 +64,7 @@ jobs:
           #git -C check log ${{ matrix.sha1 }}..HEAD --oneline
 
       - name: Upload resoults
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: JSON
           path: artifact
