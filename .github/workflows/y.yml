@@ -86,4 +86,4 @@ jobs:
           name: merged-artifacts
           
       - name: Display structure of downloaded files
-        run: ls -R
+        run: find -name "*.txt" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
