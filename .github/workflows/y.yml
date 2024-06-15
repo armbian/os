@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Release => ${{ matrix.source }} Desktop => ${{ matrix.branch}}) Desktop => ${{ matrix.sha1})"
+      - name: "Release => ${{ matrix.source }} Desktop => ${{ matrix.branch }} Desktop => ${{ matrix.sha1 }}"
         run: |
           echo ""
         
