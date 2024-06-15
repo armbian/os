@@ -66,6 +66,18 @@ jobs:
       - name: Upload resoults
         uses: actions/upload-artifact@v4
         with:
-          name: JSON
+          name: logs
           path: artifact
           if-no-files-found: ignore
+
+  make:
+    needs: gradle
+    name: "Sort"
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: logs
+      - name: Display structure of downloaded files
+        run: ls -R
