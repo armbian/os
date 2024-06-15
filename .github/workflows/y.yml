@@ -1,0 +1,41 @@
+name: "Remote changes"
+on:
+  workflow_dispatch:
+
+jobs:
+
+  prepare:
+    name: "JSON"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix:  ${{steps.json.outputs.JSON_CONTENT}}
+    steps:
+
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Make JSON"
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          cat git_sources.json >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+          
+  gradle:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 64
+      matrix:
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    name: "Build Qemu"
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Release => ${{ matrix.source }} Desktop => ${{ matrix.branch}}) Desktop => ${{ matrix.sha1})"
+        run: |
+          echo ""
+        
