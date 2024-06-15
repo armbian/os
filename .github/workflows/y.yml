@@ -48,7 +48,7 @@ jobs:
               for pr in $(git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s" --merges | cut -d' ' -f4 | cut -d'#' -f2 | tr '\n' ' '); do
                   curl -s https://api.github.com/repos/${giturl}/pulls/${pr} | jq -rc '.user.login + "|" + .html_url + "|" + .title + "|" + .base.repo.full_name + "|" + .base.repo.html_url' |
                   while IFS="|" read -r user pullurl title desc repourl; do
-                      if [[ -n $title ]]; then echo "* $title by @$user in $pullurl <a href=$repourl>\`$desc\`</a>" | tee artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
+                      if [[ -n $title ]]; then echo "* $title by @$user in $pullurl <a href=$repourl>\`$desc\`</a>" | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
                   done
               i=$((i+1))
               done
@@ -58,7 +58,7 @@ jobs:
               git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
               while IFS="|" read -r title user usermail hash bighash; do
                   i=$(( i + 1 ))
-                  if [[ -n $title ]]; then echo "* $title by $user in <a href=\"$URL/commit/?id=$bighash\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
+                  if [[ -n $title ]]; then echo "* $title by $user in <a href=\"$URL/commit/?id=$bighash\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
               done
           fi
           #git -C check log ${{ matrix.sha1 }}..HEAD --oneline
@@ -77,8 +77,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Merge Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: logs
-          if-no-files-found: ignore
-          pattern: "*.txt"
+        uses: actions/upload-artifact/merge@v4        
