@@ -80,4 +80,10 @@ jobs:
         uses: actions/upload-artifact/merge@v4        
         with:
           delete-merged: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: merged-artifacts
           
+      - name: Display structure of downloaded files
+        run: ls -R
