@@ -58,7 +58,7 @@ jobs:
               git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
               while IFS="|" read -r title user usermail hash bighash; do
                   i=$(( i + 1 ))
-                  [[ -n $title ]] && echo "* $title by $user in <a href=\"$URL/commit/?id=$bighash\">$hash</a> <a href=$URL>\`$REPO\`</a>" artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY
+                  [[ -n $title ]] && echo "* $title by $user in <a href=\"$URL/commit/?id=$bighash\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY
               done
           fi
           #git -C check log ${{ matrix.sha1 }}..HEAD --oneline
