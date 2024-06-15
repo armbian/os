@@ -69,6 +69,7 @@ jobs:
           name: logs
           path: artifact
           if-no-files-found: ignore
+          merge-multiple: true
 
   make:
     needs: gradle
