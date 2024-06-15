@@ -37,13 +37,6 @@ jobs:
 
       - name: "Release => ${{ matrix.source }} Desktop => ${{ matrix.branch }} Desktop => ${{ matrix.sha1 }}"
         run: |
-          echo ""
         
-      - name: "Checkout"
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ matrix.source }}
-          ref: ${{ matrix.branch }}
-          clean: false
-          fetch-depth: 0
-          path: check
+          git clone ${{ matrix.source }} -b ${{ matrix.branch }} check
+          git -C check log ${{ matrix.sha1 }}..HEAD --oneline
