@@ -41,7 +41,7 @@ jobs:
           mkdir -p artifact
           i=0          
           git clone ${{ matrix.source }} -b ${{ matrix.branch }} check
-          source= ${{ matrix.source }}
+          source="${{ matrix.source }}"
           source=${source/.git/}
           giturl=${source/https:\/\/github.com\//}
           if [[ "${source}" == *github* ]]; then
