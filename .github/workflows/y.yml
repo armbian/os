@@ -49,7 +49,7 @@ jobs:
           source=${source/.git/}
           source=$(echo $source | sed 's|https://git.kernel.org|https://kernel.googlesource.com|')
           git clone $source --bare -b ${{ matrix.branch }} check
-          githash=$(git -C check rev-parse HEAD)
+          githash=$(git -C check rev-parse ${{ matrix.branch }})
 
           echo "URL=$source Current SHA=$githash -> wanted SHA=${{ matrix.sha1 }}" >> $GITHUB_STEP_SUMMARY
           
