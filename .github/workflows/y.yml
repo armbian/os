@@ -31,7 +31,7 @@ jobs:
         include: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
     name: "Get logs"
-    timeout-minutes: 60
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
 
