@@ -49,8 +49,8 @@ jobs:
           source=${source/.git/}
           source=$(echo $source | sed 's|https://git.kernel.org|https://kernel.googlesource.com|')
           git clone $source --bare -b ${{ matrix.branch }} check
-          #giturl=${source/https:\/\/github.com\//}
-          #giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
+          giturl=${source/https:\/\/github.com\//}
+          giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
           if [[ "${source}" == *github* ]]; then
               COMMIT_ID=""
               #for pr in $(git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s" --max-parents=1 | cut -d' ' -f4 | cut -d'#' -f2 | tr '\n' ' '); do
@@ -72,7 +72,7 @@ jobs:
               while IFS="|" read -r title user usermail hash bighash; do
                   i=$(( i + 1 ))
                   if [[ -n $title ]]; then
-                  email_search=$(curl -s https://api.github.com/search/users\?q\=${usermail} | jq -rc '.items | .[] | .login')
+                  #email_search=$(curl -s https://api.github.com/search/users\?q\=${usermail} | jq -rc '.items | .[] | .login')
                   if [[ -n $email_search ]]; then 
                       user="@""${email_search}"; 
                   else
