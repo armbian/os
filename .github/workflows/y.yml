@@ -38,6 +38,9 @@ jobs:
       - name: "URL => ${{ matrix.source }} Branch => ${{ matrix.branch }} SHA => ${{ matrix.sha1 }}"
         run: |
 
+          if [[ "${{ matrix.source }}" == *git.ti* ]]; then 
+          :
+          else
           mkdir -p artifact
           i=0          
           git clone ${{ matrix.source }} -b ${{ matrix.branch }} check
@@ -54,9 +57,6 @@ jobs:
               i=$((i+1))
               done
           else
-              if [[ "${{ matrix.source }}" == *git.ti* ]]; then 
-              :
-              else
           
               COMMIT_ID="?id="
               URL=$(git -C check config --get remote.origin.url)
@@ -77,7 +77,6 @@ jobs:
               
               fi
           fi
-          #git -C check log ${{ matrix.sha1 }}..HEAD --oneline
 
       - name: Upload resoults
         uses: actions/upload-artifact@v4
