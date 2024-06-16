@@ -32,11 +32,11 @@ jobs:
 
           # checkout to 7 days old when we will have 7 days history, now 1
 
-          git checkout $(git log --since=1.days --tags --simplify-by-decoration --pretty="format:%D" | \
+          git checkout $(git log --since=2.days --tags --simplify-by-decoration --pretty="format:%D" | \
           tail -1 | xargs | cut -d" " -f2)
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat git_sources.json >> $GITHUB_OUTPUT
+          cat git_sources.json | jq '.[] | select(.source|test("^h.*armbian*.")) ' | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
   gradle:
@@ -56,12 +56,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-
-          if [[ "${{ matrix.source }}" == *git.ti* ]]; then
-
-              : # lets skip this repository as it often timeouts. To do: ask them to make GitHub mirror
-
-          else
 
               mkdir -p artifact
 
@@ -119,7 +113,6 @@ jobs:
                   done
 
               fi
-          fi
 
       - name: Upload resoults
         uses: actions/upload-artifact@v4
