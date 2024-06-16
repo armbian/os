@@ -100,7 +100,7 @@ jobs:
                   done
 
               else
-
+                  if [[ "${giturl}" == *googlesource* && "${{ matrix.branch }}" == linux-6.9.y ]] || [[ "${giturl}" != *googlesource* ]]; then
                   URL=$(git -C check config --get remote.origin.url)
                   REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
                   git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
@@ -117,7 +117,7 @@ jobs:
                               tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;
                       fi
                   done
-
+                  fi
               fi
           fi
 
