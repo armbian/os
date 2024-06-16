@@ -481,7 +481,7 @@ jobs:
              git config pull.rebase false
              git pull
              git add git_sources.json
-             git commit --allow-empty -m "Update external GIT commits"
+             git commit git_sources.json --allow-empty -m "Update external GIT commits"
              git push
           fi
 
