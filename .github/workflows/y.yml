@@ -61,14 +61,13 @@ jobs:
           giturl=${source/https:\/\/github.com\//}
           giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
           if [[ "${source}" == *github* ]]; then
-              for pr in $(git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%H" --min-parents=1 --max-parents=1); do
-                  #curl -s https://api.github.com/repos/${giturl}/commits/${pr} | jq -rc '.author.login + "|" + .html_url + "|" + .commit.message + "|" + .base.repo.full_name + "|" + .base.repo.html_url' |
+              git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%H|%s" |
+              while IFS="|" read -r hash title; do
                   curl -s https://api.github.com/repos/${giturl}/commits/${pr}/pulls | jq -rc '.[].user.login + "|" + .[].html_url + "|" + .[].title + "|" + .[].repo.full_name + "|" + .[].repo.html_url' |
                   while IFS="|" read -r user pullurl title desc repourl; do
                       short_hash=$(echo $pr | cut -c 1-7)
                       if [[ -n $title ]]; then echo "* $title by @$user in <a href=$pullurl>$short_hash</a> <a href=$source>\`$giturl\`</a>" | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
                   done
-              i=$((i+1))
               done
           else
               
