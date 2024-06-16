@@ -52,7 +52,7 @@ jobs:
           giturl=${source/https:\/\/github.com\//}
           giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
           if [[ "${source}" == *github* ]]; then
-              COMMIT_ID=""
+              
               #for pr in $(git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s" --max-parents=1 | cut -d' ' -f4 | cut -d'#' -f2 | tr '\n' ' '); do
               for pr in $(git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%H" --max-parents=1); do
                   #curl -s https://api.github.com/repos/${giturl}/pulls/${pr} | jq -rc '.user.login + "|" + .html_url + "|" + .title + "|" + .base.repo.full_name + "|" + .base.repo.html_url' |
@@ -65,7 +65,7 @@ jobs:
               i=$((i+1))
               done
           else
-              COMMIT_ID="?id="
+              
               URL=$(git -C check config --get remote.origin.url)
               REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
               git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
@@ -78,7 +78,7 @@ jobs:
                   else
                       user="$user <$usermail>"
                   fi
-                  echo "* $title by $user in <a href=\"$URL/commit/${COMMIT_ID}${bighash}\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;                   
+                  echo "* $title by $user in <a href=\"$URL/+/${bighash}\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;                   
                   fi
               done
               
