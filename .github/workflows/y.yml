@@ -100,7 +100,7 @@ jobs:
                   done
 
               else
-                  if [[ "${giturl}" == *kernel.org* && "${{ matrix.branch }}" == linux-6.9.y ]] || [[ "${giturl}" != *kernel.org* ]]; then
+                  if [[ "${giturl}" == *googlesource* && "${{ matrix.branch }}" == linux-6.9.y ]] || [[ "${giturl}" != *googlesource* ]]; then
                   URL=$(git -C check config --get remote.origin.url)
                   REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
                   git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
