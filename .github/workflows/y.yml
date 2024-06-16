@@ -44,11 +44,10 @@ jobs:
           :
           else
           mkdir -p artifact
-          i=0          
-          git clone ${{ matrix.source }} --bare -b ${{ matrix.branch }} check
-          source="${{ matrix.source }}"
-          source=${source/.git/}
-          source=${source/git.kernel.org/kernel.googlesource.com}
+          i=0
+          source=${${{ matrix.source }}/git.kernel.org/kernel.googlesource.com}
+          git clone $source --bare -b ${{ matrix.branch }} check
+          source=${source/.git/}          
           giturl=${source/https:\/\/github.com\//}
           if [[ "${source}" == *github* ]]; then
               COMMIT_ID=""
