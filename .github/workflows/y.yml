@@ -65,7 +65,7 @@ jobs:
                   if [[ -n $email_search ]]; then 
                       user="@""${email_search}"; 
                   else
-                      user="@"$(curl -s https://api.github.com/repos/armbian/config/commits/${bighash} | jq -rc '.committer.login')
+                      user="$user <$usermail>"
                   fi
                   echo "* $title by $user in <a href=\"$URL/commit/${COMMIT_ID}${bighash}\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;                   
                   fi
