@@ -48,6 +48,7 @@ jobs:
           git clone ${{ matrix.source }} --bare -b ${{ matrix.branch }} check
           source="${{ matrix.source }}"
           source=${source/.git/}
+          source=${source/git.kernel.org/kernel.googlesource.com}
           giturl=${source/https:\/\/github.com\//}
           if [[ "${source}" == *github* ]]; then
               COMMIT_ID=""
@@ -63,7 +64,6 @@ jobs:
               i=$((i+1))
               done
           else
-          
               COMMIT_ID="?id="
               URL=$(git -C check config --get remote.origin.url)
               REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
