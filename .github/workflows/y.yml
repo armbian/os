@@ -171,6 +171,6 @@ jobs:
           prerelease: "false"
           makeLatest: "true"
           bodyFile: "body.html"
-          allowUpdates: "false"
+          allowUpdates: "true"
           skipIfReleaseExists: "true"
           token: ${{ secrets.RELEASE_TOKEN }}
