@@ -63,9 +63,9 @@ jobs:
           if [[ "${source}" == *github* ]]; then
               git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%H|%s" |
               while IFS="|" read -r hash title; do
-                  curl -s https://api.github.com/repos/${giturl}/commits/${pr}/pulls | jq -rc '.[].user.login + "|" + .[].html_url + "|" + .[].title + "|" + .[].repo.full_name + "|" + .[].repo.html_url' |
-                  while IFS="|" read -r user pullurl title desc repourl; do
-                      short_hash=$(echo $pr | cut -c 1-7)
+                  curl -s https://api.github.com/repos/${giturl}/commits/${hash}/pulls | jq -rc '.[].user.login + "|" + .[].html_url + "|" + .[].title + "|" + .[].repo.full_name + "|" + .[].repo.html_url' |
+                  while IFS="|" read -r user pullurl prtitle desc repourl; do
+                      short_hash=$(echo $hash | cut -c 1-7)
                       if [[ -n $title ]]; then echo "* $title by @$user in <a href=$pullurl>$short_hash</a> <a href=$source>\`$giturl\`</a>" | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
                   done
               done
