@@ -43,7 +43,7 @@ jobs:
           else
           mkdir -p artifact
           i=0          
-          git clone ${{ matrix.source }} -b ${{ matrix.branch }} check
+          git clone ${{ matrix.source }} --bare --filter=blob:none -b ${{ matrix.branch }} check
           source="${{ matrix.source }}"
           source=${source/.git/}
           giturl=${source/https:\/\/github.com\//}
