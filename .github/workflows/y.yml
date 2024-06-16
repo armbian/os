@@ -47,10 +47,12 @@ jobs:
           i=0
           source="${{ matrix.source }}"
           source=${source/.git/}
-          source=${source/git.kernel.org/kernel.googlesource.com}
+          if [[ "${source}" == *kernel.org* ]]; then
+          fi
+          source=$(echo $source | sed 's|https://git.kernel.org|https://kernel.googlesource.com|')
           git clone $source --bare -b ${{ matrix.branch }} check
-          giturl=${source/https:\/\/github.com\//}
-          giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
+          #giturl=${source/https:\/\/github.com\//}
+          #giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
           if [[ "${source}" == *github* ]]; then
               COMMIT_ID=""
               #for pr in $(git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s" --max-parents=1 | cut -d' ' -f4 | cut -d'#' -f2 | tr '\n' ' '); do
