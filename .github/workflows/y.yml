@@ -1,6 +1,11 @@
 name: "Remote changes"
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch from'
+        required: false
+        default: ''
 
 jobs:
 
