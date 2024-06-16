@@ -83,7 +83,7 @@ jobs:
 
               # giturl is used as tag, extract it from sources URL
               giturl=${source/https:\/\/github.com\//}
-              giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
+              #giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
 
               # GitHub handling is a bit different
               if [[ "${source}" == *github* ]]; then
@@ -100,7 +100,7 @@ jobs:
                   done
 
               else
-                  if [[ "${giturl}" == *googlesource* && "${{ matrix.branch }}" == linux-6.9.y ]] || [[ "${giturl}" != *googlesource* ]]; then
+                  if [[ "${giturl}" == *kernel.org* && "${{ matrix.branch }}" == linux-6.9.y ]] || [[ "${giturl}" != *kernel.org* ]]; then
                   URL=$(git -C check config --get remote.origin.url)
                   REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
                   git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
