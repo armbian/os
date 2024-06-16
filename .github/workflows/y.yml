@@ -72,7 +72,7 @@ jobs:
               while IFS="|" read -r title user usermail hash bighash; do
                   i=$(( i + 1 ))
                   if [[ -n $title ]]; then
-                  #email_search=$(curl -s https://api.github.com/search/users\?q\=${usermail} | jq -rc '.items | .[] | .login')
+                  email_search=$(curl -s https://api.github.com/search/users\?q\=${usermail} | jq -rc '.items | .[] | .login' || true)
                   if [[ -n $email_search ]]; then 
                       user="@""${email_search}"; 
                   else
