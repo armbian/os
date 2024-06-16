@@ -54,6 +54,8 @@ jobs:
               i=$((i+1))
               done
           else
+              if [[ "${{ matrix.source }}" == *git.ti* ]]; then exit 0; fi
+          
               COMMIT_ID="?id="
               URL=$(git -C check config --get remote.origin.url)
               REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
