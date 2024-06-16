@@ -111,10 +111,10 @@ jobs:
       - name: Display structure of downloaded files
         run: find -name "*.txt" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
 
-      - uses: geekyeggo/delete-artifact@v5
-        with:
-          name: merged-artifacts
-          failOnError: false
+      #- uses: geekyeggo/delete-artifact@v5
+      #  with:
+      #    name: merged-artifacts
+      #    failOnError: false
 
       - name: "Checkout OS repository to get latest tag"
         uses: actions/checkout@v4
