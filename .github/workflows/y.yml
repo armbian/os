@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Release => ${{ matrix.source }} Desktop => ${{ matrix.branch }} Desktop => ${{ matrix.sha1 }}"
+      - name: "URL => ${{ matrix.source }} Branch => ${{ matrix.branch }} SHA => ${{ matrix.sha1 }}"
         run: |
 
           mkdir -p artifact
@@ -54,7 +54,9 @@ jobs:
               i=$((i+1))
               done
           else
-              if [[ "${{ matrix.source }}" == *git.ti* ]]; then exit 0; fi
+              if [[ "${{ matrix.source }}" == *git.ti* ]]; then 
+              :
+              else
           
               COMMIT_ID="?id="
               URL=$(git -C check config --get remote.origin.url)
@@ -72,6 +74,8 @@ jobs:
                   echo "* $title by $user in <a href=\"$URL/commit/${COMMIT_ID}${bighash}\">$hash</a> <a href=$URL>\`$REPO\`</a>"  | tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;                   
                   fi
               done
+              
+              fi
           fi
           #git -C check log ${{ matrix.sha1 }}..HEAD --oneline
 
