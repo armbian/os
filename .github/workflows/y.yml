@@ -23,8 +23,8 @@ jobs:
         id: json
         run: |
 
-          # checkout to 7 days old
-          git checkout $(git log --since=7.days --tags --simplify-by-decoration --pretty="format:%D" | tail -1 | xargs | cut -d" " -f2)
+          # checkout to 7 days old when we will have 7 days history, now 1
+          git checkout $(git log --since=1.days --tags --simplify-by-decoration --pretty="format:%D" | tail -1 | xargs | cut -d" " -f2)
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           cat git_sources.json >> $GITHUB_OUTPUT
