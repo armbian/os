@@ -47,8 +47,6 @@ jobs:
           i=0
           source="${{ matrix.source }}"
           source=${source/.git/}
-          if [[ "${source}" == *kernel.org* ]]; then
-          fi
           source=$(echo $source | sed 's|https://git.kernel.org|https://kernel.googlesource.com|')
           git clone $source --bare -b ${{ matrix.branch }} check
           #giturl=${source/https:\/\/github.com\//}
