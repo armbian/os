@@ -23,6 +23,9 @@ jobs:
         id: json
         run: |
 
+          # checkout to 7 days old
+          git checkout $(git log --since=7.days --tags --simplify-by-decoration --pretty="format:%D" | tail -1 | xargs | cut -d" " -f2)
+
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           cat git_sources.json >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
