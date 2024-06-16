@@ -450,6 +450,10 @@ jobs:
           fetch-depth: 0
           clean: false # true is default.
 
+      # We need to make sure there is no build folder here
+      - name: "We are making full clone"
+        run: sudo rm -rf build
+
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
