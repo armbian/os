@@ -36,6 +36,8 @@ jobs:
     steps:
 
       - name: "URL => ${{ matrix.source }} Branch => ${{ matrix.branch }} SHA => ${{ matrix.sha1 }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
 
           if [[ "${{ matrix.source }}" == *git.ti* ]]; then 
