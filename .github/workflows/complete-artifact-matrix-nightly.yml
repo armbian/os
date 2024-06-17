@@ -486,7 +486,6 @@ jobs:
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         run: |
 
-          cd os
           sudo chown -R $USER:$USER .git
           if git status --porcelain | grep .; then
              git config --global user.email "info@armbian.com"
