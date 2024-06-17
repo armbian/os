@@ -457,7 +457,6 @@ jobs:
           ref: ${{ env.USERPATCHES_REF }}
           fetch-depth: 0
           clean: false # true is default.
-          path: os
 
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
@@ -477,11 +476,11 @@ jobs:
           cd build
           bash ./compile.sh targets
           cat output/info/git_sources.json
-          cp output/info/git_sources.json ../os/
+          cp output/info/git_sources.json ..
           cd ..
           # add also build repo
           sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' os/git_sources.json
-          sudo rm -rf build/cache
+          sudo rm -rf build
 
       - name: Update scripts
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
@@ -532,7 +531,7 @@ jobs:
           skip-commit: 'false'
           skip-ci: 'false'
           skip-tag: "${{ steps.versionfile.outputs.skip_tag }}"
-          version-file: "os/${{ steps.versionfile.outputs.file }}.json"
+          version-file: "${{ steps.versionfile.outputs.file }}.json"
           pre-release: "${{ steps.versionfile.outputs.pre_release }}"
           git-branch: 'main'
           tag-prefix: ''
@@ -542,8 +541,8 @@ jobs:
         if: ${{ ! github.event.inputs.versionOverride }}
         run: |
           mkdir -p downloads
-          cat "os/${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-          cat "os/${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v4
