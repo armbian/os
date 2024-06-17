@@ -200,7 +200,9 @@ jobs:
     name: "Bump version"
     runs-on: [ "self-hosted", "Linux", 'super' ]
     steps:
-
+      # Cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
       # We need to make sure there is no build folder here
       - name: "We are making full clone"
         run: sudo rm -rf build os
