@@ -479,9 +479,9 @@ jobs:
           cat output/info/git_sources.json
           cp output/info/git_sources.json ../os/
           cd ..
-          sudo rm -rf build/cache/ os
           # add also build repo
-          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' git_sources.json
+          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' os/git_sources.json
+          sudo rm -rf build/cache
 
       - name: Update scripts
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
