@@ -31,6 +31,11 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.7.y",
+    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
     "sha1": "eb44d83053d66372327e69145e8d2fa7400a4991"
   },
@@ -38,16 +43,6 @@
     "source": "https://github.com/starfive-tech/linux",
     "branch": "JH7110_VisionFive2_devel",
     "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.7.y",
-    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.2.y",
-    "sha1": "46df6964c1a9eb72027710f626cb1c6bfb5d58c9"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -60,14 +55,14 @@
     "sha1": "be2c5d55df2d502fb3d988fa0ac243e1f5e354ad"
   },
   {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.1.y",
-    "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
-  },
-  {
     "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
     "branch": "rk3588-v6.9",
     "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.2.y",
+    "sha1": "46df6964c1a9eb72027710f626cb1c6bfb5d58c9"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -83,6 +78,11 @@
     "source": "https://github.com/edk2-porting/linux-next",
     "branch": "integration/ayn-odin2",
     "sha1": "9a94c7a1294c58ffa6d19bc5cc50b2009ffb40c9"
+  },
+  {
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.1.y",
+    "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -190,14 +190,14 @@
     "sha1": "260ed1ba444bb0c1a96491e9c54219ce39fea01d"
   },
   {
-    "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
-    "branch": "v2018.05-sun50iw9",
-    "sha1": "2807819ec387107020dc0cd97bb0b2487a3d0714"
-  },
-  {
     "source": "https://github.com/orangepi-xunlong/linux-orangepi.git",
     "branch": "orange-pi-4.9-sun50iw9",
     "sha1": "0cd0547ea405b84b5b60fbc92978ac1bc2b68055"
+  },
+  {
+    "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
+    "branch": "v2018.05-sun50iw9",
+    "sha1": "2807819ec387107020dc0cd97bb0b2487a3d0714"
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
