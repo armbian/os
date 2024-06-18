@@ -56,12 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
 
-          if [[ "${{ matrix.source }}" == *git.ti* ]]; then
-
-              : # lets skip this repository as it often timeouts. To do: ask them to make GitHub mirror
-
-          else
-
               mkdir -p artifact
 
               # extract needed information
@@ -118,7 +112,6 @@ jobs:
                   done
                   fi
               fi
-          fi
 
       - name: Upload resoults
         uses: actions/upload-artifact@v4
@@ -183,9 +176,6 @@ jobs:
 
               Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
               </p>
-
-            # Debug
-            find -name "*.txt" -exec cat {} \;
 
             ## What's Changed" > body.html
             find -name "*.txt" -exec cat {} \; >> body.html
