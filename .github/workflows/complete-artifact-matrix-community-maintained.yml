@@ -115,6 +115,7 @@ on:
         - khadas-vim3l
         - khadas-vim4
         - lafrite
+        - leez-p710
         - lepotato
         - licheepi-4a
         - lime
@@ -476,10 +477,10 @@ jobs:
           cd build
           bash ./compile.sh targets
           cat output/info/git_sources.json
+          # add also build repo
+          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' output/info/git_sources.json
           cp output/info/git_sources.json ..
           cd ..
-          # add also build repo
-          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' git_sources.json
           sudo rm -rf build
 
       - name: Update scripts
