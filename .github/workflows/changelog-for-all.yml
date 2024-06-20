@@ -89,7 +89,7 @@ jobs:
                       while IFS="|" read -r user pullurl prtitle desc repourl; do
                           short_hash=$(echo $hash | cut -c 1-7)
                           # get correct author    
-                          author=$(curl -s https://api.github.com/repos/armbian/build/commits/${hash} | jq -rc '.author.login')
+                          author=$(curl -s https://api.github.com/repos/${giturl}/commits/${hash} | jq -rc '.author.login')
                           #
                           if [[ -n $title ]]; then echo "* $title by @$author in <a href=$pullurl>$short_hash</a> <a href=$source>\`$giturl\`</a>" | \
                           tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
