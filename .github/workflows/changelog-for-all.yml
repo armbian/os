@@ -187,7 +187,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           owner: 'armbian'
-          repo: 'config'
+          repo: 'build'
           tag: "v${{ env.VERSION_OVERRIDE }}"
           name: "v${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "false"
