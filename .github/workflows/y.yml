@@ -34,9 +34,8 @@ jobs:
 
           git checkout $(git log --since=1.days --tags --simplify-by-decoration --pretty="format:%D" | \
           tail -1 | xargs | cut -d" " -f2)
-
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat git_sources.json >> $GITHUB_OUTPUT
+          cat git_sources.json | jq '.[] | select(.source|test("^h.*armbian*.")) ' | jq -s >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
   gradle:
@@ -56,12 +55,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-
-          if [[ "${{ matrix.source }}" == *git.ti* ]]; then
-
-              : # lets skip this repository as it often timeouts. To do: ask them to make GitHub mirror
-
-          else
 
               mkdir -p artifact
 
@@ -83,7 +76,7 @@ jobs:
 
               # giturl is used as tag, extract it from sources URL
               giturl=${source/https:\/\/github.com\//}
-              giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
+              #giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
 
               # GitHub handling is a bit different
               if [[ "${source}" == *github* ]]; then
@@ -100,7 +93,7 @@ jobs:
                   done
 
               else
-
+                  if [[ "${giturl}" == *googlesource* && "${{ matrix.branch }}" == linux-6.9.y ]] || [[ "${giturl}" != *googlesource* ]]; then
                   URL=$(git -C check config --get remote.origin.url)
                   REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
                   git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
@@ -117,9 +110,8 @@ jobs:
                               tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;
                       fi
                   done
-
+                  fi
               fi
-          fi
 
       - name: Upload resoults
         uses: actions/upload-artifact@v4
@@ -184,9 +176,6 @@ jobs:
 
               Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
               </p>
-
-            # Debug
-            find -name "*.txt" -exec cat {} \;
 
             ## What's Changed" > body.html
             find -name "*.txt" -exec cat {} \; >> body.html

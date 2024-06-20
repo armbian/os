@@ -131,6 +131,14 @@ jobs:
     runs-on: [ "self-hosted", "Linux", 'super' ]
     steps:
 
+      # Cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
+
+      # We need to make sure there is no build folder here
+      - name: "We are making full clone"
+        run: sudo rm -rf build os
+
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v4
@@ -159,11 +167,11 @@ jobs:
           cd build
           bash ./compile.sh targets
           cat output/info/git_sources.json
-          cp output/info/git_sources.json .
-          cd ..
-          rm -rf build
           # add also build repo
-          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' git_sources.json
+          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' output/info/git_sources.json
+          cp output/info/git_sources.json ..
+          cd ..
+          sudo rm -rf build
 
       - name: Update scripts
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
@@ -201,7 +209,7 @@ jobs:
 #        if: ${{ ! github.event.inputs.versionOverride }}
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v5.2.1
+        uses: TriPSs/conventional-changelog-action@v5.3.0
         with:
           github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'

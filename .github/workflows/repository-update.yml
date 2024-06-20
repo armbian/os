@@ -107,6 +107,7 @@ jobs:
               DELETE_AFTER="22.08"
               delete_packages=(
                     ["openhab"]="% *"
+                    ["fastfetch"]="% *"
                     ["microsoft-edge-stable"]="% *"
                     ["firefox*"]="% *"
                     ["thunderbird*"]="% *"
