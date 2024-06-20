@@ -20,24 +20,24 @@
     "sha1": "a34a7ad5014c2b833c6a2c0f89357f98a0bddab0"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.9.y",
     "sha1": "380df7b7938d3c3ba1d0d0b472a810fd38061329"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.2.y",
-    "sha1": "46df6964c1a9eb72027710f626cb1c6bfb5d58c9"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.6.y",
     "sha1": "76d42e596d895c53abf86daca4e5877fe0088145"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "6a252e579861c0ed5174230570b80065d91438e7"
+  },
+  {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -55,9 +55,9 @@
     "sha1": "e7b12d4d8c397278bcd31b9f6b0064a864b28208"
   },
   {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.1.y",
-    "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.2.y",
+    "sha1": "46df6964c1a9eb72027710f626cb1c6bfb5d58c9"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -65,24 +65,24 @@
     "sha1": "dfaf2016e9785aa80730f58a3703c7e7a286a09a"
   },
   {
-    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
-    "branch": "rk3588-v6.9",
-    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
-  },
-  {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-5.10-rkr6",
     "sha1": "5e4d27694677df945a1915244a622d2c53a27db1"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "6a252e579861c0ed5174230570b80065d91438e7"
-  },
-  {
     "source": "https://github.com/edk2-porting/linux-next",
     "branch": "integration/ayn-odin2",
     "sha1": "9a94c7a1294c58ffa6d19bc5cc50b2009ffb40c9"
+  },
+  {
+    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
+    "branch": "rk3588-v6.9",
+    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
+  },
+  {
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.1.y",
+    "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -92,7 +92,7 @@
   {
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
-    "sha1": "4cfd07b51a3c463a5c149a4bf69f655fcf1be4e0"
+    "sha1": "c76c95c30f5deb0014ba5ff930a1b4ba7bbaf3e0"
   },
   {
     "source": "https://source.denx.de/u-boot/u-boot.git",
@@ -115,6 +115,11 @@
     "sha1": "5b6bc28ead0674ed9c9b7afa35f35828aad07cda"
   },
   {
+    "source": "https://github.com/functionland/u-boot.git",
+    "branch": "next-dev",
+    "sha1": "46da2bfe5068535caf919a36c6fcc5a7e744a04b"
+  },
+  {
     "source": "https://github.com/150balbes/u-boot-rk",
     "branch": "rk3588",
     "sha1": "1133c25725b07bfa27f2eeef26a3af262296fcbf"
@@ -123,11 +128,6 @@
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "stable-4.19-rock3",
     "sha1": "c55987146f4f9b20f7cb2f917ca88300419afe8d"
-  },
-  {
-    "source": "https://github.com/functionland/u-boot.git",
-    "branch": "next-dev",
-    "sha1": "46da2bfe5068535caf919a36c6fcc5a7e744a04b"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -140,14 +140,14 @@
     "sha1": "a452f767b730bfb5e999b6c700753c74f2a72f15"
   },
   {
-    "source": "https://github.com/chainsx/thead-u-boot",
-    "branch": "extlinux",
-    "sha1": "990e122d26d1ef94f4e0e1bbf5d7df58e8393eee"
-  },
-  {
     "source": "https://github.com/chainsx/thead-kernel",
     "branch": "th1520",
     "sha1": "a76d97e234b6613fc20a3dcbfc99128fe9b05e7a"
+  },
+  {
+    "source": "https://github.com/chainsx/thead-u-boot",
+    "branch": "extlinux",
+    "sha1": "990e122d26d1ef94f4e0e1bbf5d7df58e8393eee"
   },
   {
     "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
@@ -201,13 +201,13 @@
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-6.6",
-    "sha1": "b9b9d633ab5b213fe492a62f35c6cfd5a2614f42"
+    "branch": "linux-5.10",
+    "sha1": "b17835d38155a8c2bcb3e2d0f3f55989bf2f1b98"
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-5.10",
-    "sha1": "b17835d38155a8c2bcb3e2d0f3f55989bf2f1b98"
+    "branch": "linux-6.6",
+    "sha1": "b9b9d633ab5b213fe492a62f35c6cfd5a2614f42"
   },
   {
     "source": "https://github.com/150balbes/u-boot-rk",
@@ -221,11 +221,6 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "da87f91ad8450ccc5274cd7b6ba8d823b396c96f"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.1.y",
     "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
   },
@@ -233,6 +228,11 @@
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.9.y",
     "sha1": "5a7af48f3051ac2fa67abe44734c7ab002c14912"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.6.y",
+    "sha1": "da87f91ad8450ccc5274cd7b6ba8d823b396c96f"
   },
   {
     "source": "https://github.com/150balbes/u-boot-rk",
