@@ -32,7 +32,7 @@ jobs:
 
           # checkout to 7 days old when we will have 7 days history, now 1
 
-          git checkout $(git log --since=2.days --tags --simplify-by-decoration --pretty="format:%D" | \
+          git checkout $(git log --since=1.days --tags --simplify-by-decoration --pretty="format:%D" | \
           tail -1 | xargs | cut -d" " -f2)
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
@@ -178,16 +178,13 @@ jobs:
               Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
               </p>
 
-            # Debug
-            find -name "*.txt" -exec cat {} \;
-
             ## What's Changed" > body.html
             find -name "*.txt" -exec cat {} \; >> body.html
 
       - uses: ncipollo/release-action@v1
         with:
           owner: 'armbian'
-          repo: 'config'
+          repo: 'build'
           tag: "v${{ env.VERSION_OVERRIDE }}"
           name: "v${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "false"
