@@ -244,6 +244,7 @@ jobs:
           BUILD=$(git rev-parse HEAD)
           cd ../documentation
           DOCUMENTATION=$(git rev-parse HEAD)
+          cd ..
 
           # add build repository
           sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' build/output/info/git_sources.json
