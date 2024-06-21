@@ -158,7 +158,7 @@ jobs:
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
-          repository: build/documentation
+          repository: armbian/documentation
           ref: ${{ env.BUILD_REF }}
           fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
