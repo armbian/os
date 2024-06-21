@@ -493,13 +493,14 @@ jobs:
           # add documentation repository
           sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/documentation",    \n    "branch": "master",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' build/output/info/git_sources.json
 
-          cp build/output/info/git_sources.json .
+          cp build/output/info/git_sources.json os/
 
       - name: Update scripts
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
         run: |
 
           #sudo chown -R $USER:$USER .git
+          cd os
           if git status --porcelain | grep .; then
              git config --global user.email "info@armbian.com"
              git config --global user.name "Armbianworker"
