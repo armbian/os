@@ -126,8 +126,10 @@ jobs:
           TEAM: "[[team]]"
 
   sources_prep:
+    needs: team_check
     name: "Store sources hashes"
     runs-on: [ "self-hosted", "Linux", 'super' ]
+    steps:
 
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
