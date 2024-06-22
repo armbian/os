@@ -177,10 +177,10 @@ jobs:
           cd ..
 
           # add build repository
-          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' build/output/info/git_sources.json
+          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/build",    \n    "branch": "main",     \n    "sha1": "'$BUILD'"\n  },\n  &/' build/output/info/git_sources.json
 
           # add documentation repository
-          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/documentation",    \n    "branch": "master",     \n    "sha1": "'$(git rev-parse HEAD)'"\n  },\n  &/' build/output/info/git_sources.json
+          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/documentation",    \n    "branch": "master",     \n    "sha1": "'$DOCUMENTATION'"\n  },\n  &/' build/output/info/git_sources.json
 
           cp build/output/info/git_sources.json os/
 
