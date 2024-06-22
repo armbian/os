@@ -531,17 +531,6 @@ jobs:
           fetch-depth: 0
           clean: false # true is default.
 
-      # clone the build system repo (`armbian/build`)
-      - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.BUILD_REPOSITORY }}
-          ref: ${{ env.BUILD_REF }}
-          fetch-depth: 0
-          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
-          path: build
-
       - name: Determine version
         id: versionfile
         run: |
