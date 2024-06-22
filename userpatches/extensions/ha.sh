@@ -1,6 +1,11 @@
 enable_extension "docker-ce"
 
 function extension_prepare_config__home_assistant() {
+
+	if [[ ${MINIMAL} == "yes" ]]; then
+		exit_with_error "Home Assistant Supervised needs full CLI image that comes with Network manager"
+	fi
+
 	display_alert "Target image will be a Home Assistant Supervised deploy" "${EXTENSION}" "info"
         case "${RELEASE}" in
                 bullseye | bookworm | trixie)
