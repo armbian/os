@@ -60,7 +60,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm # trixie is currently broken
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
