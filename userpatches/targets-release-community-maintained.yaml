@@ -88,7 +88,6 @@ lists:
     - { BOARD: firefly-rk3399, BRANCH: current }
     - { BOARD: fxblox-rk1, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: h96-tvbox-3566, BRANCH: current }
-    - { BOARD: helios64, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
     - { BOARD: hinlink-h28k, BRANCH: legacy }
     - { BOARD: hinlink-h28k, BRANCH: vendor}
@@ -121,10 +120,10 @@ lists:
     - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: mixtile-blade3, BRANCH: edge }
     - { BOARD: nanopc-cm3588-nas, BRANCH: vendor}
-    - { BOARD: nanopc-cm3588-nas, BRANCH: edge }
+    - { BOARD: nanopc-cm3588-nas, BRANCH: current }
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
-    - { BOARD: nanopct6, BRANCH: edge }
+    - { BOARD: nanopct6, BRANCH: current }
     - { BOARD: nanopi-r5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r6c, BRANCH: current }
