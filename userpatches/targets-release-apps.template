@@ -151,6 +151,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "ha"
+      NETWORKING_STACK="network-manager"
     items:
       - *home-assistant
 
