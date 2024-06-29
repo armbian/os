@@ -241,7 +241,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: armbian/docker-armbian-build
-          ref: master
+          ref: main
           fetch-depth: 0
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
           path: docker-armbian-build
