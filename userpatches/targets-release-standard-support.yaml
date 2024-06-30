@@ -104,6 +104,24 @@ lists:
 
 targets:
 
+  # Oldstable Debian minimal
+  minimal-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bullseye
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+
   # Debian minimal
   minimal-cli-stable-debian:
     enabled: yes
@@ -149,7 +167,7 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: jammy
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
@@ -157,154 +175,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-
-  # Ubuntu full CLI
-  full-cli-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "no"
-      BUILD_DESKTOP: "no"
-    items:
-      - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
-      - *standard-support-headless
-  
-  # Full Ubuntu LTS XFCE
-  xfce-desktop-lts-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
-
-  # Full Debian stable XFCE
-  xfce-desktop-stable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "xfce"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
-
-  # Full Ubuntu Gnome
-  gnome-3d-desktop-lts-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "gnome"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
-      - { BOARD: xiaomi-elish, BRANCH: current }
-      - { BOARD: xiaomi-umi, BRANCH: current }
-      - *standard-support-fast-hdmi
-
-  # Full Ubuntu old LTS KDE plasma
-  kde-plasma-desktop-stable-ubuntu:
-    enabled: no
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "kde-plasma"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *standard-support-fast-hdmi
-
-  #  Full Debian Cinnamon
-  cinnamon-3d-desktop-stable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "cinnamon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      - *standard-support-fast-hdmi
-
-  # Ubuntu old LTS with KDE neon
-  #
-  # Without office as otherwise images will go over 2Gb GH file limit!
-  #
-  kde-neon-desktop-stable-ubuntu:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: jammy
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "kde-neon"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,email,programming,remote_desktop"
-    items:
-      - *standard-support-fast-hdmi
-      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
-      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
-
-  # Debian trixie gnome desktop for some boards
-  gnome-desktop-latest-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: trixie
-      BUILD_MINIMAL: "no"
-      DESKTOP_ENVIRONMENT: "gnome"
-      BUILD_DESKTOP: "yes"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
-    items:
-      # Attention, no list reference here, just a specific board.
-      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
-      - { BOARD: xiaomi-elish, BRANCH: current }
-      - { BOARD: xiaomi-umi, BRANCH: current }
 
   # automated section
   automated-section:
