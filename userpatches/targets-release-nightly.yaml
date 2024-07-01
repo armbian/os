@@ -78,8 +78,8 @@ lists:
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: radxa-zero3, BRANCH: legacy }
     - { BOARD: radxa-zero3, BRANCH: vendor}
+    - { BOARD: radxa-zero3, BRANCH: edge }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
