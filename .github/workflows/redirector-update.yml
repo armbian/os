@@ -399,7 +399,7 @@ jobs:
 
           rm -rf downloads/*
 
-      - uses: robinraju/release-downloader@v1.10
+      - uses: robinraju/release-downloader@v1.11
         with:
           repository: "P3TERX/GeoLite.mmdb"
           latest: true
