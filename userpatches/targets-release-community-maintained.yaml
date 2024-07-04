@@ -24,7 +24,6 @@ lists:
   # automated lists start
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
-    - { BOARD: bananapif3, BRANCH: legacy }
     - { BOARD: beaglev, BRANCH: edge }
     - { BOARD: licheepi-4a, BRANCH: current }
     - { BOARD: star64, BRANCH: edge }

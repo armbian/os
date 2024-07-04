@@ -21,6 +21,11 @@ common-gha-configs:
 lists:
 
   # automated lists start
+  staging-riscv64: &staging-riscv64
+    # auto generated section
+    - { BOARD: bananapif3, BRANCH: legacy }
+    # end of auto generated section
+
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: nanopi-r4s, BRANCH: current }
@@ -34,7 +39,6 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
-    - { BOARD: jethubj200, BRANCH: current }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
     - { BOARD: orangepi5pro, BRANCH: legacy }
@@ -56,6 +60,7 @@ lists:
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: jethubj100, BRANCH: current }
+    - { BOARD: jethubj200, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
@@ -130,6 +135,7 @@ targets:
     items:
       - { BOARD: "aml-s9xx-box" , BRANCH: current }
       - *standard-support-headless
+      - *staging-riscv64
       - *virtual-boards
 
   # debian unstable minimal
@@ -149,6 +155,7 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *staging-fast-hdmi
+      - *staging-riscv64
 
   # debian stable minimal
   minimal-cli-stable-debian:
@@ -181,6 +188,7 @@ targets:
     items:
       - *standard-support-slow-hdmi
       - *staging-fast-hdmi
+      - *staging-riscv64
 
   # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
@@ -232,6 +240,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *staging-riscv64
       - *standard-support-headless
       - *staging-fast-hdmi
       - *standard-support-fast-hdmi
