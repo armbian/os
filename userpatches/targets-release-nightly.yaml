@@ -41,7 +41,6 @@ lists:
     # auto generated section
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
-    - { BOARD: orangepi5pro, BRANCH: legacy }
     - { BOARD: orangepi5pro, BRANCH: vendor}
     - { BOARD: orangepizero2, BRANCH: current }
     # end of auto generated section
@@ -54,7 +53,6 @@ lists:
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: bananapim7, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: helios64, BRANCH: current }
@@ -86,11 +84,8 @@ lists:
     - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: radxa-zero3, BRANCH: edge }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-5-itx, BRANCH: legacy, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
-    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5a, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5b, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
