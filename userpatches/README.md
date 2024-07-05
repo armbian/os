@@ -2,12 +2,21 @@
 
 ## Standard support
 
-Edit `targets-release-standard-support.yaml`
+Edit `targets-release-standard-support.template`
 (recreated manually, when [Armbian release](https://github.com/orgs/armbian/teams/release-manager) manager executes build action)
 
 ## Nightly
 
-Edit `targets-release-nightly.yaml`
+Edit `targets-release-nightly.template`
 
-- builds once per day, at 5:00 AM UTC
-- builds at push when file is changed
+- Built once per day, at 5:00 AM UTC
+- Built at push when file is changed
+
+
+## Community
+
+Edit `targets-release-community-maintained.template`
+
+- Rolling releases
+  Built once per week
+

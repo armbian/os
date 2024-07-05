@@ -26,7 +26,7 @@ lists:
 
 targets:
 
-  # debian cli minimal
+  # debian stable cli minimal
   minimal-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -42,7 +42,7 @@ targets:
       - *community-maintained-fast-hdmi
       - *community-maintained-slow-hdmi
 
-  # debian cli
+  # debian stable cli
   full-cli-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -56,7 +56,7 @@ targets:
     items:
      - { BOARD: aml-s9xx-box, BRANCH: current }
 
-  # debian xfce
+  # debian stable xfce
   xfce-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -73,7 +73,7 @@ targets:
     items:
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
-  # debian gnome
+  # debian stable gnome
   gnome-desktop-stable-debian:
     enabled: yes
     configs: [ armbian-community ]
@@ -90,7 +90,7 @@ targets:
     items:
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
-  # ubuntu cli
+  # ubuntu stable cli
   full-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -98,16 +98,15 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
       - *community-maintained-headless
       - { BOARD: aml-s9xx-box, BRANCH: current }
-      - { BOARD: aml-s9xx-box, BRANCH: edge }
 
-  # ubuntu unstable cli minimal
-  minimal-cli-unstable-ubuntu:
+  # ubuntu stable cli minimal
+  minimal-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
@@ -121,7 +120,21 @@ targets:
       - *community-maintained-riscv64
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
-  # ubuntu xfce
+ # ubuntu unstable cli
+ full-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: oracular
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: aml-s9xx-box, BRANCH: edge }
+
+  # ubuntu stable xfce
   xfce-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -129,7 +142,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
@@ -139,10 +152,8 @@ targets:
       - *community-maintained-riscv64
       - *community-maintained-slow-hdmi
       - { BOARD: aml-s9xx-box, BRANCH: current }
-      - { BOARD: aml-s9xx-box, BRANCH: edge }
 
-
-  # ubuntu gnome
+  # ubuntu stable gnome
   gnome-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -150,7 +161,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
@@ -167,15 +178,14 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
     items:
-      - { BOARD: aml-s9xx-box, BRANCH: current }
-
+      - { BOARD: aml-s9xx-box, BRANCH: edge }
 
   # ubuntu unstable gnome
   gnome-desktop-unstable-ubuntu:
@@ -185,18 +195,16 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *community-maintained-fast-hdmi
-      - { BOARD: aml-s9xx-box, BRANCH: current }
+      - { BOARD: aml-s9xx-box, BRANCH: edge }
 
-
-  # Full Ubuntu LTS Cinnamon with 3d
+  # ubuntu stable Cinnamon
   cinnamon-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
@@ -204,7 +212,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
