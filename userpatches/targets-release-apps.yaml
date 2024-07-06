@@ -42,6 +42,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "omv"
-      NETWORKING_STACK="systemd-networkd"
+      NETWORKING_STACK: "systemd-networkd"
     items:
       - *omv
