@@ -138,7 +138,7 @@ jobs:
           DESKTOP_APPGROUPS_SELECTED= \
           DESKTOP_ENVIRONMENT="${DESKTOP_ENVIRONMENT}" \
           DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base \
-          ENABLE_EXTENSIONS=image-output-qcow2,v4l2loopback-dkms,mesa-vpu \
+          ENABLE_EXTENSIONS=image-output-qcow2,v4l2loopback-dkms \
           EXPERT=yes \
           KERNEL_CONFIGURE=no \
           RELEASE=${{ matrix.release }} \
