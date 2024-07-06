@@ -137,10 +137,31 @@ lists:
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
 
+  omv: &omv
+    - { BOARD: odroidm1, BRANCH: current }
+    - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: uefi-x86, BRANCH: current }
+
 targets:
 
+  # OpenMediaVault
+  minimal-cli-stable-debian-omv:
+    enabled: yes
+    configs: [ armbian-apps ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+      ENABLE_EXTENSIONS: "omv"
+      NETWORKING_STACK="systemd-networkd"
+    items:
+      - *omv
+
   # Home assistant
-  minimal-cli-stable-debian:
+  minimal-cli-stable-debian-ha:
     enabled: yes
     configs: [ armbian-apps ]
     pipeline:
@@ -156,7 +177,7 @@ targets:
       - *home-assistant
 
   # OpenHab
-  cli-stable-debian:
+  cli-stable-debian-oh:
     enabled: yes
     configs: [ armbian-apps ]
     pipeline:
@@ -171,7 +192,7 @@ targets:
       - *openhab
 
   # Armbian security
-  cli-unstable-debian:
+  cli-unstable-debian-kali:
     enabled: yes
     configs: [ armbian-apps ]
     pipeline:
