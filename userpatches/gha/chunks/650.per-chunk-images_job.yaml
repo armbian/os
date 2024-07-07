@@ -3,7 +3,7 @@ on: # <TEMPLATE-IGNORE>
 jobs: # <TEMPLATE-IGNORE>
   "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
     needs: [ "matrix_prep", "all-artifacts-ready" ]
-    timeout-minutes: 180
+    timeout-minutes: 60
     if: ${{ !failure() && !cancelled() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
