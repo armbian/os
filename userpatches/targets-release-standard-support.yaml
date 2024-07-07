@@ -70,6 +70,7 @@ lists:
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: radxa-e52c, BRANCH: vendor}
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: radxa-zero3, BRANCH: edge }
