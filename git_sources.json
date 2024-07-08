@@ -25,19 +25,14 @@
     "sha1": "7f2e18ecac75d50acb843395ad07a0f2b9a12a50"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.9.y",
-    "sha1": "2106717b5214895a29c038b37f15d78a3202aa2b"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "e94a2a3bc8bdfc6a4a7b05eed7803b64a409c9f5"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.1.y",
+    "sha1": "7753af06eebfb56b44673bbfcb0b78d73a54ede9"
   },
   {
     "source": "https://github.com/armbian/config",
@@ -45,14 +40,14 @@
     "sha1": "57030d444bab9333dc4fe70030287e988651a1e4"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "3083c2b56b69aba0ba896eb70e6a3d5298275d8f"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.9.y",
+    "sha1": "2106717b5214895a29c038b37f15d78a3202aa2b"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7753af06eebfb56b44673bbfcb0b78d73a54ede9"
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -66,18 +61,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.8.y",
-    "sha1": "632428373bea7581869cb05dce40bef0d37793e3"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.7.y",
     "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
-  },
-  {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr1",
-    "sha1": "7a75608df8d406f42d1dd3066ef618811b97c4b7"
   },
   {
     "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
@@ -95,6 +80,26 @@
     "sha1": "9a94c7a1294c58ffa6d19bc5cc50b2009ffb40c9"
   },
   {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr1",
+    "sha1": "7a75608df8d406f42d1dd3066ef618811b97c4b7"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "3083c2b56b69aba0ba896eb70e6a3d5298275d8f"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.8.y",
+    "sha1": "632428373bea7581869cb05dce40bef0d37793e3"
+  },
+  {
+    "source": "https://gitee.com/bianbu-linux/uboot-2022.10.git",
+    "branch": "bl-v1.0.y",
+    "sha1": "a5e197e1a6b576e75f5a916f64fbc4717b5f3ca1"
+  },
+  {
     "source": "https://gitee.com/bianbu-linux/linux-6.1.git",
     "branch": "bl-v1.0.y",
     "sha1": "d6bae33cbc2532eff4f856399e2d3d37ecb10e51"
@@ -108,11 +113,6 @@
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "7c73436feb2fa7a2f812f8781c695f0977010a06"
-  },
-  {
-    "source": "https://gitee.com/bianbu-linux/uboot-2022.10.git",
-    "branch": "bl-v1.0.y",
-    "sha1": "a5e197e1a6b576e75f5a916f64fbc4717b5f3ca1"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
@@ -185,14 +185,14 @@
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
-    "source": "https://github.com/hardkernel/u-boot.git",
-    "branch": "odroidxu4-v2017.05",
-    "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
-  },
-  {
     "source": "https://github.com/hardkernel/linux",
     "branch": "odroid-6.6.y",
     "sha1": "ff2422d0b03367d454c7c1fc579f19993cb9b9f5"
+  },
+  {
+    "source": "https://github.com/hardkernel/u-boot.git",
+    "branch": "odroidxu4-v2017.05",
+    "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
   },
   {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
