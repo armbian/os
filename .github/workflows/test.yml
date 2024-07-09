@@ -9,6 +9,7 @@ jobs:
     runs-on: [ "ubuntu-latest" ]
     steps:
 
+      - uses: actions/checkout@v4
       - name: "Restart ${{ matrix.script }}.yml"
         run: |
           gh release list | awk '{print $1;}' | tail -n +4 | xargs -L1 gh release delete     
