@@ -9,15 +9,8 @@ jobs:
     runs-on: [ "ubuntu-latest" ]
     steps:
 
-      - uses: sgpublic/delete-release-action@v1.1
-        with:
-          release-drop: true
-          release-keep-count: 2
-          release-drop-tag: false
-          pre-release-drop: true
-          pre-release-keep-count: 1
-          pre-release-drop-tag: true
-          draft-drop: true
-          draft-drop-count: 1
+      - name: "Restart ${{ matrix.script }}.yml"
+        run: |
+          gh release list | awk '{print $1;}' | tail -n +4 | xargs -L1 gh release delete     
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
