@@ -13,7 +13,7 @@ jobs:
         with:
           release-drop: true
           release-keep-count: 2
-          release-drop-tag: true
+          release-drop-tag: false
           pre-release-drop: true
           pre-release-keep-count: -1
           pre-release-drop-tag: true
