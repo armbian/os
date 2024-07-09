@@ -2,11 +2,13 @@ name: Test
 on:
   workflow_dispatch:
   workflow_call:
+
 jobs:
-  build:
+  test:
     name: "Test1234"
     runs-on: [ "ubuntu-latest" ]
     steps:
+
       - uses: sgpublic/delete-release-action@v1.1
         with:
           release-drop: true
