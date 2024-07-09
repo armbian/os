@@ -20,4 +20,4 @@ jobs:
           draft-drop: true
           draft-drop-count: -1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
