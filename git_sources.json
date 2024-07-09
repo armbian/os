@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "718aa52b1708b9b894e754829cd22cea86b26466"
+    "sha1": "41aa99e657bbee9a675eb3c8ddda53aa49e6f8be"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -36,18 +36,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.7.y",
+    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.6.y",
-    "sha1": "8fa96e44d36ccd4fdd49893e44c9939f09eed3b3"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7753af06eebfb56b44673bbfcb0b78d73a54ede9"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.9.y",
-    "sha1": "2106717b5214895a29c038b37f15d78a3202aa2b"
+    "sha1": "2928631d5304b8fec48bad4c7254ebf230b6cc51"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -65,9 +60,14 @@
     "sha1": "8ea7ee41671f59d5145535e45fe925f9180d23ca"
   },
   {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr1",
+    "sha1": "7a75608df8d406f42d1dd3066ef618811b97c4b7"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.7.y",
-    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+    "branch": "linux-6.1.y",
+    "sha1": "7753af06eebfb56b44673bbfcb0b78d73a54ede9"
   },
   {
     "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
@@ -75,14 +75,9 @@
     "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr1",
-    "sha1": "7a75608df8d406f42d1dd3066ef618811b97c4b7"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.8.y",
-    "sha1": "632428373bea7581869cb05dce40bef0d37793e3"
+    "branch": "linux-6.9.y",
+    "sha1": "2106717b5214895a29c038b37f15d78a3202aa2b"
   },
   {
     "source": "https://github.com/edk2-porting/linux-next",
@@ -100,19 +95,24 @@
     "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
   },
   {
+    "source": "https://gitee.com/bianbu-linux/linux-6.1.git",
+    "branch": "bl-v1.0.y",
+    "sha1": "d6bae33cbc2532eff4f856399e2d3d37ecb10e51"
+  },
+  {
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "7c73436feb2fa7a2f812f8781c695f0977010a06"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.8.y",
+    "sha1": "632428373bea7581869cb05dce40bef0d37793e3"
+  },
+  {
     "source": "https://gitee.com/bianbu-linux/uboot-2022.10.git",
     "branch": "bl-v1.0.y",
     "sha1": "a5e197e1a6b576e75f5a916f64fbc4717b5f3ca1"
-  },
-  {
-    "source": "https://gitee.com/bianbu-linux/linux-6.1.git",
-    "branch": "bl-v1.0.y",
-    "sha1": "d6bae33cbc2532eff4f856399e2d3d37ecb10e51"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
@@ -125,14 +125,14 @@
     "sha1": "f33ca29a323571460e56167c986a52c19a3f1e01"
   },
   {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "5b6bc28ead0674ed9c9b7afa35f35828aad07cda"
-  },
-  {
     "source": "https://github.com/bigtreetech/u-boot.git",
     "branch": "v2023.07-cb1",
     "sha1": "272cd1ca1e11962087d94cd4dc5db3733b2b3ad7"
+  },
+  {
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "5b6bc28ead0674ed9c9b7afa35f35828aad07cda"
   },
   {
     "source": "https://github.com/functionland/u-boot.git",
