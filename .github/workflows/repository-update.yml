@@ -2,20 +2,12 @@ name: Repository update (admin)
 on:
   repository_dispatch:
     types: ["Repository update"]
-#  schedule:
-#    - cron: "00 3 * * *"
   workflow_dispatch:
     inputs:
-      UPDATE_STABLE_REPO:
-        description: 'yes = when you are sure packages are on mirrors'
-        required: false
-        options: [ 'yes', 'no' ]
-        type: choice
-        default: 'no'
-      PKG_REMOVE:
-        description: Packages to remove [pkg-name] or [Name (% linux*edge*)]
-        required: false
-        type: string
+      partial:
+        type: boolean
+        description: "Include partial builds"
+        default: false
 
 concurrency:
   group: pipeline
@@ -80,7 +72,7 @@ jobs:
           repository: armbian/build
           fetch-depth: 1
           clean: false
-          #ref: test-repo
+          ref: repo-management # THIS IS TESTING REPOSITORY !!!
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -91,157 +83,21 @@ jobs:
       - name: "Build repository ${{ matrix.repository }}"
         run: |
 
+          # include packages from manually made images
+          if [[ "${{ github.event.inputs.partial }}" == "true" ]]; then
+          echo "Include manual" >> $GITHUB_STEP_SUMMARY
+          sudo rsync -arctuxz --progress --remove-source-files /incoming/partial/ /incoming/ >> $GITHUB_STEP_SUMMARY
+          fi
+
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
-          sed -i 's|"gpgProvider": ".*"|"gpgProvider": "gpg2"|g' tools/repository/aptly.conf
-          sudo chown -R ${USER}.${USER} /outgoing/${TARGET}
-          # clean
-          if [[ -n "${{ inputs.PKG_REMOVE }}" ]]; then
-             PKG_REMOVE="|${{ inputs.PKG_REMOVE }}"
-          fi
-          # remove certain and custom package
-          # cleaning is optional so lets apply some magic as we don't want this at every rebuild
-          day=$( date +%d )
-          if [ "$day" = "01" ] || [ "$day" = "15" ]; then
-              # delete older packages
-              declare -A delete_packages
-              DELETE_AFTER="22.08"
-              delete_packages=(
-                    ["openhab"]="% *"
-                    ["discord"]="% *"
-                    ["fastfetch"]="% *"
-                    ["microsoft-edge-stable"]="% *"
-                    ["firefox*"]="% *"
-                    ["thunderbird*"]="% *"
-                    ["code"]="% *"
-                    ["codium"]="% *"
-                    ["google-chrome"]="% *"
-                    ["box64*"]="% *"
-                    ["box86*"]="% *"
-                    ["chromium*"]="% *"
-                    ["zoom"]="99999"
-                    ["gh"]="99999"
-                    ["brave-browser"]="% *"
-                    ["zfsutils-linux"]="<= 2.2.1"
-                    ["libzfsbootenv1linux"]="<= 2.2.1"
-                    ["libzfslinux-dev"]="<= 2.2.1"
-                    ["libnvpair3linux"]="<= 2.2.1"
-                    ["libzfs4linux"]="<= 2.2.1"
-                    ["libzpool5linux"]="<= 2.2.1"
-                    ["libuutil3linux"]="<= 2.2.1"
-                    ["zfs-dkms"]="<= 2.2.1"
-                    ["zfs-zed"]="<= 2.2.1"
-                    ["zfs-test"]="<= 2.2.1"
-                    ["zfs-dracut"]="<= 2.2.1"
-                    ["zfs-initramfs"]="<= 2.2.1"
-                    ["libpam-zfs"]="<= 2.2.1"
-                    ["system-monitoring-center"]="<= 2.25.1"
-                    ["cockpit-file-sharing"]="<= 3.3.4"
-                    ["nala"]="<= 0.12.0"
-                    ["pacstall"]="<= 4.3.1"
-                    ["balena-etcher"]="<= 1.18.8"
-                    ["armbian-bsp-cli"]="<= ${DELETE_AFTER}"
-                    ["armbian-firmware"]="<= ${DELETE_AFTER}"
-                    ["armbian-config"]="<= ${DELETE_AFTER}"
-                    ["armbian-zsh"]="<= ${DELETE_AFTER}"
-                    ["armbian-plymouth-theme"]="<= ${DELETE_AFTER}"
-                    ["armbian-*-desktop"]="<= ${DELETE_AFTER}"
-                    ["linux-u-boot-*-*"]="<= ${DELETE_AFTER}"
+          sudo chown -R ${USER}.${USER} /outgoing/${TARGET} /incoming/${REPOSITORY} /incoming/partial/
 
-                    ["linux-image-*-sunxi*"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-sunxi*"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-sunxi*"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-rockchip*"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-rockchip*"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-rockchip*"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-arm64"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-arm64"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-arm64"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-x86"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-x86"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-bcm271*"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-bcm271*"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-bcm271*"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-imx6"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-imx6"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-imx6"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-meson*"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-meson*"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-meson*"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-mvebu*"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-mvebu*"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-mvebu*"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-virtual"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-virtual"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-virtual"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-odroidxu4"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-odroidxu4"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-odroidxu4"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-rk3568-odroid"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-rk3568-odroid"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-rk3568-odroid"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-riscv64"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-riscv64"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-riscv64"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-rk322x"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-rk322x"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-rk322x"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-rk35xx"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-rk35xx"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-rk35xx"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-media"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-media"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-media"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-legacy-sun50iw9"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-legacy-sun50iw9"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-legacy-sun50iw9"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-station-*"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-station-*"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-station-*"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-*-jetson-nano"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-*-jetson-nano"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-*-jetson-nano"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-legacy-rk3399"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-legacy-rk3399"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-legacy-rk3399"]="<= ${DELETE_AFTER}"
-
-                    ["linux-image-legacy-mt7623"]="<= ${DELETE_AFTER}"
-                    ["linux-dtb-legacy-mt7623"]="<= ${DELETE_AFTER}"
-                    ["linux-headers-legacy-mt7623"]="<= ${DELETE_AFTER}"
-
-              )
-              # Loop over the array of packages
-              for key in "${!delete_packages[@]}"
-              do
-                tools/repository/repo \
-                -i /incoming/${{ matrix.repository }} \
-                -o /outgoing/${TARGET} \
-                -r bookworm,trixie,sid,focal,kinetic,jammy,noble,oracular \
-                -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% $key*), \$Version (${delete_packages[$key]})"
-              done
-          fi
           # add from incoming
           tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
-          # create index
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c html > /outgoing/${TARGET}/public/content.html
+
+          # fix folder permissions
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/${REPOSITORY} /incoming/partial/
 
   Prepare:
     name: "Upload to servers"
@@ -300,7 +156,6 @@ jobs:
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
               if [[ "$target" == "debs" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              #if [[ "$target" == "images" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "control" /storage2/dl/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi
           done
 
   Index:
@@ -333,18 +188,13 @@ jobs:
           SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
-
           for target in "${TARGETS[@]}"; do
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" == "yes" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
               # delete at the end
-              if [[ "$target" == "debs" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
               if [[ "$target" == "debs-beta" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
-              #if [[ "$target" == "images" && "${{ inputs.UPDATE_STABLE_REPO }}" ]]; then rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /storage2/dl/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/dl ; fi              
           done
 
   dispatch:
