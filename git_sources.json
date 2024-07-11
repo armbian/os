@@ -17,12 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "f25fc42e1ecf7516a709c8ef9cfc084392e91826"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7753af06eebfb56b44673bbfcb0b78d73a54ede9"
+    "sha1": "b739dfdf6b19b7a551c62eb6a61e374129010858"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -41,18 +36,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "2928631d5304b8fec48bad4c7254ebf230b6cc51"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.9.y",
     "sha1": "2106717b5214895a29c038b37f15d78a3202aa2b"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "3083c2b56b69aba0ba896eb70e6a3d5298275d8f"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.1.y",
+    "sha1": "7753af06eebfb56b44673bbfcb0b78d73a54ede9"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -60,19 +50,9 @@
     "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr1",
-    "sha1": "9fd0cc90e31b90eb4ca2a57b4fa8223866378867"
-  },
-  {
-    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
-    "branch": "rk3588-v6.9",
-    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
-  },
-  {
-    "source": "https://source.denx.de/u-boot/u-boot.git",
-    "branch": "v2024.01",
-    "sha1": "aa6d5f7192d5860458b5ef0163aad1d94e9bde70"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "3083c2b56b69aba0ba896eb70e6a3d5298275d8f"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
@@ -80,9 +60,24 @@
     "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "2928631d5304b8fec48bad4c7254ebf230b6cc51"
+  },
+  {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
     "sha1": "8ea7ee41671f59d5145535e45fe925f9180d23ca"
+  },
+  {
+    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
+    "branch": "rk3588-v6.9",
+    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr1",
+    "sha1": "9fd0cc90e31b90eb4ca2a57b4fa8223866378867"
   },
   {
     "source": "https://github.com/edk2-porting/linux-next",
@@ -95,14 +90,19 @@
     "sha1": "632428373bea7581869cb05dce40bef0d37793e3"
   },
   {
-    "source": "https://github.com/khadas/linux.git",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "7c73436feb2fa7a2f812f8781c695f0977010a06"
+    "source": "https://source.denx.de/u-boot/u-boot.git",
+    "branch": "v2024.01",
+    "sha1": "aa6d5f7192d5860458b5ef0163aad1d94e9bde70"
+  },
+  {
+    "source": "https://gitee.com/bianbu-linux/uboot-2022.10.git",
+    "branch": "bl-v1.0.y",
+    "sha1": "7b9d68a95fbf4595a4b5e0f0ce6b43f679d3812a"
   },
   {
     "source": "https://gitee.com/bianbu-linux/linux-6.1.git",
     "branch": "bl-v1.0.y",
-    "sha1": "d6bae33cbc2532eff4f856399e2d3d37ecb10e51"
+    "sha1": "ebdbfc21a35190931ec8b3de9c51bd34d43d1bc6"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
@@ -110,9 +110,9 @@
     "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
   },
   {
-    "source": "https://gitee.com/bianbu-linux/uboot-2022.10.git",
-    "branch": "bl-v1.0.y",
-    "sha1": "a5e197e1a6b576e75f5a916f64fbc4717b5f3ca1"
+    "source": "https://github.com/khadas/linux.git",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "7c73436feb2fa7a2f812f8781c695f0977010a06"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
