@@ -309,8 +309,8 @@ targets:
       - *community-maintained-riscv64
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
- # ubuntu unstable cli
- full-cli-unstable-ubuntu:
+  # ubuntu unstable cli
+  full-cli-unstable-ubuntu:
     enabled: yes
     configs: [ armbian-community ]
     pipeline:
