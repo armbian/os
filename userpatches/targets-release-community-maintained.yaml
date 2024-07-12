@@ -243,7 +243,7 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-     - { BOARD: aml-s9xx-box, BRANCH: current }
+      - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # debian stable xfce
   xfce-desktop-stable-debian:
