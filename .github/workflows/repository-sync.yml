@@ -89,7 +89,7 @@ jobs:
   dispatch:
     name: "Refresh web and redirector index"
     if: ${{ github.repository_owner == 'Armbian' }}
-    needs: Index
+    needs: Sync
     runs-on: ubuntu-latest
     steps:
 
