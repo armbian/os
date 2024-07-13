@@ -23,9 +23,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TEAM: "Release manager"
 
-  Prep:
+  Prepare:
     needs: Check
-    name: "Upload to servers"
+    name: "Sync stable servers"
     outputs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
   Sync:
     name: "Files"
     runs-on: repository-sync
-    needs: Prep
+    needs: Prepare
     outputs:
       matrix: ${{needs.Prepare.outputs.matrix}}
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
