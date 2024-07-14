@@ -6,7 +6,7 @@ on:
     inputs:
       partial:
         type: boolean
-        description: "Include partial builds"
+        description: "Add https://netcup.armbian.com/partial/ to stable repo"
         default: false
 
 concurrency:
@@ -59,13 +59,6 @@ jobs:
     runs-on: repository
     steps:
 
-      - name: "Clean beta repository"
-        run: |
-
-          if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
-            sudo rm -rf /outgoing/repository-beta/*
-          fi
-
       - name: Checkout build repository
         uses: actions/checkout@v4
         with:
@@ -83,18 +76,28 @@ jobs:
       - name: "Build repository ${{ matrix.repository }}"
         run: |
 
-          # include packages from manually made images
-          if [[ "${{ github.event.inputs.partial }}" == "true" ]]; then
-          echo "Include manual" >> $GITHUB_STEP_SUMMARY
-          sudo rsync -arctuxz --progress --remove-source-files /incoming/partial/ /incoming/ >> $GITHUB_STEP_SUMMARY
-          fi
-
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
-          sudo chown -R ${USER}.${USER} /outgoing/${TARGET} /incoming/${REPOSITORY} /incoming/partial/
+          sudo chown -R ${USER}:${USER} /outgoing/${TARGET} /incoming/${REPOSITORY} /incoming/partial/
 
-          # add from incoming
-          tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+          # include packages from manually made images
+          if [[ "${{ github.event.inputs.partial }}" == "true" ]]; then
+
+             if [[ "${{ matrix.repository }}" == "debs" ]]; then
+                 # add from partial
+                 tools/repository/repo -i /incoming/partial/debs/ -o /outgoing/repository -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+             fi
+
+          else
+
+              # beta is always made from scratch
+              if [[ "${{ matrix.repository }}" == "debs-beta" ]]; then
+                  sudo rm -rf /outgoing/repository-beta/*
+              fi
+
+              # add from incoming
+              tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+          fi
 
           # fix folder permissions
           sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/${REPOSITORY} /incoming/partial/
@@ -155,7 +158,7 @@ jobs:
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
               if [[ "$target" == "debs" ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              if [[ "$target" == "debs-beta" ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
+              if [[ "$target" == "debs-beta" && "${{ github.event.inputs.partial }}" != "true" ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" --exclude "dists" --exclude "control" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
           done
 
   Index:
@@ -192,9 +195,9 @@ jobs:
           for target in "${TARGETS[@]}"; do
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              if [[ "$target" == "debs-beta" ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
+              if [[ "$target" == "debs-beta" && "${{ github.event.inputs.partial }}" != "true" ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
               # delete at the end
-              if [[ "$target" == "debs-beta" ]]; then rsync -ar --checksum --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
+              if [[ "$target" == "debs-beta" && "${{ github.event.inputs.partial }}" != "true" ]]; then rsync -ar --checksum --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
           done
 
   dispatch:
