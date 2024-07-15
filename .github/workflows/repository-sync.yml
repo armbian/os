@@ -78,7 +78,7 @@ jobs:
 
           echo $DOWNLOAD_PATH
           
-          DL_PATH="apt"
+          DL_PATH="${DOWNLOAD_PATH:-apt}"
 
           wget --server-response --spider "https://${{ matrix.node }}/${DL_PATH}/dists/jammy/InRelease"
 
