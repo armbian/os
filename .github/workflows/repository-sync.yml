@@ -1,7 +1,7 @@
-name: Repository sync (auto)
+name: Repository Index sync (auto)
 on:
-#  schedule:
-#    - cron: '0 */4 * * *'
+  schedule:
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 concurrency:
@@ -76,12 +76,6 @@ jobs:
           REMOTE_DATE=$(wget --server-response --spider "https://${{ matrix.node }}/${DOWNLOAD_PATH:-apt}/dists/jammy/InRelease" 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
-
-          echo $DOWNLOAD_PATH
-          
-          DL_PATH="${DOWNLOAD_PATH:-apt}"
-
-          wget --server-response --spider "https://${{ matrix.node }}/${DL_PATH}/dists/jammy/InRelease"
 
           for target in "${TARGETS[@]}"; do
               # check when was last updated
