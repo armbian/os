@@ -76,6 +76,7 @@ jobs:
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
+          echo $DOWNLOAD_PATH
           
           DL_PATH="apt"
 
