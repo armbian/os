@@ -84,10 +84,12 @@ jobs:
               date --date="$REMOTE_DATE" +%s
               DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `date --date="$REMOTE_DATE" +%s` | bc)
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
-              echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 10000 ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
-              # delete at the end
-              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 10000 ]]; then rsync -ar --checksum --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
+              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 10000 ]]; then 
+                  echo "Synching $target" >> $GITHUB_STEP_SUMMARY
+                  rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
+                  # delete at the end
+                  rsync -ar --checksum --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
+              fi
           done
 
   dispatch:
