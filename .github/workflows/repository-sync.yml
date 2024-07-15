@@ -79,12 +79,13 @@ jobs:
 
           for target in "${TARGETS[@]}"; do
               # check when was last updated
-              echo $REMOTE_DATE
-              stat -c%Y /outgoing/repository/public/armbian.key
-              date --date="$REMOTE_DATE" +%s
+              #echo $REMOTE_DATE
+              #stat -c%Y /outgoing/repository/public/armbian.key
+              #date --date="$REMOTE_DATE" +%s
               DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `date --date="$REMOTE_DATE" +%s` | bc)
+              echo $DATEDIFF
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
-              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 10000 ]]; then 
+              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 36000 ]]; then 
                   echo "Synching $target" >> $GITHUB_STEP_SUMMARY
                   rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
                   # delete at the end
