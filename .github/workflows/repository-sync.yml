@@ -76,6 +76,8 @@ jobs:
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
+          wget --server-response --spider "https://${{ matrix.node }}/${DOWNLOAD_PATH:-apt}/dists/jammy/InRelease"
+
           for target in "${TARGETS[@]}"; do
               # check when was last updated
               echo $REMOTE_DATE
