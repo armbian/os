@@ -72,7 +72,7 @@ jobs:
           SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           DOWNLOAD_PATH=$(echo $JSON | jq '.results[] | .custom_fields["download_path_debs"]' | sed "s/\"//g")
-          REMOTE_DATE=$(wget --server-response --spider https://${{ matrix.node }}/${DOWNLOAD_PATH:-apt}/dists/jammy/InRelease 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
+          REMOTE_DATE=$(wget --server-response --spider "https://${{ matrix.node }}/${DOWNLOAD_PATH:-apt}/dists/jammy/InRelease" 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
