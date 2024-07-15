@@ -67,18 +67,19 @@ jobs:
       - name: What to sync?
         run: |
 
-          # check when was last updated
-          DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `stat -c%Y /outgoing/repository/public/dists` | bc)
-
           JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
           SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
+          DOWNLOAD_PATH=$(echo $JSON | jq '.results[] | .custom_fields["download_path_debs"]' | sed "s/\"//g")
+          DLPATH="${DOWNLOAD_PATH:-apt}"
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
-
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
           for target in "${TARGETS[@]}"; do
+              REMOTE_DATE=$(wget --server-response --spider https://${{ matrix.node }}/${DLPATH}/dists/jammy/InRelease 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
+              # check when was last updated
+              DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `date --date="$REMOTE_DATE" +%s` | bc)
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
               if [[ "$target" == "debs" && "${DATEDIFF}" -gt 10000 ]]; then rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt ; fi
