@@ -72,17 +72,15 @@ jobs:
           SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           DOWNLOAD_PATH=$(echo $JSON | jq '.results[] | .custom_fields["download_path_debs"]' | sed "s/\"//g")
-          DLPATH="${DOWNLOAD_PATH:-apt}"
+          REMOTE_DATE=$(wget --server-response --spider https://${{ matrix.node }}/${DOWNLOAD_PATH:-apt}/dists/jammy/InRelease 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
           SERVER_USERNAME=$(echo $JSON | jq '.results[] | .custom_fields["username"]' | sed "s/\"//g")
           TARGETS=($(echo $JSON | jq '.results[] | .tags' | jq '.[].name' | grep -v null | grep -v Push | sed "s/\"//g"))
 
           for target in "${TARGETS[@]}"; do
-              REMOTE_DATE=$(wget --server-response --spider https://${{ matrix.node }}/${DLPATH}/dists/jammy/InRelease 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
               # check when was last updated
               echo $REMOTE_DATE
               stat -c%Y /outgoing/repository/public/armbian.key
               date --date="$REMOTE_DATE" +%s
-
               DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `date --date="$REMOTE_DATE" +%s` | bc)
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
