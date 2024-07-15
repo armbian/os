@@ -79,6 +79,10 @@ jobs:
           for target in "${TARGETS[@]}"; do
               REMOTE_DATE=$(wget --server-response --spider https://${{ matrix.node }}/${DLPATH}/dists/jammy/InRelease 2>&1 | grep -i 'Last-Modified:' |sed "s/^[^:]\+: //")
               # check when was last updated
+
+              stat -c%Y /outgoing/repository/public/armbian.key
+              date --date="$REMOTE_DATE" +%s
+
               DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `date --date="$REMOTE_DATE" +%s` | bc)
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               echo "Synching $target" >> $GITHUB_STEP_SUMMARY
