@@ -52,7 +52,7 @@ jobs:
     outputs:
       matrix: ${{needs.Prepare.outputs.matrix}}
     if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
-    timeout-minutes: 60
+    timeout-minutes: 180
     strategy:
       max-parallel: 8
       fail-fast: false
