@@ -80,6 +80,24 @@ jobs:
           TARGET=${REPOSITORY/debs/repository}
           sudo chown -R ${USER}:${USER} /outgoing/${TARGET} /incoming/${REPOSITORY} /incoming/partial/
 
+          # delete older packages
+          declare -A delete_packages
+          DELETE_AFTER="22.08"
+              delete_packages=(
+                    ["openhab"]="% *"
+                    ["discord"]="% *"
+                    ["fastfetch"]="% *"
+              )
+
+          # Loop over the array of packages
+          for key in "${!delete_packages[@]}"
+          do
+              tools/repository/repo \
+                -i /incoming/${{ matrix.repository }} \
+                -o /outgoing/${TARGET} \
+                -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% $key*), \$Version (${delete_packages[$key]})"
+          done
+
           # include packages from manually made images
           if [[ "${{ github.event.inputs.partial }}" == "true" ]]; then
 
