@@ -39,6 +39,7 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
+    - { BOARD: aml-s905d3-cc, BRANCH: current }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
     - { BOARD: orangepi5pro, BRANCH: vendor}
@@ -47,6 +48,7 @@ lists:
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
+    - { BOARD: aml-a311d-cc, BRANCH: current }
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
