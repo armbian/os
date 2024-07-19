@@ -30,19 +30,14 @@
     "sha1": "7f2e18ecac75d50acb843395ad07a0f2b9a12a50"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "2eaf5c0d81911ba05bace3a722cbcd708fdbbcba"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "058deb98e07643104c8a9e58040426e97bb19cd2"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.7.y",
-    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+    "branch": "linux-6.6.y",
+    "sha1": "2eaf5c0d81911ba05bace3a722cbcd708fdbbcba"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,14 +45,24 @@
     "sha1": "73c962ea6ded55e53a3412771bcafbe4d651f115"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.7.y",
+    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+  },
+  {
+    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
+    "branch": "rk3588-v6.9",
+    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
     "sha1": "9b3f9a5b12dc96965b2fcc9d7d8342f1b63e29c4"
+  },
+  {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -68,11 +73,6 @@
     "source": "https://github.com/AvaotaSBC/linux.git",
     "branch": "linux-5.15",
     "sha1": "3083c2b56b69aba0ba896eb70e6a3d5298275d8f"
-  },
-  {
-    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
-    "branch": "rk3588-v6.9",
-    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -110,14 +110,14 @@
     "sha1": "aa6d5f7192d5860458b5ef0163aad1d94e9bde70"
   },
   {
-    "source": "https://github.com/bigtreetech/linux.git",
-    "branch": "linux-6.1.y-cb1",
-    "sha1": "f33ca29a323571460e56167c986a52c19a3f1e01"
-  },
-  {
     "source": "https://github.com/bigtreetech/u-boot.git",
     "branch": "v2023.07-cb1",
     "sha1": "272cd1ca1e11962087d94cd4dc5db3733b2b3ad7"
+  },
+  {
+    "source": "https://github.com/bigtreetech/linux.git",
+    "branch": "linux-6.1.y-cb1",
+    "sha1": "f33ca29a323571460e56167c986a52c19a3f1e01"
   },
   {
     "source": "https://github.com/SolidRun/u-boot.git",
@@ -145,11 +145,6 @@
     "sha1": "1bf5bc1aea1736cdd9ca42e51624caa358793cac"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "rk35xx-2024.01",
-    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
-  },
-  {
     "source": "https://github.com/chainsx/thead-u-boot",
     "branch": "extlinux",
     "sha1": "990e122d26d1ef94f4e0e1bbf5d7df58e8393eee"
@@ -158,6 +153,11 @@
     "source": "https://github.com/chainsx/thead-kernel",
     "branch": "th1520",
     "sha1": "a76d97e234b6613fc20a3dcbfc99128fe9b05e7a"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "rk35xx-2024.01",
+    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
   },
   {
     "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
@@ -180,14 +180,14 @@
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "30c3784c60265b33a78b7c369fe6f25d2525fb4b"
-  },
-  {
     "source": "https://github.com/hardkernel/u-boot.git",
     "branch": "odroidxu4-v2017.05",
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
+  },
+  {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "30c3784c60265b33a78b7c369fe6f25d2525fb4b"
   },
   {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
