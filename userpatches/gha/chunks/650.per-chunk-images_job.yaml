@@ -198,7 +198,7 @@ jobs: # <TEMPLATE-IGNORE>
              # upload
              rsync --progress -e \
              "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/"
+             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
           done
 
       # cleaning self hosted runners
