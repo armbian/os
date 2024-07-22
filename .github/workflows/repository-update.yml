@@ -78,7 +78,7 @@ jobs:
 
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
-          sudo chown -R ${USER}:${USER} /outgoing/${TARGET} /incoming/${REPOSITORY} /incoming/partial/
+          sudo chown -R ${USER}:${USER} /outgoing/${TARGET} /incoming/${REPOSITORY}
 
           # delete older packages
           declare -A delete_packages
@@ -103,6 +103,7 @@ jobs:
 
              if [[ "${{ matrix.repository }}" == "debs" ]]; then
                  # add from partial
+                 sudo chown -R ${USER}:${USER} /incoming/partial/
                  tools/repository/repo -i /incoming/partial/debs/ -o /outgoing/repository -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
              fi
 
