@@ -119,7 +119,7 @@ jobs:
           fi
 
           # fix folder permissions
-          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/${REPOSITORY} /incoming/partial/
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/${REPOSITORY}
 
   Prepare:
     name: "Upload to servers"
@@ -218,6 +218,9 @@ jobs:
               # delete at the end
               if [[ "$target" == "debs-beta" && "${{ github.event.inputs.partial }}" != "true" ]]; then rsync -ar --checksum --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository-beta/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/beta ; fi
           done
+
+          # fix folder permissions
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/
 
   dispatch:
     name: "Refresh web and redirector index"
