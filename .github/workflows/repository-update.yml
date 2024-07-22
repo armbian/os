@@ -104,7 +104,7 @@ jobs:
              if [[ "${{ matrix.repository }}" == "debs" ]]; then
                  # add from partial
                  sudo chown -R ${USER}:${USER} /incoming/partial/
-                 tools/repository/repo -i /incoming/partial/debs/ -o /outgoing/repository -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+                 tools/repository/repo -i /incoming/partial/debs -o /outgoing/repository -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
              fi
 
           else
