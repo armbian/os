@@ -3,6 +3,14 @@ on:
   repository_dispatch:
     types: ["Webindex update"]
   workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "exposed.map"
+  pull_request:
+    paths:
+      - "exposed.map"
 
 concurrency:
   group: webindex
