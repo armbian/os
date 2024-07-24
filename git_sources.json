@@ -36,8 +36,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.9.y",
-    "sha1": "73c962ea6ded55e53a3412771bcafbe4d651f115"
+    "branch": "linux-6.1.y",
+    "sha1": "9b3f9a5b12dc96965b2fcc9d7d8342f1b63e29c4"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -45,9 +45,9 @@
     "sha1": "2eaf5c0d81911ba05bace3a722cbcd708fdbbcba"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.9.y",
+    "sha1": "73c962ea6ded55e53a3412771bcafbe4d651f115"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -55,9 +55,9 @@
     "sha1": "e13e9eb12a02e27456995f4d481d43e37a01d406"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.7.y",
-    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -66,8 +66,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "9b3f9a5b12dc96965b2fcc9d7d8342f1b63e29c4"
+    "branch": "linux-6.7.y",
+    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -80,19 +80,14 @@
     "sha1": "0c3836482481200ead7b416ca80c68a29cfdaabd"
   },
   {
-    "source": "https://github.com/edk2-porting/linux-next",
-    "branch": "integration/ayn-odin2",
-    "sha1": "9a94c7a1294c58ffa6d19bc5cc50b2009ffb40c9"
-  },
-  {
-    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
-    "branch": "rk3588-v6.9",
-    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.8.y",
     "sha1": "632428373bea7581869cb05dce40bef0d37793e3"
+  },
+  {
+    "source": "https://github.com/edk2-porting/linux-next",
+    "branch": "integration/ayn-odin2",
+    "sha1": "9a94c7a1294c58ffa6d19bc5cc50b2009ffb40c9"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -110,14 +105,19 @@
     "sha1": "aa6d5f7192d5860458b5ef0163aad1d94e9bde70"
   },
   {
-    "source": "https://github.com/bigtreetech/u-boot.git",
-    "branch": "v2023.07-cb1",
-    "sha1": "272cd1ca1e11962087d94cd4dc5db3733b2b3ad7"
+    "source": "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux.git",
+    "branch": "rk3588-v6.9",
+    "sha1": "23bb9c65a88c114bbe945b7ef5366bb02d3d9b80"
   },
   {
     "source": "https://github.com/bigtreetech/linux.git",
     "branch": "linux-6.1.y-cb1",
     "sha1": "f33ca29a323571460e56167c986a52c19a3f1e01"
+  },
+  {
+    "source": "https://github.com/bigtreetech/u-boot.git",
+    "branch": "v2023.07-cb1",
+    "sha1": "272cd1ca1e11962087d94cd4dc5db3733b2b3ad7"
   },
   {
     "source": "https://github.com/SolidRun/u-boot.git",
