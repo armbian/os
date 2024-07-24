@@ -25,14 +25,14 @@
     "sha1": "7f2e18ecac75d50acb843395ad07a0f2b9a12a50"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "b37d247097df43e6180c3dcdf3e055606a325da8"
+  },
+  {
     "source": "https://github.com/armbian/config",
     "branch": "master",
     "sha1": "57030d444bab9333dc4fe70030287e988651a1e4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "2eaf5c0d81911ba05bace3a722cbcd708fdbbcba"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -40,29 +40,14 @@
     "sha1": "73c962ea6ded55e53a3412771bcafbe4d651f115"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "b37d247097df43e6180c3dcdf3e055606a325da8"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "2eaf5c0d81911ba05bace3a722cbcd708fdbbcba"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
     "branch": "JH7110_VisionFive2_devel",
     "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "9b3f9a5b12dc96965b2fcc9d7d8342f1b63e29c4"
-  },
-  {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr3",
-    "sha1": "7d54e5474cf840533fcc862d3f3bd978e00fb2d5"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.7.y",
-    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -71,13 +56,28 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "0c3836482481200ead7b416ca80c68a29cfdaabd"
+    "branch": "linux-6.7.y",
+    "sha1": "dacf7e83da42bd9d3978560e41869a784c24d912"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr3",
+    "sha1": "7d54e5474cf840533fcc862d3f3bd978e00fb2d5"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.1.y",
+    "sha1": "9b3f9a5b12dc96965b2fcc9d7d8342f1b63e29c4"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
     "sha1": "8ea7ee41671f59d5145535e45fe925f9180d23ca"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "0c3836482481200ead7b416ca80c68a29cfdaabd"
   },
   {
     "source": "https://github.com/edk2-porting/linux-next",
@@ -211,13 +211,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.9.y",
-    "sha1": "c91a68bb4ff48647e88a7d5ab4f608576545d040"
+    "branch": "rpi-6.6.y",
+    "sha1": "d24229dcef58e0162780ceffa02eb5f6a01b9a4d"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "d24229dcef58e0162780ceffa02eb5f6a01b9a4d"
+    "branch": "rpi-6.9.y",
+    "sha1": "c91a68bb4ff48647e88a7d5ab4f608576545d040"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
