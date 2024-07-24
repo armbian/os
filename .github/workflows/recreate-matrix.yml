@@ -199,6 +199,9 @@ jobs:
                     elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET_SECTION="${SUPPORT}-fast-hdmi"
                     fi
 
+                    # exception. Lets not deal with this special target anymore, but leave it in configs
+                    KERNEL_TARGET=${KERNEL_TARGET/,collabora/}
+
                     # read kernel target
                     if [[ $(echo $KERNEL_TARGET | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
                        KERNEL_TARGET=$(echo $KERNEL_TARGET | cut -d '"' -f 2 | awk -F, '{ print $2,$3 }')
