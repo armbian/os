@@ -213,8 +213,8 @@ jobs:
                     board=$(echo $board | cut -d"/" -f4 | cut -d"." -f1)
 
                     # skip boards listed in this file
-                    if grep -q $board os/userpatches/targets-automation.blacklist; then continue; fi
-                    if [[ $2 == *nightly* ]] && grep -q $board  os/userpatches/targets-automation-nightly.blacklist; then continue; fi
+                    if grep -qw "^${board}" os/userpatches/targets-automation.blacklist; then continue; fi
+                    if [[ $2 == *nightly* ]] && grep -qw "^${board}" os/userpatches/targets-automation-nightly.blacklist; then continue; fi
 
                     # our default is current build target. Use it or search further
                     if [[ $TARGET_SECTION == $SECTION ]]; then
