@@ -65,7 +65,6 @@ jobs:
           repository: armbian/build
           fetch-depth: 1
           clean: false
-          ref: repo-management # THIS IS TESTING REPOSITORY !!!
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
