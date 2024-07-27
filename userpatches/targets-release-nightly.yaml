@@ -5,7 +5,7 @@
 common-gha-configs:
   armbian-gha: &armbian-gha
     runners:
-      default: "ubuntu-latest"
+      default: "fast"
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
         uboot: [ "self-hosted", "Linux", "fast", "X64" ]
@@ -49,28 +49,19 @@ lists:
     - { BOARD: aml-a311d-cc, BRANCH: current }
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: bananapim7, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
-    - { BOARD: helios64, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: jethubj100, BRANCH: current }
-    - { BOARD: jethubj200, BRANCH: current }
-    - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
-    - { BOARD: khadas-vim1, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: khadas-vim2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
-    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -86,7 +77,6 @@ lists:
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: radxa-zero3, BRANCH: edge }
-    - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5a, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -95,18 +85,15 @@ lists:
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: sweet-potato, BRANCH: current }
-    - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
-    - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
-    - { BOARD: tritium-h3, BRANCH: current }
     # end of auto generated section
 
   # automated lists stop
