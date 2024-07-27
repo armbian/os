@@ -17,7 +17,7 @@ common-gha-configs:
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" , "fast" ]
         image-arm64: [ "images", "fast" ]
         image-riscv64: [ "self-hosted", "Linux", "fast", "X64" ]
-        image-x86: [ "ubuntu-latest" ]
+        image-amd64: [ "ubuntu-latest" ]
 
 lists:
 
