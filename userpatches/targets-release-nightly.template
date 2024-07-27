@@ -5,7 +5,7 @@
 common-gha-configs:
   armbian-gha: &armbian-gha
     runners:
-      default: "ubuntu-latest"
+      default: "fast"
       by-name:
         kernel: [ "self-hosted", "Linux", "alfa" ]
         uboot: [ "self-hosted", "Linux", "fast", "X64" ]
