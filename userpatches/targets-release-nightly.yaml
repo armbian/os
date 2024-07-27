@@ -37,16 +37,13 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
-    - { BOARD: aml-s905d3-cc, BRANCH: current }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
-    - { BOARD: mba8mpxl, BRANCH: current }
     - { BOARD: orangepi5pro, BRANCH: vendor}
     - { BOARD: orangepizero2, BRANCH: current }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
-    - { BOARD: aml-a311d-cc, BRANCH: current }
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -61,8 +58,6 @@ lists:
     - { BOARD: khadas-edge2, BRANCH: edge, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
@@ -74,7 +69,6 @@ lists:
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-e52c, BRANCH: vendor}
-    - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: radxa-zero3, BRANCH: edge }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
@@ -91,7 +85,6 @@ lists:
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
-    - { BOARD: onecloud, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     # end of auto generated section
