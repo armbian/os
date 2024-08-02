@@ -35,7 +35,6 @@ lists:
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
     - { BOARD: aml-a311d-cc, BRANCH: current }
-    - { BOARD: bananapif3, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -98,6 +97,7 @@ lists:
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
+    - { BOARD: bananapif3, BRANCH: legacy }
     # end of auto generated section
 
   # automated lists stop
