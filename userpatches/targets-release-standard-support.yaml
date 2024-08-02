@@ -111,7 +111,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: trixie
+      RELEASE: sid
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
