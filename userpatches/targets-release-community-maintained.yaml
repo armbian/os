@@ -134,8 +134,8 @@ lists:
     - { BOARD: orangepi-rk3399, BRANCH: current }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi3, BRANCH: current }
-    - { BOARD: orangepi3b, BRANCH: vendor}
-    - { BOARD: orangepi3b, BRANCH: edge }
+    - { BOARD: orangepi3b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
+    - { BOARD: orangepi3b, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
