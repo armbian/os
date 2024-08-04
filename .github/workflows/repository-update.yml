@@ -83,9 +83,7 @@ jobs:
           declare -A delete_packages
           DELETE_AFTER="22.08"
               delete_packages=(
-                    ["openhab"]="% *"
-                    ["discord"]="% *"
-                    ["fastfetch"]="% *"
+                    ["test_delete_pkg"]="% *"
               )
 
           # Loop over the array of packages
