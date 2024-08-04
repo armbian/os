@@ -511,7 +511,6 @@ jobs:
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
           BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
           CLEAN_INFO=yes \
-          PREFER_DOCKER=yes \
           CLEAN_MATRIX=yes \
           MATRIX_ARTIFACT_CHUNKS=17 \
           MATRIX_IMAGE_CHUNKS=16 \
@@ -5149,7 +5148,7 @@ jobs:
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download PREFER_DOCKER=yes REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
