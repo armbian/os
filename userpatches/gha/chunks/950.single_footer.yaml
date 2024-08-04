@@ -51,7 +51,8 @@ jobs: # <TEMPLATE-IGNORE>
         uses: igorjs/gh-actions-clean-workflow@v6
         with:
           token: "${{ env.GH_TOKEN }}"
-          days_old: 7
+          runs_older_than: 7 # optional
+          runs_to_keep: 0 # optional
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
