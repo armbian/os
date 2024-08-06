@@ -83,6 +83,7 @@ jobs:
           declare -A delete_packages
           DELETE_AFTER="22.08"
               delete_packages=(
+                    ["discord"]="% *"
                     ["fastfetch"]="% *"
                     ["test_delete_pkg"]="% *"
               )
