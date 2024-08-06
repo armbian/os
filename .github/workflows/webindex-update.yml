@@ -129,14 +129,14 @@ jobs:
           D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
 
           # debug
-          echo "$A" | jq
-          echo "-----------------------------------"
-          echo "$B" | jq
-          echo "-----------------------------------"
-          echo "$C" | jq
-          echo "-----------------------------------"
-          echo "$D" | jq
-          echo "-----------------------------------"
+          echo "$A" >> $GITHUB_STEP_SUMMARY
+          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
+          echo "$B" >> $GITHUB_STEP_SUMMARY
+          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
+          echo "$C" >> $GITHUB_STEP_SUMMARY
+          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
+          echo "$D" >> $GITHUB_STEP_SUMMARY
+          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
           
           # join all in one file and compress
           for line in $A $B $C $D; do
