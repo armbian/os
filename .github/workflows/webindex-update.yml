@@ -129,14 +129,10 @@ jobs:
           D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
 
           # debug
-          echo "$A" >> $GITHUB_STEP_SUMMARY
-          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
-          echo "$B" >> $GITHUB_STEP_SUMMARY
-          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
-          echo "$C" >> $GITHUB_STEP_SUMMARY
-          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
-          echo "$D" >> $GITHUB_STEP_SUMMARY
-          echo "-----------------------------------" >> $GITHUB_STEP_SUMMARY
+          echo "$A" > a.txt
+          echo "$B" > b.txt
+          echo "$C" > c.txt
+          echo "$D" > d.txt
           
           # join all in one file and compress
           for line in $A $B $C $D; do
@@ -181,6 +177,10 @@ jobs:
         with:
           name: artifacts
           path: |
+            a.txt
+            b.txt
+            c.txt
+            d.txt
             all-images.json
             all-torrents.zip
             exposed.map.autoproposal
