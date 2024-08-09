@@ -133,7 +133,7 @@ jobs:
           echo "$B" > b.txt
           echo "$C" > c.txt
           echo "$D" > d.txt
-          
+
           # join all in one file and compress
           for line in $A $B $C $D; do
 
@@ -156,17 +156,22 @@ jobs:
               
               # Clean out application from extension
               FILE_EXTENSION=$(echo $FILE_EXTENSION | sed 's/.*-'$IMAGE_EXTENSION'//g'  | sed -e 's/^\.//g')
-              
+
               IMAGE_TYPE=$(echo $IMAGE_URL | cut -d"/" -f5)
               IMAGE_CREATED=$(echo $line | cut -d"|" -f3 | sed "s/\//-/g")
               EXPOSED=false
+
+              # Assemble redirector link
+              REDI_EXT=$(echo $FILE_EXTENSION | rev | cut -d"." -f1 | rev | sed "s/xz//g")
+              REDI_URL="https://dl.armbian.com/${BOARD,,}/${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
+
               # check if image is exposed
               while read exposed; do
                 [[ $IMAGE_URL =~ $exposed ]] && EXPOSED=true && echo "Exposed=$IMAGE_URL">> $GITHUB_STEP_SUMMARY
               done < os/exposed.map
-              echo "${BOARD,,}|$ARMBIAN_VERSION|$IMAGE_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
+              echo "${BOARD,,}|$ARMBIAN_VERSION|$IMAGE_URL|$REDI_URL|$IMAGE_CREATED|$IMAGE_SIZE|$IMAGE_RELEASE|$KERNEL_BRANCH|$IMAGE_TARGET|$IMAGE_EXTENSION|$EXPOSED|$IMAGE_TYPE|$FILE_EXTENSION"
 
-          done | sed '1s/^/"board_slug"|"armbian_version"|"file_url"|"file_updated"|"file_size"|"distro_release"|"kernel_branch"|"image_variant"|"preinstalled_application"|"promoted"|"download_repository"|"file_extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
+          done | sed '1s/^/"board_slug"|"armbian_version"|"file_url"|"redi_url"|"file_updated"|"file_size"|"distro_release"|"kernel_branch"|"image_variant"|"preinstalled_application"|"promoted"|"download_repository"|"file_extension"\n/' | jc --csv | jq '{"assets": .}' > all-images.json
 
       - name: "Download and compress torrent files"
         run: |
