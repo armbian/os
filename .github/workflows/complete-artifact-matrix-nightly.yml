@@ -393,7 +393,7 @@ on:
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
-        default: ''
+        default: 'bump'
 
 env:
 
