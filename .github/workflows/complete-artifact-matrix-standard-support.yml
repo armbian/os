@@ -384,6 +384,12 @@ on:
         options: [ 'github', 'armbian', 'both' ]
         type: choice
         default: 'armbian'
+      bumpVersion:
+        description: 'yes = automatic version bump'
+        required: false
+        options: [ 'yes', 'no' ]
+        type: choice
+        default: 'no'
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
