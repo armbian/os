@@ -69,6 +69,12 @@ on:
         options: [ 'github', 'armbian', 'both' ]
         type: choice
         default: [[uploadtoserverDefaults]]
+      bumpVersion:
+        description: 'yes = automatic version bump'
+        required: false
+        options: [ 'yes', 'no' ]
+        type: choice
+        default: [[bumpVersion]]
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
