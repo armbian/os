@@ -165,7 +165,7 @@ jobs:
               PREFIX=""
               [[ "${IMAGE_TYPE}" == "os" ]] && PREFIX="nightly/"
               REDI_EXT=$(echo $FILE_EXTENSION | rev | cut -d"." -f1 | rev | sed "s/xz//g")
-              REDI_URL="https://dl.armbian.com/${BOARD,,}/${PREFIX}${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
+              REDI_URL="https://dl.armbian.com/${PREFIX}${BOARD,,}/${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
 
               # check if image is exposed
               while read exposed; do
