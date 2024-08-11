@@ -150,10 +150,10 @@ jobs:
               IMAGE_TARGET=$(echo $IMAGE_URL | cut -d"|" -f2 | grep "minimal\|desktop" | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4- | grep -Po '_[a-z].*' | cut -d"." -f1 | sed "s/_//" | sed "s/_desktop//" | cut -d"-" -f1,${STEP_A})
               IMAGE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed 's/_sm8250-xiaomi-umi\|_sm8250-xiaomi-elish//g' | sed "s/rc[0-9]//g" | cut -d"_" -f4- | cut -d"-" -f${STEP_B}- | cut -d"_" -f1 | cut -d"." -f1)
               [[ $IMAGE_EXTENSION == $KERNEL_BRANCH || $IMAGE_EXTENSION == ${IMAGE_TARGET} || $IMAGE_EXTENSION =~ boot|csot|boe|sms ]] && unset IMAGE_EXTENSION
-              #[[ -z ${IMAGE_TARGET} ]] && IMAGE_TARGET="server"
+              [[ -z ${IMAGE_TARGET} ]] && IMAGE_TARGET="server"
               FILE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed 's/_sm8250-xiaomi-umi\|_sm8250-xiaomi-elish//g' | sed "s/-rc[0-9]//g" | rev | cut -d"_" -f1 | rev | sed 's/.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)//' | sed "s/desktop.\|minimal.//")
               #FILE_EXTENSION=$(echo $IMAGE_URL | grep -o "oowow.*\|img.*")
-              
+
               # Clean out application from extension
               FILE_EXTENSION=$(echo $FILE_EXTENSION | sed 's/.*-'$IMAGE_EXTENSION'//g'  | sed -e 's/^\.//g')
 
@@ -162,8 +162,10 @@ jobs:
               EXPOSED=false
 
               # Assemble redirector link
+              PREFIX=""
+              [[ "${IMAGE_TYPE}" == "os" ]] && PREFIX="nightly/"
               REDI_EXT=$(echo $FILE_EXTENSION | rev | cut -d"." -f1 | rev | sed "s/xz//g")
-              REDI_URL="https://dl.armbian.com/${BOARD,,}/${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
+              REDI_URL="https://dl.armbian.com/${BOARD,,}/${PREFIX}${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
 
               # check if image is exposed
               while read exposed; do
