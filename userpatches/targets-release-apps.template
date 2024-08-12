@@ -67,7 +67,7 @@ lists:
     - { BOARD: bananapim7, BRANCH: vendor }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current }
-    - { BOARD: helios64, BRANCH: edge }
+    - { BOARD: helios64, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
@@ -129,6 +129,12 @@ lists:
     - { BOARD: orangepi4-lts, BRANCH: current }
     - { BOARD: orangepi5, BRANCH: vendor }
     - { BOARD: orangepi5-plus, BRANCH: vendor }
+    - { BOARD: radxa-zero3, BRANCH: vendor }
+    - { BOARD: rock-5-itx, BRANCH: vendor }
+    - { BOARD: rock-5a, BRANCH: vendor }
+    - { BOARD: rock-5b, BRANCH: vendor }
+    - { BOARD: rock-5c, BRANCH: vendor }
+    - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
@@ -138,9 +144,20 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: current }
 
   omv: &omv
+    - { BOARD: helios64, BRANCH: current }
+    - { BOARD: rock-5-itx, BRANCH: vendor }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: onecloud, BRANCH: current }
+    - { BOARD: nanopc-cm3588-nas, BRANCH: vendor }
+    - { BOARD: nanopct4, BRANCH: current }
+    - { BOARD: nanopct6, BRANCH: vendor }
+    - { BOARD: nanopi-r6c, BRANCH: vendor }
+    - { BOARD: nanopi-r6s, BRANCH: vendor }
+    - { BOARD: nanopi-r5c, BRANCH: vendor }
+    - { BOARD: nanopi-r5s, BRANCH: vendor }
     - { BOARD: uefi-x86, BRANCH: current }
+    - { BOARD: uefi-arm64, BRANCH: current }
 
 targets:
 
@@ -156,7 +173,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "omv"
-      NETWORKING_STACK="systemd-networkd"
+      NETWORKING_STACK: "systemd-networkd"
     items:
       - *omv
 
@@ -172,7 +189,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "ha"
-      NETWORKING_STACK="network-manager"
+      NETWORKING_STACK: "network-manager"
     items:
       - *home-assistant
 
