@@ -167,6 +167,9 @@ jobs:
               REDI_EXT=$(echo $FILE_EXTENSION | rev | cut -d"." -f1 | rev | sed "s/xz//g")
               REDI_URL="https://dl.armbian.com/${PREFIX}${BOARD,,}/${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
 
+              # bypass redirector for weirdos
+              if [[ "${FILE_EXTENSION}" =~ boot|csot|boe|sms|rootfs|qcow2 ]]; then REDI_URL=${IMAGE_URL}; fi
+
               # check if image is exposed
               while read exposed; do
                 [[ $IMAGE_URL =~ $exposed ]] && EXPOSED=true && echo "Exposed=$IMAGE_URL">> $GITHUB_STEP_SUMMARY
