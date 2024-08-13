@@ -25,6 +25,7 @@ lists:
   # automated lists start
   standard-support-headless: &standard-support-headless
     # auto generated section
+    - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
