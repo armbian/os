@@ -58,9 +58,10 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: jethubj80, BRANCH: current }
-      - { BOARD: jethubj100, BRANCH: current }
-      - { BOARD: jethubj200, BRANCH: current }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *standard-support-riscv64
 
 # Ubuntu minimal
   minimal-cli-stable-ubuntu:
