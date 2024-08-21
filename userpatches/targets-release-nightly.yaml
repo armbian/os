@@ -39,6 +39,8 @@ lists:
     - { BOARD: orangepi5pro, BRANCH: vendor }
     - { BOARD: orangepi5pro, BRANCH: vendor}
     - { BOARD: orangepizero2, BRANCH: current }
+    - { BOARD: youyeetoo-r1-v3, BRANCH: vendor }
+    - { BOARD: youyeetoo-r1-v3, BRANCH: vendor}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -48,7 +50,7 @@ lists:
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: bananapim7, BRANCH: current }
+    - { BOARD: bananapim7, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: khadas-edge2, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
