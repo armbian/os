@@ -183,6 +183,7 @@ jobs:
             OUTPUT=$(for board in $(ls -1 build/config/boards/*.{conf,csc,wip,tvb}); do
 
                     # read board family and determine ARCH
+                    unset KERNEL_TEST_TARGET
                     SRC=$(pwd)/build
                     source $board
                     source build/config/sources/families/${BOARDFAMILY}.conf 2>/dev/null || true
@@ -201,6 +202,9 @@ jobs:
 
                     # exception. Lets not deal with this special target anymore, but leave it in configs
                     KERNEL_TARGET=${KERNEL_TARGET/,collabora/}
+
+                    # if kernel test target is defined, override with it
+                    [[ -n $KERNEL_TEST_TARGET ]] && KERNEL_TARGET=${KERNEL_TEST_TARGET}
 
                     # read kernel target
                     if [[ $(echo $KERNEL_TARGET | cut -d '"' -f 2 | sed "s/,/ /g" | wc -w) -gt 2 ]]; then
@@ -253,7 +257,7 @@ jobs:
                                VARIANTS=$((VARIANTS+1))
                             fi
 
-                            if [[ ! "$targets" =~ ^(legacy|current|edge)$ && $targets != collabora ]]; then
+                            if [[ ! "$targets" =~ ^(legacy|vendor|current|edge)$ && $targets != collabora ]]; then
                                # otherwise it must be custom kernel target
                                EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}':)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
