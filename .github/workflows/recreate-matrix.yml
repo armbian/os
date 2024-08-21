@@ -245,6 +245,14 @@ jobs:
                                VARIANTS=$((VARIANTS+1))
                             fi
 
+                            if [[ "${targets}" == vendor && $VARIANTS -lt $3 ]]; then
+                               # check if we have extension mapping defined
+                               EXTENSION=$(grep -P '^(?=.*'$board',)(?=.*vendor:)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
+                               if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
+                               echo "    - { BOARD: $board, BRANCH: vendor${EXTENSION} }"
+                               VARIANTS=$((VARIANTS+1))
+                            fi
+
                             if [[ ! "$targets" =~ ^(legacy|current|edge)$ && $targets != collabora ]]; then
                                # otherwise it must be custom kernel target
                                EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}':)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
