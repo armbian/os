@@ -39,7 +39,7 @@ lists:
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
-    - { BOARD: aml-a311d-cc, BRANCH: edge }
+    - { BOARD: aml-a311d-cc, BRANCH: current }
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -73,17 +73,19 @@ lists:
     - { BOARD: orangepi5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: radxa-e52c, BRANCH: vendor }
     - { BOARD: radxa-e52c, BRANCH: vendor}
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: radxa-zero3, BRANCH: vendor}
-    - { BOARD: radxa-zero3, BRANCH: edge }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rock-5a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5b, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
-    - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
