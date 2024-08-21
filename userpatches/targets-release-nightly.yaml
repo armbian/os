@@ -37,10 +37,8 @@ lists:
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
     - { BOARD: orangepi5pro, BRANCH: vendor }
-    - { BOARD: orangepi5pro, BRANCH: vendor}
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: youyeetoo-r1-v3, BRANCH: vendor }
-    - { BOARD: youyeetoo-r1-v3, BRANCH: vendor}
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -50,33 +48,29 @@ lists:
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: bananapim7, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: khadas-edge2, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,mesa-vpu" }
+    - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
-    - { BOARD: nanopct6, BRANCH: current }
+    - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: orangepi5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: radxa-e52c, BRANCH: vendor }
-    - { BOARD: radxa-e52c, BRANCH: vendor}
     - { BOARD: radxa-zero3, BRANCH: vendor }
-    - { BOARD: radxa-zero3, BRANCH: vendor}
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
-    - { BOARD: rock-5a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-5b, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu"}
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
