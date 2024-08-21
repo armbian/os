@@ -323,7 +323,7 @@ jobs:
         # $2 = filename that copy from .template to .yaml
         # $3 = how many to build 1 or 2 (current,edge,legacy; current,legacy)
 
-        make-targets "${BUILD_SECTIONS_STANDARD_SUPPORT}" "os/userpatches/targets-release-standard-support" "1"
+        make-targets "${BUILD_SECTIONS_STANDARD_SUPPORT}" "os/userpatches/targets-release-standard-support" "2"
         make-targets "${BUILD_SECTIONS_STANDARD_SUPPORT}" "os/userpatches/targets-release-apps" "1"
         make-targets "${BUILD_SECTIONS_COMMUNITY_MAINTAINED}" "os/userpatches/targets-release-community-maintained" "1"
         make-targets "${BUILD_SECTIONS_NIGHTLY}" "os/userpatches/targets-release-nightly" "1"
