@@ -145,6 +145,7 @@ jobs:
           KERNEL_CONFIGURE=no \
           RELEASE=${{ matrix.release }} \
           SHARE_LOG=yes \
+          SHOW_DEBUB=yes \
           UPLOAD_TO_OCI_ONLY=yes
 
           # To do:
