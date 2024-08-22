@@ -42,6 +42,7 @@ on:
         # branches
         - main
         - v24.08
+        - base-files-fix
         default: 'main'
       board:
         type: choice
