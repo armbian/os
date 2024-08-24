@@ -105,7 +105,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -153,7 +153,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
@@ -180,7 +180,7 @@ targets:
     items:
       - *standard-support-fast-hdmi
 
-  # ubuntu noble gnome desktop
+  # ubuntu oracular gnome desktop
   gnome-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -188,7 +188,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: noble
+      RELEASE: oracular
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"
