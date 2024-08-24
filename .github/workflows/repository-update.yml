@@ -65,6 +65,15 @@ jobs:
           repository: armbian/build
           fetch-depth: 1
           clean: false
+          path: build
+
+      - name: Checkout OS repository
+        uses: actions/checkout@v4
+        with:
+          repository: armbian/os
+          fetch-depth: 1
+          clean: false
+          path: os
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -72,8 +81,20 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
 
+      - name: "Copy last-known-good-kernel-pkg.map"
+        run: |
+
+          rm -f build/userpatches/last-known-good-kernel-pkg.map
+          # here we store last known working kernel package https://github.com/armbian/build/pull/7129
+          # only for stable repository !!!
+          if [[ "${{ matrix.repository }}" == debs ]]; then
+              cp os/userpatches/last-known-good-kernel-pkg.map build/userpatches/last-known-good-kernel-pkg.map
+          fi
+
       - name: "Build repository ${{ matrix.repository }}"
         run: |
+
+          cd build
 
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
