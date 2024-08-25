@@ -8,6 +8,7 @@ on:
       - "main"
     paths:
       - "exposed.map"
+      - "kernel-description.json"
   pull_request:
     paths:
       - "exposed.map"
@@ -187,6 +188,11 @@ jobs:
           find ${SOURCE}/. -mindepth 3 -exec mv -i -- {} ${DESTINATION}/ \;
           zip -qj all-torrents.zip ${DESTINATION}/*.torrent
 
+      - name: "Copy kernel-description JSON"
+        run: |
+
+          cp os/kernel-description.json .
+
       - uses: actions/upload-artifact@v4
         with:
           name: artifacts
@@ -196,6 +202,7 @@ jobs:
             c.txt
             d.txt
             all-images.json
+            kernel-description.json
             all-torrents.zip
             exposed.map.autoproposal
 

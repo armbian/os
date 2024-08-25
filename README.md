@@ -23,6 +23,10 @@
 
 Build lists are generated [automatic](https://github.com/armbian/os/blob/main/.github/workflows/recreate-matrix.yml#L59-L211C94) based on [support policy](https://docs.armbian.com/User-Guide_Board-Support-Rules/) and with help of [templates](userpatches/), .blacklist and .map files.
 
+## How to add description to download pages?
+
+Each kernel branch can have additional description which is stoed in [kernel-description.json](kernel-description.json) and automatically updated upon changes.
+
 ## When is this happening?
 
 - Artifacts cache is updated every eight hours, starting at 0:00 AM UTC
