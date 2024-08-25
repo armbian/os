@@ -1,0 +1,16 @@
+{
+    "rockchip-rk3588": {
+        "edge": {
+            "fullname": "6.10 - Edge Kernel",
+            "description": "Not all features have been implemented yet, but it works stable enough."
+        },
+        "legacy": {
+            "fullname": "5.10 - Legacy Kernel",
+            "description": "Old 5.10 kernel based on Rockchip BSP. Most of the board features are supported and it works quite for daily use. It is recommended to use the vendor kernel instead."
+        },
+        "vendor": {
+            "fullname": "6.1 - Vendor Kernel",
+            "description": "Based on Rockchip BSP. This kernel is newer than the legacy kernel v5.10.y and works stable too."
+        }
+    }
+}
