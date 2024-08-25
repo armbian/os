@@ -219,6 +219,6 @@ jobs:
           # torrent index upload to rsync
           rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -arvc all-torrents.zip upload@rsync.armbian.com:/storage/www/dl/torrent/
           # the rest elsewhere
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files all-images.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files kernel-description.json all-images.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
           # cleanup
           rm -f /tmp/stable.txt
