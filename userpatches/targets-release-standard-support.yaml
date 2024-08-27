@@ -102,7 +102,7 @@ lists:
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
-    - { BOARD: bananapi, BRANCH: current }
+    - { BOARD: bananapif3, BRANCH: legacy }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
@@ -186,7 +186,7 @@ targets:
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -202,7 +202,7 @@ targets:
   
   # Full Ubuntu LTS XFCE
   xfce-desktop-lts-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -238,7 +238,7 @@ targets:
 
   # Full Ubuntu Gnome
   gnome-3d-desktop-lts-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
