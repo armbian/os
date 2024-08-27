@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: Check
     steps:
+
       - name: Checkout build framework repository
         uses: actions/checkout@v4
         with:
@@ -57,6 +58,13 @@ jobs:
           clean: false
           path: os
 
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.KEY_UPLOAD }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
+          if_key_exists: replace
+
       - name: "Install dependencies"
         run: |
 
@@ -71,7 +79,8 @@ jobs:
           rm -f exposed.map.autoproposal
 
           # get all stable files we provide
-          rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
+          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
+          #rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
 
           # generate map entries
           # $1 = board
@@ -124,7 +133,8 @@ jobs:
         run: |
 
           # prepare feeds
-          A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
+          #A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
+          A=$(rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
           B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
@@ -184,7 +194,7 @@ jobs:
 
           SOURCE=$(mktemp -d)
           DESTINATION=$(mktemp -d)
-          rsync -zqvr --include="*/archive/*.torrent" --exclude="/*/*/*" --exclude="_*/" --exclude="control" --exclude="quotes.txt" --exclude="*/all-torrents.zip" rsync://rsync.armbian.com/dl/ ${SOURCE}
+          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -zqvr --include="*/archive/*.torrent" --exclude="/*/*/*" --exclude="_*/" --exclude="control" --exclude="quotes.txt" --exclude="*/all-torrents.zip" upload@rsync.armbian.com:/storage/www/dl/ ${SOURCE}
           find ${SOURCE}/. -mindepth 3 -exec mv -i -- {} ${DESTINATION}/ \;
           zip -qj all-torrents.zip ${DESTINATION}/*.torrent
 
@@ -205,13 +215,6 @@ jobs:
             kernel-description.json
             all-torrents.zip
             exposed.map.autoproposal
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.KEY_UPLOAD }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-          if_key_exists: replace
 
       - name: Upload index
         run: |
