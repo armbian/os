@@ -65,7 +65,7 @@ lists:
     - { BOARD: phytiumpi, BRANCH: legacy }
     - { BOARD: radxa-e52c, BRANCH: vendor }
     - { BOARD: radxa-zero3, BRANCH: vendor }
-    - { BOARD: rock-3a, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
