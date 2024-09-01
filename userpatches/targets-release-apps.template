@@ -104,6 +104,7 @@ lists:
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
+    - { BOARD: youyeetoo-r1-v3, BRANCH: vendor }
 
   openhab: &openhab
     - { BOARD: nanopi-r4s, BRANCH: current }
@@ -169,6 +170,7 @@ lists:
     - { BOARD: nanopi-r5s, BRANCH: vendor }
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
+    - { BOARD: youyeetoo-r1-v3, BRANCH: vendor }
 
 targets:
 
