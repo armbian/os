@@ -79,7 +79,7 @@ jobs:
           rm -f exposed.map.autoproposal
 
           # get all stable files we provide
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
+          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz.\|homeassistant\|openhab\|kali\|omv" | grep ".xz" > /tmp/stable.txt
           #rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
 
           # generate map entries
@@ -134,7 +134,7 @@ jobs:
 
           # prepare feeds
           #A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
-          A=$(rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
+          A=$(rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt\|homeassistant\|openhab\|kali\|omv")
           B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
