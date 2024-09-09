@@ -122,7 +122,6 @@ on:
         - lckfb-taishanpi
         - leez-p710
         - lepotato
-        - licheepi-4a
         - lime-a33
         - lime-a64
         - lime
@@ -298,7 +297,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v24.8.1
+      - uses: armbian/build@v24.2.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
