@@ -79,7 +79,7 @@ jobs:
           rm -f exposed.map.autoproposal
 
           # get all stable files we provide
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz.\|homeassistant\|openhab\|kali\|omv" | grep ".xz" > /tmp/stable.txt
+          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@k-space.ee.armbian.com:/storage/www/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz.\|homeassistant\|openhab\|kali\|omv" | grep ".xz" > /tmp/stable.txt
           #rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print $5 }' | grep "archive/" | grep -v ".txt\|.xz." | grep ".xz" > /tmp/stable.txt
 
           # generate map entries
