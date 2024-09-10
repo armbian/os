@@ -194,7 +194,7 @@ jobs:
 
           SOURCE=$(mktemp -d)
           DESTINATION=$(mktemp -d)
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -zqvr --include="*/archive/*.torrent" --exclude="/*/*/*" --exclude="_*/" --exclude="control" --exclude="quotes.txt" --exclude="*/all-torrents.zip" upload@rsync.armbian.com:/storage/www/dl/ ${SOURCE}
+          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -zqvr --include="*/archive/*.torrent" --exclude="/*/*/*" --exclude="_*/" --exclude="control" --exclude="quotes.txt" --exclude="*/all-torrents.zip" upload@k-space.ee.armbian.com:/storage/www/dl/ ${SOURCE}
           find ${SOURCE}/. -mindepth 3 -exec mv -i -- {} ${DESTINATION}/ \;
           zip -qj all-torrents.zip ${DESTINATION}/*.torrent
 
