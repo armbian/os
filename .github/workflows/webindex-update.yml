@@ -134,7 +134,7 @@ jobs:
 
           # prepare feeds
           #A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
-          A=$(rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@rsync.armbian.com:/storage/www/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt\|homeassistant\|openhab\|kali\|omv")
+          A=$(rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@k-space.ee.armbian.com:/storage/www/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt\|homeassistant\|openhab\|kali\|omv")
           B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
@@ -220,7 +220,7 @@ jobs:
         run: |
 
           # torrent index upload to rsync
-          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -arvc all-torrents.zip upload@rsync.armbian.com:/storage/www/dl/torrent/
+          rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -arvc all-torrents.zip upload@k-space.ee.armbian.com:/storage/www/dl/torrent/
           # the rest elsewhere
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc --remove-source-files kernel-description.json all-images.json all-torrents.zip ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/json
           # cleanup
