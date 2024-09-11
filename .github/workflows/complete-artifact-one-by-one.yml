@@ -19,6 +19,7 @@ on:
         - legacy
         - current
         - edge
+        - vendor
         default: 'current'
 
       armbian_release:
@@ -26,6 +27,7 @@ on:
         description: 'Userspace'
         options:
         - jammy
+        - noble
         - mantic
         - bookworm
         - trixie
