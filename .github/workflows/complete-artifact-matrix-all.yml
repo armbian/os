@@ -43,6 +43,7 @@ on:
         # branches
         - main
         - v24.08
+        - oras
         default: 'main'
       board:
         type: choice
