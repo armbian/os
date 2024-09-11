@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "9e52e52e9af31fb189ffd4c18d23e3160c06b77c"
+    "sha1": "b1cbd002b43ad1eae00a7080d43b9d6ba6e51ba3"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -25,24 +25,19 @@
     "sha1": "511deee7289cb9a5dee6ba142d18a09933d5ba00"
   },
   {
-    "source": "https://github.com/armbian/config",
-    "branch": "master",
-    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "1611860f184a2c9e74ed593948d43657734a7098"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "ce299c0f97a873e969f2b22644ee9e9710bfbc63"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "ad07a29023cebd40848fce81e6732d671ede5fe6"
+    "source": "https://github.com/armbian/config",
+    "branch": "master",
+    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
+  },
+  {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,14 +45,24 @@
     "sha1": "5ca5b389fddfe4ce3a698cbc1321fac3d8e3e5b1"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "1611860f184a2c9e74ed593948d43657734a7098"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "ad07a29023cebd40848fce81e6732d671ede5fe6"
+  },
+  {
     "source": "https://github.com/AvaotaSBC/linux.git",
     "branch": "linux-5.15",
     "sha1": "af5fc555764e1ad015ba43f9b5151ee9180c0be6"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.03",
+    "sha1": "067484abe738464ea2d717a02f93f6d8a6396ecf"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -67,12 +72,7 @@
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr3",
-    "sha1": "d05e7c2984d18ae1e323c323512cd8c9f6358705"
-  },
-  {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.03",
-    "sha1": "5aac71ccba1e69016947a3cfa60d4de034b5e520"
+    "sha1": "71039841e6100b280bc90d91b7b6b9d33ec84897"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
@@ -112,7 +112,7 @@
   {
     "source": "https://github.com/khadas/u-boot.git",
     "branch": "khadas-edges-v2017.09",
-    "sha1": "b70d025cfadadb132f78fe01e75e007f4070bd10"
+    "sha1": "87169bd5a5c9681106c334fde479ba22a896339c"
   },
   {
     "source": "https://github.com/khadas/u-boot.git",
@@ -180,9 +180,9 @@
     "sha1": "760d8728292a825e4cbd6d1b85cc344b89c7d5bf"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "05ff30999592342a493702ba78afe8606944aea3"
+    "source": "https://github.com/jhovold/linux.git",
+    "branch": "wip/sc8280xp-6.11-rc5",
+    "sha1": "c157fbb0943dcac12a46ef766de15032e1d470b2"
   },
   {
     "source": "https://github.com/SolidRun/u-boot",
@@ -190,18 +190,18 @@
     "sha1": "a8004c1f1112ca2f867badccce5a76f052034853"
   },
   {
+    "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
+    "branch": "jg/wdk2023-gunyah-6.7-rc6",
+    "sha1": "401bea57d6b96f440142b9039d483c671c4a9587"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-5.15.y",
     "sha1": "14e468424d3edcf23167133d6ee2f3e3c6c5a022"
   },
   {
-    "source": "https://github.com/jhovold/linux.git",
-    "branch": "wip/sc8280xp-6.11-rc5",
-    "sha1": "c157fbb0943dcac12a46ef766de15032e1d470b2"
-  },
-  {
-    "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
-    "branch": "jg/wdk2023-gunyah-6.7-rc6",
-    "sha1": "401bea57d6b96f440142b9039d483c671c4a9587"
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "05ff30999592342a493702ba78afe8606944aea3"
   }
 ]
