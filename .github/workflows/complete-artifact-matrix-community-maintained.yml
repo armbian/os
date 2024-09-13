@@ -2219,7 +2219,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -2423,7 +2424,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -2627,7 +2629,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -2831,7 +2834,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -3035,7 +3039,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -3239,7 +3244,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -3443,7 +3449,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -3647,7 +3654,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -3851,7 +3859,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -4055,7 +4064,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -4259,7 +4269,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -4463,7 +4474,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -4667,7 +4679,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -4871,7 +4884,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -5075,7 +5089,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
@@ -5279,7 +5294,8 @@ jobs:
 
       - name: Deploy to servers
         timeout-minutes: 240
-        if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
+        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
         run: |
 
           # generate control file which checks mirrors
