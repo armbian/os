@@ -24,6 +24,7 @@ lists:
   # automated lists start
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
+    - { BOARD: bananapif3, BRANCH: legacy }
     - { BOARD: beaglev, BRANCH: edge }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: current }
@@ -74,6 +75,7 @@ lists:
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: armsom-aim7-io, BRANCH: vendor }
+    - { BOARD: armsom-cm5-io, BRANCH: vendor }
     - { BOARD: armsom-sige1, BRANCH: vendor }
     - { BOARD: armsom-sige5, BRANCH: vendor }
     - { BOARD: armsom-sige7, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -126,6 +128,7 @@ lists:
     - { BOARD: orangepi3, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi3b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: orangepi5pro, BRANCH: vendor }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -143,6 +146,7 @@ lists:
     - { BOARD: quartz64b, BRANCH: current }
     - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-zero2, BRANCH: current }
+    - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: recore, BRANCH: current }
     - { BOARD: retro-lite-cm5, BRANCH: vendor }
     - { BOARD: rk3318-box, BRANCH: current }
