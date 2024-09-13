@@ -13,8 +13,7 @@ team: "Board Maintainers"
 skipImagesDefaults: "'yes'"
 checkOciDefaults: "'yes'"
 nightlybuildDefaults: "'yes'"
-uploadtoserverDefaults: "'github'"
-bumpVersion: "'bump'"
+bumpVersion: "'true'"
 
 # armbian/os coordinates. set all to empty to not use userpatches.
 org_and_userpatches_repo: "armbian/os"

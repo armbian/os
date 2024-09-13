@@ -63,12 +63,10 @@ on:
         options: [ 'yes', 'no' ]
         type: choice
         default: [[nightlybuildDefaults]]
-      uploadtoserver:
-        description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
-        required: false
-        options: [ 'github', 'armbian', 'both' ]
-        type: choice
-        default: [[uploadtoserverDefaults]]
+      bumpversion:
+        type: boolean
+        description: "Bump version"
+        default: [[bumpVersion]]
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
@@ -264,7 +262,7 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( github.event.inputs.bumpversion == true ) }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v5.3.0
         with:
