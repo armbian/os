@@ -468,7 +468,7 @@ jobs:
 
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
@@ -479,7 +479,7 @@ jobs:
 
       # clone the rkbin repo (`armbian/rkbin`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: armbian/rkbin
@@ -490,7 +490,7 @@ jobs:
 
       # clone the build docker (`armbian/docker-armbian-build`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: armbian/docker-armbian-build
@@ -501,7 +501,7 @@ jobs:
 
       # clone the build system repo (`armbian/documentation`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: armbian/documentation
@@ -511,7 +511,7 @@ jobs:
           path: documentation
 
       - name: Prepare Git_sources JSON
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
         run: |
 
           cd build
@@ -541,7 +541,7 @@ jobs:
           cp build/output/info/git_sources.json os/
 
       - name: Update scripts
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
         run: |
 
           #sudo chown -R $USER:$USER .git
@@ -609,7 +609,7 @@ jobs:
           pre-release-identifier: 'trunk'
 
       - name: Read version from file if nor overriden
-        if: ${{ ! github.event.inputs.versionOverride }}
+        if: ${{ ! github.event.inputs.versionOverride || github.event.inputs.bumpversion == 'false' }}
         run: |
           mkdir -p downloads
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
