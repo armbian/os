@@ -383,12 +383,10 @@ on:
         options: [ 'yes', 'no' ]
         type: choice
         default: 'no'
-      uploadtoserver:
-        description: 'CDN upload  github = releases, armbian = rsync.armbian.com'
-        required: false
-        options: [ 'github', 'armbian', 'both' ]
-        type: choice
-        default: 'armbian'
+      bumpversion:
+        type: boolean
+        description: "Bump version"
+        default: 'false'
       versionOverride:
         description: 'Version override. Leave empty for automatic bump'
         required: false
@@ -584,7 +582,7 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( github.event.inputs.bumpversion == 'true' ) }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v5.3.0
         with:
@@ -2195,9 +2193,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -2400,9 +2395,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -2605,9 +2597,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -2810,9 +2799,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -3015,9 +3001,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -3220,9 +3203,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -3425,9 +3405,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -3630,9 +3607,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -3835,9 +3809,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -4040,9 +4011,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -4245,9 +4213,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -4450,9 +4415,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -4655,9 +4617,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -4860,9 +4819,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -5065,9 +5021,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
@@ -5270,9 +5223,6 @@ jobs:
 
       - name: "Upload artefacts"
         timeout-minutes: 60
-        #if: ${{ github.repository_owner == 'Armbian' && github.event.inputs.release != 'stable' }}
-        #if: ${{ inputs.release != 'stable' && github.event.inputs.uploadtoserver != 'yes' }}
-        #if: (${{ github.event.inputs.uploadtoserver || 'armbian' }} == 'github') || (${{ github.event.inputs.uploadtoserver || 'armbian' }}  == 'both')
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
