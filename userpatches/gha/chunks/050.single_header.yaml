@@ -262,7 +262,7 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( github.event.inputs.bumpversion == true ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( github.event.inputs.bumpversion == 'true' ) }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v5.3.0
         with:
