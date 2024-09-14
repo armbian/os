@@ -68,7 +68,7 @@ on:
         description: "Bump version"
         default: [[bumpVersion]]
       versionOverride:
-        description: 'Version override. Leave empty for automatic bump'
+        description: 'Version override'
         required: false
         default: ''
 
