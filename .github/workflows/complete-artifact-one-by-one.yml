@@ -10,6 +10,7 @@ on:
         options:
         - kernel
         - build
+        - uboot
         default: build
 
       armbian_kernel_branch:
@@ -309,6 +310,8 @@ jobs:
           armbian_kernel_branch:      "${{inputs.armbian_kernel_branch}}"
           armbian_ui:                 "${{inputs.armbian_ui}}"
           armbian_board:              "${{inputs.armbian_board}}"
+          armbian_branch:             "${{inputs.armbian_version}}"
+          armbian_artifacts:          "${{inputs.armbian_target == 'build' && 'build/output/images/' || 'build/output/debs/'}}"
           armbian_release_tittle:     "Armbian SDK"
           armbian_release_body:       "Virtual images for x86 and arm64"
           armbian_pgp_key:            "${{secrets.GPG_KEY1}}"
