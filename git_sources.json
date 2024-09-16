@@ -27,12 +27,17 @@
   {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
-    "sha1": "11276b146bab3c4b11eb182c163cc6e99be01da9"
+    "sha1": "8e7c8a855f0a91d3a34c1e37086d5aa894b2011e"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "5f55cad62cc9d8d29dd3556e0243b14355725ffb"
+    "branch": "linux-6.10.y",
+    "sha1": "049be94099ea5ba8338526c5a4f4f404b9dcaf54"
+  },
+  {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -41,8 +46,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "049be94099ea5ba8338526c5a4f4f404b9dcaf54"
+    "branch": "linux-6.6.y",
+    "sha1": "6d1dc55b5bab93ef868d223b740d527ee7501063"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -51,18 +56,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "6d1dc55b5bab93ef868d223b740d527ee7501063"
+    "branch": "linux-6.1.y",
+    "sha1": "5f55cad62cc9d8d29dd3556e0243b14355725ffb"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
     "sha1": "067484abe738464ea2d717a02f93f6d8a6396ecf"
-  },
-  {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -177,7 +177,7 @@
   {
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.6.y",
-    "sha1": "8c9ca647449ba9df7e3b300c480242f9b5bdd867"
+    "sha1": "c1321370c9af9681e0604c4d3363cf362fb48598"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
@@ -187,7 +187,7 @@
   {
     "source": "https://github.com/jhovold/linux.git",
     "branch": "wip/sc8280xp-6.11",
-    "sha1": "69df6841595f8c2aa779481824d5f02d2c207919"
+    "sha1": "bd3d8155da5ccf2ed28e0ff0bee1ca0966b6241f"
   },
   {
     "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
