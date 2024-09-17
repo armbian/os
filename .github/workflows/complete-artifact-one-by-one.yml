@@ -10,7 +10,6 @@ on:
         options:
         - kernel
         - build
-        - uboot
         default: build
 
       armbian_kernel_branch:
@@ -20,7 +19,6 @@ on:
         - legacy
         - current
         - edge
-        - vendor
         default: 'current'
 
       armbian_release:
@@ -28,7 +26,6 @@ on:
         description: 'Userspace'
         options:
         - jammy
-        - noble
         - mantic
         - bookworm
         - trixie
@@ -195,6 +192,7 @@ on:
         - orangepi3b
         - orangepi4-lts
         - orangepi4
+        - orangepi5-max
         - orangepi5-plus
         - orangepi5
         - orangepi5pro
@@ -305,7 +303,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v24.8.1
+      - uses: armbian/build@v24.2.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
@@ -313,8 +311,6 @@ jobs:
           armbian_kernel_branch:      "${{inputs.armbian_kernel_branch}}"
           armbian_ui:                 "${{inputs.armbian_ui}}"
           armbian_board:              "${{inputs.armbian_board}}"
-          armbian_branch:             "${{inputs.armbian_version}}"
-          armbian_artifacts:          "${{inputs.armbian_target == 'build' && 'build/output/images/' || 'build/output/debs/'}}"
           armbian_release_tittle:     "Armbian SDK"
           armbian_release_body:       "Virtual images for x86 and arm64"
           armbian_pgp_key:            "${{secrets.GPG_KEY1}}"
