@@ -62,6 +62,8 @@ lists:
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopct6-lts, BRANCH: vendor }
+    - { BOARD: nanopct6-lts, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6, BRANCH: current }
     - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
