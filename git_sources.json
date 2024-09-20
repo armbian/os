@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "8bc31a28823328451506e7788dde967433ba7254"
+    "sha1": "5e8d48cb7a1202336e2e3cf3b89aef2a0f1b9c09"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -35,9 +35,9 @@
     "sha1": "8a886bee7aa574611df83a028ab435aeee071e00"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "561bbd55f91a8e94576ca3fbf35a0c99ff70d4b2"
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -50,9 +50,9 @@
     "sha1": "e526b12bf9169887f8cfe5afed2b10e56bdca4c3"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr3",
+    "sha1": "992c06bf85249d4cf82bb41b9a046200949c38a8"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -60,9 +60,9 @@
     "sha1": "af5fc555764e1ad015ba43f9b5151ee9180c0be6"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr3",
-    "sha1": "992c06bf85249d4cf82bb41b9a046200949c38a8"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "561bbd55f91a8e94576ca3fbf35a0c99ff70d4b2"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -171,13 +171,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.1.y",
-    "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
+    "branch": "rpi-6.6.y",
+    "sha1": "4ea9e07bc6b4c92db328e334e7baec39888bdd7a"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "cc63d552b9aab92fb581dfb08267d5af697f477b"
+    "branch": "rpi-6.1.y",
+    "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
