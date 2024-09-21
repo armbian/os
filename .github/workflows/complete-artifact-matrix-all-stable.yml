@@ -24,7 +24,7 @@ on:
         required: true
         options: [ 'yes', 'no' ]
         type: choice
-        default: 'no'
+        default: 'yes'
       checkOci:
         description: 'Check OCI for existing artifacts? yes = check OCI, no = always build everything'
         required: true
@@ -370,7 +370,7 @@ jobs:
           retention-days: 5
 
       - name: "Generate body file"
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         run: |
             echo "
               <p align='center'>
@@ -392,7 +392,7 @@ jobs:
               </p>" > body.html
 
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.nightlybuild || 'no') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.nightlybuild || 'no') == 'yes' && (github.event.inputs.skipImages || 'yes') != 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.VERSION_OVERRIDE }}"
@@ -515,7 +515,7 @@ jobs:
           MATRIX_IMAGE_CHUNKS=16 \
           CHECK_OCI=${{ github.event.inputs.checkOci || 'no' }} \
           TARGETS_FILENAME="targets-all-not-eos.yaml" \
-          SKIP_IMAGES=${{ github.event.inputs.skipImages || 'no'}} \
+          SKIP_IMAGES=${{ github.event.inputs.skipImages || 'yes'}} \
           ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes # IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
 
       - name: "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
@@ -5131,12 +5131,12 @@ jobs:
           if_key_exists: replace
 
       - name: Sync parts when making single images / maintainer
-#        if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
+#        if: ${{ (github.event.inputs.skipImages || 'yes') == 'no' }}
         run: |
 
           # 
           TARGET=""
-          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'no'" == "no" ]; then
+          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'yes'" == "no" ]; then
               TARGET="partial/${{ github.actor }}/"
           else
               # drop nightly repository
@@ -5158,7 +5158,7 @@ jobs:
           find output/. -type d -empty -delete
 
       - name: "Run repository update action"
-        if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') == 'yes' }}
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH }}
@@ -5186,7 +5186,7 @@ jobs:
     steps:
 
       - name: "Run webindex update action"
-        if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') == 'no' }}
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DISPATCH }}
@@ -5194,7 +5194,7 @@ jobs:
           event-type: "Webindex update"
 
       - name: "Download all workflow run artifacts"
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' }}
         uses: actions/download-artifact@v4
         with:
           name: assets-for-download-all
@@ -5231,7 +5231,7 @@ jobs:
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' && (github.event.inputs.nightlybuild || 'no') == 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'yes') != 'yes' && (github.event.inputs.nightlybuild || 'no') == 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.version }}"
