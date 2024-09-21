@@ -115,7 +115,7 @@ jobs: # <TEMPLATE-IGNORE>
 
           # 
           TARGET=""
-          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ]; then
+          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ] || [ "[[partial_folder]]" == "yes" ]; then
               TARGET="partial/${{ github.actor }}/"
           else
               # drop nightly repository
