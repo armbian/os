@@ -432,6 +432,20 @@ jobs:
         sed -i "s/pipeline-/pipeline-all/" output/info/artifact-image-complete-matrix.yml
         cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-all.yml
 
+        #
+        # copy all stable templates
+        #
+        cp userpatches/gha/gha_config_all_stable.yaml userpatches/gha/gha_config.yaml
+        cp userpatches/targets-all-not-eos.yaml userpatches/targets.yaml
+        bash ./compile.sh gha-template
+        # add boards and maintainers
+        sed -i '/# boards/r /tmp/boards.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# maintainers/r /tmp/maintainers.txt' output/info/artifact-image-complete-matrix.yml
+        sed -i '/# branches/r /tmp/branches.txt' output/info/artifact-image-complete-matrix.yml
+        # we need unique concurency id
+        sed -i "s/pipeline-/pipeline-all/" output/info/artifact-image-complete-matrix.yml
+        cp output/info/artifact-image-complete-matrix.yml ../os/.github/workflows/complete-artifact-matrix-all-stable.yml
+
         cd ../os
         git config --local user.email "info@armbian.com"
         git config --local user.name "Armbianworker"
@@ -449,6 +463,7 @@ jobs:
         git add .github/workflows/complete-artifact-matrix-community-maintained.yml
         git add .github/workflows/complete-artifact-matrix-apps.yml
         git add .github/workflows/complete-artifact-matrix-all.yml
+        git add .github/workflows/complete-artifact-matrix-all-stable.yml
         git add .github/workflows/complete-artifact-one-by-one.yml
         git commit --allow-empty -m "Update generated GHA chunk workflow artifact-image-complete-matrix.yml" -a
 
