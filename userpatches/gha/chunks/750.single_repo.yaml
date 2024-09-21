@@ -116,7 +116,7 @@ jobs: # <TEMPLATE-IGNORE>
           # 
           TARGET=""
           if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ]; then
-              TARGET="partial/"
+              TARGET="partial/${{ github.actor }}/"
           else
               # drop nightly repository
               sudo rm -rf /outgoing/repository-beta/*

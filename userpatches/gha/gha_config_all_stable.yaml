@@ -1,0 +1,31 @@
+org: "armbian" # can't be an expression, only string.
+
+# armbian/build coordinates
+org_and_build_repo: "armbian/build"
+release_repo: "os"
+build_ref: "${{ inputs.ref || 'main' }}"
+script_name: "Build All Stable Artifacts (cronjob)"
+concurrency_group: "pipeline"
+repository_ref: "all"
+team: "Board Maintainers"
+
+# menu defaults
+skipImagesDefaults: "'no'"
+checkOciDefaults: "'yes'"
+nightlybuildDefaults: "'no'"
+bumpVersion: "'false'"
+
+# armbian/os coordinates. set all to empty to not use userpatches.
+org_and_userpatches_repo: "armbian/os"
+userpatches_ref: "main"
+userpatches_dir: "userpatches" # folder inside the userpatches repo; use "." if stuff is in the root of the repo
+targets_filename: "targets-all-not-eos.yaml"
+
+ghcr_user: "${{ github.repository_owner }}"
+userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
+
+# repository runner
+repository_runner: "[ repository ]"
+
+# when this should run
+cron_job: "schedule:\n   - cron: '0 1 * * *'"
