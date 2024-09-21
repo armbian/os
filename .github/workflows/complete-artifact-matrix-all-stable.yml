@@ -5136,7 +5136,8 @@ jobs:
 
           # 
           TARGET=""
-          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'yes'" == "no" ]; then
+          if [ "'yes'" == "yes" ] && [ "'no'" == "no" ]; then
+          #if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'yes'" == "no" ]; then
               TARGET="partial/${{ github.actor }}/"
           else
               # drop nightly repository
