@@ -5395,10 +5395,13 @@ jobs:
 #        if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
         run: |
 
-          # 
+          echo "fix permissions"
+          sudo chown -R $USER:$USER output/.
           TARGET=""
+
           if [ "'no'" == "yes" ] && [ "'yes'" == "no" ]; then
           #if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'no'" == "no" ]; then
+              echo "Save to users folder"
               TARGET="partial/${{ github.actor }}/"
           else
               # drop nightly repository
