@@ -130,6 +130,8 @@ jobs: # <TEMPLATE-IGNORE>
               ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           fi
 
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/.
+
           echo "sync all parts"
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
           --include='debs***' \
