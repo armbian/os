@@ -5138,7 +5138,7 @@ jobs:
           sudo chown -R $USER:$USER output/.
           TARGET=""
 
-          if [ "'yes'" == "yes" ] && [ "'no'" == "no" ]; then
+          if [ "'yes'" == "'yes'" ] && [ "'no'" == "'no'" ]; then
           #if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'yes'" == "no" ]; then
               echo "Save to users folder"
               TARGET="partial/${{ github.actor }}/"
