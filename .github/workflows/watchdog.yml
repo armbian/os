@@ -23,7 +23,7 @@ jobs:
       matrix:
 
         # list scripts you want to watch and execute failed jobs x-times
-        script: ["repository-update","complete-artifact-matrix-all","complete-artifact-matrix-nightly","complete-artifact-matrix-standard-support","complete-artifact-matrix-community-maintained","complete-artifact-matrix-apps","full-distro-build-and-test"]
+        script: ["repository-update","complete-artifact-matrix-all","complete-artifact-matrix-all-stable.yml","complete-artifact-matrix-nightly","complete-artifact-matrix-standard-support","complete-artifact-matrix-community-maintained","complete-artifact-matrix-apps","full-distro-build-and-test"]
 
     name: rerun
     runs-on: ubuntu-latest
