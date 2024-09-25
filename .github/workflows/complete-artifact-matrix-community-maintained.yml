@@ -424,7 +424,9 @@ env:
   # Added to every build, even the prepare job.
   EXTRA_PARAMS_ALL_BUILDS: "${{ inputs.extraParamsAllBuilds || 'UPLOAD_TO_OCI_ONLY=yes' }}"
 
+  # Version management
   VERSION_OVERRIDE: "${{ github.event.inputs.versionOverride }}"
+  VERSION_BUMP: "${{ github.event.inputs.bumpversion || 'true' }}"
 
   # To use GitHub CLI in a GitHub Actions workflow
   GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
@@ -473,7 +475,7 @@ jobs:
 
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
@@ -484,7 +486,7 @@ jobs:
 
       # clone the rkbin repo (`armbian/rkbin`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: armbian/rkbin
@@ -495,7 +497,7 @@ jobs:
 
       # clone the build docker (`armbian/docker-armbian-build`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: armbian/docker-armbian-build
@@ -506,7 +508,7 @@ jobs:
 
       # clone the build system repo (`armbian/documentation`)
       - name: Checkout build repo
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) && ( inputs.ref == '' ) }}
         uses: actions/checkout@v4
         with:
           repository: armbian/documentation
@@ -516,7 +518,7 @@ jobs:
           path: documentation
 
       - name: Prepare Git_sources JSON
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) && ( inputs.ref == '' ) }}
         run: |
 
           cd build
@@ -546,7 +548,7 @@ jobs:
           cp build/output/info/git_sources.json os/
 
       - name: Update scripts
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( github.event.inputs.bumpversion == 'true' ) && ( inputs.ref == '' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) && ( inputs.ref == '' ) }}
         run: |
 
           #sudo chown -R $USER:$USER .git
@@ -593,7 +595,7 @@ jobs:
 
       # Bump version automatically
       - name: Bump version
-        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( github.event.inputs.bumpversion == 'true' ) }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( "${{ env.VERSION_BUMP }}" == 'true' ) }}
         id: changelog
         uses: TriPSs/conventional-changelog-action@v5.3.0
         with:
@@ -614,7 +616,7 @@ jobs:
           pre-release-identifier: 'trunk'
 
       - name: Read version from file if nor overriden
-        if: ${{ ! github.event.inputs.versionOverride || github.event.inputs.bumpversion == 'false' }}
+        if: ${{ ! github.event.inputs.versionOverride || "${{ env.VERSION_BUMP }}" == 'false' }}
         run: |
           mkdir -p downloads
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
