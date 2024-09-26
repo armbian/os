@@ -43,7 +43,7 @@ jobs:
         run: |
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          releases=($(grep "supported\|csc" build/config/distributions/*/support | cut -d"/" -f4 | grep -v oracular))
+          releases=($(grep "supported\|csc" build/config/distributions/*/support | cut -d"/" -f4))
           for i in ${releases[@]}; do
               desktops=($(grep "supported\|csc" build/config/desktop/${i}/environments/*/support | cut -d"/" -f6))
               desktops+=(cli minimal)
