@@ -1,5 +1,7 @@
 name: Enable Hetzner Runners (admin)
 on:
+  schedule:
+   - cron: '00 9 * * *'
   workflow_dispatch:
     inputs:
       period:
