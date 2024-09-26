@@ -5,7 +5,7 @@ name: "Build Community Images (cronjob)"
 
 on:
   schedule:
-   - cron: '0 0 * * THU'
+   - cron: '0 8 * * THU'
 
   workflow_call:
     inputs:
