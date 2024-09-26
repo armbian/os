@@ -10,7 +10,7 @@ on:
         - 110m
         - 170m
         - 230m
-        default: 50m
+        default: 110m
       machine:
         type: choice
         description: 'Machine type'
@@ -18,7 +18,7 @@ on:
         - cax21
         - cax31
         - cax41
-        default: 'cax21'
+        default: 'cax31'
       machine_count:
         type: choice
         description: 'Number of machines'
@@ -27,7 +27,7 @@ on:
         - "2"
         - "4"
         - "8"
-        default: '2'
+        default: '4'
       runners_count:
         type: choice
         description: 'Runners per machine'
@@ -69,7 +69,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Determine changed kernels
+      - name: "Delete dangling cloud runners"
+        run: |
+          for runner in $(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/armbian/os/actions/runners | jq -r '.runners[] | .id'); do
+              gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/armbian/os/actions/runners/$runner
+          done
+          
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: "Enable cloud runners"
         id: machine-number
         run: |
           echo "matrix=$(for x in $(seq -w 0 $(( ${{ github.event.inputs.machine_count }} - 1 ))); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
@@ -90,10 +99,10 @@ jobs:
         uses: armbian/actions/hetzner@1.0
         with:
           action-type: enable
-          machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
+          machine-type: "${{ github.event.inputs.machine || 'cax31' }}"
           machine-id: "${{ matrix.node }}"          
           runners-count: "${{ github.event.inputs.runners_count || '4' }}"          
-          machine-count: "${{ github.event.inputs.machine_count || '2' }}"
+          machine-count: "${{ github.event.inputs.machine_count || '4' }}"
           key: ${{ secrets.KEY_TORRENTS }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
           hetzner_id: ${{ secrets.HETZNER_ONE }}
@@ -106,7 +115,7 @@ jobs:
     steps:
      
       - name: Sleeping "${{ github.event.inputs.period }}"
-        run: sleep "${{ github.event.inputs.period || '5m' }}"
+        run: sleep "${{ github.event.inputs.period || '110m' }}"
  
   stop:
     #if: always()
