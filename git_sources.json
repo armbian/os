@@ -20,6 +20,21 @@
     "sha1": "31e88922ad2b7a387c30ca9fbda618306dbd638b"
   },
   {
+    "source": "https://github.com/armbian/config",
+    "branch": "master",
+    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
+  },
+  {
+    "source": "https://github.com/armbian/firmware",
+    "branch": "master",
+    "sha1": "8e7c8a855f0a91d3a34c1e37086d5aa894b2011e"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "561bbd55f91a8e94576ca3fbf35a0c99ff70d4b2"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "8306534b8a7265bee2f4323b45fd2a22a7c8b9b6"
@@ -35,19 +50,24 @@
     "sha1": "e526b12bf9169887f8cfe5afed2b10e56bdca4c3"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "561bbd55f91a8e94576ca3fbf35a0c99ff70d4b2"
-  },
-  {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
-  },
-  {
     "source": "https://github.com/AvaotaSBC/linux.git",
     "branch": "linux-5.15",
     "sha1": "af5fc555764e1ad015ba43f9b5151ee9180c0be6"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "98f7e32f20d28ec452afb208f9cffc08448a2652"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.03",
+    "sha1": "875ab5399d8fa48412b442e7d5029b69f0363a3e"
+  },
+  {
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.1.y",
+    "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -55,9 +75,9 @@
     "sha1": "8986153dd6a03ec24ca4f231d51cdd6024c8a887"
   },
   {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.1.y",
-    "sha1": "c1c2f1971fbf6ddad93a8c94314fe8221e7aa6be"
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "a61d1d826ca3060fd76ab31d37c691fc09b52fc0"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -68,11 +88,6 @@
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
     "sha1": "fc07bd8e505a8f43c8a4aad7382078007571a0f9"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "98f7e32f20d28ec452afb208f9cffc08448a2652"
   },
   {
     "source": "https://source.denx.de/u-boot/u-boot.git",
@@ -156,11 +171,6 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.1.y",
-    "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.6.y",
     "sha1": "9557336c4fc4ac4606ac9e78c239aa689c26e870"
   },
@@ -168,6 +178,11 @@
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.10.y",
     "sha1": "7fb4db26eacf81948fbc1a3c2cc57fb74944c0be"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.1.y",
+    "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
