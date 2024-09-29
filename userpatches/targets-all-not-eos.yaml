@@ -18,7 +18,7 @@ common-gha-configs:
 targets:
 
   all-userspace:
-    configs: [ armbian-rootfs ]
+    configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
       only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
@@ -45,7 +45,7 @@ targets:
           amd64: [ { BOARD: "uefi-x86", BRANCH: "current" } ]
 
   all-userspace-riscv64:
-    configs: [ armbian-rootfs ]
+    configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
       only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
@@ -67,7 +67,7 @@ targets:
           riscv64: [ { BOARD: "uefi-riscv64", BRANCH: "edge" } ]
 
   all-userspace-armhf:
-    configs: [ armbian-rootfs ]
+    configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
       only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
@@ -96,7 +96,7 @@ targets:
 
   all-desktop:
     enabled: yes
-    configs: [ armbian-rootfs ]
+    configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
     vars:
@@ -115,7 +115,7 @@ targets:
 
   all-cli:
     enabled: yes
-    configs: [ armbian-rootfs ]
+    configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
     vars:
