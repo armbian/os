@@ -46,7 +46,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: "odroidxu4" , BRANCH: current }
+      - *standard-support-slow-hdmi
 
   # ubuntu unstable minimal
   minimal-cli-unstable-ubuntu:
