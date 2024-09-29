@@ -34,6 +34,20 @@ lists:
 
 targets:
 
+  # ubuntu stable minimal
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: "odroidxu4" , BRANCH: current }
+
   # ubuntu unstable minimal
   minimal-cli-unstable-ubuntu:
     enabled: yes
