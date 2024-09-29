@@ -27,7 +27,7 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        skip-releases: [ "sid", "bullseye", "focal" , "mantic", "kinetic", "lunar", "oracular" ] # do NOT include these releases
+        skip-releases: [ "sid", "trixie", "oracular" ] # do NOT include these releases
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["gnome", "xfce", "cinnamon" ] # ONLY include these desktops
@@ -91,6 +91,7 @@ targets:
           - [ desktop_tools,internet,languages,multimedia,remote_desktop ] # limited desktop
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           armhf: [ { BOARD: "tinkerboard", BRANCH: "current" } ]
+          armhf: [ { BOARD: "odroidxu4", BRANCH: "current" } ]
 
   all-desktop:
     enabled: yes
