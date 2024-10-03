@@ -614,7 +614,8 @@ jobs:
           pre-release-identifier: 'trunk'
 
       - name: Read version from file if nor overriden
-        if: ${{ ! github.event.inputs.versionOverride || env.VERSION_BUMP == 'false' }}
+        if: ${{ ( ! github.event.inputs.versionOverride ) && ( env.VERSION_BUMP == 'false' ) }}
+        #if: ${{ ! github.event.inputs.versionOverride || env.VERSION_BUMP == 'false' }}
         run: |
           mkdir -p downloads
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
