@@ -36,6 +36,7 @@ lists:
 
   staging-fast-hdmi: &staging-fast-hdmi
     # auto generated section
+    - { BOARD: nanopi-m6, BRANCH: vendor }
     - { BOARD: orangepizero2, BRANCH: current }
     # end of auto generated section
 
