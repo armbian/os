@@ -36,7 +36,6 @@ lists:
 
   community-maintained-headless: &community-maintained-headless
     # auto generated section
-    - { BOARD: bananapir2, BRANCH: current }
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
@@ -63,7 +62,6 @@ lists:
     - { BOARD: orangepi-r1, BRANCH: current }
     - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepi-r1plus, BRANCH: current }
-    - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
     - { BOARD: sakurapi-rk3308b, BRANCH: current }
@@ -193,6 +191,7 @@ lists:
     - { BOARD: bananapim2zero, BRANCH: current }
     - { BOARD: bananapim3, BRANCH: current }
     - { BOARD: bananapipro, BRANCH: current }
+    - { BOARD: bananapir2, BRANCH: current }
     - { BOARD: beelinkx2, BRANCH: current }
     - { BOARD: cubieboard2, BRANCH: current }
     - { BOARD: cubieboard4, BRANCH: current }
@@ -208,6 +207,7 @@ lists:
     - { BOARD: orangepipcplus, BRANCH: current }
     - { BOARD: orangepiplus, BRANCH: current }
     - { BOARD: orangepiplus2e, BRANCH: legacy }
+    - { BOARD: orangepizero, BRANCH: current }
     - { BOARD: orangepizeroplus2-h3, BRANCH: current }
     - { BOARD: pcduino3, BRANCH: current }
     - { BOARD: rk322x-box, BRANCH: current }
