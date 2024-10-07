@@ -196,7 +196,7 @@ jobs:
                     # ... and board ARCH defines where it goes
                     TARGET_SECTION="${SUPPORT}-slow-hdmi"
                     if [[ $ARCH == riscv64 ]]; then TARGET_SECTION="${SUPPORT}-riscv64";
-                    elif grep -q HAS_VIDEO_OUTPUT $board; then TARGET_SECTION="${SUPPORT}-headless";
+                    elif grep -q 'HAS_VIDEO_OUTPUT="no"' $board; then TARGET_SECTION="${SUPPORT}-headless";
                     elif [[ $ARCH == arm64 || $ARCH == amd64 ]]; then TARGET_SECTION="${SUPPORT}-fast-hdmi"
                     fi
 
