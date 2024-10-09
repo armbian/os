@@ -25,19 +25,9 @@
     "sha1": "9697c17fbd44190738cd853ba78a828c3bb19859"
   },
   {
-    "source": "https://github.com/armbian/config",
-    "branch": "master",
-    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
-  },
-  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "8e7c8a855f0a91d3a34c1e37086d5aa894b2011e"
-  },
-  {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -46,18 +36,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "0202c63cba31e9b3d59b8204db3cda3cdd209f15"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
     "sha1": "aa4cd140bba57b7064b4c7a7141bebd336d32087"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "af5fc555764e1ad015ba43f9b5151ee9180c0be6"
+    "source": "https://github.com/armbian/config",
+    "branch": "master",
+    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "0202c63cba31e9b3d59b8204db3cda3cdd209f15"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -65,9 +55,19 @@
     "sha1": "63a57420cf797edcfca41005dd6c805b77cfb596"
   },
   {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
+  },
+  {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
-    "sha1": "875ab5399d8fa48412b442e7d5029b69f0363a3e"
+    "sha1": "980b65294c010b137c0961008bb317ca7ea8d7b3"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "af5fc555764e1ad015ba43f9b5151ee9180c0be6"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
