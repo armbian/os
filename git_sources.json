@@ -22,7 +22,12 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "21136cb96351600f2151599a123387ab0528af36"
+    "sha1": "4e94c05a1ea7ce8d59002dea7fe8197b913f8363"
+  },
+  {
+    "source": "https://github.com/armbian/config",
+    "branch": "master",
+    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -35,14 +40,9 @@
     "sha1": "08bb5322f49b5828fb0d6acb20826e47a321ec3c"
   },
   {
-    "source": "https://github.com/armbian/config",
-    "branch": "master",
-    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "e9448e371c87c76f9133bb3b27918854f4dc087b"
+    "branch": "linux-6.1.y",
+    "sha1": "54d90d17e8cee20b163d395829162cec92b583f4"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -51,8 +51,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "54d90d17e8cee20b163d395829162cec92b583f4"
+    "branch": "linux-6.11.y",
+    "sha1": "17365d66f1c6aa6bf4f4cb9842f5edeac027bcfb"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "e9448e371c87c76f9133bb3b27918854f4dc087b"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -65,11 +70,6 @@
     "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "17365d66f1c6aa6bf4f4cb9842f5edeac027bcfb"
-  },
-  {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
     "sha1": "bf16d79b2958e26119bae58f6f524458ed2f3d2a"
@@ -80,14 +80,14 @@
     "sha1": "693a5ea9432443eb4a58eee8a37f3b34501eb21b"
   },
   {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.1.y",
-    "sha1": "92ce8d7d2ab679e10c1dda309a0fb2ceae78b908"
-  },
-  {
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "b122f1595d14ec07b1ac46585875fbc2304550b9"
+  },
+  {
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.1.y",
+    "sha1": "92ce8d7d2ab679e10c1dda309a0fb2ceae78b908"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
