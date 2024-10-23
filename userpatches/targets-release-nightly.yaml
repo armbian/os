@@ -40,7 +40,6 @@ lists:
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
-    - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
