@@ -242,7 +242,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: trixie
+      RELEASE: sid
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "kali"
