@@ -7,7 +7,7 @@
   {
     "source": "https://github.com/armbian/configng",    
     "branch": "main",     
-    "sha1": "b383c31f2982f00760784a71c053b05b35cc66c8"
+    "sha1": "d4e171316073b3c6280a37b9ebb8a307f4bda251"
   },
   {
     "source": "https://github.com/armbian/rkbin",    
@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/documentation",    
     "branch": "master",     
-    "sha1": "8ad35bcb27f413ee344105219250a33c17117b35"
+    "sha1": "1b616aeaecc6020b66840d84f933c9b1b6399e0d"
   },
   {
     "source": "https://github.com/armbian/build",    
@@ -25,19 +25,14 @@
     "sha1": "b0a0a0c50d1c9b68861b3e42a8774b6a0178946d"
   },
   {
-    "source": "https://github.com/armbian/firmware",
-    "branch": "master",
-    "sha1": "800cc6483d3f04ff4eda610ab60dcf25c832eaee"
-  },
-  {
     "source": "https://github.com/armbian/config",
     "branch": "master",
     "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "e1d95775eb3db64ab3740701bf9682e5856aab2e"
+    "source": "https://github.com/armbian/firmware",
+    "branch": "master",
+    "sha1": "800cc6483d3f04ff4eda610ab60dcf25c832eaee"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,19 +45,24 @@
     "sha1": "18916a684a8b836957df88438f9bca590799d04c"
   },
   {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.10.y",
     "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "e1d95775eb3db64ab3740701bf9682e5856aab2e"
+  },
+  {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
     "sha1": "bf16d79b2958e26119bae58f6f524458ed2f3d2a"
+  },
+  {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -176,13 +176,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.10.y",
-    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
+    "branch": "rpi-6.6.y",
+    "sha1": "1af976d476424009ac9d93313a9fad9cbb5498ae"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "1af976d476424009ac9d93313a9fad9cbb5498ae"
+    "branch": "rpi-6.10.y",
+    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
