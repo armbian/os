@@ -84,6 +84,7 @@ lists:
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: cherryba-m1, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
+    - { BOARD: cm3588-nas, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: coolpi-cm5, BRANCH: edge }
     - { BOARD: fine3399, BRANCH: current }
     - { BOARD: firefly-itx-3588j, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -114,7 +115,6 @@ lists:
     - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: mixtile-edge2, BRANCH: edge }
-    - { BOARD: nanopc-cm3588-nas, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopct4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-r5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
