@@ -25,19 +25,14 @@
     "sha1": "a8e7d17e7fc5b7419f0907c780b8ad61109c6dc7"
   },
   {
-    "source": "https://github.com/armbian/firmware",
-    "branch": "master",
-    "sha1": "800cc6483d3f04ff4eda610ab60dcf25c832eaee"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "b6b5634fd603f09484d8bc55dc781c7da1050b67"
-  },
-  {
     "source": "https://github.com/armbian/config",
     "branch": "master",
     "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
+  },
+  {
+    "source": "https://github.com/armbian/firmware",
+    "branch": "master",
+    "sha1": "800cc6483d3f04ff4eda610ab60dcf25c832eaee"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -46,13 +41,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "18916a684a8b836957df88438f9bca590799d04c"
+    "branch": "linux-6.1.y",
+    "sha1": "7ec6f9fa3d97963b8133386d8fabc4f5595df4b1"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "b6b5634fd603f09484d8bc55dc781c7da1050b67"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7ec6f9fa3d97963b8133386d8fabc4f5595df4b1"
+    "branch": "linux-6.6.y",
+    "sha1": "18916a684a8b836957df88438f9bca590799d04c"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
@@ -135,14 +135,14 @@
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "d67482f5d8490cad2013a256b170d93d7c1bead2"
-  },
-  {
     "source": "https://github.com/hardkernel/u-boot.git",
     "branch": "odroidxu4-v2017.05",
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
+  },
+  {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "d67482f5d8490cad2013a256b170d93d7c1bead2"
   },
   {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
