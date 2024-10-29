@@ -7,7 +7,7 @@
   {
     "source": "https://github.com/armbian/configng",    
     "branch": "main",     
-    "sha1": "b4547df770c670d5890af1ce43bbc3009dc83ff6"
+    "sha1": "46aa8ff4bff1b1738b4d9123bc8c6b9df2d4881d"
   },
   {
     "source": "https://github.com/armbian/rkbin",    
@@ -17,22 +17,27 @@
   {
     "source": "https://github.com/armbian/documentation",    
     "branch": "master",     
-    "sha1": "a72271f7cdce655a02bc711e57fc9c1dda12e5cc"
+    "sha1": "c91e694e31b0089cf1b5903218b9f138ad7e92fe"
   },
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "a8e7d17e7fc5b7419f0907c780b8ad61109c6dc7"
-  },
-  {
-    "source": "https://github.com/armbian/config",
-    "branch": "master",
-    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
+    "sha1": "59de6d7227f378ba56f70aff91ca64cf525a748b"
   },
   {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "800cc6483d3f04ff4eda610ab60dcf25c832eaee"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "b6b5634fd603f09484d8bc55dc781c7da1050b67"
+  },
+  {
+    "source": "https://github.com/armbian/config",
+    "branch": "master",
+    "sha1": "473f9990fe722bc7fa2c77795f50dea3118708ff"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -41,18 +46,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7ec6f9fa3d97963b8133386d8fabc4f5595df4b1"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "b6b5634fd603f09484d8bc55dc781c7da1050b67"
+    "branch": "linux-6.6.y",
+    "sha1": "18916a684a8b836957df88438f9bca590799d04c"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "18916a684a8b836957df88438f9bca590799d04c"
+    "branch": "linux-6.1.y",
+    "sha1": "7ec6f9fa3d97963b8133386d8fabc4f5595df4b1"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
