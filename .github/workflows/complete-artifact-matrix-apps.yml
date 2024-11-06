@@ -41,7 +41,7 @@ on:
         options:
         # branches
         - main
-        - v24.08
+        - v24.11
         default: 'main'
       board:
         type: choice
@@ -54,6 +54,7 @@ on:
         - aml-t95z-plus
         - armsom-aim7-io
         - armsom-cm5-io
+        - armsom-cm5-rpi-cm4-io
         - armsom-sige1
         - armsom-sige3
         - armsom-sige5
@@ -254,6 +255,7 @@ on:
         - rock-5-itx
         - rock-5a
         - rock-5b
+        - rock-5b-plus
         - rock-5c
         - rock-s0
         - rock64

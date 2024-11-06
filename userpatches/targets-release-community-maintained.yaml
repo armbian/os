@@ -74,6 +74,7 @@ lists:
     - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: armsom-aim7-io, BRANCH: vendor }
     - { BOARD: armsom-cm5-io, BRANCH: vendor }
+    - { BOARD: armsom-cm5-rpi-cm4-io, BRANCH: vendor }
     - { BOARD: armsom-sige1, BRANCH: vendor }
     - { BOARD: armsom-sige3, BRANCH: vendor }
     - { BOARD: armsom-sige5, BRANCH: vendor }
@@ -160,6 +161,7 @@ lists:
     - { BOARD: rock-3c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
     - { BOARD: rock-5-cmio, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rock-5b-plus, BRANCH: vendor }
     - { BOARD: rock64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rockpi-4a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-4b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
