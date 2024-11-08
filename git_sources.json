@@ -7,7 +7,7 @@
   {
     "source": "https://github.com/armbian/configng",    
     "branch": "main",     
-    "sha1": "19e86ae9f76de0291725fac20bb1436356de8b1d"
+    "sha1": "7a8c9de4cf67885a008a9c304ee6a5204a8bf78d"
   },
   {
     "source": "https://github.com/armbian/rkbin",    
@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/documentation",    
     "branch": "master",     
-    "sha1": "50e3bcc77e44f9cd52fd295964fd38d5db36a652"
+    "sha1": "503fde263f602bb6888338a00ec547678d6a08b7"
   },
   {
     "source": "https://github.com/armbian/build",    
@@ -25,14 +25,9 @@
     "sha1": "0397a2492ddd7f87d3ab0a7875f1ec8346266ae0"
   },
   {
-    "source": "https://github.com/armbian/configng",
-    "branch": "main",
-    "sha1": "19e86ae9f76de0291725fac20bb1436356de8b1d"
-  },
-  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
-    "sha1": "800cc6483d3f04ff4eda610ab60dcf25c832eaee"
+    "sha1": "8dbb28d2ee8fa3d5f67a9d9dbc64c3d2b3b0adac"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -40,19 +35,14 @@
     "sha1": "e817e483c4b5bd0cd73a3d7e26c0a59c86b8c995"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7c15117f9468c7395ce3fd0892a6f909b91d9005"
+    "source": "https://github.com/armbian/configng",
+    "branch": "main",
+    "sha1": "7a8c9de4cf67885a008a9c304ee6a5204a8bf78d"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.10.y",
     "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "bf3af7e92bda9f48085b7741e657eeb387a61644"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
@@ -61,8 +51,23 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "bf3af7e92bda9f48085b7741e657eeb387a61644"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.11.y",
     "sha1": "163b38476c50d64b89c1dfdf4fd57a368b6ebbec"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.1.y",
+    "sha1": "7c15117f9468c7395ce3fd0892a6f909b91d9005"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.03",
+    "sha1": "c344eb2356f517dcb1dcf2f3931c066d5dcf0e05"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -73,11 +78,6 @@
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr3",
     "sha1": "82a3752fb41d7f244f3d30463192c347408af1b1"
-  },
-  {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.03",
-    "sha1": "c344eb2356f517dcb1dcf2f3931c066d5dcf0e05"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
