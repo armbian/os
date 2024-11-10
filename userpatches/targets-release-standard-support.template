@@ -82,7 +82,7 @@ targets:
       - *standard-support-headless
       - *standard-support-riscv64
 
-  # Ubuntu old stable full CLI
+  # Ubuntu old stable minimal
   full-cli-old-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -91,7 +91,7 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: jammy
-      BUILD_MINIMAL: "no"
+      BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
@@ -208,10 +208,7 @@ targets:
     items:
       - *standard-support-fast-hdmi
 
-  # Ubuntu old LTS with KDE neon
-  #
-  # Without office as otherwise images will go over 2Gb GH file limit!
-  #
+  # Ubuntu LTS with KDE neon
   kde-neon-desktop-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
@@ -219,12 +216,12 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "kde-neon"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-fast-hdmi
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
