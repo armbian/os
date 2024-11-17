@@ -45,7 +45,7 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *standard-support-riscv64
-
+gimp
 # Ubuntu minimal
   minimal-cli-stable-ubuntu:
     enabled: yes
@@ -193,7 +193,7 @@ targets:
 
   # Debian trixie gnome desktop for some boards
   gnome-desktop-latest-debian:
-    enabled: yes
+    enabled: no # broken in this moment
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
