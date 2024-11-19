@@ -225,7 +225,7 @@ jobs:
           sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/rkbin",    \n    "branch": "master",     \n    "sha1": "'$RKBIN'"\n  },\n  &/' build/output/info/git_sources.json
 
           # add armbianconfig repository
-          sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/configng",    \n    "branch": "main",     \n    "sha1": "'$ARMBIANCONFIGNG'"\n  },\n  &/' build/output/info/git_sources.json
+          #sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/configng",    \n    "branch": "main",     \n    "sha1": "'$ARMBIANCONFIGNG'"\n  },\n  &/' build/output/info/git_sources.json
 
           # add docker-armbian-build repository
           sed -i '0,/{/s//{\n    "source": "https:\/\/github.com\/armbian\/docker-armbian-build",    \n    "branch": "main",     \n    "sha1": "'$DOCKER_ARMBIAN_BUILD'"\n  },\n  &/' build/output/info/git_sources.json
