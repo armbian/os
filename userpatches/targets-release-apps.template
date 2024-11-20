@@ -49,6 +49,7 @@ lists:
     - { BOARD: rock-5b, BRANCH: vendor }
     - { BOARD: rock-5c, BRANCH: vendor }
     - { BOARD: rock-5-itx, BRANCH: vendor }
+    - { BOARD: rock-5b-plus, BRANCH: vendor }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
@@ -80,6 +81,7 @@ lists:
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
+    - { BOARD: nanopi-m6, BRANCH: vendor }
     - { BOARD: nanopi-r6s, BRANCH: vendor }
     - { BOARD: nanopct6, BRANCH: vendor }
     - { BOARD: nanopct6-lts, BRANCH: vendor }
@@ -97,10 +99,13 @@ lists:
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5a, BRANCH: vendor }
     - { BOARD: rock-5b, BRANCH: vendor }
     - { BOARD: rock-5c, BRANCH: vendor }
     - { BOARD: rock-5-itx, BRANCH: vendor }
+    - { BOARD: rock-5b-plus, BRANCH: vendor }
+    - { BOARD: rock-5-cm-rpi-cm4-io, BRANCH: vendor }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
@@ -141,6 +146,7 @@ lists:
     - { BOARD: orangepi5-plus, BRANCH: vendor }
     - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: rock-5-itx, BRANCH: vendor }
+    - { BOARD: rock-5b-plus, BRANCH: vendor }
     - { BOARD: rock-5a, BRANCH: vendor }
     - { BOARD: rock-5b, BRANCH: vendor }
     - { BOARD: rock-5c, BRANCH: vendor }
@@ -170,6 +176,7 @@ lists:
     - { BOARD: orangepi5-plus, BRANCH: vendor }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
+    - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5c, BRANCH: vendor }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: rpi5b, BRANCH: current }
@@ -177,6 +184,7 @@ lists:
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: vendor }
     - { BOARD: nanopct6-lts, BRANCH: vendor }
+    - { BOARD: nanopi-m6, BRANCH: vendor }
     - { BOARD: nanopi-r6c, BRANCH: vendor }
     - { BOARD: nanopi-r6s, BRANCH: vendor }
     - { BOARD: nanopi-r5c, BRANCH: vendor }
