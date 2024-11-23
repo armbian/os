@@ -95,7 +95,9 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      #DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      # Thunderbird is missing in armhf
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
