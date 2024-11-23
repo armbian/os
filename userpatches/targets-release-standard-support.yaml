@@ -31,7 +31,6 @@ lists:
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
     # end of auto generated section
@@ -98,6 +97,7 @@ lists:
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-s0, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: edge }
@@ -187,7 +187,9 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      #DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      # Thunderbird is missing in armhf
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
