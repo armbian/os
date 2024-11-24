@@ -137,6 +137,7 @@ targets:
     items:
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: current }
+      - { BOARD: oneplus-kebab, BRANCH: current }
       - { BOARD: xiaomi-umi, BRANCH: current }
       - *standard-support-fast-hdmi
 
@@ -192,6 +193,7 @@ targets:
       - *standard-support-fast-hdmi
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: current }
+      - { BOARD: oneplus-kebab, BRANCH: current }
 
   # Debian trixie gnome desktop for some boards
   gnome-desktop-latest-debian:
