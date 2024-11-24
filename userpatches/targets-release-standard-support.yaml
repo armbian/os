@@ -101,7 +101,7 @@ lists:
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: edge }
     - { BOARD: sk-tda4vm, BRANCH: current }
-    - { BOARD: sweet-potato, BRANCH: current }
+    - { BOARD: sweet-potato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
