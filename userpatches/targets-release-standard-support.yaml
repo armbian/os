@@ -75,7 +75,6 @@ lists:
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
-    - { BOARD: oneplus-kebab, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -228,6 +227,8 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - { BOARD: xiaomi-elish, BRANCH: current }
+      - { BOARD: oneplus-kebab, BRANCH: current }
       - { BOARD: xiaomi-umi, BRANCH: current }
       - *standard-support-fast-hdmi
 
@@ -283,6 +284,7 @@ targets:
       - *standard-support-fast-hdmi
       - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
       - { BOARD: xiaomi-elish, BRANCH: current }
+      - { BOARD: oneplus-kebab, BRANCH: current }
 
   # Debian trixie gnome desktop for some boards
   gnome-desktop-latest-debian:
