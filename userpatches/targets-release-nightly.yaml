@@ -26,15 +26,9 @@ lists:
     # auto generated section
     - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
-    - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
-    # end of auto generated section
-
-  staging-fast-hdmi: &staging-fast-hdmi
-    # auto generated section
-    - { BOARD: orangepizero2, BRANCH: current }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -146,7 +140,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
-      - *staging-fast-hdmi
 
   # debian stable minimal
   minimal-cli-stable-debian:
@@ -178,7 +171,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "none"
     items:
       - *standard-support-slow-hdmi
-      - *staging-fast-hdmi
 
   # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
@@ -230,7 +222,6 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-headless
-      - *staging-fast-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-slow-hdmi
   # end of automated-section:
