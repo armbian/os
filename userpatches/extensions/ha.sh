@@ -123,7 +123,7 @@ function pre_customize_image__500_add_ha_to_image() {
 	#!/bin/bash
 	while true; do
 		if ha supervisor info 2>&1 | grep -q "healthy: false"; then
-			echo "Unhealthy detected, restarting" | systemd-cat -t $(basename "$0") -p emerg
+			echo "Unhealthy detected, restarting" | systemd-cat -t $(basename "$0") -p debug
 			systemctl restart hassio-supervisor.service
 			sleep 600
 		else
@@ -141,6 +141,8 @@ function pre_customize_image__500_add_ha_to_image() {
 	Description=Supervisor Unhealthy Fix
 
 	[Service]
+	StandardOutput=null
+	StandardError=null
 	ExecStart=/usr/local/bin/supervisor_fix.sh
 
 	[Install]
