@@ -12,12 +12,17 @@
   {
     "source": "https://github.com/armbian/documentation",    
     "branch": "master",     
-    "sha1": "43a3ea03a50e68b2868f9af039d61ec7d6b283c9"
+    "sha1": "a4038bc73d6a351169f5b122b7220938cfa7f36a"
   },
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "1285de6bd81e0a3bcfaf00a32f3ac44e6a163ec6"
+    "sha1": "523be17a78916ee6e55aa99c23c7b1d5155ba73b"
+  },
+  {
+    "source": "https://github.com/armbian/configng",
+    "branch": "main",
+    "sha1": "d0cd84295292e616e7c399247fd42a409e135c39"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -25,19 +30,19 @@
     "sha1": "8dbb28d2ee8fa3d5f67a9d9dbc64c3d2b3b0adac"
   },
   {
-    "source": "https://github.com/armbian/configng",
-    "branch": "main",
-    "sha1": "22f8635b4d1320ae998d42ed1ab0698be9d3e5da"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "06aea4d8bfd5ca3624b56162b24339d7b0449913"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "bff3e13adb72656356111d2549d8be7c872d6e15"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.10.y",
     "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "06aea4d8bfd5ca3624b56162b24339d7b0449913"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
@@ -50,14 +55,14 @@
     "sha1": "e4d90d63d385228b1e0bcf31cc15539bbbc28f7f"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "e7770f0e399b8b6ccf46283e7887a3baf2cc2ca8"
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr4.1",
+    "sha1": "f862d3842fdda80a2d16ac365a04ae4d2f6de489"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "bff3e13adb72656356111d2549d8be7c872d6e15"
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.03",
+    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -66,23 +71,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "e7770f0e399b8b6ccf46283e7887a3baf2cc2ca8"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.12.y",
     "sha1": "d390303b28dabbb91b2d32016a4f72da478733b9"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.03",
-    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
-  },
-  {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr4.1",
-    "sha1": "f862d3842fdda80a2d16ac365a04ae4d2f6de489"
-  },
-  {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
     "branch": "ti-linux-6.1.y",
-    "sha1": "4ef41ca7ad952c7b13b7e40808ab1025796f9a6c"
+    "sha1": "c490f4c0fe51281818c45159c0fbed94f852978e"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -145,11 +145,6 @@
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "6ed4c55225da1f185c3ba07182b494709657a631"
-  },
-  {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
     "branch": "v2017.09-rk3588",
     "sha1": "5e34a2115e1dd9128892b828d869f74677361a78"
@@ -180,9 +175,9 @@
     "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
   },
   {
-    "source": "https://github.com/jhovold/linux.git",
-    "branch": "wip/sc8280xp-6.12",
-    "sha1": "24dcd44a39079e920512fc280fa08907be2a6c31"
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "6ed4c55225da1f185c3ba07182b494709657a631"
   },
   {
     "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
@@ -198,5 +193,10 @@
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-5.15.y",
     "sha1": "0a51d2d4527b43c5e467ffa6897deefeaf499358"
+  },
+  {
+    "source": "https://github.com/jhovold/linux.git",
+    "branch": "wip/sc8280xp-6.12",
+    "sha1": "24dcd44a39079e920512fc280fa08907be2a6c31"
   }
 ]
