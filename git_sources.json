@@ -20,24 +20,9 @@
     "sha1": "2d1bbca7312102e5263514c86925075bbc6c7746"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
-  },
-  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "8dbb28d2ee8fa3d5f67a9d9dbc64c3d2b3b0adac"
-  },
-  {
-    "source": "https://github.com/armbian/configng",
-    "branch": "main",
-    "sha1": "ae2789f1b247483f03d52972a8e48f46dd188e05"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -45,14 +30,34 @@
     "sha1": "7e1bc11980a4528af56a91d7989ec75e3fea78e3"
   },
   {
+    "source": "https://github.com/armbian/configng",
+    "branch": "main",
+    "sha1": "ae2789f1b247483f03d52972a8e48f46dd188e05"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.03",
+    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
     "sha1": "e4d90d63d385228b1e0bcf31cc15539bbbc28f7f"
   },
   {
+    "source": "https://github.com/starfive-tech/linux",
+    "branch": "JH7110_VisionFive2_devel",
+    "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.6.y",
-    "sha1": "bff3e13adb72656356111d2549d8be7c872d6e15"
+    "sha1": "22a054ea1f081d7837cc8e24ad4c7aa36e8bba04"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -65,19 +70,9 @@
     "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.03",
-    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
-  },
-  {
-    "source": "https://github.com/starfive-tech/linux",
-    "branch": "JH7110_VisionFive2_devel",
-    "sha1": "5dfc879916d946dcc2521ef1eccd1d8bfb06a75e"
-  },
-  {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.1.y",
-    "sha1": "c490f4c0fe51281818c45159c0fbed94f852978e"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "49740d24202635b075a1f85e9b6dbbcac486a9ae"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -85,9 +80,9 @@
     "sha1": "cd13061a07d985e883fae4e0a597fd9bdc112817"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "49740d24202635b075a1f85e9b6dbbcac486a9ae"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
   },
   {
     "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
@@ -100,19 +95,24 @@
     "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
   },
   {
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.1.y",
+    "sha1": "c490f4c0fe51281818c45159c0fbed94f852978e"
+  },
+  {
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
     "sha1": "f5a6346001a3584135ec72a77762ccd4ee1e31b1"
   },
   {
-    "source": "https://github.com/stvhay/u-boot.git",
-    "branch": "rockchip-rk3588-unified",
-    "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
-  },
-  {
     "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
     "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
     "sha1": "948f078446e0acf62eb07473586dccf68e326407"
+  },
+  {
+    "source": "https://github.com/stvhay/u-boot.git",
+    "branch": "rockchip-rk3588-unified",
+    "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -135,6 +135,11 @@
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "6ed4c55225da1f185c3ba07182b494709657a631"
+  },
+  {
     "source": "https://github.com/hardkernel/u-boot.git",
     "branch": "odroidxu4-v2017.05",
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
@@ -146,13 +151,13 @@
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-6.6",
-    "sha1": "b9b9d633ab5b213fe492a62f35c6cfd5a2614f42"
+    "branch": "linux-5.10",
+    "sha1": "b17835d38155a8c2bcb3e2d0f3f55989bf2f1b98"
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-5.10",
-    "sha1": "b17835d38155a8c2bcb3e2d0f3f55989bf2f1b98"
+    "branch": "linux-6.6",
+    "sha1": "b9b9d633ab5b213fe492a62f35c6cfd5a2614f42"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
@@ -175,16 +180,6 @@
     "sha1": "401bea57d6b96f440142b9039d483c671c4a9587"
   },
   {
-    "source": "https://github.com/jhovold/linux.git",
-    "branch": "wip/sc8280xp-6.12",
-    "sha1": "24dcd44a39079e920512fc280fa08907be2a6c31"
-  },
-  {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "6ed4c55225da1f185c3ba07182b494709657a631"
-  },
-  {
     "source": "https://github.com/SolidRun/u-boot",
     "branch": "v2018.01-solidrun-a38x",
     "sha1": "a8004c1f1112ca2f867badccce5a76f052034853"
@@ -193,5 +188,10 @@
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-5.15.y",
     "sha1": "0a51d2d4527b43c5e467ffa6897deefeaf499358"
+  },
+  {
+    "source": "https://github.com/jhovold/linux.git",
+    "branch": "wip/sc8280xp-6.12",
+    "sha1": "24dcd44a39079e920512fc280fa08907be2a6c31"
   }
 ]
