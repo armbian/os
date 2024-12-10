@@ -24,7 +24,6 @@ lists:
   # automated lists start
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
-    - { BOARD: bananapif3, BRANCH: legacy }
     - { BOARD: beaglev, BRANCH: edge }
     - { BOARD: star64, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: current }
@@ -110,6 +109,7 @@ lists:
     - { BOARD: lckfb-taishanpi, BRANCH: vendor }
     - { BOARD: leez-p710, BRANCH: current }
     - { BOARD: lime-a64, BRANCH: current }
+    - { BOARD: longanpi-3h, BRANCH: current }
     - { BOARD: longanpi-4b, BRANCH: legacy }
     - { BOARD: lubancat2, BRANCH: edge }
     - { BOARD: luckfox-core3566, BRANCH: vendor }
