@@ -97,10 +97,10 @@ lists:
     - { BOARD: h96-tvbox-3566, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
     - { BOARD: hinlink-h28k, BRANCH: vendor }
-    - { BOARD: hinlink-h66k, BRANCH: vendor }
-    - { BOARD: hinlink-h68k, BRANCH: vendor }
+    - { BOARD: hinlink-h66k, BRANCH: edge }
+    - { BOARD: hinlink-h68k, BRANCH: edge }
     - { BOARD: hinlink-h88k, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: hinlink-hnas, BRANCH: vendor }
+    - { BOARD: hinlink-hnas, BRANCH: edge }
     - { BOARD: hinlink-ht2, BRANCH: vendor }
     - { BOARD: indiedroid-nova, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: jetson-nano, BRANCH: current }
@@ -191,7 +191,7 @@ lists:
     - { BOARD: x96-mate, BRANCH: current }
     - { BOARD: x96q, BRANCH: current }
     - { BOARD: xiaobao-nas, BRANCH: current }
-    - { BOARD: youyeetoo-r1-v3, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: youyeetoo-r1-v3, BRANCH: edge }
     - { BOARD: z28pro, BRANCH: current }
     # end of auto generated section
 
