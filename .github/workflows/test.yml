@@ -10,13 +10,6 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
 
-      - name: "Run webindex update action"
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.DISPATCH }}
-          repository: armbian/armbian.github.io
-          event-type: "Webindex update"
-
       - name: "Run redirector update action"
         uses: peter-evans/repository-dispatch@v3
         with:
