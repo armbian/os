@@ -4,14 +4,22 @@ on:
   workflow_call:
 
 jobs:
-  test:
-    name: "Test1234"
-    runs-on: [ "ubuntu-latest" ]
+  dispatch:
+    name: "Refresh web and redirector index"
+    if: ${{ github.repository_owner == 'Armbian' }}
+    runs-on: ubuntu-24.04
     steps:
 
-      - uses: actions/checkout@v4
-      - name: "Restart ${{ matrix.script }}.yml"
-        run: |
-          gh release list | awk '{print $1;}' | tail -n +4 | xargs -L1 gh release delete     
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Run webindex update action"
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/armbian.github.io
+          event-type: "Webindex update"
+
+      - name: "Run redirector update action"
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/armbian.github.io
+          event-type: "Redirector update"
