@@ -44,6 +44,7 @@ on:
         # branches
         - main
         - v24.11
+        - test
         default: 'main'
       board:
         type: choice
