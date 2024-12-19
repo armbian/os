@@ -70,6 +70,7 @@ lists:
 
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
+    - { BOARD: aml-c400-plus, BRANCH: current }
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: armsom-aim7-io, BRANCH: vendor }
