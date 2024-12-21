@@ -116,9 +116,11 @@ jobs:
               # add from incoming
               tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
           fi
-
+          # calculate size
+          du -hc --max-depth=1 /outgoing/${REPOSITORY}/public* | tail -1 | awk '{print $1}' > /outgoing/${REPOSITORY}/public/size.txt
           # fix folder permissions
           sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/${REPOSITORY}
+          
 
   Prepare:
     name: "Upload to servers"
