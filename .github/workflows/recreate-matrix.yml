@@ -155,7 +155,7 @@ jobs:
         #ls -1 build/config/boards/*.{tvb,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/community-maintained.txt
 
         grep BOARD_MAINTAINER build/config/boards/*.{conf,eos,wip,csc} | cut -d":" -f2 | cut -d"=" -f2 | sed 's/"/ /g' | tr -d '\n' | tr -s ' ' | xargs -n1 | sort | uniq | sed 's/.*/        - &/' > /tmp/maintainers.txt
-        git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
+        git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\ntest\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
 
         function enable_extension()
         {
