@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - test
         - v24.11
         default: 'main'
       board:
