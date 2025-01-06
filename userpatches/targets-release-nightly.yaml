@@ -26,7 +26,9 @@ lists:
     # auto generated section
     - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
     # end of auto generated section
@@ -64,8 +66,6 @@ lists:
     - { BOARD: rock-5b-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-s0, BRANCH: current }
-    - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
