@@ -17,17 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "85fe2b8f4600608f971e22febedf5b3e0b00e313"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "7dc732d24ff75bae3740d2876b634c0158c79cad"
-  },
-  {
-    "source": "https://github.com/armbian/firmware",
-    "branch": "master",
-    "sha1": "dc2d3b1b1e6c5c94742968c0c0163e55ef2573db"
+    "sha1": "ffd1a42d7a6abf25437e80a2641b5d0cff54052f"
   },
   {
     "source": "https://github.com/armbian/configng",
@@ -35,9 +25,14 @@
     "sha1": "fe3dabd3c7ad47f00643e3fe169b962bfa5d58fb"
   },
   {
+    "source": "https://github.com/armbian/firmware",
+    "branch": "master",
+    "sha1": "dc2d3b1b1e6c5c94742968c0c0163e55ef2573db"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "a30cd70ab75aa6b7ee880b6ec2ecc492faf205b2"
+    "branch": "linux-6.11.y",
+    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -46,8 +41,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
+    "branch": "linux-6.6.y",
+    "sha1": "a30cd70ab75aa6b7ee880b6ec2ecc492faf205b2"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.6.y",
+    "sha1": "7a4972f36a63eba4d862115265a7bf77ac1e4129"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -60,19 +60,14 @@
     "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
   },
   {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.10.y",
-    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "88d6cd723343c38bd3ef0df99f0a4e5812cb035a"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr4.1",
-    "sha1": "4eefecce614ab506a27039396ffc5744e2d2f40c"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "7a4972f36a63eba4d862115265a7bf77ac1e4129"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.1.y",
+    "sha1": "7dc732d24ff75bae3740d2876b634c0158c79cad"
   },
   {
     "source": "https://github.com/SolidRun/u-boot.git",
@@ -80,9 +75,14 @@
     "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "88d6cd723343c38bd3ef0df99f0a4e5812cb035a"
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr4.1",
+    "sha1": "4eefecce614ab506a27039396ffc5744e2d2f40c"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "77f85ccd3618f324d221f0faaed6d9cdc118c74a"
   },
   {
     "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
@@ -90,9 +90,9 @@
     "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
-    "source": "https://github.com/khadas/linux.git",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.10.y",
+    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
@@ -100,9 +100,9 @@
     "sha1": "e4e8b16e66f592749984b2d287e0479e93ef35b3"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "77f85ccd3618f324d221f0faaed6d9cdc118c74a"
+    "source": "https://github.com/khadas/linux.git",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
@@ -120,14 +120,14 @@
     "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
   },
   {
-    "source": "https://github.com/khadas/u-boot.git",
-    "branch": "khadas-edges-v2017.09",
-    "sha1": "8cbbb9ee2ad8de15635577eda23c2b2769d8432f"
-  },
-  {
     "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
     "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
     "sha1": "8a28bf0830a9d94531fd39e6c4d56fbda0a8266a"
+  },
+  {
+    "source": "https://github.com/khadas/u-boot.git",
+    "branch": "khadas-edges-v2017.09",
+    "sha1": "8cbbb9ee2ad8de15635577eda23c2b2769d8432f"
   },
   {
     "source": "https://github.com/khadas/u-boot.git",
