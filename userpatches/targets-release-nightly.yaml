@@ -108,7 +108,7 @@ targets:
       - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu oldstable minimal
-  minimal-cli-unstable-ubuntu:
+  minimal-cli-oldunstable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -123,7 +123,7 @@ targets:
       - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu stable minimal
-  minimal-cli-unstable-ubuntu:
+  minimal-cli-stable-ubuntu:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
@@ -178,7 +178,7 @@ targets:
       - *standard-support-headless
 
   # debian oldstable minimal
-  minimal-cli-stable-debian:
+  minimal-cli-oldstable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
