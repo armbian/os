@@ -104,7 +104,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *virtual-boards
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu oldstable minimal
   minimal-cli-unstable-ubuntu:
@@ -118,7 +119,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *virtual-boards
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu stable minimal
   minimal-cli-unstable-ubuntu:
@@ -133,6 +135,8 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-slow-hdmi
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu unstable minimal
   minimal-cli-unstable-ubuntu:
@@ -147,6 +151,8 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: "aml-s9xx-box" , BRANCH: current }
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
@@ -165,6 +171,8 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: "aml-s9xx-box", BRANCH: current }
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
@@ -181,7 +189,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *virtual-boards
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # debian stable minimal
   minimal-cli-stable-debian:
@@ -195,7 +204,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *virtual-boards
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu unstable without apps
   xfce-barebone-desktop-unstable-ubuntu:
@@ -233,7 +243,7 @@ targets:
 
   # debian bookworm gnome desktop
   gnome-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
