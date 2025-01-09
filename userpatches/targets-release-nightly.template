@@ -27,12 +27,40 @@ lists:
   virtual-boards: &virtual-boards
     # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
     # Qemu with u-boot
-    - { BOARD: wsl2-arm64, BRANCH: current }
-    - { BOARD: wsl2-x86, BRANCH: current }
+    #- { BOARD: wsl2-arm64, BRANCH: current }
+    #- { BOARD: wsl2-x86, BRANCH: current }
     - { BOARD: qemu-uboot-arm64, BRANCH: current }
     - { BOARD: qemu-uboot-x86, BRANCH: current }
 
 targets:
+
+  # ubuntu veryoldstable minimal
+  minimal-cli-veryoldstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: focal
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *virtual-boards
+
+  # ubuntu oldstable minimal
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *virtual-boards
 
   # ubuntu stable minimal
   minimal-cli-unstable-ubuntu:
@@ -90,6 +118,20 @@ targets:
       - *staging-headless
       - *staging-riscv64
 
+  # debian oldstable minimal
+  minimal-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bullseye
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *virtual-boards
+
   # debian stable minimal
   minimal-cli-stable-debian:
     enabled: yes
@@ -133,7 +175,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: jammy
+      RELEASE: noble
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "kde-neon"
       BUILD_DESKTOP: "yes"
