@@ -20,24 +20,14 @@
     "sha1": "24bf1fb1f465d33b6e0ef658e4823ee06fa29df9"
   },
   {
-    "source": "https://github.com/armbian/configng",
-    "branch": "main",
-    "sha1": "343887d707241040d2fd02e8f79aaa74d4754a24"
-  },
-  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "dc2d3b1b1e6c5c94742968c0c0163e55ef2573db"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "843e64492a7ed11436cc5c9bbfba46835939071a"
+    "source": "https://github.com/armbian/configng",
+    "branch": "main",
+    "sha1": "343887d707241040d2fd02e8f79aaa74d4754a24"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -50,9 +40,14 @@
     "sha1": "5996393469d99560b7845d22c9eff00661de0724"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "88d6cd723343c38bd3ef0df99f0a4e5812cb035a"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "843e64492a7ed11436cc5c9bbfba46835939071a"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -60,19 +55,19 @@
     "sha1": "c63962be84ef9c4f32e2a57404ceeda330ff3beb"
   },
   {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.10.y",
-    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "88d6cd723343c38bd3ef0df99f0a4e5812cb035a"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.03",
     "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
@@ -85,14 +80,19 @@
     "sha1": "854dda7f3eeb4ce6c92ad08bd7d165d4a3395680"
   },
   {
-    "source": "https://github.com/khadas/linux.git",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.10.y",
+    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
     "branch": "ti-linux-6.1.y",
     "sha1": "e4e8b16e66f592749984b2d287e0479e93ef35b3"
+  },
+  {
+    "source": "https://github.com/khadas/linux.git",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
@@ -140,14 +140,14 @@
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
-  },
-  {
     "source": "https://github.com/hardkernel/u-boot.git",
     "branch": "odroidxu4-v2017.05",
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
+  },
+  {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
   },
   {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
