@@ -35,14 +35,9 @@
     "sha1": "c63962be84ef9c4f32e2a57404ceeda330ff3beb"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "a28a9226ccb8bf393b8e7dd8970a4d967c1a1d92"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,9 +45,19 @@
     "sha1": "843e64492a7ed11436cc5c9bbfba46835939071a"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "a28a9226ccb8bf393b8e7dd8970a4d967c1a1d92"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "5996393469d99560b7845d22c9eff00661de0724"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -66,18 +71,8 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "dfff38316c1284c30c68d02cc424bad0562cf253"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.10.y",
     "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "5996393469d99560b7845d22c9eff00661de0724"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -85,14 +80,19 @@
     "sha1": "854dda7f3eeb4ce6c92ad08bd7d165d4a3395680"
   },
   {
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.1.y",
+    "sha1": "e4e8b16e66f592749984b2d287e0479e93ef35b3"
+  },
+  {
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
   },
   {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.1.y",
-    "sha1": "e4e8b16e66f592749984b2d287e0479e93ef35b3"
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.6.y",
+    "sha1": "dfff38316c1284c30c68d02cc424bad0562cf253"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
@@ -145,11 +145,6 @@
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
-  },
-  {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
     "branch": "v2017.09-rk3588",
     "sha1": "5e34a2115e1dd9128892b828d869f74677361a78"
@@ -170,9 +165,9 @@
     "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
   },
   {
-    "source": "https://github.com/jhovold/linux.git",
-    "branch": "wip/sc8280xp-6.13-rc4",
-    "sha1": "2f0b291243ef93a37f93608d373e21a322af41a2"
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
   },
   {
     "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
@@ -188,5 +183,10 @@
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-5.15.y",
     "sha1": "4735586da88ed2254ada53bbe19ce4fe968a1e7b"
+  },
+  {
+    "source": "https://github.com/jhovold/linux.git",
+    "branch": "wip/sc8280xp-6.13-rc4",
+    "sha1": "2f0b291243ef93a37f93608d373e21a322af41a2"
   }
 ]
