@@ -32,17 +32,7 @@
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
-    "sha1": "e09b6d5de14c7bd9be3326d5c68431cbd28cf559"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "c63962be84ef9c4f32e2a57404ceeda330ff3beb"
+    "sha1": "31ec74ee0ea7b8e6d7777241b3948b164b704a7c"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -55,14 +45,19 @@
     "sha1": "88d6cd723343c38bd3ef0df99f0a4e5812cb035a"
   },
   {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.10.y",
-    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "5996393469d99560b7845d22c9eff00661de0724"
+    "branch": "linux-6.1.y",
+    "sha1": "c63962be84ef9c4f32e2a57404ceeda330ff3beb"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -70,9 +65,14 @@
     "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
   },
   {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.6.y",
+    "sha1": "a452251cc286f2799969f047698c76fe3d7862b9"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
+    "branch": "linux-6.12.y",
+    "sha1": "5996393469d99560b7845d22c9eff00661de0724"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -81,8 +81,8 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "a452251cc286f2799969f047698c76fe3d7862b9"
+    "branch": "rpi-6.10.y",
+    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -95,6 +95,11 @@
     "sha1": "f5a6346001a3584135ec72a77762ccd4ee1e31b1"
   },
   {
+    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
+    "branch": "rk3xxx-2024.04",
+    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
+  },
+  {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
     "branch": "ti-linux-6.1.y",
     "sha1": "e4e8b16e66f592749984b2d287e0479e93ef35b3"
@@ -103,11 +108,6 @@
     "source": "https://github.com/SolidRun/u-boot.git",
     "branch": "v2018.01-solidrun-imx6",
     "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
-  },
-  {
-    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
-    "branch": "rk3xxx-2024.04",
-    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -145,6 +145,11 @@
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
   },
   {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
+  },
+  {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
     "branch": "v2017.09-rk3588",
     "sha1": "5e34a2115e1dd9128892b828d869f74677361a78"
@@ -163,11 +168,6 @@
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.1.y",
     "sha1": "fbd8b3facb36ce888b1cdcf5f45a78475a8208f2"
-  },
-  {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
