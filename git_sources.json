@@ -20,14 +20,14 @@
     "sha1": "09dc5b0d9d057b01717c12d2a8e189c3dc0cd1fc"
   },
   {
-    "source": "https://github.com/armbian/firmware",
-    "branch": "master",
-    "sha1": "dc2d3b1b1e6c5c94742968c0c0163e55ef2573db"
-  },
-  {
     "source": "https://github.com/armbian/configng",
     "branch": "main",
     "sha1": "f5f6df21cdf2933ab75f08a4e977ca753628d567"
+  },
+  {
+    "source": "https://github.com/armbian/firmware",
+    "branch": "master",
+    "sha1": "dc2d3b1b1e6c5c94742968c0c0163e55ef2573db"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -36,13 +36,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "c2e4205116126ab79bfa17a5e8dd73698e3f7299"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
-    "sha1": "60ceadf9247ef7d45bb1dce8fc7b48c888ba7a54"
+    "sha1": "f4f677285b389e3d1bead19ad6b806527bf693f3"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -51,13 +46,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.11.y",
-    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "a6ad5510dbb5f55cd2d1b44b11a18120bf79a5a3"
+    "branch": "linux-6.6.y",
+    "sha1": "c2e4205116126ab79bfa17a5e8dd73698e3f7299"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -65,9 +55,9 @@
     "sha1": "88d6cd723343c38bd3ef0df99f0a4e5812cb035a"
   },
   {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.10.y",
-    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "a6ad5510dbb5f55cd2d1b44b11a18120bf79a5a3"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -75,9 +65,9 @@
     "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
   },
   {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "545cb717f0ad24d3353ad6c1c19741970e8d9d50"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.11.y",
+    "sha1": "f6d41443f54856ceece0d5b584f47f681513bde4"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -85,9 +75,14 @@
     "sha1": "db5504aadbc0b1d61aed626254ce064e361e5402"
   },
   {
-    "source": "https://github.com/khadas/linux.git",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.10.y",
+    "sha1": "6e23f4f785081a7c68e94a8e38a49074097299f9"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.6.y",
+    "sha1": "545cb717f0ad24d3353ad6c1c19741970e8d9d50"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
@@ -95,19 +90,24 @@
     "sha1": "e4e8b16e66f592749984b2d287e0479e93ef35b3"
   },
   {
+    "source": "https://github.com/khadas/linux.git",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
+  },
+  {
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
     "sha1": "f5a6346001a3584135ec72a77762ccd4ee1e31b1"
   },
   {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
-  },
-  {
     "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
     "branch": "rk3xxx-2024.04",
     "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
+  },
+  {
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
