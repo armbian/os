@@ -25,11 +25,7 @@ lists:
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
     - { BOARD: bananapif3, BRANCH: current }
-    - { BOARD: beaglev, BRANCH: edge }
     - { BOARD: uefi-riscv64, BRANCH: current }
-    - { BOARD: unleashed, BRANCH: edge }
-    - { BOARD: unmatched, BRANCH: edge }
-    - { BOARD: visionfive, BRANCH: edge }
     # end of auto generated section
 
   community-maintained-headless: &community-maintained-headless
@@ -39,7 +35,6 @@ lists:
     - { BOARD: cubieboard, BRANCH: current }
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
-    - { BOARD: macchiatobin-doubleshot, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
     - { BOARD: mk808c, BRANCH: current }
     - { BOARD: nanopi-r1, BRANCH: current }
@@ -98,10 +93,10 @@ lists:
     - { BOARD: h96-tvbox-3566, BRANCH: current }
     - { BOARD: hikey960, BRANCH: current }
     - { BOARD: hinlink-h28k, BRANCH: vendor }
-    - { BOARD: hinlink-h66k, BRANCH: edge }
-    - { BOARD: hinlink-h68k, BRANCH: edge }
+    - { BOARD: hinlink-h66k, BRANCH: current }
+    - { BOARD: hinlink-h68k, BRANCH: current }
     - { BOARD: hinlink-h88k, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: hinlink-hnas, BRANCH: edge }
+    - { BOARD: hinlink-hnas, BRANCH: current }
     - { BOARD: hinlink-ht2, BRANCH: vendor }
     - { BOARD: indiedroid-nova, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: jetson-nano, BRANCH: current }
