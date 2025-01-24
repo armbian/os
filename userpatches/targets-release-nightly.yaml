@@ -145,7 +145,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: oracular
+      RELEASE: plucky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
