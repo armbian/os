@@ -142,12 +142,13 @@ jobs: # <TEMPLATE-IGNORE>
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
-                 echo "http://$server/$SERVER_PATH" | sed "s|$|[[release_repo]]\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+                 echo -n "http://$server/$SERVER_PATH" | sed "s|$|[[release_repo]]\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS+=" https://github.com/armbian/[[release_repo]]/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+             WEBSEEDS+="https://github.com/armbian/[[release_repo]]/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
