@@ -10,14 +10,6 @@ jobs: # <TEMPLATE-IGNORE>
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
-      - name: "Run webindex update action"
-        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.DISPATCH }}
-          repository: armbian/os
-          event-type: "Webindex update"
-
       - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         uses: actions/download-artifact@v4
@@ -65,3 +57,20 @@ jobs: # <TEMPLATE-IGNORE>
           allowUpdates: true
           makeLatest: true
           token: "${{ env.GH_TOKEN }}"
+
+      - name: "Run repository mirroring to CDN"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/armbian.github.io
+          event-type: "Mirror"
+          client-payload: '{"pull_repository": "armbian/${{ env.RELEASE_REPOSITORY }}", "cdn_tag": "${{ env.RELEASE_REPOSITORY }}"}'
+
+      - name: "Run webindex update action"
+        if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/armbian.github.io
+          event-type: "Webindex update"
