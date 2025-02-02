@@ -562,6 +562,11 @@ jobs:
           | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|dl|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
           | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-download.csv
 
+          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
+          "Accept: application/json; indent=4" "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=cache&status=active" \
+          | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|cache|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
+          | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-cache.csv
+
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
           "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
           | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
@@ -1945,16 +1950,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2147,16 +2155,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2349,16 +2360,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2551,16 +2565,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2753,16 +2770,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -2955,16 +2975,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3157,16 +3180,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3359,16 +3385,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3561,16 +3590,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3763,16 +3795,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -3965,16 +4000,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4167,16 +4205,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4369,16 +4410,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4571,16 +4615,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4773,16 +4820,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
@@ -4975,16 +5025,19 @@ jobs:
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           BOARD=$(ls -1 output/images/ | head -1)
           FILE=$(ls -1 output/images/*/archive/*.xz | head -1 | rev | cut -d"/" -f1  | rev)
-          WEBSEEDS="https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
-
              WEBSEEDS=$(for server in $(cat output/info/servers-download.csv)
              do
-             echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-
+          else
+             WEBSEEDS=$(for server in $(cat servers.csv)
+             do
+                 echo "http://$server/$SERVER_PATH" | sed "s|$|os\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
+             done | sed 's/ \+/\n/g')
+             WEBSEEDS+=" https://github.com/armbian/os/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
