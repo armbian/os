@@ -1,0 +1,16 @@
+name: "test dispatch"
+on:
+  workflow_dispatch:
+
+jobs:
+  Cancel:
+    name: "Run"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH }}
+          repository: armbian/armbian.github.io
+          event-type: "Mirror"
+          client-payload: '{"pull_repository": "armbian/os", "cdn_tag": "os"}'
