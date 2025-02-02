@@ -143,7 +143,7 @@ jobs: # <TEMPLATE-IGNORE>
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
           else
-             WEBSEEDS=$(for server in $(cat servers-cache.csv)
+             WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|[[release_repo]]\/${{ needs.matrix_prep.outputs.version }}\/${FILE},|"
              done | sed 's/ \+/\n/g')
