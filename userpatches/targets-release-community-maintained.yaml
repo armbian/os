@@ -76,7 +76,6 @@ lists:
     - { BOARD: armsom-sige7, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: armsom-w3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: avaota-a1, BRANCH: legacy }
-    - { BOARD: ayn-odin2, BRANCH: sm8550}
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: cherryba-m1, BRANCH: current }
@@ -374,6 +373,7 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *community-maintained-fast-hdmi
+      - { BOARD: ayn-odin2, BRANCH: sm8550}
 
   # ubuntu unstable xfce
   xfce-desktop-unstable-ubuntu:
