@@ -116,9 +116,10 @@ lists:
     - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: mixtile-blade3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: mixtile-edge2, BRANCH: edge }
+    - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: mkspi, BRANCH: current }
     - { BOARD: nanopct4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopi-r3s, BRANCH: edge }
+    - { BOARD: nanopi-r3s, BRANCH: current }
     - { BOARD: nanopi-r5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r6c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }

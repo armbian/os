@@ -151,6 +151,7 @@ on:
         - mixtile-blade3
         - mixtile-edge2
         - mk808c
+        - mksklipad50
         - mkspi
         - nanopct4
         - nanopct6-lts
@@ -313,7 +314,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v24.11.1
+      - uses: armbian/build@v24.8.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
