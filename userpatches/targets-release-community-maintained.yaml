@@ -196,6 +196,7 @@ lists:
 
   community-maintained-slow-hdmi: &community-maintained-slow-hdmi
     # auto generated section
+    - { BOARD: aml-s805-mxq, BRANCH: current }
     - { BOARD: bananapim1plus, BRANCH: current }
     - { BOARD: bananapim2plus, BRANCH: current }
     - { BOARD: bananapim2ultra, BRANCH: current }
@@ -210,7 +211,9 @@ lists:
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: lime, BRANCH: current }
     - { BOARD: lime2, BRANCH: current }
+    - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: olimex-a20-olinuxino-micro, BRANCH: current }
+    - { BOARD: onecloud, BRANCH: current }
     - { BOARD: orangepi2, BRANCH: current }
     - { BOARD: orangepilite, BRANCH: current }
     - { BOARD: orangepipc, BRANCH: current }
