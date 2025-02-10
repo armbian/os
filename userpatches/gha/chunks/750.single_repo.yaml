@@ -121,13 +121,14 @@ jobs: # <TEMPLATE-IGNORE>
           #if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ]; then
               echo "Save to users folder"
               TARGET="partial/${{ github.actor }}/"
-          else
-              # drop nightly repository
-              sudo rm -rf /outgoing/repository-beta/*
-              # sync to stable from the list
-              rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" --include-from=userpatches.repo/stable-repo.sync \
-              --exclude='*' --progress -va output/debs*/. \
-              ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
+          #else
+          #    THIS IS NOT USED. It is just making a mess.
+          #    # drop nightly repository
+          #    sudo rm -rf /outgoing/repository-beta/*
+          #    # sync to stable from the list
+          #    rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" --include-from=userpatches.repo/stable-repo.sync \
+          #    --exclude='*' --progress -va output/debs*/. \
+          #    ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
           fi
 
           sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/.
