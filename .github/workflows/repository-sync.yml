@@ -92,9 +92,10 @@ jobs:
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
               if [[ "$target" == "debs" && "${DATEDIFF}" -gt 36000 || "${{ github.event.inputs.forced_sync }}" == "true" ]]; then 
                   echo "Synching $target" >> $GITHUB_STEP_SUMMARY
-                  rsync -ar --checksum --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
+                  # --checksum is only if we suspect corruption on other end
+                  rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
                   # delete at the end
-                  rsync -ar --checksum --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
+                  rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
               fi
           done
 
