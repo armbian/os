@@ -76,14 +76,14 @@ lists:
     - { BOARD: armsom-sige1, BRANCH: vendor }
     - { BOARD: armsom-sige3, BRANCH: vendor }
     - { BOARD: armsom-sige5, BRANCH: vendor }
-    - { BOARD: armsom-sige7, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: armsom-sige7, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: armsom-w3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: cherryba-m1, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
-    - { BOARD: cm3588-nas, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: cm3588-nas, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: coolpi-cm5, BRANCH: edge }
     - { BOARD: coolpi-genbook, BRANCH: edge }
     - { BOARD: core3566, BRANCH: vendor }
@@ -101,7 +101,7 @@ lists:
     - { BOARD: hinlink-h88k, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: hinlink-hnas, BRANCH: current }
     - { BOARD: hinlink-ht2, BRANCH: vendor }
-    - { BOARD: indiedroid-nova, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: indiedroid-nova, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: jp-tvbox-3566, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
@@ -122,7 +122,7 @@ lists:
     - { BOARD: nanopct4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-r5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: nanopi-r6c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopi-r6c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
