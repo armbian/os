@@ -117,8 +117,8 @@ jobs: # <TEMPLATE-IGNORE>
           sudo chown -R $USER:$USER output/.
           TARGET=""
 
-          if [ "[[skipImagesDefaults]]" == "'yes'" ] && [ "[[nightlybuildDefaults]]" == "'no'" ]; then
-          #if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ]; then
+          #if [ "[[skipImagesDefaults]]" == "'yes'" ] && [ "[[nightlybuildDefaults]]" == "'no'" ]; then
+          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "[[skipImagesDefaults]]" == "no" ]; then
               echo "Save to users folder"
               TARGET="partial/${{ github.actor }}/"
           #else
