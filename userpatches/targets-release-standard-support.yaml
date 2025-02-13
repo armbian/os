@@ -113,6 +113,7 @@ lists:
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
+    - { BOARD: bananapif3, BRANCH: current }
     - { BOARD: bananapi, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
