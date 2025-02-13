@@ -37,6 +37,7 @@ lists:
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: pine64, BRANCH: current }
     - { BOARD: bananapi, BRANCH: current }
+    - { BOARD: bananapif3, BRANCH: current }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -115,7 +116,6 @@ lists:
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
-    - { BOARD: bananapif3, BRANCH: current }
     - { BOARD: bananapi, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
