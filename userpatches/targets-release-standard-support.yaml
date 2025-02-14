@@ -33,11 +33,6 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am64b, BRANCH: current }
-    - { BOARD: udoo, BRANCH: current }
-    - { BOARD: cubox-i, BRANCH: current }
-    - { BOARD: pine64, BRANCH: current }
-    - { BOARD: bananapi, BRANCH: current }
-    - { BOARD: bananapif3, BRANCH: current }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -92,7 +87,6 @@ lists:
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-3c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -104,12 +98,9 @@ lists:
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rpi4b, BRANCH: current }
-    - { BOARD: rock64, BRANCH: current }
-    - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
-    - { BOARD: tinkerboard-2, BRANCH: current }
     - { BOARD: sweet-potato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
