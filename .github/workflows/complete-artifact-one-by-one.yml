@@ -268,6 +268,7 @@ on:
         - rock-5b-plus
         - rock-5b
         - rock-5c
+        - rock-5t
         - rock-s0
         - rock64
         - rockpi-4a
@@ -317,7 +318,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v24.11.1
+      - uses: armbian/build@v24.8.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
