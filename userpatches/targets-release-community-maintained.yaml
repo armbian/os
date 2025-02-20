@@ -67,7 +67,6 @@ lists:
 
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
-    - { BOARD: aml-c400-plus, BRANCH: current }
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: armsom-aim7-io, BRANCH: vendor }
@@ -165,6 +164,8 @@ lists:
     - { BOARD: rk3318-box, BRANCH: current }
     - { BOARD: rk3328-heltec, BRANCH: current }
     - { BOARD: roc-rk3399-pc, BRANCH: current }
+    - { BOARD: rock-2a, BRANCH: vendor }
+    - { BOARD: rock-2f, BRANCH: vendor }
     - { BOARD: rock-3c, BRANCH: current }
     - { BOARD: rock-4se, BRANCH: current }
     - { BOARD: rock-5-cm-rpi-cm4-io, BRANCH: vendor }
@@ -177,7 +178,6 @@ lists:
     - { BOARD: rockpi-4cplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-n10, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rpi5b, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: current }
     - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
