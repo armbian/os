@@ -28,6 +28,7 @@ lists:
     - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
     - { BOARD: jethubj80, BRANCH: current }
+    - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -88,7 +89,7 @@ lists:
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-5-itx, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5-itx, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
