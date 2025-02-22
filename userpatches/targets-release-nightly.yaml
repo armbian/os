@@ -26,6 +26,7 @@ lists:
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: gateway-gz80x, BRANCH: current }
+    - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
