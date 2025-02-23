@@ -1,9 +1,0 @@
-URL="https://ppa.launchpadcontent.net/arter97/zfs/ubuntu"
-KEY="noble"
-RELEASE=noble:oracular
-TARGET=utils
-METHOD=aptly
-INSTALL="zfs-dkms zfsutils-linux"
-GLOB="Name (% zfsutils-linux) | Name (% libnvpair3linux) | Name (% libzfs4linux) | Name (% libzpool5linux) | Name (% libuutil3linux) | Name (% zfs-dkms)"
-ARCH=arm64:amd64
-REPOSITORY=BS
