@@ -23,6 +23,11 @@ common-gha-configs:
 lists:
 
   # automated lists start
+  standard-support-riscv64: &standard-support-riscv64
+    # auto generated section
+    - { BOARD: bananapif3, BRANCH: current }
+    # end of auto generated section
+
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: gateway-gz80x, BRANCH: current }
@@ -140,6 +145,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
+      - *standard-support-riscv64
 
 # Ubuntu minimal
   minimal-cli-stable-ubuntu:
@@ -158,6 +164,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
+      - *standard-support-riscv64
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
@@ -174,6 +181,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
+      - *standard-support-riscv64
   
   # Full Ubuntu LTS XFCE
   xfce-desktop-lts-ubuntu:
@@ -320,6 +328,7 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-riscv64
       - *standard-support-headless
       - *standard-support-fast-hdmi
       - *standard-support-slow-hdmi
