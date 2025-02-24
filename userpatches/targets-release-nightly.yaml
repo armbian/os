@@ -23,6 +23,11 @@ common-gha-configs:
 lists:
 
   # automated lists start
+  standard-support-riscv64: &standard-support-riscv64
+    # auto generated section
+    - { BOARD: bananapif3, BRANCH: current }
+    # end of auto generated section
+
   standard-support-headless: &standard-support-headless
     # auto generated section
     - { BOARD: gateway-gz80x, BRANCH: current }
@@ -32,6 +37,11 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am64b, BRANCH: current }
+    # end of auto generated section
+
+  staging-fast-hdmi: &staging-fast-hdmi
+    # auto generated section
+    - { BOARD: bananapim4berry, BRANCH: current }
     # end of auto generated section
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
@@ -159,6 +169,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
+      - *standard-support-riscv64
       - *virtual-boards
 
   # debian unstable minimal
@@ -179,6 +190,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
+      - *staging-fast-hdmi
 
   # debian oldstable minimal
   minimal-cli-oldstable-debian:
@@ -226,6 +238,8 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "none"
     items:
       - *standard-support-slow-hdmi
+      - *standard-support-riscv64
+      - *staging-fast-hdmi
 
   # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
@@ -276,7 +290,9 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
+      - *standard-support-riscv64
       - *standard-support-headless
+      - *staging-fast-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-slow-hdmi
   # end of automated-section:
