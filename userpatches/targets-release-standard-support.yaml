@@ -94,8 +94,8 @@ lists:
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: rock-5-itx, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5-itx, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5b-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -105,6 +105,7 @@ lists:
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5t, BRANCH: vendor }
+    - { BOARD: rock64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
@@ -118,6 +119,7 @@ lists:
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
     - { BOARD: bananapi, BRANCH: current }
+    - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
