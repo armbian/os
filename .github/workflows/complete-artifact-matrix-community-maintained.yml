@@ -2237,7 +2237,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -2443,7 +2443,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -2649,7 +2649,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -2855,7 +2855,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -3061,7 +3061,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -3267,7 +3267,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -3473,7 +3473,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -3679,7 +3679,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -3885,7 +3885,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -4091,7 +4091,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -4297,7 +4297,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -4503,7 +4503,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -4709,7 +4709,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -4915,7 +4915,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -5121,7 +5121,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
@@ -5327,7 +5327,7 @@ jobs:
              do
                  echo "http://$server/$SERVER_PATH" | sed "s|$|${BOARD}\/archive\/${FILE},|"
              done | sed 's/ \+/\n/g')
-             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g')
+             WEBSEEDS=$(echo $WEBSEEDS | sed 's/,*$//g' | sed 's/ //g')
           else
              WEBSEEDS=$(for server in $(cat output/info/servers-cache.csv)
              do
