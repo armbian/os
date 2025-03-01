@@ -23,9 +23,9 @@ common-gha-configs:
 lists:
 
   armbian-security: &armbian-security
-    - { BOARD: bananapim7, BRANCH: vendor }
+    - { BOARD: bananapim7, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current }
-    - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,kali"}
+    - { BOARD: khadas-edge2, BRANCH: current, ENABLE_EXTENSIONS: "image-output-oowow,kali"}
     - { BOARD: khadas-vim1, BRANCH: current }
     - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,kali"}
     - { BOARD: khadas-vim2, BRANCH: current }
@@ -52,8 +52,8 @@ lists:
     - { BOARD: rock-5b-plus, BRANCH: vendor }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: vendor }
-    - { BOARD: orangepi5-plus, BRANCH: vendor }
+    - { BOARD: orangepi5, BRANCH: current }
+    - { BOARD: orangepi5-plus, BRANCH: current }
     - { BOARD: uefi-x86, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current }
 
@@ -80,10 +80,10 @@ lists:
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
     - { BOARD: lafrite, BRANCH: current }
     - { BOARD: lepotato, BRANCH: current }
-    - { BOARD: nanopi-m6, BRANCH: vendor }
-    - { BOARD: nanopi-r6s, BRANCH: vendor }
-    - { BOARD: nanopct6, BRANCH: vendor }
-    - { BOARD: nanopct6-lts, BRANCH: vendor }
+    - { BOARD: nanopi-m6, BRANCH: current }
+    - { BOARD: nanopi-r6s, BRANCH: current }
+    - { BOARD: nanopct6, BRANCH: current }
+    - { BOARD: nanopct6-lts, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidc4, BRANCH: current }
@@ -93,19 +93,21 @@ lists:
     - { BOARD: orangepi3b, BRANCH: current }
     - { BOARD: orangepi3-lts, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: vendor }
-    - { BOARD: orangepi5-plus, BRANCH: vendor }
+    - { BOARD: orangepi5, BRANCH: current }
+    - { BOARD: orangepi5-plus, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: orangepizero2w, BRANCH: current }
     - { BOARD: orangepizero3, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
     - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: rockpro64, BRANCH: current }
+    - { BOARD: rock-2a, BRANCH: vendor }
+    - { BOARD: rock-2f, BRANCH: vendor }
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5a, BRANCH: vendor }
     - { BOARD: rock-5b, BRANCH: vendor }
     - { BOARD: rock-5c, BRANCH: vendor }
-    - { BOARD: rock-5-itx, BRANCH: vendor }
+    - { BOARD: rock-5-itx, BRANCH: current }
     - { BOARD: rock-5b-plus, BRANCH: vendor }
     - { BOARD: rock-5-cm-rpi-cm4-io, BRANCH: vendor }
     - { BOARD: rock-s0, BRANCH: current }
@@ -143,11 +145,11 @@ lists:
     - { BOARD: odroidn2, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current }
     - { BOARD: orangepi4-lts, BRANCH: current }
-    - { BOARD: orangepi5, BRANCH: vendor }
-    - { BOARD: orangepi5-plus, BRANCH: vendor }
+    - { BOARD: orangepi5, BRANCH: current }
+    - { BOARD: orangepi5-plus, BRANCH: current }
     - { BOARD: radxa-zero3, BRANCH: vendor }
-    - { BOARD: rock-5-itx, BRANCH: vendor }
-    - { BOARD: rock-5b-plus, BRANCH: vendor }
+    - { BOARD: rock-5-itx, BRANCH: current }
+    - { BOARD: rock-5b-plus, BRANCH: current }
     - { BOARD: rock-5a, BRANCH: vendor }
     - { BOARD: rock-5b, BRANCH: vendor }
     - { BOARD: rock-5c, BRANCH: vendor }
