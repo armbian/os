@@ -155,8 +155,16 @@ function pre_customize_image__500_add_ha_to_image() {
 }
 
 function image_specific_armbian_env_ready__set_cgroupsv1_in_armbianEnvTxt() {
-	[[ ! -f "${SDCARD}/boot/armbianEnv.txt" ]] && exit_with_error "armbianEnv.txt not found at ${SDCARD}/boot/armbianEnv.txt"
-	echo "extraargs=${HA_UBOOT_EXTRAARGS}" >> "${SDCARD}/boot/armbianEnv.txt"
-	display_alert "armbianEnv.txt contents" "${SDCARD}/boot/armbianEnv.txt" "info"
-	run_host_command_logged cat "${SDCARD}/boot/armbianEnv.txt"
+	if [[ -f "${SDCARD}/boot/firmware/cmdline.txt" ]]; then
+		# Rpi workaround
+		echo " systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor" >> ${SDCARD}/boot/firmware/cmdline.txt
+		display_alert "cmdline.txt contents" "${SDCARD}/boot/firmware/cmdline.txt" "info"
+		run_host_command_logged cat "${SDCARD}/boot/firmware/cmdline.txt"
+	elif [[ -f "${SDCARD}/boot/armbianEnv.txt" ]]; then
+		echo "extraargs=${HA_UBOOT_EXTRAARGS}" >> "${SDCARD}/boot/armbianEnv.txt"
+		display_alert "armbianEnv.txt contents" "${SDCARD}/boot/armbianEnv.txt" "info"
+		run_host_command_logged cat "${SDCARD}/boot/armbianEnv.txt"
+	else
+		exit_with_error "armbianEnv.txt not found at ${SDCARD}/boot/armbianEnv.txt"
+	fi
 }
