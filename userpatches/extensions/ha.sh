@@ -157,7 +157,7 @@ function pre_customize_image__500_add_ha_to_image() {
 function image_specific_armbian_env_ready__set_cgroupsv1_in_armbianEnvTxt() {
 	if [[ -f "${SDCARD}/boot/firmware/cmdline.txt" ]]; then
 		# Rpi workaround
-		echo " systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor" >> ${SDCARD}/boot/firmware/cmdline.txt
+		sed -i '/./ s/$/ systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor/' ${SDCARD}/boot/firmware/cmdline.txt
 		display_alert "cmdline.txt contents" "${SDCARD}/boot/firmware/cmdline.txt" "info"
 		run_host_command_logged cat "${SDCARD}/boot/firmware/cmdline.txt"
 	elif [[ -f "${SDCARD}/boot/armbianEnv.txt" ]]; then
