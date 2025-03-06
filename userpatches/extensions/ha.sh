@@ -72,7 +72,7 @@ function pre_customize_image__500_add_ha_to_image() {
 	declare -g HA_SUPERVISED_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_SUPERVISED_FILENAME}"
 
 	display_alert "Adding HA dependency packages" "${EXTENSION}" "info"
-	chroot_sdcard_apt_get_install systemd-journal-remote apparmor cifs-utils nfs-common network-manager
+	chroot_sdcard_apt_get_install systemd-journal-remote apparmor cifs-utils nfs-common network-manager bluetooth
 
 	display_alert "Fetching Home Assistant debs" "${EXTENSION}" "info"
 	mkdir -p "${HA_OS_AGENT_CACHE_DIR}"
@@ -152,14 +152,38 @@ function pre_customize_image__500_add_ha_to_image() {
 	# enable service
 	chroot_sdcard systemctl enable supervisor-fix
 
+	cat <<- PROVISIONING > "${SDCARD}/root/provisioning.sh"
+	#!/bin/bash
+	trap 'rm -- "\$0"' EXIT
+	sleep 5
+	for s in {1..50};do
+		for i in {0..100..10}; do
+			j=\$i
+			echo "\$i"
+			sleep 2
+		done
+		if [[ -n "\$(ss | grep 8123)" ]]; then
+				break;
+		fi
+	done | dialog --gauge "Preparing Home Assistant Supervised\n\nPlease wait! (can take 15 minutes) " 10 50 0
+	if [[ \$? -eq 0 ]]; then
+		if dialog --title " Reboot required " --yes-button "Reboot" --no-button "Cancel" --yesno \
+		"A reboot is required to enable AppArmor. Shall we reboot now?" 7 68; then
+		reboot
+		fi
+	else
+		echo "Something went wrong. Check logs!"
+	fi
+	PROVISIONING
+
 }
 
-function image_specific_armbian_env_ready__set_cgroupsv1_in_armbianEnvTxt() {
-	if [[ -f "${SDCARD}/boot/firmware/cmdline.txt" ]]; then
+function pre_umount_final_image__xset_cgroupsv1_in_armbianEnvTxt() {
+	if [[ -f "${MOUNT}/boot/firmware/cmdline.txt" ]]; then
 		# Rpi workaround
-		sed -i '/./ s/$/ systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor/' ${SDCARD}/boot/firmware/cmdline.txt
-		display_alert "cmdline.txt contents" "${SDCARD}/boot/firmware/cmdline.txt" "info"
-		run_host_command_logged cat "${SDCARD}/boot/firmware/cmdline.txt"
+		sed -i '/./ s/$/ systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor/' ${MOUNT}/boot/firmware/cmdline.txt
+		display_alert "cmdline.txt contents" "${MOUNT}/boot/firmware/cmdline.txt" "info"
+		run_host_command_logged cat "${MOUNT}/boot/firmware/cmdline.txt"
 	elif [[ -f "${SDCARD}/boot/armbianEnv.txt" ]]; then
 		echo "extraargs=${HA_UBOOT_EXTRAARGS}" >> "${SDCARD}/boot/armbianEnv.txt"
 		display_alert "armbianEnv.txt contents" "${SDCARD}/boot/armbianEnv.txt" "info"
