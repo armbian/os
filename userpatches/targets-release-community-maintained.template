@@ -147,7 +147,7 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia"
+      DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *community-maintained-riscv64
       - *community-maintained-slow-hdmi
