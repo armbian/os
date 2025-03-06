@@ -58,9 +58,10 @@ lists:
     - { BOARD: uefi-arm64, BRANCH: current }
 
   home-assistant: &home-assistant
+    - { BOARD: aml-a311d-cc, BRANCH: current }
+    - { BOARD: aml-c400-plus, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: sk-am62b, BRANCH: edge }
     - { BOARD: sk-am64b, BRANCH: current }
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
@@ -69,6 +70,8 @@ lists:
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim7, BRANCH: vendor }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: bigtreetech-cb2, BRANCH: current }
+    - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current }
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,ha"}
@@ -84,8 +87,10 @@ lists:
     - { BOARD: nanopi-r6s, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: current }
     - { BOARD: nanopct6-lts, BRANCH: current }
+    - { BOARD: nanopim4v2, BRANCH: current }
     - { BOARD: odroidm1, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current }
+    - { BOARD: odroidc2, BRANCH: current }
     - { BOARD: odroidc4, BRANCH: current }
     - { BOARD: odroidhc4, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current }
@@ -98,21 +103,27 @@ lists:
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: orangepizero2w, BRANCH: current }
     - { BOARD: orangepizero3, BRANCH: current }
+    - { BOARD: pine64, BRANCH: current }
     - { BOARD: renegade, BRANCH: current }
+    - { BOARD: radxa-e52c, BRANCH: vendor }
+    - { BOARD: radxa-zero, BRANCH: current }
     - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: rockpro64, BRANCH: current }
     - { BOARD: rock-2a, BRANCH: vendor }
     - { BOARD: rock-2f, BRANCH: vendor }
     - { BOARD: rock-3a, BRANCH: current }
-    - { BOARD: rock-5a, BRANCH: vendor }
-    - { BOARD: rock-5b, BRANCH: vendor }
-    - { BOARD: rock-5c, BRANCH: vendor }
+    - { BOARD: rock-5a, BRANCH: current }
+    - { BOARD: rock-5b, BRANCH: current }
+    - { BOARD: rock-5c, BRANCH: current }
     - { BOARD: rock-5-itx, BRANCH: current }
-    - { BOARD: rock-5b-plus, BRANCH: vendor }
+    - { BOARD: rock-5t, BRANCH: current }
+    - { BOARD: rock-5b-plus, BRANCH: current }
     - { BOARD: rock-5-cm-rpi-cm4-io, BRANCH: vendor }
     - { BOARD: rock-s0, BRANCH: current }
+    - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
+    - { BOARD: sweet-potato, BRANCH: current }
     - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: onecloud, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
