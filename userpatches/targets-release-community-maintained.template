@@ -136,7 +136,7 @@ targets:
 
   # ubuntu stable xfce
   xfce-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-community ]
     pipeline:
       gha: *armbian-gha
