@@ -27,12 +27,17 @@
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
-    "sha1": "44740031a34e61a47162f94961e3155c8c8470e2"
+    "sha1": "bd3d8a8b1bb76e352ea8d60db8198f0b40ff9ac8"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.6.y",
-    "sha1": "568e253c3e3bdfecf5a4d65ccc8fc971c6c4b31f"
+    "sha1": "640fad833ddce708ec92640ec247d4139433dc3b"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "41b222412985dc8410b88fb7a0fda87e6640d4df"
   },
   {
     "source": "https://github.com/SolidRun/u-boot.git",
@@ -41,8 +46,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "41b222412985dc8410b88fb7a0fda87e6640d4df"
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -50,9 +55,9 @@
     "sha1": "baac584011842f7f141d7828e311b3e098f3472e"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5",
-    "sha1": "790ccfa7ec7a895bb18091c26f79ed13da6e3eff"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.13.y",
+    "sha1": "c5e32b0a3c19f6cf40241e323e02dff00810406e"
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
@@ -60,9 +65,9 @@
     "sha1": "a9429c390905491b3afe2c84e4186292e21605ed"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5",
+    "sha1": "790ccfa7ec7a895bb18091c26f79ed13da6e3eff"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -70,14 +75,9 @@
     "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.13.y",
-    "sha1": "c5e32b0a3c19f6cf40241e323e02dff00810406e"
-  },
-  {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.6.y",
-    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
+    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
+    "branch": "rk3xxx-2024.04",
+    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
     "source": "https://github.com/edk2-porting/linux-next",
@@ -85,9 +85,9 @@
     "sha1": "fce71aeec59efc59e27361597808bfd5c7c100ab"
   },
   {
-    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
-    "branch": "rk3xxx-2024.04",
-    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.6.y",
+    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -100,9 +100,9 @@
     "sha1": "9215501e6a5bca89d29e66c2a5036ff155600f98"
   },
   {
-    "source": "https://github.com/khadas/u-boot.git",
-    "branch": "khadas-edges-v2017.09",
-    "sha1": "a0a83bf249f4229914b59ac8c1eb75cf86267342"
+    "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
+    "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
+    "sha1": "17c09991bfd2e2dca276ff98462a36d26a327a5d"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -110,9 +110,9 @@
     "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
   },
   {
-    "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
-    "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
-    "sha1": "17c09991bfd2e2dca276ff98462a36d26a327a5d"
+    "source": "https://github.com/khadas/u-boot.git",
+    "branch": "khadas-edges-v2017.09",
+    "sha1": "a0a83bf249f4229914b59ac8c1eb75cf86267342"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -156,13 +156,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "bb4bab0c78ff111a17cb778c784ba67327edbfd0"
+    "branch": "rpi-6.13.y",
+    "sha1": "e1e6b83c435a2fa084b453b1c89e1bc7bb918a5f"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.13.y",
-    "sha1": "9960d3ce2aafe29f8ca0daa1fa49746c6ce487c2"
+    "branch": "rpi-6.12.y",
+    "sha1": "d7a6e253b2a21e92fe53115b24bd27fa0ecdc843"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
@@ -172,7 +172,7 @@
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
-    "sha1": "3a83585836269d5109d84a49d4e5b484e54cc6d1"
+    "sha1": "6ae7ac5c4251b139da4b672fe4157f2089a9d922"
   },
   {
     "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
