@@ -52,6 +52,8 @@ lists:
     - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: bananapim7, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: beaglebone-ai64, BRANCH: current }
+    - { BOARD: beagleplay, BRANCH: current }
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: bigtreetech-cb2, BRANCH: current }
     - { BOARD: helios64, BRANCH: current }
