@@ -30,14 +30,9 @@
     "sha1": "1998f703f4d758abe45df7fd8bb8ccf2f59f3848"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "105a31925e2d17b766cebcff5d173f469e7b9e52"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "bd3d8a8b1bb76e352ea8d60db8198f0b40ff9ac8"
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,9 +45,9 @@
     "sha1": "baac584011842f7f141d7828e311b3e098f3472e"
   },
   {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "105a31925e2d17b766cebcff5d173f469e7b9e52"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -60,9 +55,14 @@
     "sha1": "251aeb0f2f570db5290d0dc2f8ebf87247b00b85"
   },
   {
-    "source": "https://github.com/edk2-porting/linux-next",
-    "branch": "ci/odin2/stable",
-    "sha1": "fce71aeec59efc59e27361597808bfd5c7c100ab"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "bd3d8a8b1bb76e352ea8d60db8198f0b40ff9ac8"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5",
+    "sha1": "72269e532495f1495b1bda366bd0334fa97075e6"
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
@@ -80,9 +80,14 @@
     "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5",
-    "sha1": "72269e532495f1495b1bda366bd0334fa97075e6"
+    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
+    "branch": "ti-linux-6.6.y",
+    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
+  },
+  {
+    "source": "https://github.com/edk2-porting/linux-next",
+    "branch": "ci/odin2/stable",
+    "sha1": "fce71aeec59efc59e27361597808bfd5c7c100ab"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -90,19 +95,9 @@
     "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
   },
   {
-    "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
-    "branch": "ti-linux-6.6.y",
-    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
-  },
-  {
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
     "sha1": "9215501e6a5bca89d29e66c2a5036ff155600f98"
-  },
-  {
-    "source": "https://github.com/stvhay/u-boot.git",
-    "branch": "rockchip-rk3588-unified",
-    "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
   },
   {
     "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
@@ -110,14 +105,19 @@
     "sha1": "17c09991bfd2e2dca276ff98462a36d26a327a5d"
   },
   {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "rk35xx-2024.01",
+    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
+  },
+  {
     "source": "https://github.com/khadas/u-boot.git",
     "branch": "khadas-edges-v2017.09",
     "sha1": "a0a83bf249f4229914b59ac8c1eb75cf86267342"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "rk35xx-2024.01",
-    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
+    "source": "https://github.com/stvhay/u-boot.git",
+    "branch": "rockchip-rk3588-unified",
+    "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
   },
   {
     "source": "https://github.com/khadas/u-boot.git",
@@ -171,13 +171,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "3c21211667e35029054b0dfebdf292e4e7d5754b"
+    "branch": "rpi-6.12.y",
+    "sha1": "d7a6e253b2a21e92fe53115b24bd27fa0ecdc843"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "d7a6e253b2a21e92fe53115b24bd27fa0ecdc843"
+    "branch": "rpi-6.6.y",
+    "sha1": "3c21211667e35029054b0dfebdf292e4e7d5754b"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
