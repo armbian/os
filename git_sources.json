@@ -20,6 +20,11 @@
     "sha1": "d9842bb5e8b8f85e61cedebda3511c36009eb126"
   },
   {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "3ba926a35a0644f3168995fca4b77970ffe9a743"
+  },
+  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "0c5a7e40793d35c2f1209772d68bf04ad769a777"
@@ -28,11 +33,6 @@
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "1d4c88ee96ec0176fa6e239ffe3d3a4278a8e418"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "e9cc806c0152fa9993f817cebf42989a3e2530bb"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -45,24 +45,9 @@
     "sha1": "594a1dd5138a6bbaa1697e5648cce23d2520eba9"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.10",
-    "sha1": "3ba926a35a0644f3168995fca4b77970ffe9a743"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "564fe48a5170f330be0b2fe65dc91717e3fd2539"
-  },
-  {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5",
-    "sha1": "72269e532495f1495b1bda366bd0334fa97075e6"
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -70,14 +55,39 @@
     "sha1": "648e04a805652f513af04b47035cde896addf9b0"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "e9cc806c0152fa9993f817cebf42989a3e2530bb"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
     "source": "https://github.com/edk2-porting/linux-next",
     "branch": "ci/odin2/stable",
     "sha1": "fce71aeec59efc59e27361597808bfd5c7c100ab"
   },
   {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "564fe48a5170f330be0b2fe65dc91717e3fd2539"
+  },
+  {
+    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
+    "branch": "rk3xxx-2024.04",
+    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
+  },
+  {
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5",
+    "sha1": "72269e532495f1495b1bda366bd0334fa97075e6"
   },
   {
     "source": "https://git.ti.com/cgit/ti-linux-kernel/ti-linux-kernel",
@@ -90,19 +100,19 @@
     "sha1": "9215501e6a5bca89d29e66c2a5036ff155600f98"
   },
   {
-    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
-    "branch": "rk3xxx-2024.04",
-    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
-  },
-  {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
+    "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
+    "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
+    "sha1": "17c09991bfd2e2dca276ff98462a36d26a327a5d"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
     "branch": "rockchip-rk3588-unified",
     "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "rk35xx-2024.01",
+    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
   },
   {
     "source": "https://github.com/khadas/u-boot.git",
@@ -115,29 +125,19 @@
     "sha1": "9fd0716ccebacba974fc8fabeef0708e5ffd7db1"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "rk35xx-2024.01",
-    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
-  },
-  {
-    "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
-    "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
-    "sha1": "17c09991bfd2e2dca276ff98462a36d26a327a5d"
-  },
-  {
     "source": "https://github.com/hardkernel/u-boot.git",
     "branch": "odroidc-v2011.03",
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
-  },
-  {
     "source": "https://github.com/hardkernel/u-boot.git",
     "branch": "odroidxu4-v2017.05",
     "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
+  },
+  {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
   },
   {
     "source": "https://github.com/jimmyhon/linux.git",
@@ -151,13 +151,13 @@
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-5.10",
-    "sha1": "89f1409f9ce3d206348995ff7ac6fb624eb09c7b"
+    "branch": "linux-6.6",
+    "sha1": "46471440b5ea96f5caa7ad70ce457735070f9f8e"
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-6.6",
-    "sha1": "46471440b5ea96f5caa7ad70ce457735070f9f8e"
+    "branch": "linux-5.10",
+    "sha1": "89f1409f9ce3d206348995ff7ac6fb624eb09c7b"
   },
   {
     "source": "https://github.com/beagleboard/u-boot",
@@ -200,14 +200,14 @@
     "sha1": "5602f2f7c53f5c0d2566f493224b82f55ed68abb"
   },
   {
-    "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
-    "branch": "jg/wdk2023-gunyah-6.7-rc6",
-    "sha1": "401bea57d6b96f440142b9039d483c671c4a9587"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
     "sha1": "344a09659766c83c42cdd4943318deabde89a9c3"
+  },
+  {
+    "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
+    "branch": "jg/wdk2023-gunyah-6.7-rc6",
+    "sha1": "401bea57d6b96f440142b9039d483c671c4a9587"
   },
   {
     "source": "https://github.com/SolidRun/u-boot",
