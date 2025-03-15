@@ -159,12 +159,10 @@ jobs:
               STEP_B=2
               [[ $IMAGE_URL == *i3-wm* || $IMAGE_URL == *kde-* ]] && STEP_A=2 && STEP_B=3
               IMAGE_TARGET=$(echo $IMAGE_URL | cut -d"|" -f2 | grep "minimal\|desktop" | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | cut -d"_" -f4- | grep -Po '_[a-z].*' | cut -d"." -f1 | sed "s/_//" | sed "s/_desktop//" | cut -d"-" -f1,${STEP_A})
-              # RFC: how to handle xiaomi-elish without xiaomi-umi for IMAGE_EXTENSION?
-              IMAGE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed 's/_sm8250-xiaomi-umi\|_sm8250-xiaomi-elish//g' | sed "s/rc[0-9]//g" | cut -d"_" -f4- | cut -d"-" -f${STEP_B}- | cut -d"_" -f1 | cut -d"." -f1)
+              IMAGE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed 's/_sm8250-xiaomi-elish//g' | sed "s/rc[0-9]//g" | cut -d"_" -f4- | cut -d"-" -f${STEP_B}- | cut -d"_" -f1 | cut -d"." -f1)
               [[ $IMAGE_EXTENSION == $KERNEL_BRANCH || $IMAGE_EXTENSION == ${IMAGE_TARGET} || $IMAGE_EXTENSION =~ boot|csot|boe|sms ]] && unset IMAGE_EXTENSION
               [[ -z ${IMAGE_TARGET} ]] && IMAGE_TARGET="server"
-              # RFC: how to handle xiaomi-elish without xiaomi-umi for FILE_EXTENSION?
-              FILE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed 's/_sm8250-xiaomi-umi\|_sm8250-xiaomi-elish//g' | sed "s/-rc[0-9]//g" | rev | cut -d"_" -f1 | rev | sed 's/.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)//' | sed "s/desktop.\|minimal.//")
+              FILE_EXTENSION=$(echo $IMAGE_URL | cut -d"|" -f2 | cut -d"|" -f2 | grep -Po 'Armbian.*[0-9][0-9].[0-9].*' | grep -Po '[0-9][0-9].[0-9].*' | sed 's/_sm8250-xiaomi-elish//g' | sed "s/-rc[0-9]//g" | rev | cut -d"_" -f1 | rev | sed 's/.*[^0-9]\([0-9]*\.[0-9]*\.[0-9]*\)//' | sed "s/desktop.\|minimal.//")
               #FILE_EXTENSION=$(echo $IMAGE_URL | grep -o "oowow.*\|img.*")
 
               # Clean out application from extension
