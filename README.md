@@ -21,7 +21,7 @@
 
 ## How to enable images?
 
-Build lists are generated [automatic](https://github.com/armbian/os/blob/main/.github/workflows/recreate-matrix.yml#L59-L211C94) based on [support policy](https://docs.armbian.com/User-Guide_Board-Support-Rules/) and with help of [templates](userpatches/), .blacklist and .map files.
+Build lists are generated [automatically](https://github.com/armbian/os/blob/main/.github/workflows/recreate-matrix.yml#L59-L211C94) based on [support policy](https://docs.armbian.com/User-Guide_Board-Support-Rules/) and with help of [templates](userpatches/), .blacklist and .map files.
 
 ## How to add description to download pages?
 
@@ -64,7 +64,7 @@ Device has to be always on and easily accesible for you to re-image in case of f
 ## Download prebuilt images
 
 - [quarterly released **standard support** builds](https://www.armbian.com/download/?device_support=Standard%20support)
-- [automatic released **rolling release** builds](https://github.com/armbian/os/releases/latest) (daily or when code changes)
+- [automatically released **rolling release** builds](https://github.com/armbian/os/releases/latest) (daily or when code changes)
 - [weekly released **community maintained** builds](https://github.com/armbian/community/releases/latest)
 
 ## Support
