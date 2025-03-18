@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "14492c84db83b2e82544148f8f8f06eadd3dbfd2"
+    "sha1": "6246fc49114259520b9d9a1a8f9e6109ef8025ee"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -27,7 +27,7 @@
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
-    "sha1": "6a94efbe2adf19ad276d1b934a7b092d12fd0fa1"
+    "sha1": "588505068c48fe07b1cfa32c5f3acd4395ec9482"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -35,9 +35,9 @@
     "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.10",
-    "sha1": "3ba926a35a0644f3168995fca4b77970ffe9a743"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "e9cc806c0152fa9993f817cebf42989a3e2530bb"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -45,19 +45,14 @@
     "sha1": "594a1dd5138a6bbaa1697e5648cce23d2520eba9"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "e9cc806c0152fa9993f817cebf42989a3e2530bb"
-  },
-  {
-    "source": "https://github.com/TexasInstruments-Sandbox/ti-linux-kernel",
-    "branch": "ti-linux-6.6.y",
-    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
-  },
-  {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.6.y",
     "sha1": "79a4742ca7a23b1c6d9402ccd2429392c935ea60"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "3ba926a35a0644f3168995fca4b77970ffe9a743"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -75,6 +70,11 @@
     "sha1": "72269e532495f1495b1bda366bd0334fa97075e6"
   },
   {
+    "source": "https://github.com/TexasInstruments-Sandbox/ti-linux-kernel",
+    "branch": "ti-linux-6.6.y",
+    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
+  },
+  {
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "99ab673ba5e957245e3053219a8b2a9ed378dfc7"
@@ -85,14 +85,14 @@
     "sha1": "9215501e6a5bca89d29e66c2a5036ff155600f98"
   },
   {
-    "source": "https://github.com/glneo/u-boot",
-    "branch": "beagley-ai",
-    "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
-  },
-  {
     "source": "https://github.com/beagleboard/linux",
     "branch": "v6.6.58-ti-arm64-r21",
     "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
+  },
+  {
+    "source": "https://github.com/glneo/u-boot",
+    "branch": "beagley-ai",
+    "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
   },
   {
     "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
@@ -105,14 +105,19 @@
     "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
+    "source": "https://github.com/stvhay/u-boot.git",
+    "branch": "rockchip-rk3588-unified",
+    "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
+  },
+  {
     "source": "https://github.com/khadas/u-boot.git",
     "branch": "khadas-edges-v2017.09",
     "sha1": "a0a83bf249f4229914b59ac8c1eb75cf86267342"
   },
   {
-    "source": "https://github.com/stvhay/u-boot.git",
-    "branch": "rockchip-rk3588-unified",
-    "sha1": "2f6e967dc901ae570f522d1b47309e7c34acf542"
+    "source": "https://github.com/khadas/u-boot.git",
+    "branch": "khadas-vims-v2019.01",
+    "sha1": "9fd0716ccebacba974fc8fabeef0708e5ffd7db1"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -123,11 +128,6 @@
     "source": "https://github.com/tq-systems/u-boot-tqmaxx.git",
     "branch": "TQMa8-v2020.04_imx_5.4.70_2.3.0",
     "sha1": "17c09991bfd2e2dca276ff98462a36d26a327a5d"
-  },
-  {
-    "source": "https://github.com/khadas/u-boot.git",
-    "branch": "khadas-vims-v2019.01",
-    "sha1": "9fd0716ccebacba974fc8fabeef0708e5ffd7db1"
   },
   {
     "source": "https://github.com/hardkernel/u-boot.git",
