@@ -145,12 +145,40 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2", COMPRESS_OUTPUTIMAGE: "none" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2", COMPRESS_OUTPUTIMAGE: "none" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *standard-support-riscv64
+
+  # Debian minimal cloud
+  minimal-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+
+# Ubuntu minimal cloud
+  minimal-cli-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-cloud ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
 # Ubuntu minimal
   minimal-cli-stable-ubuntu:
@@ -164,8 +192,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
