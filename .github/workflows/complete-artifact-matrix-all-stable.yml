@@ -188,7 +188,7 @@ env:
   GH_TOKEN: "${{ secrets.ACCESS_TOKEN }}"
 
   # Added to every image build arguments.
-  EXTRA_PARAMS_IMAGE: "COMPRESS_OUTPUTIMAGE=xz,sha SHOW_DEBIAN=yes SHARE_LOG=yes "
+  EXTRA_PARAMS_IMAGE: "SHARE_LOG=yes "
 
 #  To ensure that only a single workflow using the same concurrency group will run at a time
 concurrency:
