@@ -149,9 +149,9 @@ targets:
       - *standard-support-riscv64
 
   # Debian minimal cloud
-  minimal-cli-stable-debian:
+  minimal-cli-stable-debian-cloud:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-cloud ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -164,7 +164,7 @@ targets:
       - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
 # Ubuntu minimal cloud
-  minimal-cli-stable-ubuntu:
+  minimal-cli-stable-ubuntu-cloud:
     enabled: yes
     configs: [ armbian-cloud ]
     pipeline:
