@@ -257,7 +257,8 @@ jobs:
                                VARIANTS=$((VARIANTS+1))
                             fi
 
-                            if [[ ! "$targets" =~ ^(legacy|vendor|current|edge)$ && $targets != collabora ]]; then
+                            #if [[ ! "$targets" =~ ^(legacy|vendor|current|edge)$ && $targets != collabora ]]; then
+                            if [[ ! "$targets" =~ ^(legacy|vendor|current|edge)$ ]]; then
                                # otherwise it must be custom kernel target
                                EXTENSION=$(grep -P '^(?=.*'${board}',)(?=.*'${targets}':)' os/userpatches/targets-extensions.map | cut -d"=" -f2)
                                if [[ -n $EXTENSION ]]; then EXTENSION=", ENABLE_EXTENSIONS: $EXTENSION"; fi
