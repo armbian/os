@@ -201,7 +201,7 @@ jobs:
                     fi
 
                     # exception. Lets not deal with this special target anymore, but leave it in configs
-                    KERNEL_TARGET=${KERNEL_TARGET/,collabora/}
+                    #KERNEL_TARGET=${KERNEL_TARGET/,collabora/}
 
                     # if kernel test target is defined, override with it
                     [[ -n $KERNEL_TEST_TARGET ]] && KERNEL_TARGET=${KERNEL_TEST_TARGET}
