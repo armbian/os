@@ -2244,8 +2244,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -2454,8 +2458,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -2664,8 +2672,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -2874,8 +2886,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -3084,8 +3100,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -3294,8 +3314,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -3504,8 +3528,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -3714,8 +3742,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -3924,8 +3956,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -4134,8 +4170,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -4344,8 +4384,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -4554,8 +4598,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -4764,8 +4812,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -4974,8 +5026,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -5184,8 +5240,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
@@ -5394,8 +5454,12 @@ jobs:
         run: |
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
-          BOARD=$(ls -1 output/images/ | head -1)
-          FILE=$(find output/images/*/archive/ -type f \( -name "*.xz" -o -name "*.qcow2" \) | head -1 | rev | cut -d"/" -f1  | rev)
+          for files in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$files &>/dev/null; then
+              BOARD=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f3 | rev)
+              FILE=$(ls -1 output/images/*/archive/*.$files | rev | cut -d"/" -f1 | rev)
+            fi
+          done
           # nighly images are GH only
           rm -f servers.txt
           if [ "${{ github.event.inputs.nightlybuild || 'no' }}" == "no" ]; then
