@@ -2228,8 +2228,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -2435,8 +2438,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -2642,8 +2648,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -2849,8 +2858,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -3056,8 +3068,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -3263,8 +3278,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -3470,8 +3488,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -3677,8 +3698,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -3884,8 +3908,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -4091,8 +4118,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -4298,8 +4328,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -4505,8 +4538,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -4712,8 +4748,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -4919,8 +4958,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -5126,8 +5168,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
@@ -5333,8 +5378,11 @@ jobs:
         if: env.GPG_PASSPHRASE1 != null
         run: |
 
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.xz || \
-          echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.qcow2
+          for extension in zip xz qcow2; do
+            if ls -l output/images/*/archive/*.$extension &>/dev/null; then
+              echo ${{ secrets.GPG_PASSPHRASE1 }} | gpg --passphrase-fd 0 --armor --detach-sign --pinentry-mode loopback --batch --yes output/images/*/archive/*.$extension
+            fi
+          done
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
