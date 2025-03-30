@@ -35,10 +35,10 @@ lists:
 
 targets:
 
-  # ubuntu veryoldstable minimal
-  minimal-cli-veryoldstable-ubuntu:
+  # ubuntu veryoldstable minimal cloud
+  minimal-cli-veryoldstable-ubuntu-cloud:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-cloud ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -47,13 +47,13 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
-  # ubuntu oldstable minimal
-  minimal-cli-oldstable-ubuntu:
+  # ubuntu oldstable minimal cloud
+  minimal-cli-oldstable-ubuntu-cloud:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-cloud ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -62,8 +62,23 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+
+  # ubuntu stable minimal cloud
+  minimal-cli-stable-ubuntu-cloud:
+    enabled: yes
+    configs: [ armbian-cloud ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu stable minimal
   minimal-cli-stable-ubuntu:
@@ -78,8 +93,21 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - *standard-support-slow-hdmi
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+
+  # ubuntu unstable minimal cloud
+  minimal-cli-unstable-ubuntu-cloud:
+    enabled: yes
+    configs: [ armbian-cloud ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: plucky
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu unstable minimal
   minimal-cli-unstable-ubuntu:
@@ -94,8 +122,6 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: "aml-s9xx-box" , BRANCH: current }
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
@@ -103,6 +129,21 @@ targets:
       - *staging-headless
       - *staging-riscv64
       - *virtual-boards
+
+  # debian unstable minimal cloud
+  minimal-cli-unstable-debian-cloud:
+    enabled: yes
+    configs: [ armbian-cloud ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # debian unstable minimal
   minimal-cli-unstable-debian:
@@ -117,8 +158,6 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: "aml-s9xx-box", BRANCH: current }
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
@@ -127,10 +166,10 @@ targets:
       - *staging-headless
       - *staging-riscv64
 
-  # debian oldstable minimal
-  minimal-cli-oldstable-debian:
+  # debian oldstable minimal cloud
+  minimal-cli-oldstable-debian-cloud:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-cloud ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -139,13 +178,13 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
-  # debian stable minimal
-  minimal-cli-stable-debian:
+  # debian stable minimal cloud
+  minimal-cli-stable-debian-cloud:
     enabled: yes
-    configs: [ armbian-images ]
+    configs: [ armbian-cloud ]
     pipeline:
       gha: *armbian-gha
       build-image: "yes"
@@ -154,8 +193,8 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
 
   # ubuntu unstable without apps
   xfce-barebone-desktop-unstable-ubuntu:
