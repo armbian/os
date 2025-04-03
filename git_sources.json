@@ -31,11 +31,6 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.6.y",
     "sha1": "d57a7c6169607dd09157ccf257e556fb75444f28"
   },
@@ -45,9 +40,14 @@
     "sha1": "3423cae6907838f760aada1a72bb6e378ebaa16d"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "ca6700db57033aa816ed442793a6f6879db18248"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -62,12 +62,12 @@
   {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.10",
-    "sha1": "113afd96fb8ec924093fdbd8495fce5cfba5f1ad"
+    "sha1": "b9a0522c2f263d9a94cfcabfd471e822e0b7527c"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "ca6700db57033aa816ed442793a6f6879db18248"
   },
   {
     "source": "https://github.com/TexasInstruments-Sandbox/ti-linux-kernel",
@@ -201,11 +201,6 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "82ea1311dc3851e5b51d95f084689b6dbb7bf425"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.6.y",
     "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
   },
@@ -213,6 +208,11 @@
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.13.y",
     "sha1": "28e3962ebd48805e366c778ee79d65e966cda60d"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.12.y",
+    "sha1": "bc0a2321ad552ac92dc4be6552ea8a4fc7adf8b8"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
