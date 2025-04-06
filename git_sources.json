@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "ac49262510e80de68a27118c41843eedbf411ee9"
+    "sha1": "8e6fd84fe163c9d7b53ff74baee47231f4f19f2e"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -31,18 +31,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.12.y",
     "sha1": "3423cae6907838f760aada1a72bb6e378ebaa16d"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "d57a7c6169607dd09157ccf257e556fb75444f28"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.14.y",
-    "sha1": "38fec10eb60d687e30c8c6b5420d86e8149f7557"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -51,13 +46,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.6.y",
-    "sha1": "ca6700db57033aa816ed442793a6f6879db18248"
+    "sha1": "d57a7c6169607dd09157ccf257e556fb75444f28"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -65,14 +55,24 @@
     "sha1": "b9a0522c2f263d9a94cfcabfd471e822e0b7527c"
   },
   {
-    "source": "https://github.com/TexasInstruments-Sandbox/ti-linux-kernel",
-    "branch": "ti-linux-6.6.y",
-    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.14.y",
+    "sha1": "38fec10eb60d687e30c8c6b5420d86e8149f7557"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "ca6700db57033aa816ed442793a6f6879db18248"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr5",
     "sha1": "28320e8543bb19e21d3cfbf0421c700f17da5b58"
+  },
+  {
+    "source": "https://github.com/TexasInstruments-Sandbox/ti-linux-kernel",
+    "branch": "ti-linux-6.6.y",
+    "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -190,14 +190,14 @@
     "sha1": "1e9d83e27f533f6a2567a29917b684a4b0ad1b9d"
   },
   {
-    "source": "https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-mtk/+git/jammy",
-    "branch": "master-next",
-    "sha1": "4d3f892bb3e7644eab5b3ff20b8290a48435552d"
-  },
-  {
     "source": "https://gitlab.collabora.com/mediatek/aiot/linux.git",
     "branch": "mediatek-next",
     "sha1": "0c032573e7606908d3303c872ef08e54975ebd2b"
+  },
+  {
+    "source": "https://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-mtk/+git/jammy",
+    "branch": "master-next",
+    "sha1": "4d3f892bb3e7644eab5b3ff20b8290a48435552d"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
