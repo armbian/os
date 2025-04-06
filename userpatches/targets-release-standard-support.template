@@ -44,7 +44,7 @@ targets:
       - *standard-support-headless
       - *standard-support-riscv64
 
-  # Debian minimal cloud
+  # Debian minimal cloud and current kernel for qcow2
   minimal-cli-stable-debian-cloud:
     enabled: yes
     configs: [ armbian-cloud ]
@@ -57,11 +57,13 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
       - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
 
-# Ubuntu minimal cloud
+  # Ubuntu minimal cloud and current kernel for qcow2
   minimal-cli-stable-ubuntu-cloud:
     enabled: yes
     configs: [ armbian-cloud ]
@@ -74,8 +76,10 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
       - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
 
 
