@@ -22,9 +22,13 @@ function extension_prepare_config__home_assistant() {
 
 function pre_customize_image__500_add_ha_to_image() {
 
+	# HA-Supervised wants cgroupsv1, no idea why, but such is life.
+	declare -g GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} systemd.unified_cgroup_hierarchy=false" # GRUB version
+	declare -g HA_UBOOT_EXTRAARGS="systemd.unified_cgroup_hierarchy=false"                                       # u-boot version, applied below
+
 	# Rockchip vendor kernel needs some additional arguments to work right
 	if [[ ${BRANCH} == "vendor" && ${BOARDFAMILY} == "rockchip-rk3588" ]]; then
-		declare -g HA_UBOOT_EXTRAARGS="apparmor=1 security=apparmor"
+		declare -g HA_UBOOT_EXTRAARGS="systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor"
 	fi
 
         # We need extra space in the rootfs for the Java build machine
@@ -41,17 +45,17 @@ function pre_customize_image__500_add_ha_to_image() {
 
 	declare -g HA_OS_AGENT_CACHE_DIR="${SRC}/cache/home_assistant_debs"
 
-	# os-agent   deb: amd64 https://github.com/home-assistant/os-agent/releases/download/1.7.2/os-agent_1.7.2_linux_x86_64.deb
-	# os-agent   deb: arm64 https://github.com/home-assistant/os-agent/releases/download/1.7.2/os-agent_1.7.2_linux_aarch64.deb
-	# os-agent   deb: armhf https://github.com/home-assistant/os-agent/releases/download/1.7.2/os-agent_1.7.2_linux_armv7.deb
-	declare -g HA_OS_AGENT_VERSION="1.7.2"
+	# os-agent   deb: amd64 https://github.com/home-assistant/os-agent/releases/download/1.6.0/os-agent_1.6.0_linux_x86_64.deb
+	# os-agent   deb: arm64 https://github.com/home-assistant/os-agent/releases/download/1.6.0/os-agent_1.6.0_linux_aarch64.deb
+	# os-agent   deb: armhf https://github.com/home-assistant/os-agent/releases/download/1.6.0/os-agent_1.6.0_linux_armv7.deb
+	declare -g HA_OS_AGENT_VERSION="1.6.0"
 	declare -g HA_OS_AGENT_FILENAME="os-agent_${HA_OS_AGENT_VERSION}_linux_${HA_OS_AGENT_ARCH}.deb"
 	declare -g HA_OS_AGENT_URL="https://github.com/home-assistant/os-agent/releases/download/${HA_OS_AGENT_VERSION}/${HA_OS_AGENT_FILENAME}"
 	declare -g HA_OS_AGENT_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_OS_AGENT_FILENAME}"
 
-	# Fetch supervised repostory from release 3.0.0, patch it to disable Grub update and install
+	# Fetch supervised repostory from release 1.6.0, patch it to disable Grub update and install
 	# Without this patch, installation breaks with /usr/sbin/grub-probe: error: failed to get canonical path of `tmpfs'
-	fetch_from_repo "https://github.com/home-assistant/supervised-installer" "supervised-installer" "commit:f5951143a17a45013a6c4c5364a6c39e19d23f03"
+	fetch_from_repo "https://github.com/home-assistant/supervised-installer" "supervised-installer" "commit:c99ffd00fcb32c06fc4140040c9ee7e919becce9"
 	cd "${SRC}"/cache/sources/supervised-installer || exit
 
 	# Updating grup fails in chroot and we do it later anyway
@@ -62,7 +66,7 @@ function pre_customize_image__500_add_ha_to_image() {
 	dpkg-deb -v --build --root-owner-group homeassistant-supervised
 
 	# supervised deb: all
-	declare -g HA_SUPERVISED_VERSION="3.0.0"
+	declare -g HA_SUPERVISED_VERSION="1.6.0"
 	declare -g HA_SUPERVISED_FILENAME="homeassistant-supervised_${HA_SUPERVISED_VERSION}.deb"
 	declare -g HA_SUPERVISED_URL="https://github.com/home-assistant/supervised-installer/releases/download/${HA_SUPERVISED_VERSION}/homeassistant-supervised.deb"
 	declare -g HA_SUPERVISED_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_SUPERVISED_FILENAME}"
@@ -174,10 +178,10 @@ function pre_customize_image__500_add_ha_to_image() {
 
 }
 
-function pre_umount_final_image__xset_apparmor_in_armbianEnvTxt() {
+function pre_umount_final_image__xset_cgroupsv1_in_armbianEnvTxt() {
 	if [[ -f "${MOUNT}/boot/firmware/cmdline.txt" ]]; then
 		# Rpi workaround
-		sed -i '/./ s/$/ apparmor=1 security=apparmor/' ${MOUNT}/boot/firmware/cmdline.txt
+		sed -i '/./ s/$/ systemd.unified_cgroup_hierarchy=0 apparmor=1 security=apparmor/' ${MOUNT}/boot/firmware/cmdline.txt
 		display_alert "cmdline.txt contents" "${MOUNT}/boot/firmware/cmdline.txt" "info"
 		run_host_command_logged cat "${MOUNT}/boot/firmware/cmdline.txt"
 	elif [[ -f "${SDCARD}/boot/armbianEnv.txt" ]]; then
