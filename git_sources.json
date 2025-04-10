@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "1dfb077e1549174a8dd3b74824beea98ffd73cd0"
+    "sha1": "863a369302cadf6c5ad11c6354dbe4f2c74c91f2"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -45,9 +45,14 @@
     "sha1": "55767d6e74ef155f43fff978ad4e2f69f3f8fad7"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.14.y",
+    "sha1": "22a8fa206fbb8df658d43dedb2096efc291bc574"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "b9a0522c2f263d9a94cfcabfd471e822e0b7527c"
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
@@ -60,14 +65,9 @@
     "sha1": "28320e8543bb19e21d3cfbf0421c700f17da5b58"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.10",
-    "sha1": "b9a0522c2f263d9a94cfcabfd471e822e0b7527c"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.14.y",
-    "sha1": "22a8fa206fbb8df658d43dedb2096efc291bc574"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
   },
   {
     "source": "https://github.com/TexasInstruments-Sandbox/ti-linux-kernel",
@@ -201,13 +201,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
+    "branch": "rpi-6.12.y",
+    "sha1": "1284626bb6c6728a5b792eea2a615f9e0edde32d"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "1284626bb6c6728a5b792eea2a615f9e0edde32d"
+    "branch": "rpi-6.6.y",
+    "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
