@@ -65,6 +65,11 @@ function pre_customize_image__500_add_ha_to_image() {
 	declare -g HA_SUPERVISED_VERSION="3.0.0"
 	declare -g HA_SUPERVISED_FILENAME="homeassistant-supervised_${HA_SUPERVISED_VERSION}.deb"
 	declare -g HA_SUPERVISED_URL="https://github.com/home-assistant/supervised-installer/releases/download/${HA_SUPERVISED_VERSION}/homeassistant-supervised.deb"
+
+	# using Armbian patched version
+	declare -g HA_SUPERVISED_URL="https://github.com/armbian/supervised-installer/releases/download/2.9.9/homeassistant-supervised.deb"
+	# using Armbian patched version
+
 	declare -g HA_SUPERVISED_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_SUPERVISED_FILENAME}"
 
 	display_alert "Adding HA dependency packages" "${EXTENSION}" "info"
