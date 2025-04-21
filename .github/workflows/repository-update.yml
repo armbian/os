@@ -84,6 +84,7 @@ jobs:
           DELETE_AFTER="22.08"
               delete_packages=(
                     ["discord"]="% *"
+                    ["homeassistant-supervised"]="% *"
                     ["fastfetch"]="% *"
                     ["test_delete_pkg"]="% *"
               )
