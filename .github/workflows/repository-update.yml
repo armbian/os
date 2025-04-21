@@ -78,7 +78,7 @@ jobs:
 
           REPOSITORY="${{ matrix.repository }}"
           TARGET=${REPOSITORY/debs/repository}
-          sudo chown -R ${USER}:${USER} /outgoing/${TARGET} /incoming/${REPOSITORY}
+          sudo chown -R ${USER}:${USER} /outgoing/${TARGET} /armbian/openssh-server/storage/${REPOSITORY}
 
           # delete older packages
           declare -A delete_packages
@@ -94,7 +94,7 @@ jobs:
           for key in "${!delete_packages[@]}"
           do
               tools/repository/repo \
-                -i /incoming/${{ matrix.repository }} \
+                -i /armbian/openssh-server/storage/${{ matrix.repository }} \
                 -o /outgoing/${TARGET} \
                 -p ${{ secrets.GPG_PASSPHRASE1 }} -c delete -l "Name (% $key*), \$Version (${delete_packages[$key]})"
           done
@@ -104,8 +104,8 @@ jobs:
 
              if [[ "${{ matrix.repository }}" == "debs" ]]; then
                  # add from partial
-                 sudo chown -R ${USER}:${USER} /incoming/partial/
-                 tools/repository/repo -i /incoming/partial/debs -o /outgoing/repository -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+                 sudo chown -R ${USER}:${USER} /armbian/openssh-server/storage/partial/
+                 tools/repository/repo -i /armbian/openssh-server/storage/partial/debs -o /outgoing/repository -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
              fi
 
           else
@@ -116,13 +116,12 @@ jobs:
               fi
 
               # add from incoming
-              tools/repository/repo -i /incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
+              tools/repository/repo -i /armbian/openssh-server/storage/incoming/${{ matrix.repository }} -o /outgoing/${TARGET} -p ${{ secrets.GPG_PASSPHRASE1 }} -c update
           fi
           # calculate size
           du -hc --max-depth=1 /outgoing/${TARGET}/public* | tail -1 | awk '{print $1}' > /outgoing/${TARGET}/public/size.txt
           # fix folder permissions
-          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/${REPOSITORY}
-          
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /armbian/openssh-server/storage/incoming/${REPOSITORY}
 
   Prepare:
     name: "Upload to servers"
