@@ -37,12 +37,12 @@ jobs:
     with:
       ACCESS_NAME: armbian
       BUILD_RUNNER: "ubuntu-latest"
+      HOST_DEPLOY: "repo.armbian.com"
     secrets:
       GPG_KEY1: ${{ secrets.GPG_KEY1 }}
       GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
-      HOST_DEPLOY: "repo.armbian.com"
+      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}      
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
       HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
       HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
