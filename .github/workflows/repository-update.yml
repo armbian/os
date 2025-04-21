@@ -6,7 +6,7 @@ on:
     inputs:
       partial:
         type: boolean
-        description: "Add https://netcup.armbian.com/partial/ to stable repo"
+        description: "Add https://repo.armbian.com/partial/ to stable repo"
         default: false
 
 concurrency:
