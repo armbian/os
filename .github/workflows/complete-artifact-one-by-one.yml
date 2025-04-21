@@ -248,6 +248,7 @@ on:
         - pineh64
         - pocketbeagle2
         - pocketchip-sd
+        - qcom-robotics-rb5
         - qemu-uboot-arm64
         - qemu-uboot-x86
         - qemu-uefi-x86
@@ -332,7 +333,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v25.2.1
+      - uses: armbian/build@v24.8.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
