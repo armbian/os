@@ -5676,7 +5676,7 @@ jobs:
           sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/.
 
           echo "sync all parts"
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" -arvc \
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }} -o StrictHostKeyChecking=accept-new" -arvc \
           --include='debs***' \
           --exclude='*' \
           --remove-source-files \
