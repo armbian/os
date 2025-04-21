@@ -121,7 +121,7 @@ jobs:
           # calculate size
           du -hc --max-depth=1 /outgoing/${TARGET}/public* | tail -1 | awk '{print $1}' > /outgoing/${TARGET}/public/size.txt
           # fix folder permissions
-          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /armbian/openssh-server/storage/incoming/${REPOSITORY}
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /armbian/openssh-server/storage/${REPOSITORY}
 
   Prepare:
     name: "Upload to servers"
@@ -223,7 +223,7 @@ jobs:
           done
 
           # fix folder permissions
-          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/
+          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /armbian/openssh-server/storage/{debs,debs-beta,artifacts}
 
   dispatch:
     name: "Refresh web and redirector index"
