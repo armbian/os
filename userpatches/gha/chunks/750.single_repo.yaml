@@ -139,7 +139,7 @@ jobs: # <TEMPLATE-IGNORE>
           --exclude='*' \
           --remove-source-files \
           --delete \
-          output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/incoming/${TARGET}
+          output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${TARGET}
           # clean
           find output/. -type d -empty -delete
 
