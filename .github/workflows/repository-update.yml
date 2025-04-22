@@ -59,6 +59,10 @@ jobs:
     name: Make
     runs-on: repository
     steps:
+    
+      # Cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
 
       - name: Checkout build repository
         uses: actions/checkout@v4
