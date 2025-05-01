@@ -33,10 +33,10 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: "Cleanup upload folder"
-        run: |
-
-          ssh upload@netcup.armbian.com "rm -rf /var/www/netcup.armbian.com/html/qemutestbuilds/*"
+      #- name: "Cleanup upload folder"
+      #  run: |
+      #
+      #    ssh upload@netcup.armbian.com "rm -rf /var/www/netcup.armbian.com/html/qemutestbuilds/*"
 
       - name: "Make JSON"
         id: json
