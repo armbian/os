@@ -1,0 +1,11 @@
+EXPERT=yes \
+          KERNEL_CONFIGURE=whatever you like \
+          RELEASE=${{ matrix.release }} \
+          SHARE_LOG=yes \
+          SHOW_DEBUB=yes \
+          UPLOAD_TO_OCI_ONLY=yes
+
+          # To do:
+          #  - test deploy images and take screenshots
+          #  - upload to server for executing run test
+          #  - run tests on server and take screenshots     
