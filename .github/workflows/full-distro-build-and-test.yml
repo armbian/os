@@ -1,4 +1,14 @@
-name: "Full distro test builds"
+EXPERT=yes \
+          KERNEL_CONFIGURE=no \
+          RELEASE=${{ matrix.release }} \
+          SHARE_LOG=yes \
+          SHOW_DEBUB=yes \
+          UPLOAD_TO_OCI_ONLY=yes
+
+          # To do:
+          #  - test deploy images and take screenshots
+          #  - upload to server for executing run test
+          name: "Full distro test builds"
 on:
   schedule:
    - cron: '00 5 * * *'
@@ -141,14 +151,4 @@ jobs:
           DESKTOP_ENVIRONMENT="${DESKTOP_ENVIRONMENT}" \
           DESKTOP_ENVIRONMENT_CONFIG_NAME=config_base \
           ENABLE_EXTENSIONS=image-output-qcow2,v4l2loopback-dkms \
-          EXPERT=yes \
-          KERNEL_CONFIGURE=no \
-          RELEASE=${{ matrix.release }} \
-          SHARE_LOG=yes \
-          SHOW_DEBUB=yes \
-          UPLOAD_TO_OCI_ONLY=yes
-
-          # To do:
-          #  - test deploy images and take screenshots
-          #  - upload to server for executing run test
           #rsync -arvc --rsync-path="mkdir -p /var/www/netcup.armbian.com/html/qemutestbuilds/ && rsync" output/images/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:"/var/www/netcup.armbian.com/html/qemutestbuilds/"
