@@ -35,21 +35,6 @@ lists:
 
 targets:
 
-  # ubuntu veryoldstable minimal cloud
-  minimal-cli-veryoldstable-ubuntu-cloud:
-    enabled: yes
-    configs: [ armbian-cloud ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: focal
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
-
   # ubuntu oldstable minimal cloud
   minimal-cli-oldstable-ubuntu-cloud:
     enabled: yes
