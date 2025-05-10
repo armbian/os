@@ -141,7 +141,6 @@ lists:
     - { BOARD: orangepi5-max, BRANCH: vendor }
     - { BOARD: orangepi5-ultra, BRANCH: current }
     - { BOARD: orangepi5b, BRANCH: vendor }
-    - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
     - { BOARD: orangepipc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
