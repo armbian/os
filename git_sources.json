@@ -20,14 +20,19 @@
     "sha1": "000c787edda06f93f986cec20a1b09e66805e08a"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "9c2dd8954dad0430e83ee55b985ba55070e50cf7"
+    "source": "https://github.com/armbian/firmware",
+    "branch": "master",
+    "sha1": "4050e02da2dce2b74c97101f7964ecfb962f5aec"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "759c4acafb4a80d76885e4a1542229a27d677322"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.10.y",
+    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -36,18 +41,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.10.y",
-    "sha1": "47c2f92131c47a37ea0e3d8e1a4e4c82a9b473d4"
-  },
-  {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.10",
-    "sha1": "575d1a114c66ad09e0d9d9f478c993fc243f5aec"
+    "branch": "linux-6.6.y",
+    "sha1": "9c2dd8954dad0430e83ee55b985ba55070e50cf7"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.14.y",
     "sha1": "e2d3e1fdb530198317501eb7ded4f3a5fb6c881c"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "575d1a114c66ad09e0d9d9f478c993fc243f5aec"
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
@@ -65,19 +70,14 @@
     "sha1": "a7758da17c2807e5285d6546b6797aae1d34a7d6"
   },
   {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
     "source": "https://github.com/khadas/linux.git",
     "branch": "khadas-vims-5.15.y",
     "sha1": "ecc96366810970efcad959fc9985b7a16c691553"
-  },
-  {
-    "source": "https://github.com/armbian/firmware",
-    "branch": "master",
-    "sha1": "4050e02da2dce2b74c97101f7964ecfb962f5aec"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "759c4acafb4a80d76885e4a1542229a27d677322"
   },
   {
     "source": "https://github.com/khadas/common_drivers",
@@ -85,14 +85,14 @@
     "sha1": "4a7cab19f73df2cb21dc4cc4ba0c155fbc6392d2"
   },
   {
-    "source": "https://github.com/beagleboard/linux",
-    "branch": "v6.6.58-ti-arm64-r21",
-    "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
-  },
-  {
     "source": "https://github.com/glneo/u-boot",
     "branch": "beagley-ai",
     "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
+  },
+  {
+    "source": "https://github.com/beagleboard/linux",
+    "branch": "v6.6.58-ti-arm64-r21",
+    "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
   },
   {
     "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
@@ -140,14 +140,14 @@
     "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
   },
   {
-    "source": "https://github.com/hardkernel/u-boot.git",
-    "branch": "odroidxu4-v2017.05",
-    "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
-  },
-  {
     "source": "https://github.com/hardkernel/linux",
     "branch": "odroid-6.6.y",
     "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
+  },
+  {
+    "source": "https://github.com/hardkernel/u-boot.git",
+    "branch": "odroidxu4-v2017.05",
+    "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
   },
   {
     "source": "https://github.com/jimmyhon/linux.git",
@@ -201,13 +201,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.14.y",
-    "sha1": "9c262248524dfaaa4b16f560a46dee62dca3c27b"
+    "branch": "rpi-6.12.y",
+    "sha1": "f5726fbb14a69b487c2c289c2b322156b7ea983b"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "f5726fbb14a69b487c2c289c2b322156b7ea983b"
+    "branch": "rpi-6.14.y",
+    "sha1": "9c262248524dfaaa4b16f560a46dee62dca3c27b"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
