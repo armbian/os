@@ -87,7 +87,6 @@ lists:
     - { BOARD: odroidhc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: orangepi3-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -131,8 +130,6 @@ lists:
     - { BOARD: bananapim2plus, BRANCH: current }
     - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
-    - { BOARD: radxa-zero3, BRANCH: vendor }
-    - { BOARD: rock-2f, BRANCH: vendor }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
