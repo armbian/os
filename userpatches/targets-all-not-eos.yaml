@@ -27,7 +27,7 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        skip-releases: [ "focal", "sid", "trixie", "oracular", "plucky" ] # do NOT include these releases
+        skip-releases: [ "focal", "sid", "oracular" ] # do NOT include these releases
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["gnome", "xfce", "cinnamon" ] # ONLY include these desktops
@@ -55,7 +55,7 @@ targets:
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
         #skip-releases: [ "sid" ] # do NOT include these releases
-        only-releases: [ "jammy", "noble", "bookworm" ] # ONLY include these releases
+        only-releases: [ "noble", "bookworm", "trixie" ] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["xfce"] # ONLY include these desktops
         cli: yes # include normal CLI userspace
@@ -77,7 +77,7 @@ targets:
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
         #only-releases: ["bookworm"] # ONLY include these releases
-        skip-releases: [ "focal", "sid", "trixie", "noble", "oracular", "plucky" ]
+        skip-releases: [ "focal", "sid", "noble", "oracular" ]
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["xfce"] # ONLY include these desktops
         cli: yes # include normal CLI userspace
