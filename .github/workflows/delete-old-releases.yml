@@ -1,10 +1,12 @@
-name: Clean Old Releases
+name: Delete Old Releases
 
 on:
+  schedule:
+    - cron: '0 3 * * *'  # Daily at 03:00 UTC
   workflow_dispatch:  # Manually triggered
 
 jobs:
-  clean_releases:
+  clean_releases:  
     runs-on: ubuntu-latest
     steps:
       - name: Delete old pre-releases and keep only last 3 full releases
