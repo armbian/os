@@ -1,0 +1,32 @@
+name: Clean Old Releases
+
+on:
+  workflow_dispatch:  # Manually triggered
+
+jobs:
+  clean_releases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old pre-releases and keep only last 3 full releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get all releases
+          releases=$(gh api repos/${{ github.repository }}/releases)
+
+          # Delete pre-releases
+          echo "$releases" | jq -r '.[] | select(.prerelease) | .id' | while read id; do
+            echo "Deleting pre-release ID: $id"
+            gh api --method DELETE repos/${{ github.repository }}/releases/$id
+          done
+
+          # Get IDs of full releases sorted by created date (descending)
+          full_release_ids=$(echo "$releases" | jq -r 'sort_by(.created_at) | reverse | map(select(.prerelease == false)) | .[].id')
+
+          # Keep the latest 3 full releases
+          to_delete=$(echo "$full_release_ids" | tail -n +4)
+
+          for id in $to_delete; do
+            echo "Deleting full release ID: $id"
+            gh api --method DELETE repos/${{ github.repository }}/releases/$id
+          done
