@@ -82,6 +82,7 @@ lists:
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: beagley-ai, BRANCH: current }
+    - { BOARD: cainiao-cniot-core, BRANCH: current }
     - { BOARD: cherryba-m1, BRANCH: current }
     - { BOARD: clockworkpi-a06, BRANCH: current }
     - { BOARD: cm3588-nas, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -153,6 +154,7 @@ lists:
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pineh64-b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: pineh64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: pocketbeagle2, BRANCH: edge }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
     - { BOARD: radxa-cubie-a5e, BRANCH: dev}
