@@ -120,6 +120,7 @@ on:
         - hinlink-h88k
         - hinlink-hnas
         - hinlink-ht2
+        - imb3588
         - indiedroid-nova
         - inovato-quadra
         - jethubj100
@@ -347,6 +348,7 @@ on:
         # maintainers
         - 150balbes
         - 1ubuntuuser
+        - <JackHuang021@gmail.com>
         - AGM1968
         - AaronNGray
         - CodeChenL
@@ -356,7 +358,9 @@ on:
         - Grippy98
         - Heisath
         - HeyMeco
+        - Huang
         - IsMrX
+        - Jack
         - Janmcha
         - JohnTheCoolingFan
         - Kreyren
@@ -657,7 +661,7 @@ jobs:
       - name: Bump version
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( inputs.ref == '' ) && ( env.VERSION_BUMP == 'true' ) }}
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v5.4.0
+        uses: TriPSs/conventional-changelog-action@v6.0.0
         with:
           github-token: ${{ secrets.ACCESS_TOKEN_ARMBIANWORKER }}
           git-message: 'Bump release to {version}'
