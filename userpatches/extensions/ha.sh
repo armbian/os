@@ -73,7 +73,7 @@ function pre_customize_image__500_add_ha_to_image() {
 	declare -g HA_SUPERVISED_CACHE_FILE="${HA_OS_AGENT_CACHE_DIR}/${HA_SUPERVISED_FILENAME}"
 
 	display_alert "Adding HA dependency packages" "${EXTENSION}" "info"
-	chroot_sdcard_apt_get_install systemd-journal-remote apparmor cifs-utils nfs-common network-manager bluetooth
+	chroot_sdcard_apt_get_install systemd-journal-remote apparmor cifs-utils nfs-common network-manager bluetooth systemd-timesyncd
 
 	display_alert "Fetching Home Assistant debs" "${EXTENSION}" "info"
 	mkdir -p "${HA_OS_AGENT_CACHE_DIR}"
