@@ -315,7 +315,6 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
-      - *community-maintained-headless
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # ubuntu stable cli minimal
@@ -341,7 +340,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: oracular
+      RELEASE: plucky
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
     items:
@@ -363,7 +362,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: ""
     items:
       - *community-maintained-riscv64
-      - *community-maintained-slow-hdmi
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
   # ubuntu stable gnome
@@ -381,7 +379,6 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
-      - *community-maintained-fast-hdmi
       - { BOARD: ayn-odin2, BRANCH: sm8550}
 
   # ubuntu unstable xfce
@@ -392,7 +389,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: oracular
+      RELEASE: plucky
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
@@ -409,7 +406,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: oracular
+      RELEASE: plucky
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "gnome"
       BUILD_DESKTOP: "yes"

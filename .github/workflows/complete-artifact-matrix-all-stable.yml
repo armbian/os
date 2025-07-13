@@ -2000,7 +2000,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2214,7 +2218,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2428,7 +2436,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2642,7 +2654,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2856,7 +2872,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3070,7 +3090,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3284,7 +3308,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3498,7 +3526,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3712,7 +3744,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3926,7 +3962,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4140,7 +4180,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4354,7 +4398,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4568,7 +4616,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4782,7 +4834,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4996,7 +5052,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -5210,7 +5270,11 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            "output/images/*/*/Armbian_*.xz"
+            "output/images/*/*/Armbian_*.asc"
+            "output/images/*/*/Armbian_*.sha"
+            "output/images/*/*/Armbian_*.torrent"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
