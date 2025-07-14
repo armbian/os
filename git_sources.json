@@ -17,22 +17,12 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "370bedb42d1c933de7769c562c45386254409903"
+    "sha1": "1b2428e3908789c99f8f865b1404ecd91881bc36"
   },
   {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "f80f5986fbc49ab91fe4342fd896fbd47e851e25"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "99d64b4f788c16e81b6550ef94f43c6b91cfad2d"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "fbad404f04d758c52bae79ca20d0e7fe5fef91d3"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -46,18 +36,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "59a2de10b81ae4765d73142acde15106028b1571"
+    "branch": "linux-6.12.y",
+    "sha1": "fbad404f04d758c52bae79ca20d0e7fe5fef91d3"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.15.y",
-    "sha1": "1562d948232546cfad45a1beddc70fe0c7b34950"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "99d64b4f788c16e81b6550ef94f43c6b91cfad2d"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -66,13 +51,48 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.14.y",
-    "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
+    "branch": "linux-6.6.y",
+    "sha1": "59a2de10b81ae4765d73142acde15106028b1571"
+  },
+  {
+    "source": "https://github.com/beagleboard/linux",
+    "branch": "v6.6.58-ti-arm64-r21",
+    "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
+  },
+  {
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
+  },
+  {
+    "source": "https://github.com/glneo/u-boot",
+    "branch": "beagley-ai",
+    "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr5.1",
     "sha1": "e43544dba6382cc9c9ed1de1766cfe4cdc53d42d"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.15.y",
+    "sha1": "1562d948232546cfad45a1beddc70fe0c7b34950"
+  },
+  {
+    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
+    "branch": "rk3xxx-2024.04",
+    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.14.y",
+    "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -83,26 +103,6 @@
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
     "sha1": "114d0807b60e63e994a54b9d37208d8cb0aeb1fb"
-  },
-  {
-    "source": "https://github.com/beagleboard/linux",
-    "branch": "v6.6.58-ti-arm64-r21",
-    "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
-  },
-  {
-    "source": "https://github.com/glneo/u-boot",
-    "branch": "beagley-ai",
-    "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
-  },
-  {
-    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
-    "branch": "rk3xxx-2024.04",
-    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
-  },
-  {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -146,13 +146,13 @@
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-5.10",
-    "sha1": "89f1409f9ce3d206348995ff7ac6fb624eb09c7b"
+    "branch": "linux-6.6",
+    "sha1": "46471440b5ea96f5caa7ad70ce457735070f9f8e"
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
-    "branch": "linux-6.6",
-    "sha1": "46471440b5ea96f5caa7ad70ce457735070f9f8e"
+    "branch": "linux-5.10",
+    "sha1": "89f1409f9ce3d206348995ff7ac6fb624eb09c7b"
   },
   {
     "source": "https://github.com/beagleboard/u-boot",
@@ -205,14 +205,14 @@
     "sha1": "37e783d70e94c91eda08d107cdb5e8f859bab13d"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "dfc486ec9cce9eaaeb72cca8fcf04cd1ed230905"
-  },
-  {
     "source": "https://github.com/jglathe/linux_ms_dev_kit.git",
     "branch": "jg/wdk2023-gunyah-6.7-rc6",
     "sha1": "401bea57d6b96f440142b9039d483c671c4a9587"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.1.y",
+    "sha1": "dfc486ec9cce9eaaeb72cca8fcf04cd1ed230905"
   },
   {
     "source": "https://github.com/SolidRun/u-boot",
