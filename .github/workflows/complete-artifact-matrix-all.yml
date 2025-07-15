@@ -1985,6 +1985,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -2000,7 +2003,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2199,6 +2202,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -2214,7 +2220,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2413,6 +2419,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -2428,7 +2437,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2627,6 +2636,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -2642,7 +2654,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2841,6 +2853,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -2856,7 +2871,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3055,6 +3070,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -3070,7 +3088,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3269,6 +3287,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -3284,7 +3305,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3483,6 +3504,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -3498,7 +3522,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3697,6 +3721,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -3712,7 +3739,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3911,6 +3938,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -3926,7 +3956,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4125,6 +4155,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -4140,7 +4173,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4339,6 +4372,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -4354,7 +4390,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4553,6 +4589,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -4568,7 +4607,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4767,6 +4806,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -4782,7 +4824,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4981,6 +5023,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -4996,7 +5041,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -5195,6 +5240,9 @@ jobs:
           cd output/images/*/archive/
           mktorrent --comment="Armbian torrent for ${FILE}" --verbose ${TRACKERS} --web-seed="${WEBSEEDS}" ${FILE}
 
+          # drop .txt file
+          rm -f *.txt
+
       #- name: Choose random user for upload
       #  run: |
 
@@ -5210,7 +5258,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.xz,output/images/*/*/Armbian_*.asc,output/images/*/*/Armbian_*.sha,output/images/*/*/Armbian_*.torrent"
+          artifacts: "output/images/*/*/Armbian_*.*"
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
