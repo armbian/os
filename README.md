@@ -7,7 +7,13 @@
 
 ### What does Armbian OS do?
 
-Armbian's automation infrastructure builds OS images on a **stable (quarterly)**, **rolling (daily)**, and **community (weekly)** schedule. It maintains up-to-date [**package repositories**](https://apt.armbian.com) and an [**artifacts cache**](https://github.com/orgs/armbian/packages) to ensure fast and reliable rebuilds. The system also synchronizes [**3rd-party applications**](external/) with Armbian repositories, overrides Snap-based browsers with higher-epoch native packages, and performs **automated testing** of package installation and upgrades on real hardware across supported Debian and Ubuntu versions. Additionally, it daily **builds full desktop environments**, including some of community-supported variants.
+Armbian's automation infrastructure builds OS images on a **stable (quarterly)**, **rolling (daily)**, and **community (weekly)** schedule. It maintains up-to-date [**package repositories**](https://apt.armbian.com) for keeping your system updated and an [**artifacts cache**](https://github.com/orgs/armbian/packages) to ensure fast and reliable rebuilds. 
+
+The system also synchronizes [**3rd-party applications**](external/) with Armbian repositories, overrides Snap-based browsers with higher-epoch native packages, and performs **automated testing** of package installation and upgrades. Additionally, it daily **builds full desktop environments**, including some of community-supported variants.
+
+### OS key features
+
+<https://docs.armbian.com/#key-features>
 
 ### How to Enable Images releasing?
 
