@@ -20,7 +20,7 @@ Automation for developers and maintainers: <https://docs.armbian.com/Process_CI/
 <!--START_SECTION:data-section-->
 <!--END_SECTION:data-section-->
 
-## Support
+### Support
 
 Armbian offers multiple support channels, depending on your needs:
 
