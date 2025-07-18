@@ -5,7 +5,7 @@
 <br><br>
 </h2>
 
-### What does Armbian OS do?
+### Purpose of This Repository
 
 Armbian's automation infrastructure builds OS images on a **stable (quarterly)**, **rolling (daily)**, and **community (weekly)** schedule. It maintains up-to-date [**package repositories**](https://apt.armbian.com) for keeping your system updated and an [**artifacts cache**](https://github.com/orgs/armbian/packages) to ensure fast and reliable rebuilds. 
 
