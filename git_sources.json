@@ -17,7 +17,7 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "1d89b0e1e0e6a8b053a94a41a8d0b961f38a9fae"
+    "sha1": "54b1272bc2a76decf5d89f49918671b21e0f5022"
   },
   {
     "source": "https://github.com/armbian/firmware",
@@ -31,13 +31,28 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "d96eb99e2f0e32b6d29e7f12a790b08c08825503"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.12.y",
     "sha1": "cdf264c0a5906063a0e2b750d420d77cb992446d"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.6.y",
-    "sha1": "d96eb99e2f0e32b6d29e7f12a790b08c08825503"
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.15.y",
+    "sha1": "e8af141440cebccb6554fc23f8d21ce063b976a1"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,24 +65,9 @@
     "sha1": "f7a5177938078bda5ee7d2f3f6070c5e009385ae"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
-  },
-  {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr5.1",
     "sha1": "77c2e6a020da977adf222bc7e1ab487cce22a6f1"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.15.y",
-    "sha1": "e8af141440cebccb6554fc23f8d21ce063b976a1"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -93,11 +93,6 @@
     "source": "https://github.com/beagleboard/linux",
     "branch": "v6.6.58-ti-arm64-r21",
     "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
-  },
-  {
-    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
-    "branch": "rk3xxx-2024.04",
-    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
     "source": "https://github.com/SolidRun/u-boot.git",
@@ -165,14 +160,14 @@
     "sha1": "708e1e0be5126a696eaee37a2b027bc4d1f575c4"
   },
   {
-    "source": "https://github.com/apritzel/linux",
-    "branch": "a523-v3",
-    "sha1": "1e9d83e27f533f6a2567a29917b684a4b0ad1b9d"
-  },
-  {
     "source": "https://github.com/jernejsk/u-boot/",
     "branch": "a523",
     "sha1": "2ebdba9bbc547b1b0c84069a6487ece01eb4fdce"
+  },
+  {
+    "source": "https://github.com/apritzel/linux",
+    "branch": "a523-v3",
+    "sha1": "1e9d83e27f533f6a2567a29917b684a4b0ad1b9d"
   },
   {
     "source": "https://gitlab.collabora.com/mediatek/aiot/linux.git",
@@ -180,14 +175,19 @@
     "sha1": "1ce4346a32dfc0c7147f08e6b15e727b85095172"
   },
   {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "9c09b75242960117155712f41ce540df2e3cd63c"
+    "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
+    "branch": "rk3xxx-2024.04",
+    "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.6.y",
     "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.12.y",
+    "sha1": "9c09b75242960117155712f41ce540df2e3cd63c"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
