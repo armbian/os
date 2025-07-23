@@ -323,7 +323,6 @@ on:
         - uefi-riscv64
         - uefi-x86
         - visionfive2
-        - wdk2023
         - wsl2-arm64
         - wsl2-x86
         - xiaobao-nas
@@ -338,7 +337,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v25.5.1
+      - uses: armbian/build@v24.8.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"
