@@ -153,21 +153,6 @@ targets:
       - *staging-headless
       - *staging-riscv64
 
-  # debian oldstable minimal cloud
-  minimal-cli-oldstable-debian-cloud:
-    enabled: yes
-    configs: [ armbian-cloud ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bullseye
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
-
   # debian stable minimal cloud
   minimal-cli-stable-debian-cloud:
     enabled: yes
