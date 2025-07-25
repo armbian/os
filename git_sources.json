@@ -17,12 +17,22 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "cb934081e03edf36bf52e22e9dab801a7768961a"
+    "sha1": "61b3aa2cbe7ed0e2bd677376c5830cd675f0d1e5"
   },
   {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "fc3059b081043ea9e121841af12d976984b2d5bf"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "d90ecb2b1308b3e362ec4c21ff7cf0a051b445df"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -31,23 +41,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "dbcb8d8e4163e46066f43e2bd9a6779e594ec900"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.15.y",
     "sha1": "353d1690f1419fd93e4bcc5104f9f6c3b8dd60eb"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "dbcb8d8e4163e46066f43e2bd9a6779e594ec900"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "d90ecb2b1308b3e362ec4c21ff7cf0a051b445df"
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -57,12 +62,7 @@
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr5.1",
-    "sha1": "77c2e6a020da977adf222bc7e1ab487cce22a6f1"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+    "sha1": "5b801c24d1e7ecbca0bc3f5b39485c81b9ec4f49"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
