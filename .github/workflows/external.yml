@@ -31,8 +31,8 @@ jobs:
       BUILD_RUNNER: ubuntu-latest
       REFERENCE: ${{ github.event.pull_request.head.sha }}
     secrets:
-      GPG_KEY1: ${{ secrets.GPG_KEY1 }}
-      GPG_PASSPHRASE1: ${{ secrets.GPG_PASSPHRASE1 }}
+      GPG_KEY1: ${{ secrets.GPG_KEY3 }}
+      GPG_KEY2: ${{ secrets.GPG_KEY4 }}
       ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}
       HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
