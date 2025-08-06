@@ -66,6 +66,26 @@ targets:
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           riscv64: [ { BOARD: "uefi-riscv64", BRANCH: "edge" } ]
 
+  all-userspace-loong64:
+    configs: [ armbian-images ]
+    pipeline:
+      build-image: no # don't build images for this
+      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
+      gha: *armbian-gha
+    vars: # common vars, must exist.
+      USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
+    items-from-inventory:
+      userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
+        only-releases: [ "sid" ] # ONLY include these releases
+        only-desktops: ["gnome"] # ONLY include these desktops
+        cli: yes # include normal CLI userspace
+        minimal: yes # include minimal CLI userspace
+        desktops: yes # include desktops, one per desktop_variations below; 'eos' ones are always skipped
+        desktop_variations:
+          - [ ] # empty, no appgroups, simple desktop
+        arches: # wanted architectures, and their "example" BOARD and BRANCH.
+          loong64: [ { BOARD: "uefi-loong64", BRANCH: "edge" } ]
+
   all-userspace-armhf:
     configs: [ armbian-images ]
     pipeline:
