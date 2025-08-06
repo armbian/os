@@ -15,12 +15,10 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", "aarch64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-        rootfs-loong64: [ "self-hosted", "Linux", "aarch64" ]
         image-armhf: [ "self-hosted", "Linux", 'aarch64' ]
         image-arm64: [ "self-hosted", "Linux", 'images' ]
         image-amd64: [ "self-hosted", "Linux", 'images', "X64" ]
         image-riscv64: [ "self-hosted", "Linux", 'images', "X64" ]
-        image-loong64: [ "self-hosted", "Linux", 'images', "aarch64" ]
 
 lists:
 
@@ -75,8 +73,6 @@ lists:
     - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
-    - { BOARD: mekotronics-r58-minipc, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: mekotronics-r58x, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
