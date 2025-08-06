@@ -46,6 +46,20 @@ targets:
       - *standard-support-headless
       - *standard-support-riscv64
 
+  # Debian sid minimal
+  minimal-cli-sid-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: sid
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-loong64, BRANCH: edge }
+
   # Debian minimal cloud and current kernel for qcow2
   minimal-cli-stable-debian-cloud:
     enabled: yes
