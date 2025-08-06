@@ -15,10 +15,12 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", "aarch64" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
+        rootfs-loong64: [ "self-hosted", "Linux", "X64" ]
         image-armhf: [ "self-hosted", "Linux", 'aarch64' ]
         image-arm64: [ "self-hosted", "Linux", 'images' ]
         image-amd64: [ "self-hosted", "Linux", 'images', "X64" ]
         image-riscv64: [ "self-hosted", "Linux", 'images', "X64" ]
+        image-loong64: [ "self-hosted", "Linux", 'images', "X64" ]
 
 lists:
 
