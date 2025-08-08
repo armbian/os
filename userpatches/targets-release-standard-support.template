@@ -30,7 +30,7 @@ lists:
 targets:
 
   # Debian minimal oldstable
-  minimal-cli-stable-debian:
+  minimal-cli-oldstable-debian:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
