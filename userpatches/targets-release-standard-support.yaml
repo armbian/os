@@ -146,7 +146,7 @@ lists:
 
 targets:
 
-  # Debian minimal
+  # Debian minimal oldstable
   minimal-cli-stable-debian:
     enabled: yes
     configs: [ armbian-images ]
@@ -155,6 +155,23 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *standard-support-riscv64
+
+  # Debian minimal
+  minimal-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -185,7 +202,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -278,7 +295,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: trixie
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "xfce"
       BUILD_DESKTOP: "yes"
@@ -333,7 +350,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: trixie
       BUILD_MINIMAL: "no"
       DESKTOP_ENVIRONMENT: "cinnamon"
       BUILD_DESKTOP: "yes"
