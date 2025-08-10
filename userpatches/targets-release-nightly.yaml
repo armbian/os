@@ -76,7 +76,7 @@ lists:
     - { BOARD: pocketbeagle2, BRANCH: edge }
     - { BOARD: qcom-robotics-rb5, BRANCH: edge }
     - { BOARD: radxa-e52c, BRANCH: vendor }
-    - { BOARD: radxa-nio-12l, BRANCH: collabora}
+    - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
