@@ -20,24 +20,9 @@
     "sha1": "99716df075c02fb7b12ce294c1aa3e72d1c27e10"
   },
   {
-    "source": "https://github.com/armbian/firmware",
-    "branch": "master",
-    "sha1": "105fecaa7a6ab840ae65561d09e2113b69b01f6a"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "8f1ce114de6cf9c20a47aca5ad487e8d272e4014"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "3a8ababb8b6a0ced2be230b60b6e3ddbd8d67014"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "8f5ff9784f3262e6e85c68d86f8b7931827f2983"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -45,24 +30,14 @@
     "sha1": "45aa10f3ced32f45bb336fb38925f14ac924c98e"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.15.y",
-    "sha1": "097aa9a71fd56cdc62c11bdf45a84f07acaa3604"
-  },
-  {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.6.y",
     "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5.1",
-    "sha1": "623b4385c236eed229af0cf818f89c8a8e95da01"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.15.y",
+    "sha1": "097aa9a71fd56cdc62c11bdf45a84f07acaa3604"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -70,9 +45,14 @@
     "sha1": "038d61fd642278bab63ee8ef722c50d10ab01e8f"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.14.y",
-    "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5.1",
+    "sha1": "623b4385c236eed229af0cf818f89c8a8e95da01"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -80,9 +60,19 @@
     "sha1": "ecc96366810970efcad959fc9985b7a16c691553"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.14.y",
+    "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
+  },
+  {
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
     "sha1": "114d0807b60e63e994a54b9d37208d8cb0aeb1fb"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "8f5ff9784f3262e6e85c68d86f8b7931827f2983"
   },
   {
     "source": "https://github.com/chainsx/linux-filogic.git",
@@ -98,11 +88,6 @@
     "source": "https://github.com/beagleboard/linux",
     "branch": "v6.6.58-ti-arm64-r21",
     "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
-  },
-  {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -181,8 +166,8 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "11d5d0d30abe08fddc8a0e856d0e333ca6e22114"
+    "branch": "rpi-6.16.y",
+    "sha1": "caaa5160800e788b525866c0f474312d782f3b6a"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
@@ -191,8 +176,8 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.16.y",
-    "sha1": "caaa5160800e788b525866c0f474312d782f3b6a"
+    "branch": "rpi-6.12.y",
+    "sha1": "11d5d0d30abe08fddc8a0e856d0e333ca6e22114"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
@@ -208,10 +193,5 @@
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.1.y",
     "sha1": "3594f306da129190de25938b823f353ef7f9e322"
-  },
-  {
-    "source": "https://github.com/SolidRun/u-boot",
-    "branch": "v2018.01-solidrun-a38x",
-    "sha1": "a8004c1f1112ca2f867badccce5a76f052034853"
   }
 ]
