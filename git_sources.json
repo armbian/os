@@ -17,12 +17,17 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "a65a5e896dce946e825a3bbe366cd599d048b309"
+    "sha1": "da6546d1b44a10aa92cd2de0a7f56cfe1f71d7d4"
   },
   {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "105fecaa7a6ab840ae65561d09e2113b69b01f6a"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "3a8ababb8b6a0ced2be230b60b6e3ddbd8d67014"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -31,28 +36,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "8f5ff9784f3262e6e85c68d86f8b7931827f2983"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.15.y",
     "sha1": "097aa9a71fd56cdc62c11bdf45a84f07acaa3604"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "3a8ababb8b6a0ced2be230b60b6e3ddbd8d67014"
+    "branch": "linux-6.12.y",
+    "sha1": "8f5ff9784f3262e6e85c68d86f8b7931827f2983"
   },
   {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.16.y",
+    "sha1": "038d61fd642278bab63ee8ef722c50d10ab01e8f"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -60,9 +55,9 @@
     "sha1": "a3173ae8a83cb05c78bccfa7cd73ed4b591e67ef"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5.1",
-    "sha1": "0e6860fe85fb6a62eb5dca10301b4a112a727eb3"
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
@@ -70,9 +65,14 @@
     "sha1": "37940c076906d9f4dbd3e84da2321141f30f4b11"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.16.y",
-    "sha1": "038d61fd642278bab63ee8ef722c50d10ab01e8f"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5.1",
+    "sha1": "670f4c34f955f25749dfba57c5840b316eb7df50"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -87,7 +87,7 @@
   {
     "source": "https://github.com/khadas/common_drivers",
     "branch": "khadas-vims-5.15.y",
-    "sha1": "114d0807b60e63e994a54b9d37208d8cb0aeb1fb"
+    "sha1": "cc13653ce08ee4eb6d634143aea1cff5d229f088"
   },
   {
     "source": "https://github.com/chainsx/linux-filogic.git",
@@ -175,19 +175,24 @@
     "sha1": "acfacf452441d0a659e3afbd55fd6061aa17e647"
   },
   {
+    "source": "https://gitlab.collabora.com/mediatek/aiot/linux.git",
+    "branch": "mediatek-next",
+    "sha1": "1ce4346a32dfc0c7147f08e6b15e727b85095172"
+  },
+  {
     "source": "https://github.com/Kwiboo/u-boot-rockchip.git",
     "branch": "rk3xxx-2024.04",
     "sha1": "830cfcfdf54a1f08a3ca7fc17e69b4bc18cece50"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.6.y",
-    "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
+    "branch": "rpi-6.12.y",
+    "sha1": "14131859b2615fd3076ffdad370fc5500a037432"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "11d5d0d30abe08fddc8a0e856d0e333ca6e22114"
+    "branch": "rpi-6.6.y",
+    "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
