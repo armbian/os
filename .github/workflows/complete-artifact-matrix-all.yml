@@ -220,7 +220,7 @@ jobs:
 
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
