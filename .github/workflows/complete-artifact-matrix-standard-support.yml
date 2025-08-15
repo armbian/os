@@ -524,7 +524,7 @@ jobs:
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( env.VERSION_BUMP == 'true' ) && ( inputs.ref == '' ) }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ env.BUILD_REF }}
@@ -535,7 +535,7 @@ jobs:
       # clone the rkbin repo (`armbian/rkbin`)
       - name: Checkout build repo
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( env.VERSION_BUMP == 'true' ) && ( inputs.ref == '' ) }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/rkbin
           ref: master
@@ -546,7 +546,7 @@ jobs:
       # clone the build docker (`armbian/docker-armbian-build`)
       - name: Checkout build repo
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( env.VERSION_BUMP == 'true' ) && ( inputs.ref == '' ) }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/docker-armbian-build
           ref: main
@@ -557,7 +557,7 @@ jobs:
       # clone the build system repo (`armbian/documentation`)
       - name: Checkout build repo
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( env.VERSION_BUMP == 'true' ) && ( inputs.ref == '' ) }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/documentation
           ref: master
@@ -568,7 +568,7 @@ jobs:
       # clone the armbian-config NG repo (`armbian/configng`)
       - name: Checkout build repo
         if: ${{ ( ! github.event.inputs.versionOverride ) && ( env.VERSION_BUMP == 'true' ) && ( inputs.ref == '' ) }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/configng
           ref: main
@@ -635,7 +635,7 @@ jobs:
 
       # Clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
@@ -751,7 +751,7 @@ jobs:
 
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ env.BUILD_REF }}
@@ -761,7 +761,7 @@ jobs:
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
@@ -772,7 +772,7 @@ jobs:
 
       # clone the torrent lists
       - name: "Checkout torrent lists"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: XIU2/TrackersListCollection
           clean: false
