@@ -29,7 +29,7 @@ jobs: # <TEMPLATE-IGNORE>
         run: rm -rf userpatches.repo
 
       - name: Checkout build repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
@@ -38,7 +38,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
@@ -127,7 +127,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: build-info-json
           path: output/info
