@@ -43,7 +43,7 @@ jobs:
     steps:
 
       - name: Checkout build framework repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/build
           fetch-depth: 1
@@ -51,7 +51,7 @@ jobs:
           path: build
 
       - name: Checkout OS repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/os
           fetch-depth: 1
