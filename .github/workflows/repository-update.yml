@@ -65,7 +65,7 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       - name: Checkout build repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/build
           fetch-depth: 1

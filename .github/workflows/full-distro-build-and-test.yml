@@ -18,7 +18,7 @@ jobs:
       matrix:  ${{steps.json.outputs.JSON_CONTENT}}
     steps:
       - name: "Checkout Armbian build Framework"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/build
           ref: ${{ inputs.ref || inputs.branch || 'main' }}
@@ -97,7 +97,7 @@ jobs:
 
       # clone the build system repo (`armbian/build`)
       - name: Checkout build repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/build
           ref: ${{ inputs.ref || inputs.branch || 'main' }}
@@ -107,7 +107,7 @@ jobs:
 
       # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: armbian/os
           fetch-depth: 0
