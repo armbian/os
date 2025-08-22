@@ -112,8 +112,8 @@ jobs:
             title=$(jq -r .title <<<"$pr")
             author=$(jq -r .user.login <<<"$pr")
 
-            # Skip bots
-            if [[ "$author" == "github-actions[bot]" || "$author" == "dependabot[bot]" ]]; then
+            # Skip bots and worker accounts
+            if [[ "$author" == "github-actions[bot]" || "$author" == "dependabot[bot]" || "$author" == "armbianworker" || "$author" == "armbianworker[bot]" ]]; then
               continue
             fi
 
