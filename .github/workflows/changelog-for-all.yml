@@ -101,7 +101,7 @@ jobs:
             html_url=$(jq -r .html_url <<<"$pr")
 
             printf "%s\t%s\t%s\t%s\n" "$merged_at" "$title" "$author" "$html_url"
-          done | sort -k1,1 > "$outfile"
+          done | LC_ALL=C sort -f -t $'\t' -k2,2 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
 
@@ -144,30 +144,23 @@ jobs:
           path: out/
           if-no-files-found: warn
 
-  # Your existing pipeline likely has a "gradle" job already producing *.txt artifacts.
-  # We keep your exact "make" job signature and merge pattern.
   make:
     needs: pr-digest
     name: "Sort"
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - name: "merged"
-        uses: actions/upload-artifact/merge@v4
-        with:
-          delete-merged: true
-
       - uses: actions/download-artifact@v5
         with:
-          name: merged-artifacts
+          name: pr-digest
 
       - name: Display structure of downloaded files
         run: find out/ -name "*.tsv" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
 
-      - uses: geekyeggo/delete-artifact@v5
-        with:
-          name: merged-artifacts
-          failOnError: false
+      #- uses: geekyeggo/delete-artifact@v5
+      #  with:
+      #    name: pr-digest
+      #    failOnError: false
 
       - name: "Checkout OS repository to get latest tag"
         uses: actions/checkout@v5
