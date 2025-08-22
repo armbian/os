@@ -15,6 +15,10 @@ on:
         description: "Digest period (weekly by default). Choose 'monthly' to publish a monthly digest."
         required: false
         default: "weekly"
+      publish_release:
+        description: "Publish a GitHub release (true/false)."
+        required: false
+        default: "true"
 
   schedule:
     - cron: "5 6 * * MON"   # weekly, Mondays 06:05 UTC
@@ -30,6 +34,7 @@ jobs:
       SCOPE: ${{ inputs.scope || 'armbian/build,armbian/configng' }}
       TZ: ${{ inputs.tz || 'Europe/Ljubljana' }}
       PERIOD: ${{ inputs.period || 'weekly' }}
+      RELEASE_ENABLED: ${{ inputs.publish_release || 'true' }}
 
     steps:
       - name: Ensure dependencies
@@ -109,10 +114,23 @@ jobs:
               continue
             fi
 
-            html_url=$(jq -r .html_url <<<"$pr")
+            merge_sha=$(jq -r .merge_commit_sha <<<"$pr")
+if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
+  merge_sha=$(jq -r .head.sha <<<"$pr")
+fi
+short_sha=${merge_sha:0:7}
+# Build links for SHA and repo
+head_repo=$(jq -r .head.repo.full_name <<<"$pr")
+commit_repo="$repo"
+if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
+  commit_repo="$head_repo"
+fi
+commit_url="https://github.com/${commit_repo}/commit/${short_sha}"
+repo_url="https://github.com/${repo}"
 
-            # Output tab-separated: title, author, url
-            printf "%s\t%s\t%s\n" "$title" "$author" "$html_url"
+            # Output tab-separated: title, author, short_sha, repo, commit_url, repo_url
+printf "%s	%s	%s	%s	%s	%s
+" "$title" "$author" "$short_sha" "$repo" "$commit_url" "$repo_url"
           done | LC_ALL=C sort -f -t $'\t' -k1,1 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
@@ -132,10 +150,10 @@ jobs:
             echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
             echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
           else
-            while IFS=$'\t' read -r title author url; do
-              echo "* ${title}.  by @${author} in ${url}" >> "$GITHUB_STEP_SUMMARY"
-              echo "<li>${title}. by @${author} in <a href='${url}'>PR</a></li>" >> body.html
-            done < out/pr-digest.tsv
+            while IFS=$'	' read -r title author sha repo commit_url repo_url; do
+  echo "* ${title}.  by @${author} in [${sha}](${commit_url}) [${repo}](${repo_url})" >> "$GITHUB_STEP_SUMMARY"
+  echo "<li>${title}. by @${author} in <a href='${commit_url}'><code>${sha}</code></a> <a href='${repo_url}'>${repo}</a></li>" >> body.html
+done < out/pr-digest.tsv
           fi
           echo "</ul>" >> body.html
 
@@ -147,6 +165,7 @@ jobs:
           if-no-files-found: warn
 
       - name: "Checkout OS repository to get version"
+        if: ${{ env.RELEASE_ENABLED == 'true' }}
         uses: actions/checkout@v5
         with:
           repository: armbian/os
@@ -155,6 +174,7 @@ jobs:
           path: os
 
       - name: "Read version from nightly or stable based on period"
+        if: ${{ env.RELEASE_ENABLED == 'true' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -171,6 +191,7 @@ jobs:
           echo "VERSION_OVERRIDE=${VERSION}" >> "$GITHUB_ENV"
 
       - uses: ncipollo/release-action@v1
+        if: ${{ env.RELEASE_ENABLED == 'true' }}
         with:
           owner: 'armbian'
           repo: 'build'
