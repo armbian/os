@@ -32,7 +32,7 @@ jobs:
 
           # checkout to 7 days old when we will have 7 days history, now 1
 
-          git checkout $(git log --since=2.days --tags --simplify-by-decoration --pretty="format:%D" | \
+          git checkout $(git log --since=90.days --tags --simplify-by-decoration --pretty="format:%D" | \
           tail -1 | xargs | cut -d" " -f2)
 
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
