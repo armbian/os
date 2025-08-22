@@ -159,7 +159,7 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          name: pr-digest
+          name: merged-artifacts
 
       - name: Display structure of downloaded files
         run: find out/ -name "*.tsv" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
