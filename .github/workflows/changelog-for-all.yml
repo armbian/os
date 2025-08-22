@@ -1,4 +1,4 @@
-name: "PR Digest + Weekly Release"
+name: "PR Digest"
 
 on:
   workflow_dispatch:
@@ -11,6 +11,9 @@ on:
         description: "Timezone (IANA)"
         required: false
         default: "Europe/Ljubljana"
+      version:
+        description: "Version tag for release"
+        required: true
   schedule:
     - cron: "5 6 * * MON"   # weekly, Mondays 06:05 UTC
 
@@ -18,32 +21,38 @@ permissions:
   contents: read
 
 jobs:
-  # This job builds a single .txt artifact with the last-week PR digest
-  digest:
+  pr-digest:
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SCOPE: ${{ inputs.scope || 'armbian/build,armbian/configng' }}
       TZ: ${{ inputs.tz || 'Europe/Ljubljana' }}
+      VERSION_OVERRIDE: ${{ inputs.version }}
+
     steps:
       - name: Ensure dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y jq
 
-      - name: Compute last-week window (UTC)
+      - name: Compute time windows (UTC)
         id: when
         shell: bash
         run: |
           UNTIL_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           SINCE_WEEK_UTC="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
+          SINCE_3MO_UTC="$(date -u -d '90 days ago' +%Y-%m-%dT%H:%M:%SZ)"
           echo "UNTIL_UTC=$UNTIL_UTC" >> "$GITHUB_ENV"
           echo "SINCE_WEEK_UTC=$SINCE_WEEK_UTC" >> "$GITHUB_ENV"
+          echo "SINCE_3MO_UTC=$SINCE_3MO_UTC" >> "$GITHUB_ENV"
 
-      - name: Fetch last-week merged PRs into pr-digest-week.txt
+      - name: Prepare workspace
+        run: mkdir -p out
+
+      - name: Write helper script
         shell: bash
         run: |
-          cat > pr_fetch_week.sh <<'EOF'
+          cat > pr_fetch.sh <<'EOF'
           #!/usr/bin/env bash
           set -euo pipefail
 
@@ -91,28 +100,57 @@ jobs:
               continue
             fi
 
-            html_url=$(jq -r .html_url <<<"$pr")
             merged_at=$(jq -r .merged_at <<<"$pr")
+            html_url=$(jq -r .html_url <<<"$pr")
 
-            # Markdown line (exact shape requested)
-            echo "* ${title}.  by @${author} in ${html_url}"
-          done | sort > "$outfile"
+            printf "%s\t%s\t%s\t%s\n" "$merged_at" "$title" "$author" "$html_url"
+          done | sort -k1,1 > "$outfile"
           EOF
-          chmod +x pr_fetch_week.sh
+          chmod +x pr_fetch.sh
 
-          ./pr_fetch_week.sh "$SCOPE" "$SINCE_WEEK_UTC" "$UNTIL_UTC" pr-digest-week.txt
+      - name: Fetch last week
+        run: ./pr_fetch.sh "$SCOPE" "$SINCE_WEEK_UTC" "$UNTIL_UTC" out/last_week.tsv
 
-      - name: Upload weekly digest artifact
+      - name: Fetch last 3 months
+        run: ./pr_fetch.sh "$SCOPE" "$SINCE_3MO_UTC" "$UNTIL_UTC" out/last_3_months.tsv
+
+      - name: Write Markdown digest to summary & body.html
+        shell: bash
+        run: |
+          render() {
+            local label="$1"; local file="$2"
+            echo "## ${label}" >> "$GITHUB_STEP_SUMMARY"
+            echo "<h2>${label}</h2>" >> body.html
+            if [[ ! -s "$file" ]]; then
+              echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
+              echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
+              echo "" >> "$GITHUB_STEP_SUMMARY"
+              return
+            fi
+            while IFS=$'\t' read -r merged_at title author url; do
+              echo "* ${title}.  by @${author} in ${url}" >> "$GITHUB_STEP_SUMMARY"
+              echo "<li>${title}. by @${author} in <a href='${url}'>PR</a></li>" >> body.html
+            done < "$file"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          }
+
+          # Start fresh body file
+          echo "<h1>Weekly Digest</h1>" > body.html
+          echo "<ul>" >> body.html
+          render "Last week" out/last_week.tsv
+          echo "</ul>" >> body.html
+
+      - name: Upload raw data (artifacts)
         uses: actions/upload-artifact@v4
         with:
-          name: pr-digest-week
-          path: pr-digest-week.txt
-          if-no-files-found: error
+          name: pr-digest
+          path: out/
+          if-no-files-found: warn
 
   # Your existing pipeline likely has a "gradle" job already producing *.txt artifacts.
   # We keep your exact "make" job signature and merge pattern.
   make:
-    needs: digest
+    needs: pr-digest
     name: "Sort"
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -124,10 +162,10 @@ jobs:
 
       - uses: actions/download-artifact@v5
         with:
-          name: merged-artifacts
+          name: pr-digest
 
       - name: Display structure of downloaded files
-        run: find -name "*.txt" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
+        run: find out/ -name "*.tsv" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
 
       - uses: geekyeggo/delete-artifact@v5
         with:
@@ -165,7 +203,7 @@ jobs:
 
           ## What's was changed in past week?" > body.html
           # Append all merged *.txt (includes pr-digest-week.txt from the 'digest' job + others)
-          find -name "*.txt" -exec cat {} \; >> body.html
+          find out/ -name "*.tsv" -exec cat {} \; >> body.html
 
       - uses: ncipollo/release-action@v1
         with:
