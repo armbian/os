@@ -131,51 +131,6 @@ jobs:
             echo "" >> "$GITHUB_STEP_SUMMARY"
           }
 
-          # Start fresh body file
-          echo "<h1>Weekly Digest</h1>" > body.html
-          echo "<ul>" >> body.html
-          render "Last week" out/last_week.tsv
-          echo "</ul>" >> body.html
-
-      - name: Upload raw data (artifacts)
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-digest
-          path: out/
-          if-no-files-found: warn
-
-  make:
-    needs: pr-digest
-    name: "Sort"
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v5
-        with:
-          name: pr-digest
-
-      - name: Display structure of downloaded files
-        run: find out/ -name "*.tsv" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
-
-      #- uses: geekyeggo/delete-artifact@v5
-      #  with:
-      #    name: pr-digest
-      #    failOnError: false
-
-      - name: "Checkout OS repository to get latest tag"
-        uses: actions/checkout@v5
-        with:
-          repository: armbian/os
-          fetch-depth: 0
-          clean: false
-          path: os
-
-      - name: "Read nightly version from file"
-        run: |
-          cat "os/nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-
-      - name: "Generate body file"
-        run: |
           echo "
             <h1>Armbian rolling releases</h1>
             <p>
@@ -192,13 +147,37 @@ jobs:
             </p>
 
           ## What's was changed in past week?" > body.html
-          # Append all merged *.txt (includes pr-digest-week.txt from the 'digest' job + others)
-          find out/ -name "*.tsv" -exec cat {} \; >> body.html
+
+          # Start fresh body file
+          echo "<h1>Weekly Digest</h1>" >> body.html
+          echo "<ul>" >> body.html
+          render "Last week" out/last_week.tsv
+          render "Last 3 months" out/last_3_months.tsv
+          echo "</ul>" >> body.html
+
+      - name: Upload raw data (artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-digest
+          path: out/
+          if-no-files-found: warn
+
+      - name: "Checkout OS repository to get latest tag"
+        uses: actions/checkout@v5
+        with:
+          repository: armbian/os
+          fetch-depth: 0
+          clean: false
+          path: os
+
+      - name: "Read nightly version from file"
+        run: |
+          cat "os/nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
 
       - uses: ncipollo/release-action@v1
         with:
           owner: 'armbian'
-          repo: 'build'
+          repo: 'test'
           tag: "v${{ env.VERSION_OVERRIDE }}"
           name: "v${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "false"
