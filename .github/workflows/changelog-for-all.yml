@@ -1,196 +1,140 @@
-name: "Changelog for all"
+name: "PR Digest"
+
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch from'
+      scope:
+        description: "Comma-separated repos (owner/repo) OR 'org:armbian'"
         required: false
-        default: ''
+        default: "armbian/build,armbian/configng"
+      tz:
+        description: "Timezone for date windows (IANA)"
+        required: false
+        default: "Europe/Ljubljana"
   schedule:
-   - cron: '0 0 * * MON'
+    - cron: "5 6 * * MON"   # weekly, Mondays 06:05 UTC
+
+permissions:
+  contents: read
 
 jobs:
-
-  prepare:
-    name: "Load sources JSON"
+  pr-digest:
     runs-on: ubuntu-latest
-    outputs:
-      matrix:  ${{steps.json.outputs.JSON_CONTENT}}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SCOPE: ${{ inputs.scope || 'armbian/build,armbian/configng' }}
+      TZ: ${{ inputs.tz || 'Europe/Ljubljana' }}
+
     steps:
+      - name: Set up jq (already present on ubuntu, but ensure)
+        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: "Checkout"
-        uses: actions/checkout@v5
-        with:
-          repository: armbian/os
-          fetch-depth: 0
-          ref: main
-          clean: false
-
-      - name: "Make JSON"
-        id: json
+      - name: Compute time windows
+        id: when
+        shell: bash
         run: |
+          export TZ="${TZ}"
+          # TODAY in UTC for API queries; we'll still compute since dates in UTC
+          UNTIL_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          SINCE_WEEK_UTC="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
+          SINCE_3MO_UTC="$(date -u -d '90 days ago' +%Y-%m-%dT%H:%M:%SZ)"
+          echo "UNTIL_UTC=$UNTIL_UTC" >> "$GITHUB_ENV"
+          echo "SINCE_WEEK_UTC=$SINCE_WEEK_UTC" >> "$GITHUB_ENV"
+          echo "SINCE_3MO_UTC=$SINCE_3MO_UTC" >> "$GITHUB_ENV"
 
-          # checkout to 7 days old when we will have 7 days history, now 1
+      - name: Create workspace
+        run: mkdir -p out
 
-          git checkout $(git log --since=90.days --tags --simplify-by-decoration --pretty="format:%D" | \
-          tail -1 | xargs | cut -d" " -f2)
-
-          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
-          cat git_sources.json | jq '.[] | select(.source|test("^h.*armbian*.")) ' | jq -s >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-
-  gradle:
-    needs: prepare
-    strategy:
-      fail-fast: false
-      max-parallel: 18
-      matrix:
-        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
-
-    name: "Get changes from"
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: "URL=${{ matrix.source }} Branch=${{ matrix.branch }} SHA=${{ matrix.sha1 }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Gather PRs — helper script
+        shell: bash
         run: |
+          cat > pr_fetch.sh <<'EOF'
+          #!/usr/bin/env bash
+          set -euo pipefail
 
-              mkdir -p artifact
+          scope="${1:-armbian/build}"
+          since="${2:?}"
+          until="${3:?}"
+          outfile="${4:?}"
 
-              # extract needed information
-              source="${{ matrix.source }}"
-              source=${source/.git/}
+          # Build search query:
+          # - if "org:NAME" use org-wide search; else split repo list.
+          collect() {
+            local q="$1"
+            # Use --paginate and per_page=100 to fetch all
+            gh api -X GET search/issues \
+              -f q="$q" \
+              -f sort="updated" -f order="desc" \
+              -f per_page=100 --paginate \
+              -q '.items[] | {number: .number, repo: (.repository_url | sub("^.*/repos/";"")), title: .title, pr_url: .pull_request.url}'
+          }
 
-              # For kernel.org rather uses Google mirror. Its faster and more reliable
-              source=$(echo $source | sed 's|https://git.kernel.org|https://kernel.googlesource.com|')
+          tmp="$(mktemp)"
+          if [[ "$scope" == org:* ]]; then
+            org="${scope#org:}"
+            q="org:${org} is:pr is:merged merged:${since}..${until} archived:false"
+            collect "$q" > "$tmp"
+          else
+            # Comma-separated repos
+            IFS=',' read -r -a repos <<< "$scope"
+            : > "$tmp"
+            for r in "${repos[@]}"; do
+              r_trim="$(echo "$r" | xargs)"
+              q="repo:${r_trim} is:pr is:merged merged:${since}..${until}"
+              collect "$q" >> "$tmp"
+            done
+          fi
 
-              # Clone everything into check folder
-              git clone $source --bare -b ${{ matrix.branch }} check
-              githash=$(git -C check rev-parse ${{ matrix.branch }})
+          # For each PR, enrich with author and merge_commit_sha (short)
+          # De-dup by (repo, number); sort by merged_at ascending
+          jq -s '
+            map({repo, number, pr: .pr_url}) 
+            | unique_by(.repo + "|" + (.number|tostring))
+          ' "$tmp" | jq -c '.[]' | while read -r row; do
+            repo=$(echo "$row" | jq -r .repo)
+            num=$(echo "$row"  | jq -r .number)
 
-              # Debug. If hashes are not the same and there are no record, there could be something wrong
-              if [[ "${{ matrix.sha1 }}" != "${githash}" ]]; then
-                  echo "URL=$source Current SHA=$githash -> wanted SHA=${{ matrix.sha1 }}" >> $GITHUB_STEP_SUMMARY
-              fi
+            pr_json=$(gh api "repos/${repo}/pulls/${num}")
+            title=$(echo "$pr_json" | jq -r .title)
+            author=$(echo "$pr_json" | jq -r .user.login)
+            merged_at=$(echo "$pr_json" | jq -r .merged_at)
+            merge_sha=$(echo "$pr_json" | jq -r .merge_commit_sha)
+            short_sha=${merge_sha:0:7}
 
-              # giturl is used as tag, extract it from sources URL
-              giturl=${source/https:\/\/github.com\//}
-              giturl=${giturl/https:\/\/kernel.googlesource.com\/pub\/scm\/linux\/kernel\/git\//}
+            printf "%s\t%s\t%s\t%s\t%s\n" "$merged_at" "$title" "$author" "$short_sha" "$repo"
+          done | sort -k1,1 > "$outfile"
+          EOF
+          chmod +x pr_fetch.sh
 
-              # GitHub handling is a bit different
-              if [[ "${source}" == *github* ]]; then
+      - name: Fetch last week PRs
+        run: ./pr_fetch.sh "$SCOPE" "$SINCE_WEEK_UTC" "$UNTIL_UTC" out/last_week.tsv
 
-                  git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%H|%s" |
-                  while IFS="|" read -r hash title; do
-                      curl -s https://api.github.com/repos/${giturl}/commits/${hash}/pulls | \
-                      jq -rc '.[].user.login + "|" + .[].html_url + "|" + .[].title + "|" + .[].repo.full_name + "|" + .[].repo.html_url' |
-                      while IFS="|" read -r user pullurl prtitle desc repourl; do
-                          short_hash=$(echo $hash | cut -c 1-7)
-                          # get correct author    
-                          author=$(curl -s https://api.github.com/repos/${giturl}/commits/${hash} | jq -rc '.author.login')
-                          #
-                          if [[ -n $title ]]; then echo "* $title by @$author in <a href=$pullurl>$short_hash</a> <a href=$source>\`$giturl\`</a>" | \
-                          tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY; fi
-                      done
-                  done
+      - name: Fetch last 3 months PRs
+        run: ./pr_fetch.sh "$SCOPE" "$SINCE_3MO_UTC" "$UNTIL_UTC" out/last_3_months.tsv
 
-              else
+      - name: Write Job Summary
+        shell: bash
+        run: |
+          render() {
+            local label="$1"; local file="$2"
+            echo "## ${label}" >> "$GITHUB_STEP_SUMMARY"
+            if [[ ! -s "$file" ]]; then
+              echo "_No merged PRs in window._" >> "$GITHUB_STEP_SUMMARY"
+              return
+            fi
+            # TSV fields: merged_at, title, author, sha7, repo
+            while IFS=$'\t' read -r merged_at title author sha7 repo; do
+              # Output: "<title> by @<author> in <sha7> <repo>"
+              echo "${title} by @${author} in ${sha7} ${repo}" >> "$GITHUB_STEP_SUMMARY"
+            done < "$file"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          }
+          render "Last week" out/last_week.tsv
+          render "Last 3 months" out/last_3_months.tsv
 
-                  URL=$(git -C check config --get remote.origin.url)
-                  REPO=$(basename -s .git `git -C check config --get remote.origin.url`)
-                  git -C check log ${{ matrix.sha1 }}..HEAD --pretty="%s|%an|%ae|%h|%H" --max-parents=1 |
-                  while IFS="|" read -r title user usermail hash bighash; do
-                      if [[ -n $title ]]; then
-                          # backtrace and display GitHub username if it exists, else show email
-                          email_search=$(curl -s https://api.github.com/search/users\?q\=${usermail} | jq -rc '.items | .[] | .login' || true)
-                          if [[ -n $email_search ]]; then
-                                  user="@""${email_search}";
-                              else
-                                  user="$user <$usermail>"
-                          fi
-                              echo "* $title by $user in <a href=\"$URL/+/${bighash}\">$hash</a> <a href=$URL>\`$REPO\`</a>" | \
-                              tee -a artifact/${{ matrix.sha1 }}.txt >> $GITHUB_STEP_SUMMARY;
-                      fi
-                  done
-
-              fi
-
-      - name: Upload resoults
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.sha1 }}
-          path: artifact
-          if-no-files-found: ignore
-
-  make:
-    needs: gradle
-    name: "Sort"
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-      - name: "merged"
-        uses: actions/upload-artifact/merge@v4
-        with:
-          delete-merged: true
-
-      - uses: actions/download-artifact@v5
-        with:
-          name: merged-artifacts
-
-      - name: Display structure of downloaded files
-        run: find -name "*.txt" -exec cat {} \; | sort >> $GITHUB_STEP_SUMMARY
-
-      - uses: geekyeggo/delete-artifact@v5
-        with:
-          name: merged-artifacts
-          failOnError: false
-
-      - name: "Checkout OS repository to get latest tag"
-        uses: actions/checkout@v5
-        with:
-          repository: armbian/os
-          fetch-depth: 0
-          clean: false
-          path: os
-
-      - name: "Read nightly version from file"
-        run: |
-
-          cat "os/nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
-
-      - name: "Generate body file"
-        run: |
-
-            echo "
-              <h1>Armbian rolling releases</h1>
-              <p>
-              <a href='https://www.armbian.com/download/'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
-              <a href='https://www.armbian.com/download/'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
-              </p>
-              <br>
-
-              - rolling releases are available at the bottom of <a href='https://www.armbian.com/download/' target=_blanks>official download pages</a>
-              - <a href='https://github.com/armbian/os/wiki/Enable-build-configuration'>How to change type of images that are provided by Armbian</a>?
-              - How to switch between <a href='https://www.armbian.com/newsflash/armbian-leaflet-25/' target=_blank>stable and rolling release</a>?
-
-              Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
-              </p>
-
-            ## What's was changed in past week?" > body.html
-            find -name "*.txt" -exec cat {} \; >> body.html
-
-      - uses: ncipollo/release-action@v1
-        with:
-          owner: 'armbian'
-          repo: 'build'
-          tag: "v${{ env.VERSION_OVERRIDE }}"
-          name: "v${{ env.VERSION_OVERRIDE }}"
-          generateReleaseNotes: "false"
-          prerelease: "false"
-          makeLatest: "true"
-          bodyFile: "body.html"
-          allowUpdates: "true"
-          skipIfReleaseExists: "true"
-          token: ${{ secrets.RELEASE_TOKEN }}
+          name: pr-digest
+          path: out/
+          if-no-files-found: warn
