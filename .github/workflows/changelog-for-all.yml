@@ -81,24 +81,6 @@ jobs:
             done
           fi
 
-          choose_category() {
-            local labels="$1"
-            local title="$2"
-            shopt -s nocasematch
-            if [[ "$labels" =~ bug|bugfix|fix ]]; then echo "Bugfix"; return; fi
-            if [[ "$labels" =~ enhancement|feature|feat ]]; then echo "Feature"; return; fi
-            if [[ "$labels" =~ docs|documentation ]]; then echo "Docs"; return; fi
-            if [[ "$labels" =~ ci|github[[:space:]]*actions|pipeline ]]; then echo "CI"; return; fi
-            if [[ "$labels" =~ refactor ]]; then echo "Refactor"; return; fi
-            if [[ "$labels" =~ release ]]; then echo "Release"; return; fi
-            # fallback to conventional-commit style
-            if [[ "$title" =~ ^(fix|hotfix)(:|\().* ]]; then echo "Bugfix"; return; fi
-            if [[ "$title" =~ ^(feat|feature)(:|\().* ]]; then echo "Feature"; return; fi
-            if [[ "$title" =~ ^docs(:|\().* ]]; then echo "Docs"; return; fi
-            if [[ "$title" =~ ^(ci|chore)(:|\().* ]]; then echo "CI"; return; fi
-            echo "Misc"
-          }
-
           # De-dup and enrich
           jq -s 'unique_by(.repo + "|" + (.number|tostring))' "$tmp" | jq -c '.[]' | \
           while read -r row; do
@@ -116,10 +98,8 @@ jobs:
 
             merged_at=$(jq -r .merged_at <<<"$pr")
             html_url=$(jq -r .html_url <<<"$pr")
-            labels_csv=$(jq -r '[.labels[].name] | join(",")' <<<"$pr")
 
-            category=$(choose_category "$labels_csv" "$title")
-            printf "%s\t%s\t%s\t%s\t%s\n" "$merged_at" "$category" "$title" "$author" "$html_url"
+            printf "%s\t%s\t%s\t%s\n" "$merged_at" "$title" "$author" "$html_url"
           done | sort -k1,1 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
@@ -141,9 +121,9 @@ jobs:
               echo "" >> "$GITHUB_STEP_SUMMARY"
               return
             fi
-            # TSV: merged_at  category  title  author  url
-            while IFS=$'\t' read -r merged_at category title author url; do
-              echo "* [${category}] ${title}.  by @${author} in ${url}" >> "$GITHUB_STEP_SUMMARY"
+            # TSV: merged_at  title  author  url
+            while IFS=$'\t' read -r merged_at title author url; do
+              echo "* ${title}.  by @${author} in ${url}" >> "$GITHUB_STEP_SUMMARY"
             done < "$file"
             echo "" >> "$GITHUB_STEP_SUMMARY"
           }
