@@ -153,9 +153,9 @@ jobs:
             echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
             echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
           else
-            while IFS=$'\t' read -r title author sha repo commit_url repo_url; do
-              echo "* ${title}.  by @${author} in [${sha}](${commit_url}) [${repo}](${repo_url})" >> "$GITHUB_STEP_SUMMARY"
-              echo "<li>${title}. by @${author} in <a href='${commit_url}'><code>${sha}</code></a> <a href='${repo_url}'>${repo}</a></li>" >> body.html
+            while IFS=$'	' read -r title author repo num pr_url; do
+              echo "* ${title}.  by @${author} in [${repo}#${num}](${pr_url})" >> "$GITHUB_STEP_SUMMARY"
+              echo "<li>${title}. by @${author} in <a href='${pr_url}'>${repo}#${num}</a></li>" >> body.html
             done < out/pr-digest.tsv
           fi
           echo "</ul>" >> body.html
