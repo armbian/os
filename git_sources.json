@@ -17,17 +17,12 @@
   {
     "source": "https://github.com/armbian/build",    
     "branch": "main",     
-    "sha1": "94d26351d2e2aaa90761b9407b95c176bc2d1aeb"
+    "sha1": "9aa1fcce530a17f7d1fbc8065a14f06eb6e3586e"
   },
   {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "105fecaa7a6ab840ae65561d09e2113b69b01f6a"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "bb9c90ab9c5a1a933a0dfd302a3fde73642b2b06"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
@@ -36,13 +31,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "9becd7c25c61ae7e5b6fbfc3c226b1f23af7638c"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.15.y",
     "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "9becd7c25c61ae7e5b6fbfc3c226b1f23af7638c"
+    "branch": "linux-6.6.y",
+    "sha1": "bb9c90ab9c5a1a933a0dfd302a3fde73642b2b06"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -50,9 +50,9 @@
     "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.16.y",
-    "sha1": "110d900febbb295c9e9c8b3f387e97205cab3218"
+    "sha1": "25bf10be219d37d2fb221c93816a913f5f735530"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -70,9 +70,9 @@
     "sha1": "d94588328f77f38fdcd7db7633bea478eb8166da"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.16.y",
-    "sha1": "25bf10be219d37d2fb221c93816a913f5f735530"
+    "sha1": "110d900febbb295c9e9c8b3f387e97205cab3218"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
