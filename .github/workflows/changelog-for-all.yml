@@ -84,7 +84,7 @@ jobs:
               -f q="$q" \
               -f sort="updated" -f order="desc" \
               -f per_page=100 --paginate \
-              -q '.items[] | {number: .number, repo: (.repository_url | sub("^.*/repos/";"")), pr_api: .pull_request.url}'
+              -q '.items[] | {number: .number, repo: (.repository_url | sub("^.*/repos/";""))}'
           }
 
           tmp="$(mktemp)"
@@ -102,7 +102,7 @@ jobs:
             done
           fi
 
-          # De-dup and enrich
+          # De-dup and enrich, then output TSV sorted alphabetically by title (case-insensitive)
           jq -s 'unique_by(.repo + "|" + (.number|tostring))' "$tmp" | jq -c '.[]' | \
           while read -r row; do
             repo=$(echo "$row" | jq -r .repo)
@@ -111,29 +111,15 @@ jobs:
 
             title=$(jq -r .title <<<"$pr")
             author=$(jq -r .user.login <<<"$pr")
+            pr_url=$(jq -r .html_url <<<"$pr")
 
             # Skip bots and worker accounts
             if [[ "$author" == "github-actions[bot]" || "$author" == "dependabot[bot]" || "$author" == "armbianworker" || "$author" == "armbianworker[bot]" ]]; then
               continue
             fi
 
-            merge_sha=$(jq -r .merge_commit_sha <<<"$pr")
-            if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
-              merge_sha=$(jq -r .head.sha <<<"$pr")
-            fi
-            short_sha=${merge_sha:0:7}
-
-            # Build links for SHA and repo
-            head_repo=$(jq -r .head.repo.full_name <<<"$pr")
-            commit_repo="$repo"
-            if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
-              commit_repo="$head_repo"
-            fi
-            commit_url="https://github.com/${commit_repo}/commit/${short_sha}"
-            repo_url="https://github.com/${repo}"
-
-            # Output tab-separated: title, author, short_sha, repo, commit_url, repo_url
-            printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$title" "$author" "$short_sha" "$repo" "$commit_url" "$repo_url"
+            # Output tab-separated: title, author, repo, pr_number, pr_url
+            printf "%s\t%s\t%s\t%s\t%s\n" "$title" "$author" "$repo" "$num" "$pr_url"
           done | LC_ALL=C sort -f -t $'\t' -k1,1 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
@@ -153,7 +139,7 @@ jobs:
             echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
             echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
           else
-            while IFS=$'	' read -r title author repo num pr_url; do
+            while IFS=$'\t' read -r title author repo num pr_url; do
               echo "* ${title}.  by @${author} in [${repo}#${num}](${pr_url})" >> "$GITHUB_STEP_SUMMARY"
               echo "<li>${title}. by @${author} in <a href='${pr_url}'>${repo}#${num}</a></li>" >> body.html
             done < out/pr-digest.tsv
