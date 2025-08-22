@@ -8,7 +8,7 @@ on:
         required: false
         default: "armbian/build,armbian/configng"
       tz:
-        description: "Timezone for date windows (IANA)"
+        description: "Timezone (IANA)"
         required: false
         default: "Europe/Ljubljana"
   schedule:
@@ -26,15 +26,15 @@ jobs:
       TZ: ${{ inputs.tz || 'Europe/Ljubljana' }}
 
     steps:
-      - name: Set up jq (already present on ubuntu, but ensure)
-        run: sudo apt-get update && sudo apt-get install -y jq
+      - name: Ensure dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
 
-      - name: Compute time windows
+      - name: Compute time windows (UTC)
         id: when
         shell: bash
         run: |
-          export TZ="${TZ}"
-          # TODAY in UTC for API queries; we'll still compute since dates in UTC
           UNTIL_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           SINCE_WEEK_UTC="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
           SINCE_3MO_UTC="$(date -u -d '90 days ago' +%Y-%m-%dT%H:%M:%SZ)"
@@ -42,31 +42,28 @@ jobs:
           echo "SINCE_WEEK_UTC=$SINCE_WEEK_UTC" >> "$GITHUB_ENV"
           echo "SINCE_3MO_UTC=$SINCE_3MO_UTC" >> "$GITHUB_ENV"
 
-      - name: Create workspace
+      - name: Prepare workspace
         run: mkdir -p out
 
-      - name: Gather PRs — helper script
+      - name: Write helper script
         shell: bash
         run: |
           cat > pr_fetch.sh <<'EOF'
           #!/usr/bin/env bash
           set -euo pipefail
 
-          scope="${1:-armbian/build}"
-          since="${2:?}"
-          until="${3:?}"
-          outfile="${4:?}"
+          scope="${1:?}"     # "org:armbian" or "owner/repo,owner/repo2"
+          since="${2:?}"     # ISO UTC
+          until="${3:?}"     # ISO UTC
+          outfile="${4:?}"   # path
 
-          # Build search query:
-          # - if "org:NAME" use org-wide search; else split repo list.
           collect() {
             local q="$1"
-            # Use --paginate and per_page=100 to fetch all
             gh api -X GET search/issues \
               -f q="$q" \
               -f sort="updated" -f order="desc" \
               -f per_page=100 --paginate \
-              -q '.items[] | {number: .number, repo: (.repository_url | sub("^.*/repos/";"")), title: .title, pr_url: .pull_request.url}'
+              -q '.items[] | {number: .number, repo: (.repository_url | sub("^.*/repos/";"")), pr_api: .pull_request.url}'
           }
 
           tmp="$(mktemp)"
@@ -75,7 +72,6 @@ jobs:
             q="org:${org} is:pr is:merged merged:${since}..${until} archived:false"
             collect "$q" > "$tmp"
           else
-            # Comma-separated repos
             IFS=',' read -r -a repos <<< "$scope"
             : > "$tmp"
             for r in "${repos[@]}"; do
@@ -85,54 +81,76 @@ jobs:
             done
           fi
 
-          # For each PR, enrich with author and merge_commit_sha (short)
-          # De-dup by (repo, number); sort by merged_at ascending
-          jq -s '
-            map({repo, number, pr: .pr_url}) 
-            | unique_by(.repo + "|" + (.number|tostring))
-          ' "$tmp" | jq -c '.[]' | while read -r row; do
+          choose_category() {
+            local labels="$1"
+            local title="$2"
+            shopt -s nocasematch
+            if [[ "$labels" =~ bug|bugfix|fix ]]; then echo "Bugfix"; return; fi
+            if [[ "$labels" =~ enhancement|feature|feat ]]; then echo "Feature"; return; fi
+            if [[ "$labels" =~ docs|documentation ]]; then echo "Docs"; return; fi
+            if [[ "$labels" =~ ci|github[[:space:]]*actions|pipeline ]]; then echo "CI"; return; fi
+            if [[ "$labels" =~ refactor ]]; then echo "Refactor"; return; fi
+            if [[ "$labels" =~ release ]]; then echo "Release"; return; fi
+            # fallback to conventional-commit style
+            if [[ "$title" =~ ^(fix|hotfix)(:|\().* ]]; then echo "Bugfix"; return; fi
+            if [[ "$title" =~ ^(feat|feature)(:|\().* ]]; then echo "Feature"; return; fi
+            if [[ "$title" =~ ^docs(:|\().* ]]; then echo "Docs"; return; fi
+            if [[ "$title" =~ ^(ci|chore)(:|\().* ]]; then echo "CI"; return; fi
+            echo "Misc"
+          }
+
+          # De-dup and enrich
+          jq -s 'unique_by(.repo + "|" + (.number|tostring))' "$tmp" | jq -c '.[]' | \
+          while read -r row; do
             repo=$(echo "$row" | jq -r .repo)
             num=$(echo "$row"  | jq -r .number)
+            pr=$(gh api "repos/${repo}/pulls/${num}")
 
-            pr_json=$(gh api "repos/${repo}/pulls/${num}")
-            title=$(echo "$pr_json" | jq -r .title)
-            author=$(echo "$pr_json" | jq -r .user.login)
-            merged_at=$(echo "$pr_json" | jq -r .merged_at)
-            merge_sha=$(echo "$pr_json" | jq -r .merge_commit_sha)
-            short_sha=${merge_sha:0:7}
+            title=$(jq -r .title <<<"$pr")
+            author=$(jq -r .user.login <<<"$pr")
 
-            printf "%s\t%s\t%s\t%s\t%s\n" "$merged_at" "$title" "$author" "$short_sha" "$repo"
+            # Skip bots
+            if [[ "$author" == "github-actions[bot]" || "$author" == "dependabot[bot]" ]]; then
+              continue
+            fi
+
+            merged_at=$(jq -r .merged_at <<<"$pr")
+            html_url=$(jq -r .html_url <<<"$pr")
+            labels_csv=$(jq -r '[.labels[].name] | join(",")' <<<"$pr")
+
+            category=$(choose_category "$labels_csv" "$title")
+            printf "%s\t%s\t%s\t%s\t%s\n" "$merged_at" "$category" "$title" "$author" "$html_url"
           done | sort -k1,1 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
 
-      - name: Fetch last week PRs
+      - name: Fetch last week
         run: ./pr_fetch.sh "$SCOPE" "$SINCE_WEEK_UTC" "$UNTIL_UTC" out/last_week.tsv
 
-      - name: Fetch last 3 months PRs
+      - name: Fetch last 3 months
         run: ./pr_fetch.sh "$SCOPE" "$SINCE_3MO_UTC" "$UNTIL_UTC" out/last_3_months.tsv
 
-      - name: Write Job Summary
+      - name: Write Markdown digest to summary
         shell: bash
         run: |
           render() {
             local label="$1"; local file="$2"
             echo "## ${label}" >> "$GITHUB_STEP_SUMMARY"
             if [[ ! -s "$file" ]]; then
-              echo "_No merged PRs in window._" >> "$GITHUB_STEP_SUMMARY"
+              echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
+              echo "" >> "$GITHUB_STEP_SUMMARY"
               return
             fi
-            # TSV fields: merged_at, title, author, sha7, repo
-            while IFS=$'\t' read -r merged_at title author sha7 repo; do
-              # Output: "<title> by @<author> in <sha7> <repo>"
-              echo "${title} by @${author} in ${sha7} ${repo}" >> "$GITHUB_STEP_SUMMARY"
+            # TSV: merged_at  category  title  author  url
+            while IFS=$'\t' read -r merged_at category title author url; do
+              echo "* [${category}] ${title}.  by @${author} in ${url}" >> "$GITHUB_STEP_SUMMARY"
             done < "$file"
             echo "" >> "$GITHUB_STEP_SUMMARY"
           }
           render "Last week" out/last_week.tsv
           render "Last 3 months" out/last_3_months.tsv
 
-      - name: Upload artifacts
+      - name: Upload raw data (artifacts)
         uses: actions/upload-artifact@v4
         with:
           name: pr-digest
