@@ -112,7 +112,7 @@ jobs:
   # Your existing pipeline likely has a "gradle" job already producing *.txt artifacts.
   # We keep your exact "make" job signature and merge pattern.
   make:
-    needs: gradle
+    needs: digest
     name: "Sort"
     timeout-minutes: 60
     runs-on: ubuntu-latest
