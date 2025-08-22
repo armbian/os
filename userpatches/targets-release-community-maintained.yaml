@@ -26,7 +26,7 @@ lists:
   # automated lists start
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
-    - { BOARD: uefi-riscv64, BRANCH: current }
+    - { BOARD: uefi-riscv64, BRANCH: edge }
     - { BOARD: visionfive2, BRANCH: vendor }
     # end of auto generated section
 
