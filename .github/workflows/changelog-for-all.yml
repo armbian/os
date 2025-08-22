@@ -11,9 +11,7 @@ on:
         description: "Timezone (IANA)"
         required: false
         default: "Europe/Ljubljana"
-      version:
-        description: "Version tag for release"
-        required: true
+
   schedule:
     - cron: "5 6 * * MON"   # weekly, Mondays 06:05 UTC
 
@@ -27,7 +25,6 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SCOPE: ${{ inputs.scope || 'armbian/build,armbian/configng' }}
       TZ: ${{ inputs.tz || 'Europe/Ljubljana' }}
-      VERSION_OVERRIDE: ${{ inputs.version }}
 
     steps:
       - name: Ensure dependencies
