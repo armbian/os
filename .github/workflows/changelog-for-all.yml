@@ -12,7 +12,7 @@ on:
         required: false
         default: "Europe/Ljubljana"
       period:
-        description: "Digest period (weekly by default). Choose 'monthly' to publish a monthly digest."
+        description: "Digest period (weekly by default). Choose 'monthly' or 'quarterly' for larger windows."
         required: false
         default: "weekly"
       publish_release:
@@ -52,6 +52,9 @@ jobs:
           if [[ "$PERIOD" == "monthly" ]]; then
             SINCE_UTC="$(date -u -d '1 month ago' +%Y-%m-%dT%H:%M:%SZ)"
             LABEL="Monthly Digest"
+          elif [[ "$PERIOD" == "quarterly" ]]; then
+            SINCE_UTC="$(date -u -d '3 months ago' +%Y-%m-%dT%H:%M:%SZ)"
+            LABEL="Quarterly Digest"
           else
             SINCE_UTC="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
             LABEL="Weekly Digest"
@@ -178,7 +181,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ "${PERIOD:-weekly}" == "monthly" ]]; then
+          if [[ "${PERIOD:-weekly}" == "monthly" || "${PERIOD:-weekly}" == "quarterly" ]]; then
             FILE="os/stable.json"
           else
             FILE="os/nightly.json"
