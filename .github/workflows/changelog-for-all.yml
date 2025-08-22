@@ -11,6 +11,10 @@ on:
         description: "Timezone (IANA)"
         required: false
         default: "Europe/Ljubljana"
+      period:
+        description: "Digest period (weekly by default). Choose 'monthly' to publish a monthly digest."
+        required: false
+        default: "weekly"
 
   schedule:
     - cron: "5 6 * * MON"   # weekly, Mondays 06:05 UTC
@@ -25,6 +29,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SCOPE: ${{ inputs.scope || 'armbian/build,armbian/configng' }}
       TZ: ${{ inputs.tz || 'Europe/Ljubljana' }}
+      PERIOD: ${{ inputs.period || 'weekly' }}
 
     steps:
       - name: Ensure dependencies
@@ -32,16 +37,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq
 
-      - name: Compute time windows (UTC)
+      - name: Compute time window (UTC) from period
         id: when
         shell: bash
         run: |
+          set -euo pipefail
+          export PERIOD="${PERIOD:-weekly}"
           UNTIL_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          SINCE_WEEK_UTC="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
-          SINCE_3MO_UTC="$(date -u -d '90 days ago' +%Y-%m-%dT%H:%M:%SZ)"
+          if [[ "$PERIOD" == "monthly" ]]; then
+            SINCE_UTC="$(date -u -d '1 month ago' +%Y-%m-%dT%H:%M:%SZ)"
+            LABEL="Monthly Digest"
+          else
+            SINCE_UTC="$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
+            LABEL="Weekly Digest"
+          fi
           echo "UNTIL_UTC=$UNTIL_UTC" >> "$GITHUB_ENV"
-          echo "SINCE_WEEK_UTC=$SINCE_WEEK_UTC" >> "$GITHUB_ENV"
-          echo "SINCE_3MO_UTC=$SINCE_3MO_UTC" >> "$GITHUB_ENV"
+          echo "SINCE_UTC=$SINCE_UTC" >> "$GITHUB_ENV"
+          echo "LABEL=$LABEL" >> "$GITHUB_ENV"
 
       - name: Prepare workspace
         run: mkdir -p out
@@ -97,62 +109,34 @@ jobs:
               continue
             fi
 
-            merged_at=$(jq -r .merged_at <<<"$pr")
             html_url=$(jq -r .html_url <<<"$pr")
 
-            printf "%s\t%s\t%s\t%s\n" "$merged_at" "$title" "$author" "$html_url"
-          done | LC_ALL=C sort -f -t $'\t' -k2,2 > "$outfile"
+            # Output tab-separated: title, author, url
+            printf "%s\t%s\t%s\n" "$title" "$author" "$html_url"
+          done | LC_ALL=C sort -f -t $'\t' -k1,1 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
 
-      - name: Fetch last week
-        run: ./pr_fetch.sh "$SCOPE" "$SINCE_WEEK_UTC" "$UNTIL_UTC" out/last_week.tsv
-
-      - name: Fetch last 3 months
-        run: ./pr_fetch.sh "$SCOPE" "$SINCE_3MO_UTC" "$UNTIL_UTC" out/last_3_months.tsv
+      - name: Fetch merged PRs for selected period
+        run: ./pr_fetch.sh "$SCOPE" "$SINCE_UTC" "$UNTIL_UTC" out/pr-digest.tsv
 
       - name: Write Markdown digest to summary & body.html
         shell: bash
         run: |
-          render() {
-            local label="$1"; local file="$2"
-            echo "## ${label}" >> "$GITHUB_STEP_SUMMARY"
-            echo "<h2>${label}</h2>" >> body.html
-            if [[ ! -s "$file" ]]; then
-              echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
-              echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
-              echo "" >> "$GITHUB_STEP_SUMMARY"
-              return
-            fi
-            while IFS=$'\t' read -r merged_at title author url; do
+          # Start fresh body file
+          echo "<h1>${LABEL}</h1>" > body.html
+          echo "<ul>" >> body.html
+          echo "## ${LABEL}" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ ! -s out/pr-digest.tsv ]]; then
+            echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
+            echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
+          else
+            while IFS=$'\t' read -r title author url; do
               echo "* ${title}.  by @${author} in ${url}" >> "$GITHUB_STEP_SUMMARY"
               echo "<li>${title}. by @${author} in <a href='${url}'>PR</a></li>" >> body.html
-            done < "$file"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-          }
-
-          echo "
-            <h1>Armbian rolling releases</h1>
-            <p>
-            <a href='https://www.armbian.com/download/'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
-            <a href='https://www.armbian.com/download/'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
-            </p>
-            <br>
-
-            - rolling releases are available at the bottom of <a href='https://www.armbian.com/download/' target=_blanks>official download pages</a>
-            - <a href='https://github.com/armbian/os/wiki/Enable-build-configuration'>How to change type of images that are provided by Armbian</a>?
-            - How to switch between <a href='https://www.armbian.com/newsflash/armbian-leaflet-25/' target=_blank>stable and rolling release</a>?
-
-            Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. Before making this switch, we recommend checking our <a target=_blanks href='https://github.com/armbian/os?tab=readme-ov-file#latest-smoke-tests-results'>automated tests</a>. 
-            </p>
-
-          ## What's was changed in past week?" > body.html
-
-          # Start fresh body file
-          echo "<h1>Weekly Digest</h1>" >> body.html
-          echo "<ul>" >> body.html
-          render "Last week" out/last_week.tsv
-          render "Last 3 months" out/last_3_months.tsv
+            done < out/pr-digest.tsv
+          fi
           echo "</ul>" >> body.html
 
       - name: Upload raw data (artifacts)
@@ -162,7 +146,7 @@ jobs:
           path: out/
           if-no-files-found: warn
 
-      - name: "Checkout OS repository to get latest tag"
+      - name: "Checkout OS repository to get version"
         uses: actions/checkout@v5
         with:
           repository: armbian/os
@@ -170,14 +154,26 @@ jobs:
           clean: false
           path: os
 
-      - name: "Read nightly version from file"
+      - name: "Read version from nightly or stable based on period"
+        shell: bash
         run: |
-          cat "os/nightly.json" | jq '.version' | sed "s/\"//g" | sed 's/^/VERSION_OVERRIDE=/' >> $GITHUB_ENV
+          set -euo pipefail
+          if [[ "${PERIOD:-weekly}" == "monthly" ]]; then
+            FILE="os/stable.json"
+          else
+            FILE="os/nightly.json"
+          fi
+          if [[ ! -f "$FILE" ]]; then
+            echo "::error file=$FILE::Version file not found"
+            exit 1
+          fi
+          VERSION=$(jq -r '.version' "$FILE")
+          echo "VERSION_OVERRIDE=${VERSION}" >> "$GITHUB_ENV"
 
       - uses: ncipollo/release-action@v1
         with:
           owner: 'armbian'
-          repo: 'test'
+          repo: 'build'
           tag: "v${{ env.VERSION_OVERRIDE }}"
           name: "v${{ env.VERSION_OVERRIDE }}"
           generateReleaseNotes: "false"
