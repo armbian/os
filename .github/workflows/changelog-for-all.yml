@@ -115,22 +115,22 @@ jobs:
             fi
 
             merge_sha=$(jq -r .merge_commit_sha <<<"$pr")
-if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
-  merge_sha=$(jq -r .head.sha <<<"$pr")
-fi
-short_sha=${merge_sha:0:7}
-# Build links for SHA and repo
-head_repo=$(jq -r .head.repo.full_name <<<"$pr")
-commit_repo="$repo"
-if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
-  commit_repo="$head_repo"
-fi
-commit_url="https://github.com/${commit_repo}/commit/${short_sha}"
-repo_url="https://github.com/${repo}"
+            if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
+              merge_sha=$(jq -r .head.sha <<<"$pr")
+            fi
+            short_sha=${merge_sha:0:7}
+
+            # Build links for SHA and repo
+            head_repo=$(jq -r .head.repo.full_name <<<"$pr")
+            commit_repo="$repo"
+            if [[ "$merge_sha" == "null" || -z "$merge_sha" ]]; then
+              commit_repo="$head_repo"
+            fi
+            commit_url="https://github.com/${commit_repo}/commit/${short_sha}"
+            repo_url="https://github.com/${repo}"
 
             # Output tab-separated: title, author, short_sha, repo, commit_url, repo_url
-printf "%s	%s	%s	%s	%s	%s
-" "$title" "$author" "$short_sha" "$repo" "$commit_url" "$repo_url"
+            printf "%s\t%s\t%s\t%s\t%s\t%s\n" "$title" "$author" "$short_sha" "$repo" "$commit_url" "$repo_url"
           done | LC_ALL=C sort -f -t $'\t' -k1,1 > "$outfile"
           EOF
           chmod +x pr_fetch.sh
@@ -150,10 +150,10 @@ printf "%s	%s	%s	%s	%s	%s
             echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
             echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
           else
-            while IFS=$'	' read -r title author sha repo commit_url repo_url; do
-  echo "* ${title}.  by @${author} in [${sha}](${commit_url}) [${repo}](${repo_url})" >> "$GITHUB_STEP_SUMMARY"
-  echo "<li>${title}. by @${author} in <a href='${commit_url}'><code>${sha}</code></a> <a href='${repo_url}'>${repo}</a></li>" >> body.html
-done < out/pr-digest.tsv
+            while IFS=$'\t' read -r title author sha repo commit_url repo_url; do
+              echo "* ${title}.  by @${author} in [${sha}](${commit_url}) [${repo}](${repo_url})" >> "$GITHUB_STEP_SUMMARY"
+              echo "<li>${title}. by @${author} in <a href='${commit_url}'><code>${sha}</code></a> <a href='${repo_url}'>${repo}</a></li>" >> body.html
+            done < out/pr-digest.tsv
           fi
           echo "</ul>" >> body.html
 
