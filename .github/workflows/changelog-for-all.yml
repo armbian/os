@@ -130,21 +130,37 @@ jobs:
       - name: Write Markdown digest to summary & body.html
         shell: bash
         run: |
-          # Start fresh body file
-          echo "<h1>${LABEL}</h1>" > body.html
-          echo "<ul>" >> body.html
-          echo "## ${LABEL}" >> "$GITHUB_STEP_SUMMARY"
 
-          if [[ ! -s out/pr-digest.tsv ]]; then
-            echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
-            echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
-          else
-            while IFS=$'\t' read -r title author repo num pr_url; do
-              echo "* ${title}.  by @${author} in [${repo}#${num}](${pr_url})" >> "$GITHUB_STEP_SUMMARY"
-              echo "<li>${title}. by @${author} in <a href='${pr_url}'>${repo}#${num}</a></li>" >> body.html
+           echo "
+              <h1>Armbian rolling releases</h1>
+              <p>
+              <a href='https://www.armbian.com/download/'><img alt='Armbian Linux stable' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20current&query=CURRENT&color=f71000&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+              <a href='https://www.armbian.com/download/'><img alt='Armbian Linux rolling' src='https://img.shields.io/badge/dynamic/json?label=Armbian%20Linux%20edge&query=EDGE&color=34be5b&cacheSeconds=600&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Farmbian%2Fscripts%2Freleases%2Fdownload%2Fstatus%2Frunners_capacity.json'></a>
+              </p>
+              <br>
+
+              - rolling releases are available at the bottom of <a href='https://www.armbian.com/download/' target=_blanks>official download pages</a>
+              - <a href='https://github.com/armbian/os/wiki/Enable-build-configuration'>How to change type of images that are provided by Armbian</a>?
+              - How to switch between <a href='https://www.armbian.com/newsflash/armbian-leaflet-25/' target=_blank>stable and rolling release</a>?
+
+              Please note that <b>Armbian Rolling Releases</b> are not recommended for production environments, as these builds are not thoroughly tested. However, in most cases, they should work well. 
+              </p>
+                " > body.html           
+              # Start fresh body file
+              echo "<h1>${LABEL}</h1>" >> body.html
+              echo "<ul>" >> body.html
+              echo "## ${LABEL}" >> "$GITHUB_STEP_SUMMARY"
+
+            if [[ ! -s out/pr-digest.tsv ]]; then
+              echo "_No merged PRs in this period._" >> "$GITHUB_STEP_SUMMARY"
+              echo "<p><em>No merged PRs in this period.</em></p>" >> body.html
+            else
+              while IFS=$'\t' read -r title author repo num pr_url; do
+                echo "* ${title}.  by @${author} in [${repo}#${num}](${pr_url})" >> "$GITHUB_STEP_SUMMARY"
+                echo "<li>${title}. by @${author} in <a href='${pr_url}'>${repo}#${num}</a></li>" >> body.html
             done < out/pr-digest.tsv
-          fi
-          echo "</ul>" >> body.html
+            fi
+            echo "</ul>" >> body.html
 
       - name: Upload raw data (artifacts)
         uses: actions/upload-artifact@v4
