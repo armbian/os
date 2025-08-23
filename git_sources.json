@@ -25,11 +25,6 @@
     "sha1": "105fecaa7a6ab840ae65561d09e2113b69b01f6a"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.15.y",
-    "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "c88f7d0646033508bc54a6be567a9965146e2899"
@@ -40,9 +35,9 @@
     "sha1": "9becd7c25c61ae7e5b6fbfc3c226b1f23af7638c"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.15.y",
+    "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -50,14 +45,19 @@
     "sha1": "bb9c90ab9c5a1a933a0dfd302a3fde73642b2b06"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.16.y",
-    "sha1": "25bf10be219d37d2fb221c93816a913f5f735530"
-  },
-  {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.16.y",
     "sha1": "110d900febbb295c9e9c8b3f387e97205cab3218"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.16.y",
+    "sha1": "25bf10be219d37d2fb221c93816a913f5f735530"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -160,14 +160,14 @@
     "sha1": "89f1409f9ce3d206348995ff7ac6fb624eb09c7b"
   },
   {
-    "source": "https://github.com/beagleboard/u-boot",
-    "branch": "v2025.07-am6232-pocketbeagle2",
-    "sha1": "6d5b4abc28f036a4a83ccb234f04d72eceafdc4e"
-  },
-  {
     "source": "https://github.com/beagleboard/linux",
     "branch": "v6.12.24-ti-arm64-r43",
     "sha1": "708e1e0be5126a696eaee37a2b027bc4d1f575c4"
+  },
+  {
+    "source": "https://github.com/beagleboard/u-boot",
+    "branch": "v2025.07-am6232-pocketbeagle2",
+    "sha1": "6d5b4abc28f036a4a83ccb234f04d72eceafdc4e"
   },
   {
     "source": "https://github.com/u-boot/u-boot.git",
@@ -186,6 +186,11 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.16.y",
+    "sha1": "8a1508ac5ef7d6e682e85338ed480517a679d48b"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.12.y",
     "sha1": "5cd8ecc2a015c18227814993b741b20c69203e7a"
   },
@@ -193,11 +198,6 @@
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.6.y",
     "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.16.y",
-    "sha1": "8a1508ac5ef7d6e682e85338ed480517a679d48b"
   },
   {
     "source": "https://github.com/jhovold/linux.git",
