@@ -1,4 +1,4 @@
-name: "PR Digest"
+name: "Changelog for org:Armbian"
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       scope:
         description: "Comma-separated repos (owner/repo) OR 'org:armbian'"
         required: false
-        default: "armbian/build,armbian/configng"
+        default: "org:armbian"
       tz:
         description: "Timezone (IANA)"
         required: false
