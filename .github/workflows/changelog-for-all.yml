@@ -28,6 +28,7 @@ permissions:
 
 jobs:
   pr-digest:
+    name: "Get PR's"
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
