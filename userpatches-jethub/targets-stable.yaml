@@ -36,6 +36,20 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - *headless
+      - *fast-hdmi
+
+  full-cli-oldstable-debian:
+    enabled: yes
+    configs: [ jethome-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
       RELEASE: bookworm
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
