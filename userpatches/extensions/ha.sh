@@ -182,14 +182,18 @@ function pre_customize_image__500_add_ha_to_image() {
 function pre_umount_final_image__xset_apparmor_in_armbianEnvTxt() {
 	if [[ -f "${MOUNT}/boot/firmware/cmdline.txt" ]]; then
 		# Rpi workaround
-		sed -i '/./ s/$/ apparmor=1 security=apparmor/' ${MOUNT}/boot/firmware/cmdline.txt
+		sed -i '/./ s/$/ apparmor=1 security=apparmor/' "${MOUNT}/boot/firmware/cmdline.txt"
 		display_alert "cmdline.txt contents" "${MOUNT}/boot/firmware/cmdline.txt" "info"
 		run_host_command_logged cat "${MOUNT}/boot/firmware/cmdline.txt"
 	elif [[ -f "${SDCARD}/boot/armbianEnv.txt" ]]; then
 		echo "extraargs=${HA_UBOOT_EXTRAARGS}" >> "${SDCARD}/boot/armbianEnv.txt"
 		display_alert "armbianEnv.txt contents" "${SDCARD}/boot/armbianEnv.txt" "info"
 		run_host_command_logged cat "${SDCARD}/boot/armbianEnv.txt"
+	elif [[ -f "${SDCARD}/boot/extlinux/extlinux.conf" ]]; then
+		sed -i "/^[[:space:]]*append / s|\$| ${HA_UBOOT_EXTRAARGS}|" "${SDCARD}/boot/extlinux/extlinux.conf"
+		display_alert "armbianEnv.txt contents" "${SDCARD}/boot/extlinux/extlinux.conf" "info"
+		run_host_command_logged cat "${SDCARD}/boot/extlinux/extlinux.conf"
 	else
-		exit_with_error "armbianEnv.txt not found at ${SDCARD}/boot/armbianEnv.txt"
+		exit_with_error "cmdline.txt, armbianEnv.txt or extlinux.conf not found at ${SDCARD}/boot/"
 	fi
 }
