@@ -362,7 +362,7 @@ targets:
 
   # Ubuntu LTS with KDE neon
   kde-neon-desktop-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
