@@ -1020,7 +1020,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1082,7 +1082,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1144,7 +1144,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1206,7 +1206,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1268,7 +1268,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1330,7 +1330,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1392,7 +1392,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1454,7 +1454,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1516,7 +1516,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1578,7 +1578,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1640,7 +1640,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1702,7 +1702,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1764,7 +1764,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1826,7 +1826,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1888,7 +1888,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -1950,7 +1950,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -2012,7 +2012,7 @@ jobs:
           rm -rf userpatches.repo
 
       - name: Build  ${{matrix.desc}}
-        timeout-minutes: 60
+        timeout-minutes: 90
         id: build
         run: |
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
@@ -2083,7 +2083,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2300,7 +2300,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2517,7 +2517,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2734,7 +2734,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -2951,7 +2951,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3168,7 +3168,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3385,7 +3385,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3602,7 +3602,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -3819,7 +3819,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4036,7 +4036,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4253,7 +4253,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4470,7 +4470,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4687,7 +4687,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -4904,7 +4904,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -5121,7 +5121,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
@@ -5338,7 +5338,7 @@ jobs:
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
