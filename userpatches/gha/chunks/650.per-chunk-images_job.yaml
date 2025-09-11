@@ -60,7 +60,7 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: ${{matrix.desc}}
         id: build-one-image
-        timeout-minutes: 60
+        timeout-minutes: 90
         run: |
           # calculate loop from runner name
           if [ -z "${ImageOS}" ]; then
