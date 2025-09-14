@@ -49,7 +49,8 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
+      #only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "armbian-desktop" ] # only these artifacts
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
