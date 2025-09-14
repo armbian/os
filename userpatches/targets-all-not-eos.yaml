@@ -148,3 +148,20 @@ targets:
       #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
       not-eos: yes # not-eos boards, all branches
+
+  all-cli-loong:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+    vars:
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+      RELEASE: "sid"
+      BOARD: "uefi-loong64"
+      BRANCH: "edge"
+    items-from-inventory:
+      #wip: yes # includes all work-in-progress boards
+      #all: yes # includes all available BOARD and BRANCH combinations
+      #conf: yes # includes all supported boards
+      not-eos: yes # not-eos boards, all branches
