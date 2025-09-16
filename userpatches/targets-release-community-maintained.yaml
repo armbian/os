@@ -160,6 +160,7 @@ lists:
     - { BOARD: pineh64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
+    - { BOARD: radxa-cm4-io, BRANCH: vendor }
     - { BOARD: radxa-cubie-a5e, BRANCH: edge }
     - { BOARD: radxa-e20c, BRANCH: vendor }
     - { BOARD: radxa-e25, BRANCH: current }
@@ -208,6 +209,7 @@ lists:
   community-maintained-slow-hdmi: &community-maintained-slow-hdmi
     # auto generated section
     - { BOARD: aml-s805-mxq, BRANCH: current }
+    - { BOARD: armsom-forge1, BRANCH: vendor }
     - { BOARD: bananapim1plus, BRANCH: current }
     - { BOARD: bananapim2ultra, BRANCH: current }
     - { BOARD: bananapim2zero, BRANCH: current }

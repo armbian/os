@@ -49,6 +49,7 @@ lists:
     - { BOARD: bananapim4berry, BRANCH: current }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim5pro, BRANCH: edge }
     - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: beaglebone-ai64, BRANCH: current }
     - { BOARD: beagleplay, BRANCH: current }
@@ -88,6 +89,7 @@ lists:
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am62b, BRANCH: current }
+    - { BOARD: sk-am62p, BRANCH: current }
     - { BOARD: sk-am68, BRANCH: current }
     - { BOARD: sk-am69, BRANCH: current }
     - { BOARD: sk-tda4vm, BRANCH: current }
