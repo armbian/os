@@ -25,14 +25,14 @@
     "sha1": "d39aa614dd38bd50c269590e62da6547fe623037"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "ef58001fa35e68825340af157d6be41dca721a56"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.12.y",
     "sha1": "f1e375d5eb68f990709fce37ee1c0ecae3645b6f"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "1269106c61a34b8f65d045c8045df880083bd3b1"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -40,29 +40,14 @@
     "sha1": "af1544b5d072514b219695b0a9fba0b1e0d5e289"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5.1",
-    "sha1": "155d9244265942a1d51bd737e42c5057d35ae908"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.15.y",
     "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
-  },
-  {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
-    "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
-    "branch": "rk3506",
-    "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5.1",
+    "sha1": "155d9244265942a1d51bd737e42c5057d35ae908"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -70,14 +55,29 @@
     "sha1": "a3173ae8a83cb05c78bccfa7cd73ed4b591e67ef"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.16.y",
-    "sha1": "62dae019823123ce3baa50e680219e2beb9a63a5"
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+  },
+  {
+    "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
+    "branch": "rk3506",
+    "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.16.y",
     "sha1": "342ff738da381cdac15c1f58bb3c438a36bedb54"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.16.y",
+    "sha1": "62dae019823123ce3baa50e680219e2beb9a63a5"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -172,7 +172,7 @@
   {
     "source": "https://github.com/u-boot/u-boot.git",
     "branch": "master",
-    "sha1": "d3074f3d699d188bbeb68feacc473d8bc53ce762"
+    "sha1": "f53fe908ac3dd44f7ad63dff319636541710b98c"
   },
   {
     "source": "https://gitlab.collabora.com/mediatek/aiot/linux.git",
