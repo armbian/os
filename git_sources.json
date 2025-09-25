@@ -25,11 +25,6 @@
     "sha1": "d39aa614dd38bd50c269590e62da6547fe623037"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "f1e375d5eb68f990709fce37ee1c0ecae3645b6f"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
     "branch": "main",
     "sha1": "1269106c61a34b8f65d045c8045df880083bd3b1"
@@ -50,9 +45,29 @@
     "sha1": "155d9244265942a1d51bd737e42c5057d35ae908"
   },
   {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "f1e375d5eb68f990709fce37ee1c0ecae3645b6f"
+  },
+  {
     "source": "https://github.com/radxa/u-boot.git",
     "branch": "next-dev-v2024.10",
     "sha1": "a3173ae8a83cb05c78bccfa7cd73ed4b591e67ef"
+  },
+  {
+    "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
+    "branch": "rk3506",
+    "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.16.y",
+    "sha1": "62dae019823123ce3baa50e680219e2beb9a63a5"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -61,23 +76,8 @@
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
-  },
-  {
-    "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
-    "branch": "rk3506",
-    "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.16.y",
     "sha1": "342ff738da381cdac15c1f58bb3c438a36bedb54"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.16.y",
-    "sha1": "62dae019823123ce3baa50e680219e2beb9a63a5"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -187,12 +187,12 @@
   {
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.12.y",
-    "sha1": "99972b2fa5395542e7c24e4d894be5ede383055f"
+    "sha1": "58f43fcb0348359e7e19860c99e61d2648e33f8d"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.16.y",
-    "sha1": "66bd37be45fcf146b0a1a47497db92d88c96a48c"
+    "sha1": "37852f8666528f4a1f4153501b146dc298d0f3f6"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
@@ -220,14 +220,14 @@
     "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
   },
   {
-    "source": "https://github.com/XpressReal/u-boot.git",
-    "branch": "v2024.01-xpressreal",
-    "sha1": "4cac3d9b64ef3d3a87ceec824ca341b1871432e4"
-  },
-  {
     "source": "https://github.com/XpressReal/linux.git",
     "branch": "v6.6.54-xpressreal-t3",
     "sha1": "3fd26af0d53908a21a4a330159b3391b06d9c9c6"
+  },
+  {
+    "source": "https://github.com/XpressReal/u-boot.git",
+    "branch": "v2024.01-xpressreal",
+    "sha1": "4cac3d9b64ef3d3a87ceec824ca341b1871432e4"
   },
   {
     "source": "https://github.com/SolidRun/u-boot",
