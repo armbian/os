@@ -84,6 +84,7 @@ lists:
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-m5, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopi-m5, BRANCH: edge }
     - { BOARD: nanopi-m6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-m6, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r3s-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
