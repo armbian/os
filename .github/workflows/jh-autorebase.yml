@@ -30,7 +30,7 @@ jobs:
           cd rebase
           git remote remove upstream || true
       - name: Checkout armbian repository (${{ matrix.branch }})
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           repository: jethome-iot/armbian-build
@@ -73,7 +73,7 @@ jobs:
           cd rebase
           git remote remove upstream || true
       - name: Checkout armbian repository (${{ matrix.branch }})
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           repository: jethome-iot/armbian-build
@@ -112,7 +112,7 @@ jobs:
           cd rebaseos
           git remote remove upstream || true
       - name: Checkout os repository (${{ matrix.branch }})
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           path: rebaseos
