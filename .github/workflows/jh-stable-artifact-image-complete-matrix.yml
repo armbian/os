@@ -180,7 +180,7 @@ jobs:
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v4
         with:
-          name: assets-for-download-v24.11
+          name: assets-for-download-v25.08
           path: downloads
           retention-days: 5
 
@@ -6542,7 +6542,7 @@ jobs:
         if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/download-artifact@v5
         with:
-          name: assets-for-download-v24.11
+          name: assets-for-download-v25.08
           path: downloads
 
       - name: "Read version"
@@ -6553,7 +6553,7 @@ jobs:
       # Delete artifact
       - uses: geekyeggo/delete-artifact@v5
         with:
-          name: assets-for-download-v24.11
+          name: assets-for-download-v25.08
           failOnError: false
 
       # Cleaning releases
