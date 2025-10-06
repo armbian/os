@@ -156,6 +156,7 @@ on:
         - mba8mpxl-ras314
         - mba8mpxl
         - mekotronics-r58-minipc
+        - mekotronics-r58hd
         - mekotronics-r58x-4g
         - mekotronics-r58x-pro
         - mekotronics-r58x
@@ -349,7 +350,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: armbian/build@v25.8.2
+      - uses: armbian/build@v25.5.1
         with:
           armbian_token:              "${{secrets.GITHUB_TOKEN}}"
           armbian_target:             "${{inputs.armbian_target}}"

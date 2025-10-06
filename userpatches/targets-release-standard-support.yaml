@@ -79,6 +79,7 @@ lists:
     - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
+    - { BOARD: mekotronics-r58hd, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
