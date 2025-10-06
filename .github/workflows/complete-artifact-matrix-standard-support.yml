@@ -108,6 +108,7 @@ on:
         - cyber-aib-rk3588
         - dshanpi-a1
         - dshanpi-r1
+        - dusun-dsom-010r
         - fine3399
         - firefly-itx-3588j
         - firefly-rk3399
@@ -5649,7 +5650,7 @@ jobs:
 
       - name: "Run repository update action"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'yes' }}
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/os
@@ -5725,7 +5726,7 @@ jobs:
 
       - name: "Run repository mirroring to CDN"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/armbian.github.io
@@ -5734,7 +5735,7 @@ jobs:
 
       - name: "Run webindex update action"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/armbian.github.io
