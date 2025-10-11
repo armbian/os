@@ -8,6 +8,10 @@ on:
         type: boolean
         description: "Force synchronization"
         default: false
+      move_images:
+        type: boolean
+        description: "Move images from incoming to /dl"
+        default: false
         
 concurrency:
   group: pipeline
@@ -41,7 +45,7 @@ jobs:
         run: |
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=push&tag=debs&status=failed&status=active" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=push&tag=images&tag=debs&status=active" \
           | jq '.results[] | .name' | grep -v null | sed "s/\"//g" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
@@ -90,12 +94,37 @@ jobs:
               DATEDIFF=$(echo `stat -c%Y /outgoing/repository/public/armbian.key` - `date --date="$REMOTE_DATE" +%s` | bc)
               echo $DATEDIFF
               ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${{ matrix.node }}"
-              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 36000 || "${{ github.event.inputs.forced_sync }}" == "true" ]]; then 
+
+              # sync packages
+              if [[ "$target" == "debs" && "${DATEDIFF}" -gt 36000 || "${{ github.event.inputs.forced_sync }}" == "true" ]]; then
                   echo "Synching $target" >> $GITHUB_STEP_SUMMARY
                   # --checksum is only if we suspect corruption on other end
                   rsync -ar --progress -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
                   # delete at the end
                   rsync -ar --progress --delete -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" /outgoing/repository/public/ ${SERVER_USERNAME}@${{ matrix.node }}:${SERVER_PATH}/apt
+              fi
+
+              # move images from incoming to stable download and push old to archive and from archive to oldarchive
+              if [[ "$target" == "images" && "${{ github.event.inputs.move_images }}" == "true" ]]; then
+                  ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new ${SERVER_USERNAME}@${{ matrix.node }} \
+                  "
+                  MOVING_PATHS=\$(find $SERVER_PATH/incoming/*/* -maxdepth 0 -type d 2>/dev/null | sed -r 's/^.*\/(.*)\$/\1/')
+                  for folder in \$MOVING_PATHS; do
+                      # move archive to old archive
+                      mkdir -p $SERVER_PATH/oldarchive/\$folder/archive/
+                      [[ -d $SERVER_PATH/archive/\$folder/archive/ ]] && mv $SERVER_PATH/archive/\$folder/archive/* $SERVER_PATH/oldarchive/\$folder/archive/
+                      # move current to archive
+                      mkdir -p $SERVER_PATH/archive/\$folder/archive/
+                      if [[ -d $SERVER_PATH/dl/\$folder/archive/ ]]; then 
+                          mv $SERVER_PATH/dl/\$folder/archive/* $SERVER_PATH/archive/\$folder/archive/
+                          [[ $? -eq 0 && -n \"${SERVER_PATH}\" ]] && rm -rf $SERVER_PATH/dl/\$folder/
+                      fi
+                  done
+                  # move incoming to current
+                  if [[ -n \"\$MOVING_PATHS\" ]]; then
+                      mv ${SERVER_PATH}/incoming/*/* --target-directory=${SERVER_PATH}/dl
+                  fi
+                  "
               fi
           done
 
