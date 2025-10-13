@@ -81,7 +81,6 @@ lists:
     - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl, BRANCH: current }
-    - { BOARD: mekotronics-r58hd, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -261,6 +260,7 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *standard-support-riscv64
+      - { BOARD: mekotronics-r58hd, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
@@ -316,6 +316,7 @@ targets:
     items:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
+      - { BOARD: mekotronics-r58hd, BRANCH: vendor }
 
   # Full Ubuntu Gnome
   gnome-3d-desktop-lts-ubuntu:
