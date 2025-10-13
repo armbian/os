@@ -134,6 +134,7 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *standard-support-riscv64
+      - { BOARD: mekotronics-r58hd, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
@@ -189,6 +190,7 @@ targets:
     items:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
+      - { BOARD: mekotronics-r58hd, BRANCH: vendor }
 
   # Full Ubuntu Gnome
   gnome-3d-desktop-lts-ubuntu:
