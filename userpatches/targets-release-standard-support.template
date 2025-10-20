@@ -135,7 +135,7 @@ targets:
       - *standard-support-headless
       - *standard-support-riscv64
       - { BOARD: mekotronics-r58hd, BRANCH: vendor }
-      - { BOARD: mekotronics-r58hd, BRANCH: vendor }
+      - { BOARD: mekotronics-r58-4x4, BRANCH: vendor }
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
