@@ -35,14 +35,14 @@
     "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.6.y",
+    "sha1": "f231f248323d6469c23792221863779f41c4a219"
+  },
+  {
     "source": "https://github.com/AvaotaSBC/linux.git",
     "branch": "linux-5.15",
     "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "c1859a8cfe840386e199c43d5eda79cc692009e4"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -50,19 +50,24 @@
     "sha1": "afea3a7b68ae8af25ab6a8a56f27ca5eefabcd2d"
   },
   {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.12.y",
+    "sha1": "c1859a8cfe840386e199c43d5eda79cc692009e4"
+  },
+  {
     "source": "https://github.com/armbian/linux-rockchip.git",
     "branch": "rk-6.1-rkr5.1",
     "sha1": "bd032d59a096344a1f29acf9965d8c46f9a847a8"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.16.y",
-    "sha1": "74d92f225f1b4a07645a8ef7180a56bd8e497029"
+    "source": "https://github.com/glneo/u-boot",
+    "branch": "beagley-ai",
+    "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.6.y",
-    "sha1": "f231f248323d6469c23792221863779f41c4a219"
+    "source": "https://github.com/frank-w/BPI-Router-Linux.git",
+    "branch": "6.12-main",
+    "sha1": "ed90a946e922ab2e20e53da641ccae8a8554e3b9"
   },
   {
     "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
@@ -76,8 +81,18 @@
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.16.y",
+    "sha1": "74d92f225f1b4a07645a8ef7180a56bd8e497029"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.6.y",
     "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+  },
+  {
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
   },
   {
     "source": "https://github.com/khadas/linux.git",
@@ -85,29 +100,14 @@
     "sha1": "4e557e233b9da219f48b82bfa313f353386097ec"
   },
   {
-    "source": "https://github.com/khadas/common_drivers",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "de3acc171f6c5caab9a4d1989bb73df0b73cfa6f"
-  },
-  {
-    "source": "https://github.com/frank-w/BPI-Router-Linux.git",
-    "branch": "6.12-main",
-    "sha1": "ed90a946e922ab2e20e53da641ccae8a8554e3b9"
-  },
-  {
     "source": "https://github.com/beagleboard/linux",
     "branch": "v6.6.58-ti-arm64-r21",
     "sha1": "21bec0f5dba230428e839c35c6b3bc743334caa0"
   },
   {
-    "source": "https://github.com/glneo/u-boot",
-    "branch": "beagley-ai",
-    "sha1": "8f1ad4f81e9a874d4cc0c0bb73191c117b1798ab"
-  },
-  {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
+    "source": "https://github.com/khadas/common_drivers",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "de3acc171f6c5caab9a4d1989bb73df0b73cfa6f"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -121,13 +121,13 @@
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
-    "branch": "rk35xx-2024.01",
-    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
+    "branch": "next-dev-v2024.03",
+    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.03",
-    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
+    "branch": "rk35xx-2024.01",
+    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
   },
   {
     "source": "https://github.com/hardkernel/u-boot.git",
@@ -186,13 +186,13 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.16.y",
-    "sha1": "999cdc63ae791860a8b09da3af90e5dfe603cc09"
+    "branch": "rpi-6.12.y",
+    "sha1": "64a450303422535a555cae6bb0f177f8404311ce"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "987e4eb6edf9d7b9e3b26924d79ca351543649a3"
+    "branch": "rpi-6.16.y",
+    "sha1": "999cdc63ae791860a8b09da3af90e5dfe603cc09"
   },
   {
     "source": "https://github.com/raspberrypi/linux",
