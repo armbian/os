@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'live-patch/pre-apt-upgrade.sh'
+      - 'live-patch/**.sh'
       - '.github/workflows/live-patch.yml'
 
 jobs:
