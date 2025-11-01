@@ -29,9 +29,9 @@ echo "Remove MS and GH sources as we ship them via our repo"
 [[ -f /etc/apt/sources.list.d/githubcli.list ]] && rm -f /etc/apt/sources.list.d/githubcli.list
 [[ -f /etc/apt/preferences.d/99-neon-base-files ]] && rm -f /etc/apt/preferences.d/99-neon-base-files
 
-stat -t -- /etc/apt/sources.list.d/oibaf-ubuntu-graphics-drivers-*.* >/dev/null 2>&1 && rm -f /etc/apt/sources.list.d/oibaf-ubuntu-graphics-drivers-*.*
-stat -t -- /etc/apt/sources.list.d/xtradeb-ubuntu-apps-*.* >/dev/null 2>&1 && rm -f /etc/apt/sources.list.d/xtradeb-ubuntu-apps-*.*
-stat -t -- /etc/apt/sources.list.d/liujianfeng1994-ubuntu-chromium-*.* >/dev/null 2>&1 && rm -f /etc/apt/sources.list.d/liujianfeng1994-ubuntu-chromium-*.*
+find /etc/apt/sources.list.d/ -name 'oibaf-ubuntu-graphics-drivers-*.*' -delete
+find /etc/apt/sources.list.d/ -name 'xtradeb-ubuntu-apps-*.*' -delete
+find /etc/apt/sources.list.d/ -name 'liujianfeng1994-ubuntu-chromium-*.*' -delete
 
 # release based
 	case $RELEASE in
