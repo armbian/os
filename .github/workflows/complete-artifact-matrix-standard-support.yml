@@ -2161,7 +2161,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -2378,7 +2378,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -2595,7 +2595,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -2812,7 +2812,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -3029,7 +3029,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -3246,7 +3246,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -3463,7 +3463,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -3680,7 +3680,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -3897,7 +3897,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -4114,7 +4114,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -4331,7 +4331,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -4548,7 +4548,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -4765,7 +4765,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -4982,7 +4982,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -5199,7 +5199,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -5416,7 +5416,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -5590,7 +5590,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-info-json
           path: output/info
@@ -5682,7 +5682,7 @@ jobs:
 
       - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: assets-for-download-stable
           path: downloads
