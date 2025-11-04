@@ -12,9 +12,7 @@ common-gha-configs:
         armbian-bsp-cli: [ "fast" ]
       by-name-and-arch:
         rootfs-armhf: [ "self-hosted", "Linux", "aarch64" ]
-# Breaks Debian builds with:
-# The specified keyring /usr/share/keyrings/debian-archive-keyring.gpg may be incorrect or out of date.
-#        rootfs-arm64: [ "self-hosted", "Linux", "aarch64" ]
+        rootfs-arm64: [ "ubuntu-24.04-arm" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
         rootfs-loong64: [ "self-hosted", "Linux", "X64" ]
