@@ -33,6 +33,7 @@ lists:
 
   standard-support-headless: &standard-support-headless
     # auto generated section
+    - { BOARD: espressobin, BRANCH: current }
     - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: jethubj100, BRANCH: current }
