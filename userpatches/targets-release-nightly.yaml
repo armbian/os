@@ -206,7 +206,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: forky
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -221,7 +221,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: forky
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
