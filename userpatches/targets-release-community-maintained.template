@@ -11,7 +11,7 @@ common-gha-configs:
         uboot: [ "self-hosted", "Linux", "fast", "X64" ]
         armbian-bsp-cli: [ "fast" ]
       by-name-and-arch:
-        rootfs-armhf: [ "self-hosted", "Linux", "ARM64" , "fast" ]
+        rootfs-armhf: [ "self-hosted", "Linux", "X64" , "fast" ]
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" , "fast" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64", "fast" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64", "fast" ]
