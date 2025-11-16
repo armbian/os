@@ -120,7 +120,7 @@ targets:
 
   # Ubuntu full CLI
   full-cli-stable-ubuntu:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -171,7 +171,6 @@ targets:
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
       - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
       - { BOARD: mekotronics-r58hd, BRANCH: vendor }
       - { BOARD: mekotronics-r58-4x4, BRANCH: vendor }
 
