@@ -29,7 +29,7 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        skip-releases: [ "focal", "bookworm", "sid", "oracular" ] # do NOT include these releases
+        skip-releases: [ "focal", "bookworm", "sid", "oracular", "resolute", "questing" ] # do NOT include these releases
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["gnome", "xfce", "cinnamon" ] # ONLY include these desktops
