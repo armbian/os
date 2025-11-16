@@ -172,7 +172,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: questing
+      RELEASE: plucky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -187,7 +187,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: questing
+      RELEASE: plucky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -206,7 +206,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: trixie
+      RELEASE: forky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -221,7 +221,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: trixie
+      RELEASE: forky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
