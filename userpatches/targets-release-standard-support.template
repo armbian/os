@@ -29,23 +29,6 @@ lists:
 
 targets:
 
-  # Debian minimal oldstable
-  minimal-cli-oldstable-debian:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-      build-image: "yes"
-    vars:
-      RELEASE: bookworm
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *standard-support-slow-hdmi
-      - *standard-support-fast-hdmi
-      - *standard-support-headless
-      - *standard-support-riscv64
-
   # Debian minimal
   minimal-cli-stable-debian:
     enabled: yes
