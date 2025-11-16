@@ -1,0 +1,57 @@
+name: "Clean repository"
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Framework build branch'
+        default: 'main'
+        type: string
+
+jobs:
+
+  prepare:
+    name: "JSON"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix:  ${{steps.json.outputs.JSON_CONTENT}}
+    steps:
+      - name: "Checkout Armbian build Framework"
+        uses: actions/checkout@v5
+        with:
+          repository: armbian/build
+          ref: ${{ inputs.ref || inputs.branch || 'main' }}
+          clean: false
+          fetch-depth: 1
+          path: build
+
+      - name: "Make JSON"
+        id: json
+        run: |
+
+          echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
+          releases=($(grep "supported\|csc" build/config/distributions/*/support | cut -d"/" -f4))
+          for i in ${releases[@]}; do
+              desktops=($(grep "supported\|csc" build/config/desktop/${i}/environments/*/support | cut -d"/" -f6))
+              desktops+=(cli minimal)
+                  for j in ${desktops[@]}; do
+                      echo "{\"release\":\"${i}\",\"desktop\":\"$j\"}"
+                  done
+              done | jq -s >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  gradle:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      max-parallel: 64
+      matrix:
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    name: "Build Qemu"
+    timeout-minutes: 60
+    runs-on: [ images, X64 ]
+    steps:
+
+      # Cleaning self hosted runners
+      - name: Runner clean
+        uses: armbian/actions/runner-clean@main
