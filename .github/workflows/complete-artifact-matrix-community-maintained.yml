@@ -2244,18 +2244,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -2461,18 +2488,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -2678,18 +2732,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -2895,18 +2976,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -3112,18 +3220,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -3329,18 +3464,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -3546,18 +3708,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -3763,18 +3952,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -3980,18 +4196,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -4197,18 +4440,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -4414,18 +4684,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -4631,18 +4928,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -4848,18 +5172,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -5065,18 +5416,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -5282,18 +5660,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
@@ -5499,18 +5904,45 @@ jobs:
 
           # generate control file which checks mirrors
           sudo date +%s > output/images/control
+
           cat output/info/servers-upload.csv | \
           while read i; do
-             SERVER_URL=$(echo $i | cut -d "," -f1)
-             SERVER_PORT=$(echo $i | cut -d "," -f3)
-             SERVER_PATH=$(echo $i | cut -d "," -f2)
-             SERVER_USERNAME=$(echo $i | cut -d "," -f4)
-             # clean
-             ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}"
-             # upload
-             rsync --progress -e \
-             "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-             -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/"
+              SERVER_URL=$(echo "$i" | cut -d "," -f1)
+              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
+              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
+              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+
+              # clean
+              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
+
+              # upload with retry
+              max_retries=3
+              attempt=1
+
+              while :; do
+                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+
+                  # IMPORTANT: make rsync safe under 'set -e'
+                  status=0
+                  rsync --progress -e \
+                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
+                    || status=$?
+
+                  if [ "$status" -eq 0 ]; then
+                      echo "[$SERVER_URL] rsync successful."
+                      break
+                  fi
+
+                  if [ "$attempt" -ge "$max_retries" ]; then
+                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
+                      exit "$status"
+                  fi
+
+                  attempt=$((attempt + 1))
+                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
+                  sleep 10
+              done
           done
 
       # cleaning self hosted runners
