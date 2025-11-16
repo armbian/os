@@ -308,7 +308,7 @@ jobs:
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: assets-for-download-[[repository_ref]]
           path: downloads
@@ -475,12 +475,12 @@ jobs:
           | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-cache.csv
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=push&tag=images&status=active" \
+          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&tag=upload&tag=images&status=active" \
           | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
           | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-upload.csv
 
       # Store output/info folder in a GitHub Actions artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         name: Upload output/info as GitHub Artifact
         with:
           name: build-info-json
