@@ -29,7 +29,7 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        skip-releases: [ "focal", "bookworm", "sid", "oracular", "resolute", "questing" ] # do NOT include these releases
+        skip-releases: [ "focal", "sid", "oracular", "resolute", "questing" ] # do NOT include these releases
         #only-releases: ["trixie", "bookworm", "bullseye"] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: ["gnome", "xfce", "cinnamon" ] # ONLY include these desktops
@@ -57,9 +57,9 @@ targets:
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
         #skip-releases: [ "sid" ] # do NOT include these releases
-        only-releases: [ "noble", "bookworm", "trixie" ] # ONLY include these releases
+        only-releases: [ "noble", "trixie", "forky", "sid" ] # ONLY include these releases
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
-        only-desktops: ["xfce"] # ONLY include these desktops
+        only-desktops: [ "xfce", "gnome" ] # ONLY include these desktops
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops, one per desktop_variations below; 'eos' ones are always skipped
@@ -78,8 +78,8 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        only-releases: [ "sid" ] # ONLY include these releases
-        only-desktops: ["gnome"] # ONLY include these desktops
+        only-releases: [ "forky", "sid", "plucky" ] # ONLY include these releases
+        only-desktops: [ "gnome" ] # ONLY include these desktops
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops, one per desktop_variations below; 'eos' ones are always skipped
@@ -127,7 +127,7 @@ targets:
       DESKTOP_ENVIRONMENT: "xfce"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "none"
-      RELEASE: "jammy"
+      RELEASE: "noble"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
@@ -143,7 +143,7 @@ targets:
     vars:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
-      RELEASE: "jammy"
+      RELEASE: "noble"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
