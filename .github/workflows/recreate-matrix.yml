@@ -177,11 +177,11 @@ jobs:
         ' build/config/boards/*.{conf,eos,wip,csc} \
           | LC_ALL=C sort -u \
           | awk '{ printf "        - \"%s\"\n", $0 }' > /tmp/maintainers.txt
+
+        branches=$(git -C build/ for-each-ref --sort=-committerdate --count=20 --format='%(refname:short)' refs/heads)
         {
-          echo "main"
-          git -C build/ for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads \
-            | grep -v '^main$' \
-            | head -n 19
+            echo main
+            printf '%s\n' "$branches" | grep -v '^main$'
         } | sed 's/.*/        - &/' > /tmp/branches.txt
 
         function enable_extension()
