@@ -784,16 +784,16 @@ jobs:
           cp trackerslist/best.txt build/output/info/best-torrent-servers.txt
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
           | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.csv
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
+          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
           | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|dl|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
           | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-download.csv
 
           timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=cache&status=active" \
+          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=cache&status=active" \
           | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|cache|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
           | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-cache.csv
 
