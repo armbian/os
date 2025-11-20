@@ -2296,6 +2296,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2303,12 +2315,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -2582,6 +2590,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2589,12 +2609,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -2868,6 +2884,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2875,12 +2903,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -3154,6 +3178,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3161,12 +3197,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -3440,6 +3472,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3447,12 +3491,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -3726,6 +3766,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3733,12 +3785,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4012,6 +4060,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4019,12 +4079,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4298,6 +4354,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4305,12 +4373,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4584,6 +4648,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4591,12 +4667,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4870,6 +4942,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4877,12 +4961,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -5156,6 +5236,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5163,12 +5255,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -5442,6 +5530,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5449,12 +5549,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -5728,6 +5824,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5735,12 +5843,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -6014,6 +6118,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6021,12 +6137,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -6300,6 +6412,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6307,12 +6431,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -6586,6 +6706,18 @@ jobs:
           #rand=$[ $RANDOM % 2 ]
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
+      - name: Prepare release artifacts (exclude .asc, .sha, .torrent)
+        run: |
+          # Start from a clean directory
+          rm -rf output/release
+          mkdir -p output/release
+
+          # Copy wanted artifacts only
+          find output/images -type f -name 'Armbian_*.*' \
+            ! -name '*.asc' \
+            ! -name '*.sha' \
+            ! -name '*.torrent' \
+            -exec cp {} output/release/ \;
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6593,12 +6725,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: |
-            output/images/*/*/Armbian_*.*
-            !output/images/*/*/*.asc
-            !output/images/*/*/*.sha
-            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
+          artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
