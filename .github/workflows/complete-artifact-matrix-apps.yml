@@ -2386,10 +2386,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2658,10 +2672,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2930,10 +2958,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3202,10 +3244,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3474,10 +3530,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3746,10 +3816,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4018,10 +4102,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4290,10 +4388,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4562,10 +4674,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4834,10 +4960,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5106,10 +5246,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5378,10 +5532,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5650,10 +5818,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5922,10 +6104,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -6194,10 +6390,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -6466,10 +6676,24 @@ jobs:
               done < "$csv"
           }
 
-          # Upload to cache servers: only .xz/.sha/.torrent
-          sync_from_csv output/info/servers-cache.csv cache
-          # Upload to servers: everything except .xz/.sha/.torrent
-          sync_from_csv output/info/servers-upload.csv upload
+          nightlybuild="${{ github.event.inputs.nightlybuild }}"
+          nightlybuild_default="'no'"
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
+
+          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+
+          if [ "$effective_nightlybuild" = "yes" ] || \
+            [ "$RELEASE_REPOSITORY" = "community" ] || \
+            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
+            # Upload to cache servers: only .xz/.sha/.torrent
+            sync_from_csv output/info/servers-cache.csv cache
+          fi
+
+          if [ "$effective_nightlybuild" = "no" ] && \
+            [ "$RELEASE_REPOSITORY" = "os" ]; then
+            # Upload to servers: everything except .xz/.sha/.torrent
+            sync_from_csv output/info/servers-upload.csv upload
+          fi
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
