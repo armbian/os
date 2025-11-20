@@ -2185,6 +2185,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -2428,6 +2430,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -2673,6 +2677,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -2916,6 +2922,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -3161,6 +3169,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -3404,6 +3414,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -3649,6 +3661,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -3892,6 +3906,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -4137,6 +4153,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -4380,6 +4398,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -4625,6 +4645,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -4868,6 +4890,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -5113,6 +5137,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -5356,6 +5382,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
@@ -5601,6 +5629,8 @@ jobs:
         timeout-minutes: 3
         run: |
 
+          ls -la output/info/
+
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
             if ls -l output/images/*/archive/*.$files &>/dev/null; then
@@ -5844,6 +5874,8 @@ jobs:
       - name: Generate torrent
         timeout-minutes: 3
         run: |
+
+          ls -la output/info/
 
           TRACKERS=$(cat output/info/best-torrent-servers.txt | sed '/^\s*$/d' | sort -R | while read line; do printf " --announce=""${line}"; done)
           for files in zip xz qcow2; do
