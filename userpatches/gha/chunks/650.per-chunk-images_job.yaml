@@ -193,6 +193,7 @@ jobs: # <TEMPLATE-IGNORE>
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
+          tag: "${{ needs.matrix_prep.outputs.version }}"
           artifacts: "output/release/*"
           omitBody: true
           replacesArtifacts: true
