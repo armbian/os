@@ -96,6 +96,7 @@ lists:
     - { BOARD: sk-am69, BRANCH: vendor }
     - { BOARD: sk-tda4vm, BRANCH: vendor }
     - { BOARD: sweet-potato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: tmds62levm, BRANCH: vendor }
     # end of auto generated section
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
