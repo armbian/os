@@ -2297,13 +2297,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2313,103 +2317,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2589,13 +2569,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2605,103 +2589,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -2881,13 +2841,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -2897,103 +2861,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3173,13 +3113,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3189,103 +3133,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3465,13 +3385,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3481,103 +3405,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -3757,13 +3657,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -3773,103 +3677,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4049,13 +3929,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4065,103 +3949,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4341,13 +4201,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4357,103 +4221,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4633,13 +4473,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4649,103 +4493,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -4925,13 +4745,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -4941,103 +4765,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5217,13 +5017,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -5233,103 +5037,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5509,13 +5289,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -5525,103 +5309,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -5801,13 +5561,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -5817,103 +5581,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -6093,13 +5833,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -6109,103 +5853,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -6385,13 +6105,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -6401,103 +6125,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
@@ -6677,13 +6377,17 @@ jobs:
           #echo "upload_user=${arr[$rand]}" >> $GITHUB_ENV
 
 
-      - name: "Upload artefacts"
+      - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
         if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          artifacts: "output/images/*/*/Armbian_*.*"
+          artifacts: |
+            output/images/*/*/Armbian_*.*
+            !output/images/*/*/*.asc
+            !output/images/*/*/*.sha
+            !output/images/*/*/*.torrent
           tag: "${{ needs.matrix_prep.outputs.version }}"
           omitBody: true
           replacesArtifacts: true
@@ -6693,103 +6397,79 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           token: "${{ env.GH_TOKEN }}"
-          #token: ${{ secrets.ACCESS_TOKEN }}
-          #token: ${{ env.upload_user }}
 
-      # Due to GitHub artifacts limitations (1000) introduced in mid 2025, we will be storing .asc, .sha and .torrent files to our cache servers
-      - name: "Upload asc, sha and torrent"
-        timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+      - name: "Upload to servers"
         run: |
-
           max_retries=3
 
-          # read CSV safely: URL, PATH, PORT, USER
-          while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
-              # skip empty or commented lines
-              [ -z "$SERVER_URL" ] && continue
-              case "$SERVER_URL" in
-                  \#*) continue ;;
-              esac
-              echo "Processing mirror: $SERVER_URL (port $SERVER_PORT, path $SERVER_PATH)"
-              # clean known_hosts entry (host:port aware)
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+          sync_from_csv() {
+              local csv=$1
+              local mode=$2          # "cache" or "upload"
 
-              for attempt in $(seq 1 "$max_retries"); do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
+              echo "== Processing ${csv} (mode: ${mode}) =="
 
-                  if rsync --progress \
-                      -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                      -rvP \
-                      --include='*.xz' \
-                      --include='*.sha' \
-                      --include='*.torrent' \
-                      --exclude='*' \
-                      output/images/ \
-                      "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/cache/artifacts/"
-                  then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
+              while IFS=, read -r SERVER_URL SERVER_PATH SERVER_PORT SERVER_USERNAME _; do
+                  # skip empty / commented
+                  [ -z "$SERVER_URL" ] && continue
+                  case "$SERVER_URL" in \#*) continue ;; esac
+
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+
+                  # Clean known_hosts entry (host:port form)
+                  ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true
+
+                  # Select rsync filters + remote subdir
+                  if [ "$mode" = "cache" ]; then
+                      # A: only .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --include='*.xz'
+                          --include='*.sha'
+                          --include='*.torrent'
+                          --exclude='*'
+                      )
+                      REMOTE_SUBDIR="artifacts/"
+                  else
+                      # B: everything *except* .xz, .sha, .torrent
+                      RSYNC_FILTER=(
+                          --exclude='*.xz'
+                          --exclude='*.sha'
+                          --exclude='*.torrent'
+                          --include='*'
+                      )
+                      REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
                   fi
 
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts."
-                      exit 1
-                  fi
+                  # Retry loop
+                  for attempt in $(seq 1 "$max_retries"); do
+                      echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
-                  echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done < output/info/servers-cache.csv
+                      if rsync --progress \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          -rvP \
+                          "${RSYNC_FILTER[@]}" \
+                          output/images/ \
+                          "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/${REMOTE_SUBDIR}"
+                      then
+                          echo "[$SERVER_URL] rsync successful."
+                          break
+                      fi
 
-      - name: Deploy to servers
-        timeout-minutes: 240
-        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'no' && env.RELEASE_REPOSITORY == 'os' }}
-        #if: ${{ github.event.inputs.uploadtoserver == 'armbian' || github.event.inputs.uploadtoserver == 'both' }}
-        run: |
+                      if [ "$attempt" -eq "$max_retries" ]; then
+                          echo "[$SERVER_URL] rsync FAILED after ${max_retries} attempts."
+                          exit 1
+                      fi
 
-          # generate control file which checks mirrors
-          sudo date +%s > output/images/control
+                      echo "[$SERVER_URL] rsync failed. Retrying in 10 seconds..."
+                      sleep 10
+                  done
 
-          cat output/info/servers-upload.csv | \
-          while read i; do
-              SERVER_URL=$(echo "$i" | cut -d "," -f1)
-              SERVER_PORT=$(echo "$i" | cut -d "," -f3)
-              SERVER_PATH=$(echo "$i" | cut -d "," -f2)
-              SERVER_USERNAME=$(echo "$i" | cut -d "," -f4)
+              done < "$csv"
+          }
 
-              # clean
-              ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${SERVER_URL}" || true
-
-              # upload with retry
-              max_retries=3
-              attempt=1
-
-              while :; do
-                  echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
-
-                  # IMPORTANT: make rsync safe under 'set -e'
-                  status=0
-                  rsync --progress -e \
-                    "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
-                    -rvP output/images/ "${SERVER_USERNAME}@${SERVER_URL}:${SERVER_PATH}/incoming/${{ github.actor }}/" \
-                    || status=$?
-
-                  if [ "$status" -eq 0 ]; then
-                      echo "[$SERVER_URL] rsync successful."
-                      break
-                  fi
-
-                  if [ "$attempt" -ge "$max_retries" ]; then
-                      echo "[$SERVER_URL] rsync failed after ${max_retries} attempts (exit code ${status})."
-                      exit "$status"
-                  fi
-
-                  attempt=$((attempt + 1))
-                  echo "[$SERVER_URL] rsync failed (exit code ${status}). Retrying in 10 seconds..."
-                  sleep 10
-              done
-          done
+          # Upload to cache servers: only .xz/.sha/.torrent
+          sync_from_csv output/info/servers-cache.csv cache
+          # Upload to servers: everything except .xz/.sha/.torrent
+          sync_from_csv output/info/servers-upload.csv upload
 
       # cleaning self hosted runners
       - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
