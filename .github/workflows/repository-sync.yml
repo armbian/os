@@ -41,7 +41,7 @@ jobs:
         run: |
           echo 'JSON_CONTENT<<EOF' >> $GITHUB_OUTPUT
           curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=push&tag=debs&status=failed&status=active" \
+          "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=push&tag=debs&status=failed&status=active" \
           | jq '.results[] | .name' | grep -v null | sed "s/\"//g" | jq -cnR '[inputs | select(length>0)]' | jq >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
 
@@ -73,7 +73,7 @@ jobs:
         run: |
 
           JSON=$(curl -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "https://stuff.armbian.com/netbox/api/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
+          "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&name=${{ matrix.node }}" | jq)
           SERVER_PATH=$(echo $JSON | jq '.results[] | .custom_fields["path"]' | sed "s/\"//g")
           SERVER_PORT=$(echo $JSON | jq '.results[] | .custom_fields["port"]' | sed "s/\"//g")
           DOWNLOAD_PATH=$(echo $JSON | jq '.results[] | .custom_fields["download_path_debs"]' | sed "s/\"//g")
