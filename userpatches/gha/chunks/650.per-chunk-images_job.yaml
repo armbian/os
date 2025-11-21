@@ -260,16 +260,26 @@ jobs: # <TEMPLATE-IGNORE>
 
               # Iterate over JSON array elements
               while IFS= read -r server; do
-                  # Extract fields with jq
+                  # JSON structure (same for all files):
+                  # {
+                  #   "host": "...",
+                  #   "upload_path": "...",
+                  #   "download_path_archive": "...",
+                  #   "download_path_images": "...",
+                  #   "download_path_debs": "...",
+                  #   "port": 22,
+                  #   "username": "mirror"
+                  # }
+
                   SERVER_URL=$(jq -r '.host // empty' <<<"$server")
-                  SERVER_PATH=$(jq -r '.path // ""' <<<"$server")
+                  SERVER_PATH=$(jq -r '.upload_path // ""' <<<"$server")
                   SERVER_PORT=$(jq -r '.port // 22' <<<"$server")
                   SERVER_USERNAME=$(jq -r '.username // "mirror"' <<<"$server")
 
                   # skip empty host
                   [ -z "$SERVER_URL" ] && continue
 
-                  echo "Processing: $SERVER_URL:$SERVER_PORT (path: $SERVER_PATH)"
+                  echo "Processing: $SERVER_URL:$SERVER_PORT (upload_path: $SERVER_PATH)"
 
                   # Clean known_hosts entry (host:port form)
                   ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${SERVER_URL}]:${SERVER_PORT}" 2>/dev/null || true

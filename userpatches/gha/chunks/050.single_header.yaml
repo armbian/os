@@ -462,39 +462,49 @@ jobs:
 
           mkdir -p build/output/info
 
-          # copy traskers list
+          # copy trackers list
           cp trackerslist/best.txt build/output/info/best-torrent-servers.txt
 
           BASE_URL="${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&status=active"
 
+          # One jq filter used for all kinds – same fields everywhere
+          JQ_FILTER='
+            .results
+            | map(
+                select(.name != null)
+                | {
+                    host: .name,
+                    upload_path: (.custom_fields["path"] // ""),
+                    download_path_archive: (.custom_fields["download_path_archive"] // ""),
+                    download_path_images: (.custom_fields["download_path_images"] // ""),
+                    download_path_debs: (.custom_fields["download_path_debs"] // ""),
+                    port: (.custom_fields["port"] // 22),
+                    username: (.custom_fields["username"] // "mirror")
+                  }
+              )
+            | sort_by(.host)
+          '
+
           for kind in servers servers-download servers-cache servers-upload; do
             case "$kind" in
               servers)
-                # Mirrors serving images, path from download_path_images, default "dl"
+                # All mirrors serving images
                 url="$BASE_URL&device_role=Mirror&tag=images"
-                path_field="download_path_images"
-                default_path="dl"
                 outfile="build/output/info/servers.jq"
                 ;;
               servers-download)
-                # Same as servers, but separate list (if you want different routing later)
+                # Mirrors used as HTTP download sources (webseeds)
                 url="$BASE_URL&device_role=Mirror&tag=images"
-                path_field="download_path_images"
-                default_path="dl"
                 outfile="build/output/info/servers-download.jq"
                 ;;
               servers-cache)
-                # Cache mirrors, path from download_path_images, default "cache"
+                # Cache mirrors (can be used for HTTP + rsync)
                 url="$BASE_URL&device_role=Mirror&tag=cache"
-                path_field="download_path_images"
-                default_path="cache"
                 outfile="build/output/info/servers-cache.jq"
                 ;;
               servers-upload)
-                # Upload targets, path from custom_fields.path, default "beta"
+                # Upload targets (SSH)
                 url="$BASE_URL&tag=upload&tag=images"
-                path_field="path"
-                default_path="beta"
                 outfile="build/output/info/servers-upload.jq"
                 ;;
             esac
@@ -505,19 +515,8 @@ jobs:
               -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
               -H "Accept: application/json; indent=4" \
               "$url" \
-            | jq --arg pathField "$path_field" --arg defaultPath "$default_path" '
-                .results
-                | map(
-                    select(.name != null)
-                    | {
-                        host: .name,
-                        path: (.custom_fields[$pathField] // $defaultPath),
-                        port: (.custom_fields["port"] // 22),
-                        username: (.custom_fields["username"] // "mirror")
-                      }
-                  )
-                | sort_by(.host)
-              ' > "$outfile"
+            | jq "$JQ_FILTER" > "$outfile"
+
           done
 
       # Store output/info folder in a GitHub Actions artifact
