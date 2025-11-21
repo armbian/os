@@ -454,30 +454,71 @@ jobs:
         run: |
           echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
 
-      - name: Get server list from NetBox
+      - name: Generate server lists from NetBox (JSON)
         id: prepare-urls
         run: |
 
+          set -euo pipefail
+
+          mkdir -p build/output/info
+
+          # copy traskers list
           cp trackerslist/best.txt build/output/info/best-torrent-servers.txt
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.csv
+          BASE_URL="${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&status=active"
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-          | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|dl|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
-          | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-download.csv
+          for kind in servers servers-download servers-cache servers-upload; do
+            case "$kind" in
+              servers)
+                # Mirrors serving images, path from download_path_images, default "dl"
+                url="$BASE_URL&device_role=Mirror&tag=images"
+                path_field="download_path_images"
+                default_path="dl"
+                outfile="build/output/info/servers.jq"
+                ;;
+              servers-download)
+                # Same as servers, but separate list (if you want different routing later)
+                url="$BASE_URL&device_role=Mirror&tag=images"
+                path_field="download_path_images"
+                default_path="dl"
+                outfile="build/output/info/servers-download.jq"
+                ;;
+              servers-cache)
+                # Cache mirrors, path from download_path_images, default "cache"
+                url="$BASE_URL&device_role=Mirror&tag=cache"
+                path_field="download_path_images"
+                default_path="cache"
+                outfile="build/output/info/servers-cache.jq"
+                ;;
+              servers-upload)
+                # Upload targets, path from custom_fields.path, default "beta"
+                url="$BASE_URL&tag=upload&tag=images"
+                path_field="path"
+                default_path="beta"
+                outfile="build/output/info/servers-upload.jq"
+                ;;
+            esac
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=cache&status=active" \
-          | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|cache|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
-          | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-cache.csv
+            echo "Generating $outfile from $url"
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&tag=upload&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-upload.csv
+            timeout 10 curl -s \
+              -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
+              -H "Accept: application/json; indent=4" \
+              "$url" \
+            | jq --arg pathField "$path_field" --arg defaultPath "$default_path" '
+                .results
+                | map(
+                    select(.name != null)
+                    | {
+                        host: .name,
+                        path: (.custom_fields[$pathField] // $defaultPath),
+                        port: (.custom_fields["port"] // 22),
+                        username: (.custom_fields["username"] // "mirror")
+                      }
+                  )
+                | sort_by(.host)
+              ' > "$outfile"
+          done
 
       # Store output/info folder in a GitHub Actions artifact
       - uses: actions/upload-artifact@v5
