@@ -6,7 +6,7 @@ jobs: # <TEMPLATE-IGNORE>
   closing:
     name: "Footer"
     runs-on: ubuntu-latest
-    if: ${{ !failure() && !cancelled() && inputs.ref == '' && ((github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' || env.RELEASE_REPOSITORY == 'distribution') }}
+    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
