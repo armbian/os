@@ -2345,13 +2345,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -2717,13 +2718,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -3089,13 +3091,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -3461,13 +3464,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -3833,13 +3837,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -4205,13 +4210,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -4577,13 +4583,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -4949,13 +4956,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -5321,13 +5329,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -5693,13 +5702,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -6065,13 +6075,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -6437,13 +6448,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -6809,13 +6821,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -7181,13 +7194,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -7553,13 +7567,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
@@ -7925,13 +7940,14 @@ jobs:
           fi
 
           # Nightly / stable logic (templated)
+          RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
 
-          if [ "$effective_nightlybuild" = "no" ]; then
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" != "distribution" ]; then
             ##################################################################
             # STABLE RELEASES
             # Use download mirrors (servers-download.jq)
