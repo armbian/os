@@ -1991,14 +1991,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -2014,17 +2015,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -2036,7 +2036,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -2354,14 +2355,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -2377,17 +2379,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -2399,7 +2400,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -2717,14 +2719,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -2740,17 +2743,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -2762,7 +2764,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -3080,14 +3083,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -3103,17 +3107,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -3125,7 +3128,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -3443,14 +3447,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -3466,17 +3471,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -3488,7 +3492,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -3806,14 +3811,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -3829,17 +3835,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -3851,7 +3856,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -4169,14 +4175,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -4192,17 +4199,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -4214,7 +4220,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -4532,14 +4539,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -4555,17 +4563,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -4577,7 +4584,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -4895,14 +4903,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -4918,17 +4927,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -4940,7 +4948,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -5258,14 +5267,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -5281,17 +5291,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -5303,7 +5312,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -5621,14 +5631,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -5644,17 +5655,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -5666,7 +5676,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -5984,14 +5995,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -6007,17 +6019,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -6029,7 +6040,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -6347,14 +6359,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -6370,17 +6383,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -6392,7 +6404,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -6710,14 +6723,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -6733,17 +6747,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -6755,7 +6768,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -7073,14 +7087,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -7096,17 +7111,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -7118,7 +7132,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -7436,14 +7451,15 @@ jobs:
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2), same logic as before
+          # Find BOARD and FILE (zip/xz/qcow2)
           BOARD=""
           FILE=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
               first_match=$(ls -1 output/images/*/archive/*."$ext" | head -n1)
-              BOARD=$(basename "$(dirname "$first_match")")   # .../BOARD/archive/file.ext
+              # first_match = output/images/BOARD/archive/file.ext
+              BOARD=$(basename "$(dirname "$(dirname "$first_match")")")   # -> BOARD
               FILE=$(basename "$first_match")
               break
             fi
@@ -7459,17 +7475,16 @@ jobs:
           nightlybuild_default="'no'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          # We'll produce a comma-separated list of webseeds
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
                 | select(.download_path_images != "")
-                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
+                | "http://\(.host)\((.download_path_images
+                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
@@ -7481,7 +7496,8 @@ jobs:
                 --arg file "$FILE" '
                   .[]
                   | select(.download_path_archive != "")
-                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\((.download_path_archive
+                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
