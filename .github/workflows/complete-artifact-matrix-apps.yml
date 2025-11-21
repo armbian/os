@@ -2384,7 +2384,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2450,6 +2450,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -2459,6 +2460,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -2738,7 +2740,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2804,6 +2806,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -2813,6 +2816,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -3092,7 +3096,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3158,6 +3162,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -3167,6 +3172,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -3446,7 +3452,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3512,6 +3518,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -3521,6 +3528,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -3800,7 +3808,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3866,6 +3874,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -3875,6 +3884,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -4154,7 +4164,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4220,6 +4230,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -4229,6 +4240,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -4508,7 +4520,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4574,6 +4586,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -4583,6 +4596,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -4862,7 +4876,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4928,6 +4942,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -4937,6 +4952,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -5216,7 +5232,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5282,6 +5298,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -5291,6 +5308,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -5570,7 +5588,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5636,6 +5654,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -5645,6 +5664,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -5924,7 +5944,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5990,6 +6010,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -5999,6 +6020,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -6278,7 +6300,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6344,6 +6366,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -6353,6 +6376,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -6632,7 +6656,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6698,6 +6722,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -6707,6 +6732,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -6986,7 +7012,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -7052,6 +7078,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -7061,6 +7088,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -7340,7 +7368,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -7406,6 +7434,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -7415,6 +7444,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
@@ -7694,7 +7724,7 @@ jobs:
             -exec cp --parents {} output/release/ \;
 
           # debug
-          ls -l output/release/ 
+          tree output/images
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -7760,6 +7790,7 @@ jobs:
                   if [ "$mode" = "cache" ]; then
                       # A: only .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --include='*.xz'
                           --include='*.sha'
                           --include='*.torrent'
@@ -7769,6 +7800,7 @@ jobs:
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
+                          --include='*/'
                           --exclude='*.xz'
                           --exclude='*.sha'
                           --exclude='*.torrent'
