@@ -2334,28 +2334,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -2698,28 +2708,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -3062,28 +3082,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -3426,28 +3456,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -3790,28 +3830,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -4154,28 +4204,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -4518,28 +4578,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -4882,28 +4952,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -5246,28 +5326,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -5610,28 +5700,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -5974,28 +6074,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -6338,28 +6448,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -6702,28 +6822,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -7066,28 +7196,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -7430,28 +7570,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
@@ -7794,28 +7944,38 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | select(.download_path_images != "")
-                | "http://\(.host)\((.download_path_images
-                      | if startswith(\"/\") then . else \"/\" + . end))/\($board)/archive/\($file)"
+                | "http://\(.host)\(
+                      (.download_path_images // "")
+                      | if . == "" then "" 
+                        elif startswith("/") then . 
+                        else "/" + . 
+                        end
+                  )/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | select(.download_path_archive != "")
-                  | "http://\(.host)\((.download_path_archive
-                        | if startswith(\"/\") then . else \"/\" + . end))/\($repo)/\($ver)/\($file)"
+                  | "http://\(.host)\(
+                        (.download_path_archive // "")
+                        | if . == "" then "" 
+                          elif startswith("/") then . 
+                          else "/" + . 
+                          end
+                    )/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
+
+            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
+            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+          fi
 
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
