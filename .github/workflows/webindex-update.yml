@@ -203,7 +203,7 @@ jobs:
 
           cp os/kernel-description.json .
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: artifacts
           path: |
