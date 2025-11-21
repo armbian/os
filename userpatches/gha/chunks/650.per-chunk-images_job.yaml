@@ -210,6 +210,11 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
