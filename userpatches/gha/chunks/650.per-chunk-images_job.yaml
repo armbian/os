@@ -324,7 +324,7 @@ jobs: # <TEMPLATE-IGNORE>
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="[[nightlybuildDefaults]]"
+          
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
