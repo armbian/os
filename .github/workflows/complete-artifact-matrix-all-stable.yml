@@ -7996,7 +7996,7 @@ jobs:
   closing:
     name: "Footer"
     runs-on: ubuntu-latest
-    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || 'no') == 'yes' }}
+    if: ${{ !failure() && !cancelled() && inputs.ref == '' && ((github.event.inputs.nightlybuild || 'no') == 'yes' || env.RELEASE_REPOSITORY == 'distribution') }}
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
