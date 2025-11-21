@@ -2461,7 +2461,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -2815,7 +2815,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -3169,7 +3169,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -3523,7 +3523,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -3877,7 +3877,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -4231,7 +4231,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -4585,7 +4585,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -4939,7 +4939,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -5293,7 +5293,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -5647,7 +5647,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -6001,7 +6001,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -6355,7 +6355,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -6709,7 +6709,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -7063,7 +7063,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -7417,7 +7417,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
@@ -7771,7 +7771,7 @@ jobs:
                           --include='*.torrent'
                           --exclude='*'
                       )
-                      REMOTE_SUBDIR="artifacts/"
+                      REMOTE_SUBDIR="cache/artifacts/"
                   else
                       # B: everything *except* .xz, .sha, .torrent
                       RSYNC_FILTER=(
