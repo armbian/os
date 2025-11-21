@@ -2352,36 +2352,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -2729,36 +2724,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -3106,36 +3096,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -3483,36 +3468,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -3860,36 +3840,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -4237,36 +4212,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -4614,36 +4584,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -4991,36 +4956,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -5368,36 +5328,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -5745,36 +5700,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -6122,36 +6072,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -6499,36 +6444,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -6876,36 +6816,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -7253,36 +7188,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -7630,36 +7560,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
@@ -8007,36 +7932,31 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
-            # Stable releases → use download mirrors (servers-download.jq)
-            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
+            ##################################################################
+            # STABLE RELEASES
+            # Use download mirrors (servers-download.jq)
+            # URL: https://<host><download_path_images>/<BOARD>/archive/<FILE>
+            # download_path_images is already normalized & defaults to /dl in JSON.
+            ##################################################################
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
-                | "http://\(.host)\(
-                      (.download_path_images // "")
-                      | if . == "" then "" 
-                        elif startswith("/") then . 
-                        else "/" + . 
-                        end
-                  )/\($board)/archive/\($file)"
+                | "https://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
-            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # URL: http://<host><download_path_archive>/os/<version>/<FILE>
+            ##################################################################
+            # NIGHTLY BUILDS
+            # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # Path is FIXED: https://SERVER/cache/os/<version>/<FILE>
+            ##################################################################
             WEBSEEDS=$(
               jq -r \
                 --arg repo "os" \
                 --arg ver "${{ needs.matrix_prep.outputs.version }}" \
                 --arg file "$FILE" '
                   .[]
-                  | "http://\(.host)\(
-                        (.download_path_archive // "")
-                        | if . == "" then "" 
-                          elif startswith("/") then . 
-                          else "/" + . 
-                          end
-                    )/\($repo)/\($ver)/\($file)"
+                  | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
