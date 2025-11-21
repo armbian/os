@@ -2320,7 +2320,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -2335,20 +2335,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -2387,6 +2392,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2676,7 +2683,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -2691,20 +2698,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -2743,6 +2755,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3032,7 +3046,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -3047,20 +3061,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -3099,6 +3118,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3388,7 +3409,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -3403,20 +3424,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -3455,6 +3481,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3744,7 +3772,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -3759,20 +3787,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -3811,6 +3844,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4100,7 +4135,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -4115,20 +4150,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -4167,6 +4207,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4456,7 +4498,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -4471,20 +4513,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -4523,6 +4570,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4812,7 +4861,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -4827,20 +4876,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -4879,6 +4933,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5168,7 +5224,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -5183,20 +5239,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -5235,6 +5296,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5524,7 +5587,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -5539,20 +5602,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -5591,6 +5659,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5880,7 +5950,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -5895,20 +5965,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -5947,6 +6022,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6236,7 +6313,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -6251,20 +6328,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -6303,6 +6385,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6592,7 +6676,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -6607,20 +6691,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -6659,6 +6748,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6948,7 +7039,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -6963,20 +7054,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -7015,6 +7111,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -7304,7 +7402,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -7319,20 +7417,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -7371,6 +7474,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -7660,7 +7765,7 @@ jobs:
             fi
           done
 
-          # Safety check (optional)
+          # Safety check
           if [ -z "$BOARD" ] || [ -z "$FILE" ]; then
             echo "No torrent source file found (zip/xz/qcow2) in output/images/*/archive" >&2
             exit 1
@@ -7675,20 +7780,25 @@ jobs:
 
           if [ "$effective_nightlybuild" = "no" ]; then
             # Stable releases → use download mirrors (servers-download.jq)
-            # SERVER_PATH assumed to be defined elsewhere in your script/env
+            # Use host + download_path_images + BOARD/archive/FILE
             WEBSEEDS=$(
-              jq -r --arg sp "$SERVER_PATH" --arg board "$BOARD" --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($sp)\($board)/archive/\($file)"
+              jq -r --arg board "$BOARD" --arg file "$FILE" '
+                .[]
+                | select(.download_path_images != "")
+                | "http://\(.host)\(.download_path_images)/\($board)/archive/\($file)"
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
             # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
             WEBSEEDS=$(
-              jq -r --arg repo "community" \
-                    --arg ver "${{ needs.matrix_prep.outputs.version }}" \
-                    --arg file "$FILE" '
-                .[] | "http://\(.host)\(.path)/\($repo)/\($ver)/\($file)"
-              ' output/info/servers-cache.jq | paste -sd, -
+              jq -r \
+                --arg repo "community" \
+                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg file "$FILE" '
+                  .[]
+                  | select(.download_path_archive != "")
+                  | "http://\(.host)\(.download_path_archive)/\($repo)/\($ver)/\($file)"
+                ' output/info/servers-cache.jq | paste -sd, -
             )
 
             # Append GitHub webseed
@@ -7727,6 +7837,8 @@ jobs:
 
           # debug
           tree output/images
+          echo "# debug"
+          tree output/release
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
