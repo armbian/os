@@ -2152,22 +2152,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -2526,22 +2523,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -2900,22 +2894,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -3274,22 +3265,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -3648,22 +3636,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -4022,22 +4007,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -4396,22 +4378,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -4770,22 +4749,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -5144,22 +5120,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -5518,22 +5491,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -5892,22 +5862,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -6266,22 +6233,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -6640,22 +6604,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -7014,22 +6975,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -7388,22 +7346,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
@@ -7762,22 +7717,19 @@ jobs:
 
                   # Select rsync filters + remote subdir
                   if [ "$mode" = "cache" ]; then
-                      # A: only .xz, .sha, .torrent
+                      # only.sha, .torrent .asc
                       RSYNC_FILTER=(
                           --include='*/'
-                          --include='*.xz'
                           --include='*.sha'
+                          --include='*.asc'
                           --include='*.torrent'
                           --exclude='*'
                       )
                       REMOTE_SUBDIR="cache/artifacts/"
                   else
-                      # B: everything *except* .xz, .sha, .torrent
+                      # everything
                       RSYNC_FILTER=(
                           --include='*/'
-                          --exclude='*.xz'
-                          --exclude='*.sha'
-                          --exclude='*.torrent'
                           --include='*'
                       )
                       REMOTE_SUBDIR="incoming/${GITHUB_ACTOR}/"
