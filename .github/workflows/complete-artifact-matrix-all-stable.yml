@@ -561,9 +561,19 @@ jobs:
                 | {
                     host: .name,
                     upload_path: (.custom_fields["path"] // ""),
-                    download_path_archive: (.custom_fields["download_path_archive"] // ""),
-                    download_path_images: (.custom_fields["download_path_images"] // ""),
-                    download_path_debs: (.custom_fields["download_path_debs"] // ""),
+
+                    download_path_archive:
+                      ((.custom_fields["download_path_archive"] // "/archive")
+                        | if startswith("/") then . else "/" + . end),
+
+                    download_path_images:
+                      ((.custom_fields["download_path_images"] // "/dl")
+                        | if startswith("/") then . else "/" + . end),
+
+                    download_path_debs:
+                      ((.custom_fields["download_path_debs"] // "/apt")
+                        | if startswith("/") then . else "/" + . end),
+
                     port: (.custom_fields["port"] // 22),
                     username: (.custom_fields["username"] // "mirror")
                   }
