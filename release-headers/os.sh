@@ -21,5 +21,10 @@ cat <<EOF
 
 <p align='center'>
   Rolling releases are daily builds with the latest kernel and userspace packages for supported hardware.
+  SHA checksums, GPG signatures, and torrent files can be obtained from our cache server at
+  <a href="https://cache.armbian.com/artifacts">https://cache.armbian.com/artifacts</a>.
+</p>
+
+
 </p>
 EOF
