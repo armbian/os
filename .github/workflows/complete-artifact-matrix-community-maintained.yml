@@ -2300,16 +2300,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -2327,6 +2330,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -2334,6 +2338,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -2347,6 +2353,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -2363,10 +2371,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -2374,8 +2378,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -2384,7 +2390,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -2671,16 +2677,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -2698,6 +2707,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -2705,6 +2715,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -2718,6 +2730,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -2734,10 +2748,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -2745,8 +2755,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -2755,7 +2767,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -3042,16 +3054,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -3069,6 +3084,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -3076,6 +3092,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -3089,6 +3107,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -3105,10 +3125,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -3116,8 +3132,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -3126,7 +3144,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -3413,16 +3431,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -3440,6 +3461,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -3447,6 +3469,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -3460,6 +3484,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -3476,10 +3502,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -3487,8 +3509,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -3497,7 +3521,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -3784,16 +3808,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -3811,6 +3838,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -3818,6 +3846,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -3831,6 +3861,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -3847,10 +3879,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -3858,8 +3886,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -3868,7 +3898,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -4155,16 +4185,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -4182,6 +4215,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -4189,6 +4223,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -4202,6 +4238,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -4218,10 +4256,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -4229,8 +4263,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -4239,7 +4275,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -4526,16 +4562,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -4553,6 +4592,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -4560,6 +4600,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -4573,6 +4615,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -4589,10 +4633,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -4600,8 +4640,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -4610,7 +4652,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -4897,16 +4939,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -4924,6 +4969,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -4931,6 +4977,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -4944,6 +4992,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -4960,10 +5010,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -4971,8 +5017,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -4981,7 +5029,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -5268,16 +5316,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -5295,6 +5346,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -5302,6 +5354,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -5315,6 +5369,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -5331,10 +5387,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -5342,8 +5394,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -5352,7 +5406,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -5639,16 +5693,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -5666,6 +5723,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -5673,6 +5731,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -5686,6 +5746,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -5702,10 +5764,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -5713,8 +5771,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -5723,7 +5783,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -6010,16 +6070,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -6037,6 +6100,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -6044,6 +6108,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -6057,6 +6123,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -6073,10 +6141,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -6084,8 +6148,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -6094,7 +6160,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -6381,16 +6447,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -6408,6 +6477,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -6415,6 +6485,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -6428,6 +6500,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -6444,10 +6518,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -6455,8 +6525,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -6465,7 +6537,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -6752,16 +6824,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -6779,6 +6854,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -6786,6 +6862,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -6799,6 +6877,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -6815,10 +6895,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -6826,8 +6902,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -6836,7 +6914,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -7123,16 +7201,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -7150,6 +7231,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -7157,6 +7239,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -7170,6 +7254,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -7186,10 +7272,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -7197,8 +7279,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -7207,7 +7291,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -7494,16 +7578,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -7521,6 +7608,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -7528,6 +7616,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -7541,6 +7631,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -7557,10 +7649,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -7568,8 +7656,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -7578,7 +7668,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
@@ -7865,16 +7955,19 @@ jobs:
         timeout-minutes: 3
         run: |
 
-          # Build tracker list (unchanged in spirit, just cleaner)
+          set -euo pipefail
+
+          # Build tracker list (ignore empty/whitespace-only lines)
           TRACKERS=$(
             grep -v '^[ 	]*$' output/info/best-torrent-servers.txt \
               | sort -R \
               | sed 's/^/ --announce=/'
           )
 
-          # Find BOARD and FILE (zip/xz/qcow2)
+          # Find BOARD and FILE (first zip/xz/qcow2 in output/images/*/archive/)
           BOARD=""
           FILE=""
+          first_match=""
 
           for ext in zip xz qcow2; do
             if ls output/images/*/archive/*."$ext" >/dev/null 2>&1; then
@@ -7892,6 +7985,7 @@ jobs:
             exit 1
           fi
 
+          # Nightly / stable logic (templated)
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
           nightlybuild_default="'yes'"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -7899,6 +7993,8 @@ jobs:
           WEBSEEDS=""
 
           if [ "$effective_nightlybuild" = "no" ]; then
+            # Stable releases → use download mirrors (servers-download.jq)
+            # URL: http://<host><download_path_images>/<BOARD>/archive/<FILE>
             WEBSEEDS=$(
               jq -r --arg board "$BOARD" --arg file "$FILE" '
                 .[]
@@ -7912,6 +8008,8 @@ jobs:
               ' output/info/servers-download.jq | paste -sd, -
             )
           else
+            # Nightly → use cache mirrors (servers-cache.jq) + GitHub as extra webseed
+            # URL: http://<host><download_path_archive>/community/<version>/<FILE>
             WEBSEEDS=$(
               jq -r \
                 --arg repo "community" \
@@ -7928,10 +8026,6 @@ jobs:
                 ' output/info/servers-cache.jq | paste -sd, -
             )
 
-            [ -n "$WEBSEEDS" ] && WEBSEEDS+=","
-            WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
-          fi
-
             # Append GitHub webseed
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
@@ -7939,8 +8033,10 @@ jobs:
             WEBSEEDS+="https://github.com/armbian/community/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
           fi
 
-          # Now build the torrent
-          cd output/images/*/archive/ || exit 1
+          echo "WEBSEEDS: $WEBSEEDS"
+
+          # Go to the archive directory that contains FILE
+          cd "$(dirname "$first_match")" || exit 1
 
           mktorrent \
             --comment="Armbian torrent for ${FILE}" \
@@ -7949,7 +8045,7 @@ jobs:
             --web-seed="${WEBSEEDS}" \
             "${FILE}"
 
-          # drop .txt file
+          # drop .txt helper files
           rm -f *.txt
 
       - name: "Prepare release artifacts (exclude .asc, .sha, .torrent)"
