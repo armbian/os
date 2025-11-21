@@ -1988,12 +1988,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2002,7 +2006,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -2014,6 +2018,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -2282,12 +2291,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2296,7 +2309,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -2308,6 +2321,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -2576,12 +2594,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2590,7 +2612,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -2602,6 +2624,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -2870,12 +2897,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -2884,7 +2915,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -2896,6 +2927,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -3164,12 +3200,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3178,7 +3218,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -3190,6 +3230,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -3458,12 +3503,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3472,7 +3521,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -3484,6 +3533,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -3752,12 +3806,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -3766,7 +3824,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -3778,6 +3836,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -4046,12 +4109,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4060,7 +4127,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4072,6 +4139,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -4340,12 +4412,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4354,7 +4430,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4366,6 +4442,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -4634,12 +4715,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4648,7 +4733,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4660,6 +4745,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -4928,12 +5018,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -4942,7 +5036,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -4954,6 +5048,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -5222,12 +5321,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5236,7 +5339,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -5248,6 +5351,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -5516,12 +5624,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5530,7 +5642,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -5542,6 +5654,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -5810,12 +5927,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -5824,7 +5945,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -5836,6 +5957,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -6104,12 +6230,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6118,7 +6248,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -6130,6 +6260,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
@@ -6398,12 +6533,16 @@ jobs:
           rm -rf output/release
           mkdir -p output/release
 
-          # Copy wanted artifacts only
+          # Copy wanted artifacts from output/images, preserving folder structure
+          # e.g. output/images/BOARDNAME/archive/Armbian_*.img -> output/release/output/images/BOARDNAME/archive/...
           find output/images -type f -name 'Armbian_*.*' \
             ! -name '*.asc' \
             ! -name '*.sha' \
             ! -name '*.torrent' \
-            -exec cp {} output/release/ \;
+            -exec cp --parents {} output/release/ \;
+
+          # debug
+          ls -l output/release/ 
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
@@ -6412,7 +6551,7 @@ jobs:
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ needs.matrix_prep.outputs.version }}"
-          artifacts: "output/release/*"
+          artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
           omitName: true
@@ -6424,6 +6563,11 @@ jobs:
 
       - name: "Upload to servers"
         run: |
+
+          # debug
+          cat output/info/servers-cache.csv
+          cat output/info/servers-upload.csv
+
           max_retries=3
 
           sync_from_csv() {
