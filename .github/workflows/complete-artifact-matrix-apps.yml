@@ -41,6 +41,25 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
+        - update-kernel-configs
+        - sunxi
+        - coderabbitai/docstrings/2e13998
+        - revert-8583-fix-atf-compile
+        - test
+        - v25.08
+        - v25.05
+        - revert-8484-add-and-enable-lte-em05-driver
+        - igorpecovnik-patch-2
+        - igorpecovnik-patch-1
+        - logofix
+        - coderabbitai/utg/20bTtA
+        - coderabbitai/docstrings/20bTtA
+        - opi5-mainline-uboot-update
+        - prepre
+        - fixper
+        - bump-6.15-collab
+        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
