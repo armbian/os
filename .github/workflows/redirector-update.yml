@@ -131,7 +131,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: debs-beta
           path: downloads
@@ -167,7 +167,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: debs
           path: downloads
@@ -203,7 +203,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: archive
           path: downloads
@@ -239,7 +239,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: images
           path: downloads
