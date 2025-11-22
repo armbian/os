@@ -150,6 +150,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: ""
     items:
+      - *community-maintained-slow-hdmi
       - *community-maintained-riscv64
       - { BOARD: aml-s9xx-box, BRANCH: current }
 
@@ -168,6 +169,7 @@ targets:
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
       DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
     items:
+      - *community-maintained-fast-hdmi
       - { BOARD: ayn-odin2, BRANCH: sm8550}
       - { BOARD: xpressreal-t3, BRANCH: vendor}
 
