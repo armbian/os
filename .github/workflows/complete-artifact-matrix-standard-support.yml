@@ -42,7 +42,6 @@ on:
         # branches
         - main
         - disc
-        - update-maintainers
         - update-kernel-configs
         - sunxi
         - coderabbitai/docstrings/2e13998
@@ -60,6 +59,7 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
+        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
@@ -8333,6 +8333,7 @@ jobs:
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
+      # Download workflow artifacts
       - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
         uses: actions/download-artifact@v6
@@ -8340,26 +8341,17 @@ jobs:
           name: assets-for-download-stable
           path: downloads
 
+      # Read version
       - name: "Read version"
         run: |
 
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
 
-      # Delete artifact
+      # Delete artifacts
       - uses: geekyeggo/delete-artifact@v5
         with:
           name: assets-for-download-stable
           failOnError: false
-
-      # Cleaning releases
-      #
-      # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
-      #- uses: dev-drprasad/delete-older-releases@v0.3.2
-      #  with:
-      #    repo: armbian/os
-      #    keep_latest: 16
-      #  env:
-      #    GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
@@ -8381,6 +8373,7 @@ jobs:
           makeLatest: true
           token: "${{ env.GH_TOKEN }}"
 
+      # Run repository mirroring to CDN
       - name: "Run repository mirroring to CDN"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
         uses: peter-evans/repository-dispatch@v4
@@ -8390,6 +8383,7 @@ jobs:
           event-type: "Mirror"
           client-payload: '{"pull_repository": "armbian/${{ env.RELEASE_REPOSITORY }}", "cdn_tag": "${{ env.RELEASE_REPOSITORY }}"}'
 
+      # Run webindex update action
       - name: "Run webindex update action"
         if: ${{ (github.event.inputs.skipImages || 'no') == 'no' }}
         uses: peter-evans/repository-dispatch@v4
