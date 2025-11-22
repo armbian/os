@@ -7862,24 +7862,21 @@ jobs:
         uses: armbian/actions/runner-clean@main
 
       # Prepare dependencies.
-      # If no /usr/bin/gpg, install gnupg2
-      # If no /usr/bin/reprepro, install reprepro
-      # If no /usr/bin/lftp, install lftp
       - name: Install dependencies
         run: |
-          if [ ! -e /usr/bin/gpg ]; then
-            sudo apt-get update
-            sudo apt-get install -y gnupg2
-          fi
-          if [ ! -e /usr/bin/reprepro ]; then
-            sudo apt-get update
-            sudo apt-get install -y reprepro
-          fi
-          if [ ! -e /usr/bin/lftp ]; then
-            sudo apt-get update
-            sudo apt-get install -y lftp
-          fi
+          missing=()
 
+          [ -x /usr/bin/gpg ]      || missing+=("gnupg2")
+          [ -x /usr/bin/reprepro ] || missing+=("reprepro")
+          [ -x /usr/bin/lftp ]     || missing+=("lftp")
+
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Installing missing packages: ${missing[*]}"
+            sudo apt-get update
+            sudo apt-get install -y "${missing[@]}"
+          else
+            echo "All required packages already installed."
+          fi
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
@@ -7957,38 +7954,39 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: Sync parts when making single images / maintainer
-#        if: ${{ (github.event.inputs.skipImages || 'yes') == 'no' }}
+      - name: "Fix permissions and sync artifacts"
         run: |
+          set -euo pipefail
 
-          echo "fix permissions"
-          sudo chown -R $USER:$USER output/.
+          echo "Fix permissions on output/"
+          sudo chown -R "$USER:$USER" output/.
+
+          # Decide target subfolder
           TARGET=""
-
-          #if [ "'yes'" == "'yes'" ] && [ "'no'" == "'no'" ]; then
-          if [ "${{ github.event.inputs.skipImages}}" == "no" ] || [ "'yes'" == "no" ]; then
-              echo "Save to users folder"
-              TARGET="partial/${{ github.actor }}/"
-          #else
-          #    THIS IS NOT USED. It is just making a mess.
-          #    # drop nightly repository
-          #    sudo rm -rf /outgoing/repository-beta/*
-          #    # sync to stable from the list
-          #    rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }}" --include-from=userpatches.repo/stable-repo.sync \
-          #    --exclude='*' --progress -va output/debs*/. \
-          #    ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:/incoming/${TARGET}
+          if [ "${{ github.event.inputs.skipImages }}" = "no" ] || [ "'yes'" = "no" ]; then
+            echo "Save to user's partial folder"
+            TARGET="partial/${{ github.actor }}/"
           fi
 
-          sudo chown -R ${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }} /incoming/.
+          if [ "$GITHUB_WORKFLOW" = "Build All Stable Artifacts (cronjob)" ]; then
+              echo "Nightly workflow detected"
+              TARGET="stable-daily/"
+          fi
 
-          echo "sync all parts"
-          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }} -o StrictHostKeyChecking=accept-new" -arvc \
-          --include='debs***' \
-          --exclude='*' \
-          --remove-source-files \
-          --delete \
-          output/ ${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${TARGET}
-          # clean
+          echo "Fix permissions on /incoming"
+          sudo chown -R "${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }}" /incoming/.
+
+          echo "Sync all parts (only debs***)"
+          rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }} -o StrictHostKeyChecking=accept-new" \
+                -arvc \
+                --include='debs***' \
+                --exclude='*' \
+                --remove-source-files \
+                --delete \
+                output/ \
+                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${TARGET}"
+
+          echo "Clean up empty directories in output/"
           find output/. -type d -empty -delete
 
       - name: "Run repository update action"
