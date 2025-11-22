@@ -178,10 +178,17 @@ jobs:
           | LC_ALL=C sort -u \
           | awk '{ printf "        - \"%s\"\n", $0 }' > /tmp/maintainers.txt
 
-        branches=$(git -C build/ for-each-ref --sort=-committerdate --count=20 --format='%(refname:short)' refs/heads)
+        branches=$(git -C build/ for-each-ref \
+          --sort=-committerdate \
+          --count=20 \
+          --format='%(refname:short)' \
+          refs/remotes/origin)
+
         {
-            echo main
-            printf '%s\n' "$branches" | grep -v '^main$'
+          echo main
+          printf '%s\n' "$branches" \
+            | sed 's#^origin/##' \
+            | grep -v '^main$'
         } | sed 's/.*/        - &/' > /tmp/branches.txt
 
         # debug
