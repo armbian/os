@@ -22,5 +22,7 @@ cat <<EOF
 <p align='center'>
   Community courtesy builds are not maintained by Armbian team, but exist thanks to 
   <a href="https://github.com/sponsors/armbian">community support</a>.
+   SHA checksums, GPG signatures, and torrent files can be obtained from our cache server at
+  <a href="https://cache.armbian.com/artifacts">https://cache.armbian.com/artifacts</a>.
 </p>
 EOF

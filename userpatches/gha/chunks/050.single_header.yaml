@@ -454,30 +454,80 @@ jobs:
         run: |
           echo "Logs: ${{ steps.prepare-matrix.outputs.logs_url }}"
 
-      - name: Get server list from NetBox
+      - name: Generate server lists from NetBox (JSON)
         id: prepare-urls
         run: |
 
+          set -euo pipefail
+
+          mkdir -p build/output/info
+
+          # copy trackers list
           cp trackerslist/best.txt build/output/info/best-torrent-servers.txt
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-          | jq '.results[] | .name' | grep -v null | sed "s/\"//g" > build/output/info/servers.csv
+          BASE_URL="${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&status=active"
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=images&status=active" \
-          | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|dl|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
-          | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-download.csv
+          # One jq filter used for all kinds – same fields everywhere
+          JQ_FILTER='
+            .results
+            | map(
+                select(.name != null)
+                | {
+                    host: .name,
+                    upload_path: (.custom_fields["path"] // ""),
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H \
-          "Accept: application/json; indent=4" "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&device_role=Mirror&tag=cache&status=active" \
-          | jq '.results[] | .name, .custom_fields["download_path_images"]' | sed "s/\"//g" | sed "s|null|cache|" | sed "s/\"//g" | xargs -n2 -d'\n' | sed "s/ /\//g" \
-          | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-cache.csv
+                    download_path_archive:
+                      ((.custom_fields["download_path_archive"] // "/archive")
+                        | if startswith("/") then . else "/" + . end),
 
-          timeout 10 curl -s -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" -H "Accept: application/json; indent=4" \
-          "${{ secrets.NETBOX_API }}/virtualization/virtual-machines/?limit=500&name__empty=false&tag=upload&tag=images&status=active" \
-          | jq '.results[] | .name,.custom_fields["path"],.custom_fields["port"],.custom_fields["username"]' | sed "s|null|beta|" | sed "s/\"//g" | xargs -n4 -d'\n' \
-          | sed "s/ /,/g" | jq -cnR '[inputs | select(length>0)]' | jq -c '.[]' | sed "s/\"//g" | sort -R > build/output/info/servers-upload.csv
+                    download_path_images:
+                      ((.custom_fields["download_path_images"] // "/dl")
+                        | if startswith("/") then . else "/" + . end),
+
+                    download_path_debs:
+                      ((.custom_fields["download_path_debs"] // "/apt")
+                        | if startswith("/") then . else "/" + . end),
+
+                    port: (.custom_fields["port"] // 22),
+                    username: (.custom_fields["username"] // "mirror")
+                  }
+              )
+            | sort_by(.host)
+          '
+
+          for kind in servers servers-download servers-cache servers-upload; do
+            case "$kind" in
+              servers)
+                # All mirrors serving images
+                url="$BASE_URL&device_role=Mirror&tag=images"
+                outfile="build/output/info/servers.jq"
+                ;;
+              servers-download)
+                # Mirrors used as HTTP download sources (webseeds)
+                url="$BASE_URL&device_role=Mirror&tag=images"
+                outfile="build/output/info/servers-download.jq"
+                ;;
+              servers-cache)
+                # Cache mirrors (can be used for HTTP + rsync)
+                url="$BASE_URL&device_role=Mirror&tag=cache"
+                outfile="build/output/info/servers-cache.jq"
+                ;;
+              servers-upload)
+                # Upload targets (SSH)
+                url="$BASE_URL&tag=upload&tag=images"
+                outfile="build/output/info/servers-upload.jq"
+                ;;
+            esac
+
+            echo "Generating $outfile from $url"
+
+            timeout 10 curl -s \
+              -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
+              -H "Accept: application/json; indent=4" \
+              "$url" \
+            | jq "$JQ_FILTER" > "$outfile"
+
+          done
 
       # Store output/info folder in a GitHub Actions artifact
       - uses: actions/upload-artifact@v5

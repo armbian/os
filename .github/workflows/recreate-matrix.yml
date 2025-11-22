@@ -154,18 +154,54 @@ jobs:
         #ls -1 build/config/boards/*.{conf,wip} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/staging.txt
         #ls -1 build/config/boards/*.{tvb,csc} | cut -d"/" -f4 | cut -d"." -f1 | uniq | sed 's/.*/        - &/' > /tmp/community-maintained.txt
         awk -F= '
-        /BOARD_MAINTAINER/ {
-          line=$2
-          sub(/#.*/, "", line)         # strip trailing comments
-          gsub(/"/, "", line)          # drop quotes
-          gsub(/[;,]/, " ", line)      # commas/semicolons -> space
-          n=split(line, a, /[[:space:]]+/)
-          for(i=1;i<=n;i++) if(a[i]!="") print a[i]
-        }' build/config/boards/*.{conf,eos,wip,csc} \
-        | sort -u \
-        | sed 's/.*/        - "&"/'
-        > /tmp/maintainers.txt
-        git ls-remote --heads https://github.com/armbian/build | grep "v2" | cut -d"/" -f3 | sort | tail -1 | sed '1s/^/main\ntest\n/' | sed 's/.*/        - &/' > /tmp/branches.txt
+          # skip full-line comments
+          /^[[:space:]]*#/ { next }
+
+          # only process lines with BOARD_MAINTAINER= in the first field
+          $1 ~ /^[[:space:]]*BOARD_MAINTAINER[[:space:]]*$/ {
+            line = $2
+
+            sub(/#.*/, "", line)            # strip trailing comments
+            gsub(/"/, "", line)             # drop quotes
+            gsub(/[;,]/, " ", line)         # commas/semicolons -> space
+
+            # trim leading/trailing whitespace
+            sub(/^[[:space:]]+/, "", line)
+            sub(/[[:space:]]+$/, "", line)
+
+            n = split(line, a, /[[:space:]]+/)
+            for (i = 1; i <= n; i++)
+              if (a[i] != "")
+                print a[i]
+          }
+        ' build/config/boards/*.{conf,eos,wip,csc} \
+          | LC_ALL=C sort -u \
+          | awk '{ printf "        - \"%s\"\n", $0 }' > /tmp/maintainers.txt
+
+        branches=$(git -C build/ for-each-ref \
+          --sort=-committerdate \
+          --count=20 \
+          --format='%(refname:short)' \
+          refs/remotes/origin)
+
+        {
+          echo main
+          printf '%s\n' "$branches" \
+            | sed 's#^origin/##' \
+            | grep -v '^main$'
+        } | sed 's/.*/        - &/' > /tmp/branches.txt
+
+        # debug
+        cat /tmp/branches.txt
+        echo "-"
+        cat /tmp/maintainers.txt
+        echo "-"
+        cat /tmp/standard-support.txt
+        echo "-"
+        cat /tmp/staging.txt
+        echo "-"
+        cat /tmp/community-maintained.txt
+        echo "-"
 
         function enable_extension()
         {

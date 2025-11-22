@@ -10,6 +10,7 @@ jobs: # <TEMPLATE-IGNORE>
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
+      # Download workflow artifacts
       - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
         uses: actions/download-artifact@v6
@@ -17,26 +18,17 @@ jobs: # <TEMPLATE-IGNORE>
           name: assets-for-download-[[repository_ref]]
           path: downloads
 
+      # Read version
       - name: "Read version"
         run: |
 
           echo "version=$(cat downloads/version 2>/dev/null || true)" >> $GITHUB_ENV
 
-      # Delete artifact
+      # Delete artifacts
       - uses: geekyeggo/delete-artifact@v5
         with:
           name: assets-for-download-[[repository_ref]]
           failOnError: false
-
-      # Cleaning releases
-      #
-      # To do: we need to differentiate between pre and releases and optimise clenaing procees. Following action doesn't know to handle this best
-      #- uses: dev-drprasad/delete-older-releases@v0.3.2
-      #  with:
-      #    repo: armbian/os
-      #    keep_latest: 16
-      #  env:
-      #    GITHUB_TOKEN: "${{ env.GH_TOKEN }}"
 
       # Cleaning logs
       - name: "Keep only 14 days of workflow logs"
@@ -58,6 +50,7 @@ jobs: # <TEMPLATE-IGNORE>
           makeLatest: true
           token: "${{ env.GH_TOKEN }}"
 
+      # Run repository mirroring to CDN
       - name: "Run repository mirroring to CDN"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
         uses: peter-evans/repository-dispatch@v4
@@ -67,6 +60,7 @@ jobs: # <TEMPLATE-IGNORE>
           event-type: "Mirror"
           client-payload: '{"pull_repository": "armbian/${{ env.RELEASE_REPOSITORY }}", "cdn_tag": "${{ env.RELEASE_REPOSITORY }}"}'
 
+      # Run webindex update action
       - name: "Run webindex update action"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) == 'no' }}
         uses: peter-evans/repository-dispatch@v4
