@@ -259,7 +259,7 @@ jobs:
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: debs-beta
           path: downloads
@@ -294,7 +294,7 @@ jobs:
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: debs
           path: downloads
@@ -328,7 +328,7 @@ jobs:
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: archive
           path: downloads
@@ -363,7 +363,7 @@ jobs:
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: images
           path: downloads
@@ -406,7 +406,7 @@ jobs:
           fileName: "*.mmdb"
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: redirector-config
           path: downloads
