@@ -184,6 +184,18 @@ jobs:
             printf '%s\n' "$branches" | grep -v '^main$'
         } | sed 's/.*/        - &/' > /tmp/branches.txt
 
+        # debug
+        cat /tmp/branches.txt
+        echo "-"
+        cat /tmp/maintainers.txt
+        echo "-"
+        cat /tmp/standard-support.txt
+        echo "-"
+        cat /tmp/staging.txt
+        echo "-"
+        cat /tmp/community-maintained.txt
+        echo "-"
+
         function enable_extension()
         {
         :
