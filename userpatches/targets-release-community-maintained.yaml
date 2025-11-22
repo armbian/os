@@ -33,7 +33,6 @@ lists:
   community-maintained-headless: &community-maintained-headless
     # auto generated section
     - { BOARD: clearfogbase, BRANCH: current }
-    - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
@@ -45,7 +44,6 @@ lists:
     - { BOARD: nanopi-r2s-plus, BRANCH: current }
     - { BOARD: nanopi-r2s, BRANCH: current }
     - { BOARD: nanopi-r3s, BRANCH: current }
-    - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: nanopi-r4se, BRANCH: current }
     - { BOARD: nanopiair, BRANCH: current }
     - { BOARD: nanopiduo, BRANCH: current }
@@ -132,7 +130,6 @@ lists:
     - { BOARD: nanopi-r6c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopia64, BRANCH: current }
     - { BOARD: nanopik1plus, BRANCH: current }
-    - { BOARD: nanopik2-s905, BRANCH: current }
     - { BOARD: nanopim4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopineo4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidm1s, BRANCH: current }
@@ -167,7 +164,6 @@ lists:
     - { BOARD: radxa-cm4-io, BRANCH: vendor }
     - { BOARD: radxa-cubie-a5e, BRANCH: edge }
     - { BOARD: radxa-e20c, BRANCH: vendor }
-    - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-e54c, BRANCH: vendor }
     - { BOARD: radxa-rock-4d, BRANCH: vendor }
     - { BOARD: radxa-zero2, BRANCH: current }
@@ -224,9 +220,7 @@ lists:
     - { BOARD: bananapir2, BRANCH: current }
     - { BOARD: beelinkx2, BRANCH: current }
     - { BOARD: cubieboard2, BRANCH: current }
-    - { BOARD: cubieboard4, BRANCH: current }
     - { BOARD: cubietruck, BRANCH: current }
-    - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: lime, BRANCH: current }
     - { BOARD: lime2, BRANCH: current }
     - { BOARD: luckfox-lyra-plus, BRANCH: vendor }

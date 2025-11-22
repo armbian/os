@@ -32,10 +32,12 @@ lists:
 
   standard-support-headless: &standard-support-headless
     # auto generated section
+    - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: espressobin, BRANCH: current }
     - { BOARD: gateway-gz80x, BRANCH: current }
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: mksklipad50, BRANCH: current }
+    - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
@@ -69,6 +71,7 @@ lists:
     - { BOARD: nanopi-r3s-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-r76s, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopik2-s905, BRANCH: current }
     - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidhc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -80,6 +83,7 @@ lists:
     - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pocketbeagle2, BRANCH: vendor }
     - { BOARD: radxa-dragon-q6a, BRANCH: edge }
+    - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-e52c, BRANCH: vendor }
     - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -102,6 +106,7 @@ lists:
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
     - { BOARD: bananapim2plus, BRANCH: current }
+    - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
