@@ -120,6 +120,11 @@ jobs: # <TEMPLATE-IGNORE>
             TARGET="partial/${{ github.actor }}/"
           fi
 
+          if [ "$GITHUB_WORKFLOW" = "Build All Stable Artifacts (cronjob)" ]; then
+              echo "Nightly workflow detected"
+              TARGET="stable-daily/"
+          fi
+
           echo "Fix permissions on /incoming"
           sudo chown -R "${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }}" /incoming/.
 
