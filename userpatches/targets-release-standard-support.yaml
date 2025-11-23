@@ -42,7 +42,6 @@ lists:
     - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
-    - { BOARD: zeropi, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am64b, BRANCH: vendor }
@@ -116,6 +115,7 @@ lists:
     - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-e52c, BRANCH: vendor }
     - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
+    - { BOARD: radxa-rock-4d, BRANCH: vendor }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -346,7 +346,7 @@ targets:
 
   #  Full Debian Cinnamon
   cinnamon-3d-desktop-stable-debian:
-    enabled: no
+    enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
