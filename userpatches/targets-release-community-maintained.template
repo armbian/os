@@ -57,6 +57,21 @@ targets:
       BUILD_DESKTOP: "no"
     items:
       - { BOARD: aml-s9xx-box, BRANCH: current }
+      - { BOARD: tanix-tx6, BRANCH: current }
+
+  # debian stable cli
+  full-cli-stable-debian:
+    enabled: yes
+    configs: [ armbian-community ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: tanix-tx6, BRANCH: current }
 
   # debian stable xfce
   xfce-desktop-stable-debian:
