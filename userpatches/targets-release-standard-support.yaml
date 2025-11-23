@@ -345,7 +345,7 @@ targets:
 
   #  Full Debian Cinnamon
   cinnamon-3d-desktop-stable-debian:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
