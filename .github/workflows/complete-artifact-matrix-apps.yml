@@ -41,9 +41,9 @@ on:
         options:
         # branches
         - main
+        - update-kernel-configs
         - update-maintainers
         - v25.11
-        - update-kernel-configs
         - sunxi
         - coderabbitai/docstrings/2e13998
         - revert-8583-fix-atf-compile
