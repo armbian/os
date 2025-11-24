@@ -19,7 +19,7 @@ jobs:
     steps:
 
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: armbian/os
           fetch-depth: 0
@@ -148,7 +148,7 @@ jobs:
           failOnError: false
 
       - name: "Checkout OS repository to get latest tag"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: armbian/os
           fetch-depth: 0
