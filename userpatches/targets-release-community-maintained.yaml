@@ -32,6 +32,7 @@ lists:
 
   community-maintained-headless: &community-maintained-headless
     # auto generated section
+    - { BOARD: bananapir4, BRANCH: current }
     - { BOARD: clearfogbase, BRANCH: current }
     - { BOARD: cubieboard, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
@@ -81,7 +82,6 @@ lists:
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
-    - { BOARD: bananapir4, BRANCH: current }
     - { BOARD: bestv-r3300-l, BRANCH: current }
     - { BOARD: cainiao-cniot-core, BRANCH: current }
     - { BOARD: cherryba-m1, BRANCH: current }
