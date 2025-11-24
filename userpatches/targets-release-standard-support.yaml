@@ -41,6 +41,7 @@ lists:
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: radxa-e52c, BRANCH: vendor }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
@@ -113,11 +114,12 @@ lists:
     - { BOARD: pocketbeagle2, BRANCH: vendor }
     - { BOARD: radxa-dragon-q6a, BRANCH: edge }
     - { BOARD: radxa-e25, BRANCH: current }
-    - { BOARD: radxa-e52c, BRANCH: vendor }
     - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
     - { BOARD: radxa-rock-4d, BRANCH: vendor }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-2a, BRANCH: vendor }
+    - { BOARD: rock-2f, BRANCH: vendor }
     - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-3a, BRANCH: vendor }
     - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
