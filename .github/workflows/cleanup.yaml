@@ -16,7 +16,7 @@ jobs:
       matrix:  ${{steps.json.outputs.JSON_CONTENT}}
     steps:
       - name: "Checkout Armbian build Framework"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: armbian/build
           ref: ${{ inputs.ref || inputs.branch || 'main' }}
