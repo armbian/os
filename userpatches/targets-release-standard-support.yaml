@@ -114,6 +114,7 @@ lists:
     - { BOARD: pocketbeagle2, BRANCH: vendor }
     - { BOARD: radxa-dragon-q6a, BRANCH: edge }
     - { BOARD: radxa-e25, BRANCH: current }
+    - { BOARD: radxa-e54c, BRANCH: vendor }
     - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
     - { BOARD: radxa-rock-4d, BRANCH: vendor }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -150,7 +151,6 @@ lists:
     # auto generated section
     - { BOARD: bananapi, BRANCH: current }
     - { BOARD: bananapim2plus, BRANCH: current }
-    - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }

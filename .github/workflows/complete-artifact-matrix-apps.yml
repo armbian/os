@@ -41,7 +41,6 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
         - v25.11
         - update-kernel-configs
         - sunxi
@@ -60,6 +59,7 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
+        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
