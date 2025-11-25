@@ -47,7 +47,6 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/tj-actions/changed-files-6da3c88b60ebf09464ada9b06fba5b6f2d34bb94
         - update-maintainers
         - v25.11
         - update-kernel-configs
@@ -66,6 +65,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
