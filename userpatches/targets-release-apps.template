@@ -262,7 +262,7 @@ targets:
       build-image: "yes"
     vars:
       RELEASE: bookworm
-      BUILD_MINIMAL: "yes"
+      BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "ha"
       NETWORKING_STACK: "network-manager"
