@@ -24,7 +24,6 @@ lists:
 
   armbian-security: &armbian-security
     - { BOARD: bananapim7, BRANCH: current }
-    - { BOARD: bananapif3, BRANCH: current }
     - { BOARD: bananapim5, BRANCH: current }
     - { BOARD: bananapim5pro, BRANCH: current }
     - { BOARD: inovato-quadra, BRANCH: current }
