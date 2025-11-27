@@ -200,7 +200,7 @@ lists:
     - { BOARD: xiaobao-nas, BRANCH: current }
     - { BOARD: xpressreal-t3, BRANCH: vendor }
     - { BOARD: youyeetoo-r1-v3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: youyeetoo-yy3588, BRANCH: vendor }
+    - { BOARD: youyeetoo-yy3588, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: yy3568, BRANCH: current }
     - { BOARD: z28pro, BRANCH: current }
     # end of auto generated section
