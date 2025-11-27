@@ -118,7 +118,7 @@ jobs:
               fi
 
       - name: Upload resoults
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.sha1 }}
           path: artifact
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "merged"
-        uses: actions/upload-artifact/merge@v4
+        uses: actions/upload-artifact/merge@v5
         with:
           delete-merged: true
 
