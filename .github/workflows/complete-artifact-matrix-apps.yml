@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - v25.11
         - update-kernel-configs
         - sunxi
@@ -59,7 +60,6 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
-        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
@@ -377,6 +377,7 @@ on:
         - xpressreal-t3
         - xt-q8l-v10
         - youyeetoo-r1-v3
+        - youyeetoo-yy3588
         - yy3568
         - z28pro
         - zeropi
