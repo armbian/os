@@ -14,13 +14,16 @@ jobs: # <TEMPLATE-IGNORE>
       #  uses: armbian/actions/runner-clean@main
 
       # Prepare dependencies.
-      # If no /usr/bin/gpg, install gnupg2
-      # If no /usr/bin/reprepro, install reprepro
+      # Check and install only missing packages
       - name: Install dependencies
         run: |
-          if [ ! -e /usr/bin/gpg ]; then
+          missing=()
+          [ -x /usr/bin/gpg ] || missing+=("gnupg2")
+
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Installing missing packages: ${missing[*]}"
             sudo apt-get update
-            sudo apt-get install -y gnupg2
+            sudo apt-get install -y "${missing[@]}"
           fi
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
