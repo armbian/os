@@ -41,9 +41,9 @@ on:
         options:
         # branches
         - main
+        - update-kernel-configs
         - update-maintainers
         - v25.11
-        - update-kernel-configs
         - sunxi
         - coderabbitai/docstrings/2e13998
         - revert-8583-fix-atf-compile
@@ -293,6 +293,7 @@ on:
         - quartz64a
         - quartz64b
         - radxa-cm4-io
+        - radxa-cm5-io
         - radxa-cubie-a5e
         - radxa-dragon-q6a
         - radxa-e20c
