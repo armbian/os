@@ -1,0 +1,308 @@
+name: "JH Workflow Recreate"
+
+on:
+  schedule:
+    - cron: '0 3 * * 1'  # Weekly on Monday at 3 AM UTC
+  push:
+    branches:
+      - 'main'
+    paths:
+      - "userpatches-jethub/gha/**"
+      - "userpatches-jethub/gha/chunks/**"
+      - "userpatches-jethub/targets-*.yaml"
+      - ".github/workflows/jh-workflow-recreate.yaml"
+  workflow_dispatch:
+    inputs:
+      force_pr:
+        description: 'Force create PR even without changes'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: workflow-recreate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  recreate-workflows:
+    name: "Recreate JH Workflows"
+    if: ${{ github.repository_owner == 'jethome-iot' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout armbian-build repository
+        uses: actions/checkout@v6
+        with:
+          repository: jethome-iot/armbian-build
+          ref: main-jethub
+          fetch-depth: 1
+          clean: false
+          path: build
+
+      - name: Checkout armbian-os repository
+        uses: actions/checkout@v6
+        with:
+          repository: jethome-iot/armbian-os
+          ref: main
+          fetch-depth: 0
+          clean: false
+          path: os
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          cd os
+          git config user.name "JetHome Dev Bot"
+          git config user.email "dev@jethome.ru"
+
+      - name: Sync userpatches to build directory
+        run: |
+          rsync -av os/userpatches-jethub/. build/userpatches/
+
+      - name: Generate STABLE workflow
+        run: |
+          cd build
+          cp userpatches/gha/gha_config_release.yaml userpatches/gha/gha_config.yaml
+          cp userpatches/targets-stable.yaml userpatches/targets.yaml
+          bash ./compile.sh gha-template
+
+          # Copy generated workflow
+          cp output/info/artifact-image-complete-matrix.yml \
+             ../os/.github/workflows/jh-stable-artifact-image-complete-matrix.yml
+
+          echo "✅ STABLE workflow generated"
+
+      - name: Generate NIGHTLY workflow
+        run: |
+          cd build
+          cp userpatches/gha/gha_config_nightly.yaml userpatches/gha/gha_config.yaml
+          cp userpatches/targets-full.yaml userpatches/targets.yaml
+          bash ./compile.sh gha-template
+
+          # Copy generated workflow
+          cp output/info/artifact-image-complete-matrix.yml \
+             ../os/.github/workflows/jh-nightly-artifact-image-complete-matrix.yml
+
+          echo "✅ NIGHTLY workflow generated"
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          cd os
+          if git diff --quiet .github/workflows/jh-stable-artifact-image-complete-matrix.yml \
+                               .github/workflows/jh-nightly-artifact-image-complete-matrix.yml; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No changes detected in workflows"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes detected in workflows"
+            
+            # Show what changed
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "STABLE workflow changes:"
+            git diff --stat .github/workflows/jh-stable-artifact-image-complete-matrix.yml || true
+            echo ""
+            echo "NIGHTLY workflow changes:"
+            git diff --stat .github/workflows/jh-nightly-artifact-image-complete-matrix.yml || true
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          fi
+
+      - name: Create/Update Pull Request
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' || github.event.inputs.force_pr == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd os
+          
+          # Checkout or create feature branch
+          BRANCH_NAME="automated/update-gha-workflows-$(date +%Y%m%d)"
+          
+          # Check if branch exists
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "ℹ️  Branch $BRANCH_NAME already exists, checking out..."
+            git fetch origin "$BRANCH_NAME"
+            git checkout "$BRANCH_NAME"
+            git pull origin "$BRANCH_NAME"
+          else
+            echo "✅ Creating new branch $BRANCH_NAME..."
+            git checkout -b "$BRANCH_NAME"
+          fi
+          
+          # Add and commit changes
+          git add .github/workflows/jh-stable-artifact-image-complete-matrix.yml
+          git add .github/workflows/jh-nightly-artifact-image-complete-matrix.yml
+          
+          if git diff --cached --quiet; then
+            echo "ℹ️  No staged changes to commit"
+          else
+            # Create commit message with details
+            cat > /tmp/commit-msg.txt << 'COMMIT_MSG'
+          feat(ci): regenerate JH workflows from templates
+
+          Automatically regenerated GitHub Actions workflows:
+          - jh-stable-artifact-image-complete-matrix.yml
+          - jh-nightly-artifact-image-complete-matrix.yml
+
+          Changes:
+          - Updated GitHub Actions to latest versions
+          - Regenerated from gha_config_release.yaml and gha_config_nightly.yaml
+          - Applied latest template changes from userpatches-jethub/gha/chunks/
+
+          Generated by: .github/workflows/jh-workflow-recreate.yaml
+          COMMIT_MSG
+            
+            git commit -F /tmp/commit-msg.txt
+            echo "✅ Changes committed"
+          fi
+          
+          # Push branch
+          git push origin "$BRANCH_NAME" --force-with-lease
+          echo "✅ Branch pushed: $BRANCH_NAME"
+          
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number' || echo "")
+          
+          if [ -n "$EXISTING_PR" ]; then
+            echo "ℹ️  PR already exists: #$EXISTING_PR"
+            echo "Updating PR..."
+            
+            # Update PR body
+            cat > /tmp/pr-body.md << 'PR_BODY'
+          ## 🤖 Автоматически сгенерированные workflow файлы
+
+          Этот PR обновляет GitHub Actions workflows, сгенерированные из шаблонов.
+
+          ### 📋 Изменения
+
+          - ✅ **STABLE workflow**: `jh-stable-artifact-image-complete-matrix.yml`
+          - ✅ **NIGHTLY workflow**: `jh-nightly-artifact-image-complete-matrix.yml`
+
+          ### 🔄 Что обновлено
+
+          - GitHub Actions обновлены до последних версий
+          - Регенерировано из конфигураций:
+            - `userpatches-jethub/gha/gha_config_release.yaml` (stable)
+            - `userpatches-jethub/gha/gha_config_nightly.yaml` (nightly)
+          - Применены последние изменения из шаблонов `userpatches-jethub/gha/chunks/`
+
+          ### 🧪 Тестирование
+
+          Рекомендуется протестировать workflows перед мерджем:
+
+          ```bash
+          # Тест stable workflow
+          gh workflow run "JH Stable Build Artifacts and Images" \
+            --ref $BRANCH_NAME \
+            --field board=jethubj100 \
+            --field skipImages=yes \
+            --field checkOci=yes
+
+          # Тест nightly workflow
+          gh workflow run "JH Nightly Build Artifacts and Images" \
+            --ref $BRANCH_NAME \
+            --field board=jethubj100 \
+            --field skipImages=yes \
+            --field checkOci=yes
+          ```
+
+          ### 📊 Версии GitHub Actions
+
+          - `actions/checkout`: v6
+          - `actions/upload-artifact`: v5
+          - `actions/download-artifact`: v6
+          - `actions/cache`: v4
+
+          ---
+
+          🤖 _Автоматически создано workflow: `.github/workflows/jh-workflow-recreate.yaml`_
+          PR_BODY
+            
+            gh pr edit "$EXISTING_PR" --body-file /tmp/pr-body.md
+            echo "✅ PR #$EXISTING_PR updated"
+          else
+            echo "Creating new PR..."
+            
+            # Create PR
+            cat > /tmp/pr-body.md << 'PR_BODY'
+          ## 🤖 Автоматически сгенерированные workflow файлы
+
+          Этот PR обновляет GitHub Actions workflows, сгенерированные из шаблонов.
+
+          ### 📋 Изменения
+
+          - ✅ **STABLE workflow**: `jh-stable-artifact-image-complete-matrix.yml`
+          - ✅ **NIGHTLY workflow**: `jh-nightly-artifact-image-complete-matrix.yml`
+
+          ### 🔄 Что обновлено
+
+          - GitHub Actions обновлены до последних версий
+          - Регенерировано из конфигураций:
+            - `userpatches-jethub/gha/gha_config_release.yaml` (stable)
+            - `userpatches-jethub/gha/gha_config_nightly.yaml` (nightly)
+          - Применены последние изменения из шаблонов `userpatches-jethub/gha/chunks/`
+
+          ### 🧪 Тестирование
+
+          Рекомендуется протестировать workflows перед мерджем:
+
+          ```bash
+          # Тест stable workflow
+          gh workflow run "JH Stable Build Artifacts and Images" \
+            --ref $BRANCH_NAME \
+            --field board=jethubj100 \
+            --field skipImages=yes \
+            --field checkOci=yes
+
+          # Тест nightly workflow
+          gh workflow run "JH Nightly Build Artifacts and Images" \
+            --ref $BRANCH_NAME \
+            --field board=jethubj100 \
+            --field skipImages=yes \
+            --field checkOci=yes
+          ```
+
+          ### 📊 Версии GitHub Actions
+
+          - `actions/checkout`: v6
+          - `actions/upload-artifact`: v5
+          - `actions/download-artifact`: v6
+          - `actions/cache`: v4
+
+          ---
+
+          🤖 _Автоматически создано workflow: `.github/workflows/jh-workflow-recreate.yaml`_
+          PR_BODY
+            
+            PR_URL=$(gh pr create \
+              --title "feat(ci): regenerate JH workflows from templates" \
+              --body-file /tmp/pr-body.md \
+              --head "$BRANCH_NAME" \
+              --base main \
+              --label "automated" \
+              --label "ci" \
+              2>&1)
+            
+            echo "✅ PR created: $PR_URL"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          cd os
+          echo "## 📊 Workflow Regeneration Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **STABLE workflow**: regenerated from \`gha_config_release.yaml\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **NIGHTLY workflow**: regenerated from \`gha_config_nightly.yaml\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes detected**: ${{ steps.check-changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.check-changes.outputs.has_changes }}" == "true" ]; then
+            echo "### ✅ Pull Request Created/Updated" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Review the PR and test workflows before merging." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ℹ️  No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Workflows are up to date with templates." >> $GITHUB_STEP_SUMMARY
+          fi
+
