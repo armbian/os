@@ -43,7 +43,6 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
         - update-kernel-configs
         - v25.11
         - sunxi
@@ -62,6 +61,7 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
+        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
@@ -8355,11 +8355,11 @@ jobs:
           failOnError: false
 
       # Cleaning logs
-      - name: "Keep only 14 days of workflow logs"
+      - name: "Keep only 30 days of workflow logs"
         uses: igorjs/gh-actions-clean-workflow@v7
         with:
           token: "${{ env.GH_TOKEN }}"
-          runs_older_than: 7 # optional
+          runs_older_than: 30 # optional
           runs_to_keep: 0 # optional
 
       # Switch pre-release to release
