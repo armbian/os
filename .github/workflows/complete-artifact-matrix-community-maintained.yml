@@ -43,6 +43,8 @@ on:
         options:
         # branches
         - main
+        - pahole
+        - flasher
         - update-kernel-configs
         - v25.11
         - sunxi
@@ -60,8 +62,6 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
-        - bump-6.15-collab
-        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
