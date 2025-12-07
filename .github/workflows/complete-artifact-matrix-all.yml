@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - libproxy
         - flasher
         - update-kernel-configs
         - v25.11
@@ -60,7 +61,6 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
-        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
