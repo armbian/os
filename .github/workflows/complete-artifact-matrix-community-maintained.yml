@@ -43,10 +43,9 @@ on:
         options:
         # branches
         - main
-        - flasher
-        - libproxy
-        - update-kernel-configs
         - v25.11
+        - flasher
+        - update-kernel-configs
         - sunxi
         - coderabbitai/docstrings/2e13998
         - revert-8583-fix-atf-compile
@@ -62,6 +61,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
