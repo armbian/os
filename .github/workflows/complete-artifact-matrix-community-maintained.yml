@@ -43,6 +43,7 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - v25.11
         - flasher
         - update-kernel-configs
@@ -61,7 +62,6 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
-        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
@@ -315,6 +315,7 @@ on:
         - rk322x-box
         - rk3318-box
         - rk3328-heltec
+        - rk3566-box-demo
         - roc-rk3399-pc
         - rock-2a
         - rock-2f
