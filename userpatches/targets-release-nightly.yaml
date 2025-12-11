@@ -45,6 +45,11 @@ lists:
     - { BOARD: sk-am64b, BRANCH: vendor }
     # end of auto generated section
 
+  staging-fast-hdmi: &staging-fast-hdmi
+    # auto generated section
+    - { BOARD: radxa-e24c, BRANCH: vendor }
+    # end of auto generated section
+
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
     - { BOARD: aml-c400-plus, BRANCH: current }
@@ -223,6 +228,7 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-headless
+      - *staging-fast-hdmi
 
   # debian stable minimal cloud
   minimal-cli-stable-debian-cloud:
@@ -256,6 +262,7 @@ targets:
     items:
       - *standard-support-slow-hdmi
       - *standard-support-riscv64
+      - *staging-fast-hdmi
 
   # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
@@ -308,6 +315,7 @@ targets:
     items:
       - *standard-support-riscv64
       - *standard-support-headless
+      - *staging-fast-hdmi
       - *standard-support-fast-hdmi
       - *standard-support-slow-hdmi
   # end of automated-section:

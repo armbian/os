@@ -44,7 +44,6 @@ on:
         - main
         - update-maintainers
         - v25.11
-        - flasher
         - update-kernel-configs
         - sunxi
         - coderabbitai/docstrings/2e13998
@@ -61,6 +60,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice

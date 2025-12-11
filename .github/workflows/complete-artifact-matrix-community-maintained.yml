@@ -45,7 +45,6 @@ on:
         - main
         - update-maintainers
         - v25.11
-        - flasher
         - update-kernel-configs
         - sunxi
         - coderabbitai/docstrings/2e13998
@@ -62,6 +61,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
@@ -299,6 +299,7 @@ on:
         - radxa-cubie-a5e
         - radxa-dragon-q6a
         - radxa-e20c
+        - radxa-e24c
         - radxa-e25
         - radxa-e52c
         - radxa-e54c
