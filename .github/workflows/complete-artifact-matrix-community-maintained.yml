@@ -43,7 +43,6 @@ on:
         options:
         # branches
         - main
-        - igorpecovnik-patch-3
         - update-maintainers
         - v25.11
         - update-kernel-configs
@@ -62,6 +61,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
