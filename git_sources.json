@@ -20,14 +20,24 @@
     "sha1": "682ee1cb09f49cb641dba9e735d8c1526b5ac8f9"
   },
   {
-    "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
-    "branch": "rk3506",
-    "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
-  },
-  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "5d4dd2fc8dd4e28ac4c85696b8ab86775babc7c7"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "6c60d1128566f8cc9c3ddd7ad1db7adec824f71b"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.15.y",
+    "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
+  },
+  {
+    "source": "https://github.com/hardkernel/u-boot.git",
+    "branch": "odroidxu4-v2017.05",
+    "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -36,23 +46,33 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.15.y",
-    "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.12.y",
     "sha1": "53d3c6ddbb9749ebc06956a13ed6eead31402a7d"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.10",
-    "sha1": "b87278929822b1afcfabdb1e541a780d35445343"
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5.1",
+    "sha1": "9434d86da16d54b3b6f16955c2b569bb8d62a65c"
   },
   {
-    "source": "https://github.com/khadas/linux.git",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "4e557e233b9da219f48b82bfa313f353386097ec"
+    "source": "https://github.com/SolidRun/u-boot.git",
+    "branch": "v2018.01-solidrun-imx6",
+    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
+  },
+  {
+    "source": "https://github.com/AvaotaSBC/linux.git",
+    "branch": "linux-5.15",
+    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
+  },
+  {
+    "source": "https://github.com/hardkernel/u-boot.git",
+    "branch": "odroidc-v2011.03",
+    "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
+  },
+  {
+    "source": "https://github.com/hardkernel/linux",
+    "branch": "odroid-6.6.y",
+    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
   },
   {
     "source": "https://github.com/beagleboard/linux",
@@ -61,13 +81,43 @@
   },
   {
     "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.17.y",
+    "sha1": "dd037ef6b598d941d6c859ddcc0200bc15e833f7"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
     "branch": "linux-6.6.y",
     "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.17.y",
-    "sha1": "dd037ef6b598d941d6c859ddcc0200bc15e833f7"
+    "source": "https://github.com/beagleboard/u-boot",
+    "branch": "v2025.07-am6232-pocketbeagle2",
+    "sha1": "a2b9f59b4fa23266d014c8bf45baeaa189630355"
+  },
+  {
+    "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
+    "branch": "rk3506",
+    "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "b87278929822b1afcfabdb1e541a780d35445343"
+  },
+  {
+    "source": "https://github.com/u-boot/u-boot",
+    "branch": "master",
+    "sha1": "87d85139a96a39429120cca838e739408ef971a2"
+  },
+  {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "rk35xx-2024.01",
+    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.18.y",
+    "sha1": "25442251cbda7590d87d8203a8dc1ddf2c93de61"
   },
   {
     "source": "https://github.com/TexasInstruments/ti-linux-kernel",
@@ -76,48 +126,18 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.18.y",
-    "sha1": "25442251cbda7590d87d8203a8dc1ddf2c93de61"
-  },
-  {
-    "source": "https://github.com/AvaotaSBC/linux.git",
-    "branch": "linux-5.15",
-    "sha1": "a464bc4feaff7b102dac6362b44ac3303ec7cae1"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.17.y",
     "sha1": "6fedb515e7f90986da3de36a35752e6dc2e0c911"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5.1",
-    "sha1": "9434d86da16d54b3b6f16955c2b569bb8d62a65c"
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.03",
+    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
   },
   {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "6c60d1128566f8cc9c3ddd7ad1db7adec824f71b"
-  },
-  {
-    "source": "https://github.com/khadas/common_drivers",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "a313eac4ed21d3431b1c905619f0c7d2e8cda1a1"
-  },
-  {
-    "source": "https://github.com/u-boot/u-boot",
-    "branch": "master",
-    "sha1": "87d85139a96a39429120cca838e739408ef971a2"
-  },
-  {
-    "source": "https://github.com/beagleboard/u-boot",
-    "branch": "v2025.07-am6232-pocketbeagle2",
-    "sha1": "a2b9f59b4fa23266d014c8bf45baeaa189630355"
-  },
-  {
-    "source": "https://github.com/SolidRun/u-boot.git",
-    "branch": "v2018.01-solidrun-imx6",
-    "sha1": "19858de9c94adb294dde90ac99d70526a2c42fd6"
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-buildroot",
+    "sha1": "3c60a711e61015c1a61247837afbeaa85bd7fbf2"
   },
   {
     "source": "https://github.com/stvhay/u-boot.git",
@@ -130,39 +150,24 @@
     "sha1": "4a16015168d00d08487781fc914e048944554c6e"
   },
   {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "rk35xx-2024.01",
-    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
-  },
-  {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-buildroot",
-    "sha1": "3c60a711e61015c1a61247837afbeaa85bd7fbf2"
-  },
-  {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.03",
-    "sha1": "22849bf1cf13c2f0a6f2741a51d4802793d2aecc"
-  },
-  {
-    "source": "https://github.com/hardkernel/u-boot.git",
-    "branch": "odroidc-v2011.03",
-    "sha1": "b7b8dc21b64b9494618325c9b4d2fbae728aeed6"
-  },
-  {
-    "source": "https://github.com/hardkernel/u-boot.git",
-    "branch": "odroidxu4-v2017.05",
-    "sha1": "42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
-  },
-  {
-    "source": "https://github.com/hardkernel/linux",
-    "branch": "odroid-6.6.y",
-    "sha1": "1b5323e6f3256b9b2024c75e0d86fc5f897d7dfe"
-  },
-  {
     "source": "https://github.com/orangepi-xunlong/u-boot-orangepi.git",
     "branch": "v2017.09-rk3588",
     "sha1": "485cc4eae304d5f0bf2ea1456d6276fcd80158d5"
+  },
+  {
+    "source": "https://github.com/khadas/linux.git",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "4e557e233b9da219f48b82bfa313f353386097ec"
+  },
+  {
+    "source": "https://github.com/khadas/common_drivers",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "a313eac4ed21d3431b1c905619f0c7d2e8cda1a1"
+  },
+  {
+    "source": "https://gitlab.collabora.com/mediatek/aiot/linux.git",
+    "branch": "mediatek-next",
+    "sha1": "ba2528bd91b0be8b91d6d622b8621cde992d4172"
   },
   {
     "source": "https://github.com/chainsx/phytium-linux-kernel",
@@ -175,9 +180,14 @@
     "sha1": "46471440b5ea96f5caa7ad70ce457735070f9f8e"
   },
   {
-    "source": "https://gitlab.collabora.com/mediatek/aiot/linux.git",
-    "branch": "mediatek-next",
-    "sha1": "ba2528bd91b0be8b91d6d622b8621cde992d4172"
+    "source": "https://github.com/TexasInstruments/ti-u-boot",
+    "branch": "ti-u-boot-2025.01",
+    "sha1": "01cecc3207f4702e223316e886d0dcf607be1e5b"
+  },
+  {
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.12.y",
+    "sha1": "21b410140c47ffab5668399f6f143c7d7b935c8b"
   },
   {
     "source": "https://github.com/u-boot/u-boot.git",
@@ -186,33 +196,18 @@
   },
   {
     "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.18.y",
-    "sha1": "3114bf728457e0a03e8c3e96798c04f2ffd89aca"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
-    "branch": "rpi-6.12.y",
-    "sha1": "21b410140c47ffab5668399f6f143c7d7b935c8b"
-  },
-  {
-    "source": "https://github.com/raspberrypi/linux",
     "branch": "rpi-6.6.y",
     "sha1": "bba53a117a4a5c29da892962332ff1605990e17a"
   },
   {
-    "source": "https://github.com/TexasInstruments/ti-u-boot",
-    "branch": "ti-u-boot-2025.01",
-    "sha1": "01cecc3207f4702e223316e886d0dcf607be1e5b"
+    "source": "https://github.com/raspberrypi/linux",
+    "branch": "rpi-6.18.y",
+    "sha1": "3114bf728457e0a03e8c3e96798c04f2ffd89aca"
   },
   {
     "source": "https://github.com/steev/linux.git",
     "branch": "lenovo-x13s-linux-6.17.y",
     "sha1": "6fc7fcbd9af001a45dfef6dec0feb9abe0787666"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.1.y",
-    "sha1": "50cbba13faa294918f0e1a9cb2b0aba19f4e6fba"
   },
   {
     "source": "https://github.com/starfive-tech/linux",
@@ -221,13 +216,13 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.14.y",
-    "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
+    "branch": "linux-6.1.y",
+    "sha1": "50cbba13faa294918f0e1a9cb2b0aba19f4e6fba"
   },
   {
-    "source": "https://github.com/XpressReal/linux.git",
-    "branch": "v6.6.54-xpressreal-t3",
-    "sha1": "c95f3dc77ec31ca0c3bfa8d270b05fa6b83ea9c0"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.14.y",
+    "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
   },
   {
     "source": "https://github.com/XpressReal/u-boot.git",
@@ -235,13 +230,18 @@
     "sha1": "4cac3d9b64ef3d3a87ceec824ca341b1871432e4"
   },
   {
-    "source": "https://github.com/SolidRun/u-boot",
-    "branch": "v2018.01-solidrun-a38x",
-    "sha1": "a8004c1f1112ca2f867badccce5a76f052034853"
+    "source": "https://github.com/XpressReal/linux.git",
+    "branch": "v6.6.54-xpressreal-t3",
+    "sha1": "c95f3dc77ec31ca0c3bfa8d270b05fa6b83ea9c0"
   },
   {
     "source": "https://github.com/frank-w/BPI-Router-Linux.git",
     "branch": "6.12-main",
     "sha1": "e4c09a956f0f287aace041fbf30c0f8a9f921ddd"
+  },
+  {
+    "source": "https://github.com/SolidRun/u-boot",
+    "branch": "v2018.01-solidrun-a38x",
+    "sha1": "a8004c1f1112ca2f867badccce5a76f052034853"
   }
 ]
