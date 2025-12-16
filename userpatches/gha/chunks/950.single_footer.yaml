@@ -13,7 +13,7 @@ jobs: # <TEMPLATE-IGNORE>
       # Download workflow artifacts
       - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || [[skipImagesDefaults]]) != 'yes' }}
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: assets-for-download-[[repository_ref]]
           path: downloads
