@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - update-version-lib/functions/general/bat-cat.sh-sharkdp/bat-0.26.1
         - sunxi-6.18-v3
         - sunxi-6.18-v2
@@ -65,7 +66,6 @@ on:
         - coderabbitai/utg/20bTtA
         - coderabbitai/docstrings/20bTtA
         - opi5-mainline-uboot-update
-        - prepre
         default: 'main'
       board:
         type: choice
@@ -218,6 +218,7 @@ on:
         - nanopi-r6c
         - nanopi-r6s
         - nanopi-r76s
+        - nanopi-zero2
         - nanopia64
         - nanopiair
         - nanopiduo
