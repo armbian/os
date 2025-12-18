@@ -48,7 +48,7 @@ on:
         # branches
         - main
         - update-maintainers
-        - update-version-lib/functions/general/bat-cat.sh-sharkdp/bat-0.26.1
+        - dropwsl
         - sunxi-6.18-v3
         - sunxi-6.18-v2
         - v25.11
@@ -350,6 +350,8 @@ on:
         - rockpro64
         - rpi4b
         - sakurapi-rk3308b
+        - sk-am62-lp
+        - sk-am62-sip
         - sk-am62b
         - sk-am62p
         - sk-am64b
