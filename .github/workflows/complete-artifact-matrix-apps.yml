@@ -42,7 +42,6 @@ on:
         # branches
         - main
         - update-maintainers
-        - dropwsl
         - sunxi-6.18-v3
         - sunxi-6.18-v2
         - v25.11
@@ -60,6 +59,7 @@ on:
         - coderabbitai/utg/20bTtA
         - coderabbitai/docstrings/20bTtA
         - opi5-mainline-uboot-update
+        - prepre
         default: 'main'
       board:
         type: choice
@@ -375,8 +375,6 @@ on:
         - uefi-riscv64
         - uefi-x86
         - visionfive2
-        - wsl2-arm64
-        - wsl2-x86
         - x96-mate
         - x96q
         - xiaobao-nas
