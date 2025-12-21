@@ -491,7 +491,7 @@ on:
         required: false
         options: [ 'yes', 'no' ]
         type: choice
-        default: 'yes'
+        default: yes
       bumpversion:
         type: boolean
         description: "Bump version"
@@ -701,7 +701,7 @@ jobs:
           echo "file=nightly" >> $GITHUB_OUTPUT
           echo "skip_tag=false" >> $GITHUB_OUTPUT
           echo "pre_release=true" >> $GITHUB_OUTPUT
-          if [ "${{ github.event.inputs.nightlybuild || 'yes' }}" == "no" ]; then
+          if [ "${{ github.event.inputs.nightlybuild || yes }}" == "no" ]; then
               echo "file=stable" >> $GITHUB_OUTPUT
               echo "skip_tag=true" >> $GITHUB_OUTPUT
               echo "pre_release=false" >> $GITHUB_OUTPUT
@@ -752,7 +752,7 @@ jobs:
           fi
 
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.nightlybuild || 'yes') == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
+        if: ${{ (github.event.inputs.nightlybuild || yes) == 'yes' && (github.event.inputs.skipImages || 'no') != 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.VERSION_OVERRIDE }}"
@@ -868,12 +868,12 @@ jobs:
           bash ./compile.sh gha-matrix armbian-images \
           REVISION="${{ needs.version_prep.outputs.version }}" \
           TARGETS_FILTER_INCLUDE="${FILTERS}" \
-          BETA=${{ github.event.inputs.nightlybuild || 'yes' }} \
+          BETA=${{ github.event.inputs.nightlybuild || yes }} \
           CLEAN_INFO=yes \
           CLEAN_MATRIX=yes \
           MATRIX_ARTIFACT_CHUNKS=17 \
           MATRIX_IMAGE_CHUNKS=16 \
-          CHECK_OCI=${{ github.event.inputs.checkOci || 'yes' }} \
+          CHECK_OCI=${{ github.event.inputs.checkOci || yes }} \
           TARGETS_FILENAME="targets-release-nightly.yaml" \
           SKIP_IMAGES=${{ github.event.inputs.skipImages || 'no'}} \
           ${{env.EXTRA_PARAMS_ALL_BUILDS}} SHARE_LOG=yes # IMAGES_ONLY_OUTDATED_ARTIFACTS=yes
@@ -2370,7 +2370,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -2447,7 +2447,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2553,7 +2553,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -2743,7 +2743,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -2820,7 +2820,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2926,7 +2926,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -3116,7 +3116,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -3193,7 +3193,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3299,7 +3299,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -3489,7 +3489,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -3566,7 +3566,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3672,7 +3672,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -3862,7 +3862,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -3939,7 +3939,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4045,7 +4045,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -4235,7 +4235,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -4312,7 +4312,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4418,7 +4418,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -4608,7 +4608,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -4685,7 +4685,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4791,7 +4791,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -4981,7 +4981,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -5058,7 +5058,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5164,7 +5164,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -5354,7 +5354,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -5431,7 +5431,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5537,7 +5537,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -5727,7 +5727,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -5804,7 +5804,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5910,7 +5910,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -6100,7 +6100,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -6177,7 +6177,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -6283,7 +6283,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -6473,7 +6473,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -6550,7 +6550,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -6656,7 +6656,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -6846,7 +6846,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -6923,7 +6923,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -7029,7 +7029,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -7219,7 +7219,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -7296,7 +7296,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -7402,7 +7402,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -7592,7 +7592,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -7669,7 +7669,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -7775,7 +7775,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -7965,7 +7965,7 @@ jobs:
           # Nightly / stable logic (templated)
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           WEBSEEDS=""
@@ -8042,7 +8042,7 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || 'yes' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || yes ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -8148,7 +8148,7 @@ jobs:
           }
 
           nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="'yes'"
+          nightlybuild_default="yes"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
@@ -8263,7 +8263,7 @@ jobs:
       - name: Download the debs
         id: download-debs
         run: |
-          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || yes }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -8337,7 +8337,7 @@ jobs:
   closing:
     name: "Footer"
     runs-on: ubuntu-latest
-    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || 'yes') == 'yes' }}
+    if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || yes) == 'yes' }}
     needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
     steps:
 
@@ -8371,7 +8371,7 @@ jobs:
 
       # Switch pre-release to release
       - uses: ncipollo/release-action@v1
-        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' && (github.event.inputs.nightlybuild || 'yes') == 'yes' }}
+        if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' && (github.event.inputs.nightlybuild || yes) == 'yes' }}
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
           tag: "${{ env.version }}"
