@@ -113,6 +113,8 @@ lists:
     - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pocketbeagle2, BRANCH: vendor }
+    - { BOARD: radxa-cm4-io, BRANCH: vendor }
+    - { BOARD: radxa-cm5-io, BRANCH: vendor }
     - { BOARD: radxa-dragon-q6a, BRANCH: edge }
     - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-e54c, BRANCH: vendor }

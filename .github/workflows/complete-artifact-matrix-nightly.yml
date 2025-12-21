@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - sunxi-6.18-v3
         - sunxi-6.18-v2
         - v25.11
@@ -65,7 +66,6 @@ on:
         - coderabbitai/docstrings/20bTtA
         - opi5-mainline-uboot-update
         - prepre
-        - fixper
         default: 'main'
       board:
         type: choice
