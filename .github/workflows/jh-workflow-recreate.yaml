@@ -182,7 +182,7 @@ jobs:
             echo "Updating PR..."
             
             # Update PR body
-            cat > /tmp/pr-body.md << PR_BODY
+            cat > /tmp/pr-body.md << 'PR_BODY'
           ## 🤖 Автоматически сгенерированные workflow файлы
 
           Этот PR обновляет GitHub Actions workflows, сгенерированные из шаблонов.
@@ -238,7 +238,7 @@ jobs:
             echo "Creating new PR..."
             
             # Create PR
-            cat > /tmp/pr-body.md << PR_BODY
+            cat > /tmp/pr-body.md << 'PR_BODY'
           ## 🤖 Автоматически сгенерированные workflow файлы
 
           Этот PR обновляет GitHub Actions workflows, сгенерированные из шаблонов.
