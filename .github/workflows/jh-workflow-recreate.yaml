@@ -54,6 +54,26 @@ jobs:
           git config user.name "JetHome Dev Bot"
           git config user.email "dev@jethome.ru"
 
+      - name: Checkout or create feature branch
+        id: branch-setup
+        run: |
+          cd os
+          
+          # Define branch name
+          BRANCH_NAME="automated/update-gha-workflows-$(date +%Y%m%d)"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          
+          # Check if branch exists
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "ℹ️  Branch $BRANCH_NAME already exists, checking out..."
+            git fetch origin "$BRANCH_NAME"
+            git checkout "$BRANCH_NAME"
+            git pull origin "$BRANCH_NAME"
+          else
+            echo "✅ Creating new branch $BRANCH_NAME..."
+            git checkout -b "$BRANCH_NAME"
+          fi
+
       - name: Sync userpatches to build directory
         run: |
           rsync -av os/userpatches-jethub/. build/userpatches/
@@ -107,26 +127,12 @@ jobs:
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           fi
 
-      - name: Create/Update Pull Request
+      - name: Commit and push changes
         if: ${{ steps.check-changes.outputs.has_changes == 'true' || github.event.inputs.force_pr == 'true' }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd os
           
-          # Checkout or create feature branch
-          BRANCH_NAME="automated/update-gha-workflows-$(date +%Y%m%d)"
-          
-          # Check if branch exists
-          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
-            echo "ℹ️  Branch $BRANCH_NAME already exists, checking out..."
-            git fetch origin "$BRANCH_NAME"
-            git checkout "$BRANCH_NAME"
-            git pull origin "$BRANCH_NAME"
-          else
-            echo "✅ Creating new branch $BRANCH_NAME..."
-            git checkout -b "$BRANCH_NAME"
-          fi
+          BRANCH_NAME="${{ steps.branch-setup.outputs.branch_name }}"
           
           # Add and commit changes
           git add .github/workflows/jh-stable-artifact-image-complete-matrix.yml
@@ -158,6 +164,15 @@ jobs:
           # Push branch
           git push origin "$BRANCH_NAME" --force-with-lease
           echo "✅ Branch pushed: $BRANCH_NAME"
+
+      - name: Create/Update Pull Request
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' || github.event.inputs.force_pr == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd os
+          
+          BRANCH_NAME="${{ steps.branch-setup.outputs.branch_name }}"
           
           # Check if PR already exists
           EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number' || echo "")
