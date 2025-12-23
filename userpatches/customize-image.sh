@@ -30,9 +30,9 @@ echo "Remove MS and GH sources as we ship them via our repo"
 [[ -f /etc/apt/sources.list.d/githubcli.list ]] && rm -f /etc/apt/sources.list.d/githubcli.list
 [[ -f /etc/apt/preferences.d/99-neon-base-files ]] && rm -f /etc/apt/preferences.d/99-neon-base-files
 
-find /etc/apt/sources.list.d/ -name 'oibaf-ubuntu-graphics-drivers-*.*' -delete
-find /etc/apt/sources.list.d/ -name 'xtradeb-ubuntu-apps-*.*' -delete
-find /etc/apt/sources.list.d/ -name 'liujianfeng1994-ubuntu-chromium-*.*' -delete
+# ⚡ Bolt: Combine multiple find commands into one for performance.
+# This avoids spawning multiple processes and traversing the filesystem repeatedly.
+find /etc/apt/sources.list.d/ -name 'oibaf-ubuntu-graphics-drivers-*.*' -o -name 'xtradeb-ubuntu-apps-*.*' -o -name 'liujianfeng1994-ubuntu-chromium-*.*' -delete
 
 # release based
 	case $RELEASE in
