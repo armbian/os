@@ -1,7 +1,12 @@
 function extension_prepare_config__omv() {
 	case "${RELEASE}" in
-		bookworm | trixie)
+		bookworm)
 			display_alert "Target image will have OpenMediaVault (OMV) preinstalled" "${RELEASE} ${EXTENSION}" "info"
+			OMV_REPO_KEY="sandworm"
+			;;
+		trixie)
+			display_alert "Target image will have OpenMediaVault (OMV) preinstalled" "${RELEASE} ${EXTENSION}" "info"
+			OMV_REPO_KEY="synchrony"
 			;;
 		*)
 			exit_with_error "OpenMediaVault (OMV) is not supported on ${DISTRIBUTION} ${RELEASE}"
@@ -20,7 +25,7 @@ function pre_install_kernel_debs__install_omv_packages(){
 
 	# Add sources.list
 	display_alert "Adding sources.list for OpenMediaVault (OMV)" "Debian :: ${EXTENSION}" "info"
-	run_host_command_logged echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/openmediavault-archive-keyring.gpg] https://packages.openmediavault.org/public sandworm main" "|" tee "${SDCARD}"/etc/apt/sources.list.d/openmediavault.list
+	run_host_command_logged echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/openmediavault-archive-keyring.gpg] https://packages.openmediavault.org/public ${OMV_REPO_KEY} main" "|" tee "${SDCARD}"/etc/apt/sources.list.d/openmediavault.list
 
 	display_alert "Updating package lists with OpenMediaVault (OMV) repos" "${EXTENSION}" "info"
 	do_with_retries 3 chroot_sdcard_apt_get_update
