@@ -20,29 +20,19 @@
     "sha1": "60e869c42c03af0428d9983750eb766a7a846d43"
   },
   {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.6.y",
+    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+  },
+  {
+    "source": "https://github.com/beagleboard/linux",
+    "branch": "v6.12.49-ti-arm64-r56",
+    "sha1": "8fb21420a704ea36aaf66df8288ed8ee9da2762d"
+  },
+  {
     "source": "https://github.com/armbian/firmware",
     "branch": "master",
     "sha1": "5d4dd2fc8dd4e28ac4c85696b8ab86775babc7c7"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
-    "branch": "main",
-    "sha1": "a6a6ff914b4b2814ffd074f1d0a9e43949ac44ad"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.12.y",
-    "sha1": "567bd8cbc2fe6b28b78864cbbbc41b0d405eb83c"
-  },
-  {
-    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.15.y",
-    "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
-  },
-  {
-    "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-v2024.10",
-    "sha1": "b87278929822b1afcfabdb1e541a780d35445343"
   },
   {
     "source": "https://github.com/AvaotaSBC/linux.git",
@@ -56,23 +46,8 @@
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
-    "branch": "linux-6.18.y",
-    "sha1": "78d82960b939df64cf7d26ca5ed34eb87f44c9e5"
-  },
-  {
-    "source": "https://github.com/beagleboard/linux",
-    "branch": "v6.12.49-ti-arm64-r56",
-    "sha1": "8fb21420a704ea36aaf66df8288ed8ee9da2762d"
-  },
-  {
-    "source": "https://github.com/TexasInstruments/ti-linux-kernel",
-    "branch": "ti-linux-6.12.y",
-    "sha1": "ee0a0f44964f12d6668a14b4b0b3594ce2ab8871"
-  },
-  {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.18.y",
-    "sha1": "efc58a8b96d1234e3514666f0b94a34b7776dfa3"
+    "branch": "linux-6.12.y",
+    "sha1": "567bd8cbc2fe6b28b78864cbbbc41b0d405eb83c"
   },
   {
     "source": "https://github.com/armbian/linux-rockchip.git",
@@ -80,9 +55,9 @@
     "sha1": "b908c7339f51eddcfe8402cd15d1e1f8f4e67c29"
   },
   {
-    "source": "https://github.com/jmontleon/linux-bianbu.git",
-    "branch": "linux-6.6.y",
-    "sha1": "4d95dd94cbc7262efe90d952409b91fb8e3b7dd0"
+    "source": "https://github.com/khadas/linux.git",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "4e557e233b9da219f48b82bfa313f353386097ec"
   },
   {
     "source": "https://source.denx.de/u-boot/contributors/kwiboo/u-boot.git",
@@ -90,14 +65,39 @@
     "sha1": "0b8e25bd9e16e8043b600e8f49b926b95572dc47"
   },
   {
-    "source": "https://github.com/khadas/linux.git",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "4e557e233b9da219f48b82bfa313f353386097ec"
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.15.y",
+    "sha1": "4afb9d6bd4c4b3dad7e2c9c48b6c8a55275d8f46"
   },
   {
-    "source": "https://github.com/u-boot/u-boot",
-    "branch": "master",
-    "sha1": "56cac250b0839ddbad1311d3ca4231f532b5aadf"
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "b87278929822b1afcfabdb1e541a780d35445343"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
+    "branch": "linux-6.18.y",
+    "sha1": "78d82960b939df64cf7d26ca5ed34eb87f44c9e5"
+  },
+  {
+    "source": "https://github.com/TexasInstruments/ti-linux-kernel",
+    "branch": "ti-linux-6.12.y",
+    "sha1": "15b58b1dcd0e0a79d83740b81da1a1367f6f3f68"
+  },
+  {
+    "source": "https://github.com/jmontleon/linux-bianbu.git",
+    "branch": "linux-6.18.y",
+    "sha1": "efc58a8b96d1234e3514666f0b94a34b7776dfa3"
+  },
+  {
+    "source": "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git",
+    "branch": "main",
+    "sha1": "a6a6ff914b4b2814ffd074f1d0a9e43949ac44ad"
+  },
+  {
+    "source": "https://github.com/khadas/common_drivers",
+    "branch": "khadas-vims-5.15.y",
+    "sha1": "a313eac4ed21d3431b1c905619f0c7d2e8cda1a1"
   },
   {
     "source": "https://github.com/beagleboard/u-boot",
@@ -105,9 +105,9 @@
     "sha1": "a2b9f59b4fa23266d014c8bf45baeaa189630355"
   },
   {
-    "source": "https://github.com/khadas/common_drivers",
-    "branch": "khadas-vims-5.15.y",
-    "sha1": "a313eac4ed21d3431b1c905619f0c7d2e8cda1a1"
+    "source": "https://github.com/u-boot/u-boot",
+    "branch": "master",
+    "sha1": "56cac250b0839ddbad1311d3ca4231f532b5aadf"
   },
   {
     "source": "https://github.com/SolidRun/u-boot.git",
@@ -126,13 +126,13 @@
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
-    "branch": "next-dev-buildroot",
-    "sha1": "3c60a711e61015c1a61247837afbeaa85bd7fbf2"
+    "branch": "rk35xx-2024.01",
+    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
-    "branch": "rk35xx-2024.01",
-    "sha1": "31b85240876dc43492b0826a74b99c23fbf6ed9d"
+    "branch": "next-dev-buildroot",
+    "sha1": "3c60a711e61015c1a61247837afbeaa85bd7fbf2"
   },
   {
     "source": "https://github.com/radxa/u-boot.git",
@@ -192,7 +192,7 @@
   {
     "source": "https://github.com/TexasInstruments/ti-u-boot",
     "branch": "ti-u-boot-2025.01",
-    "sha1": "afb6e41006ca88067397873e015a21adaf31fd06"
+    "sha1": "df1fe238230433ba3e5b731356156e145aa90917"
   },
   {
     "source": "https://github.com/steev/linux.git",
