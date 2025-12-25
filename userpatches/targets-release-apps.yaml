@@ -247,7 +247,7 @@ targets:
       gha: *armbian-gha
       build-image: "yes"
     vars:
-      RELEASE: bookworm
+      RELEASE: trixie
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
       ENABLE_EXTENSIONS: "omv"
