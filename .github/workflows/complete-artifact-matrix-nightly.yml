@@ -47,8 +47,8 @@ on:
         options:
         # branches
         - main
-        - sunxi-6.18-v3
-        - sunxi-6.18-v2
+        - upstreampkg
+        - update-maintainers
         - v25.11
         - update-kernel-configs
         - sunxi
@@ -57,7 +57,6 @@ on:
         - test
         - v25.08
         - v25.05
-        - revert-8484-add-and-enable-lte-em05-driver
         - igorpecovnik-patch-2
         - igorpecovnik-patch-1
         - logofix
@@ -66,6 +65,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
