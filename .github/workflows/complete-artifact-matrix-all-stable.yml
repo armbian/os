@@ -8079,7 +8079,7 @@ jobs:
         with:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/armbian.github.io
-          event-type: "Mirror"
+          event-type: "Infrastructure: Mirror artifacts"
           client-payload: '{"pull_repository": "armbian/${{ env.RELEASE_REPOSITORY }}", "cdn_tag": "${{ env.RELEASE_REPOSITORY }}"}'
 
       # Run webindex update action
