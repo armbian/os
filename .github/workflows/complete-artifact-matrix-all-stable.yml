@@ -42,9 +42,8 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
         - repo-mng
-        - wtd
+        - update-maintainers
         - update-kernel-configs
         - v25.11
         - sunxi
@@ -61,6 +60,7 @@ on:
         - opi5-mainline-uboot-update
         - prepre
         - fixper
+        - bump-6.15-collab
         default: 'main'
       board:
         type: choice
