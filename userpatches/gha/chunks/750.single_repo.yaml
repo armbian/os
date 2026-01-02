@@ -136,7 +136,7 @@ jobs: # <TEMPLATE-IGNORE>
                 --remove-source-files \
                 --delete \
                 output/ \
-                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${TARGET}"
+                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/{{ env.TARGET_PATH }}${TARGET}"
 
           echo "Clean up empty directories in output/"
           find output/. -type d -empty -delete

@@ -93,6 +93,9 @@ env:
   # Added to every build, even the prepare job.
   EXTRA_PARAMS_ALL_BUILDS: "${{ inputs.extraParamsAllBuilds || 'UPLOAD_TO_OCI_ONLY=yes' }}"
 
+  # Storage deployment path
+  TARGET_PATH: "[[target_upload]]"
+
   # Version management
   VERSION_OVERRIDE: "${{ github.event.inputs.versionOverride }}"
   VERSION_BUMP: "${{ github.event.inputs.bumpversion || [[bumpVersion]] }}"
