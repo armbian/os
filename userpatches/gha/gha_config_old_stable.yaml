@@ -20,7 +20,7 @@ org_and_userpatches_repo: "armbian/os"
 userpatches_ref: "main"
 userpatches_dir: "userpatches" # folder inside the userpatches repo; use "." if stuff is in the root of the repo
 targets_filename: "targets-release.yaml"
-target_upload: ""
+target_upload: "generic/"
 
 ghcr_user: "${{ github.repository_owner }}"
 userpatches_config_for_prepare_job: "armbian-images" # use "" for no config file
