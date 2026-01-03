@@ -8295,6 +8295,7 @@ jobs:
           event-type: "Repository update"
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
+        run: ':'
 
     outputs:
 
