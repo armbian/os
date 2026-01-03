@@ -2445,8 +2445,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -2819,8 +2819,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3193,8 +3193,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3567,8 +3567,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -3941,8 +3941,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4315,8 +4315,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -4689,8 +4689,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5063,8 +5063,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5437,8 +5437,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -5811,8 +5811,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -6185,8 +6185,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -6559,8 +6559,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -6933,8 +6933,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -7307,8 +7307,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -7681,8 +7681,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
@@ -8055,8 +8055,8 @@ jobs:
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        #if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ ( github.event.inputs.nightlybuild || 'no' ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
