@@ -8285,6 +8285,9 @@ jobs:
                 --include='debs-beta/**/*.deb' \
                 --exclude='*' \
                 --omit-dir-times \
+                --no-perms \
+                --no-owner \
+                --no-group \
                 build/output/ \
                 "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/incoming/${{ env.TARGET_PATH }}"
 
