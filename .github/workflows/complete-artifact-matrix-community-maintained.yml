@@ -8193,7 +8193,8 @@ jobs:
 
   publish-debs-to-repo:
     name: "Download artifacts from ORAS cache"
-    runs-on: [ repository ]
+    #runs-on: [ repository ]
+    runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() && github.event.inputs.targetsFilterInclude == '' && inputs.ref == '' }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
