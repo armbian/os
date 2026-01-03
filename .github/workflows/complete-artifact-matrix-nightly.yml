@@ -47,8 +47,8 @@ on:
         options:
         # branches
         - main
-        - libfuse
-        - update-maintainers
+        - fix/helios64-typec-extcon-bridge
+        - rkfix
         - update-kernel-configs
         - v25.11
         - sunxi
@@ -522,6 +522,9 @@ env:
 
   # Added to every build, even the prepare job.
   EXTRA_PARAMS_ALL_BUILDS: "${{ inputs.extraParamsAllBuilds || 'UPLOAD_TO_OCI_ONLY=yes' }}"
+
+  # Storage deployment path
+  TARGET_PATH: "nightly/"
 
   # Version management
   VERSION_OVERRIDE: "${{ github.event.inputs.versionOverride }}"
@@ -8325,7 +8328,7 @@ jobs:
                 --remove-source-files \
                 --delete \
                 output/ \
-                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${TARGET}"
+                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/{{ env.TARGET_PATH }}${TARGET}"
 
           echo "Clean up empty directories in output/"
           find output/. -type d -empty -delete
