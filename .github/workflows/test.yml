@@ -67,5 +67,5 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/armbian.github.io
           event-type: "Prepare incoming"
-          client-payload: '{"pull_repository": "armbian/${{ env.RELEASE_REPOSITORY }}", "cdn_tag": "${{ env.RELEASE_REPOSITORY }}"}'
+          client-payload: '{"target": "armbian/${{ env.RELEASE_REPOSITORY }}", "cdn_tag": "${{ env.RELEASE_REPOSITORY }}"}'
 
