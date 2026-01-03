@@ -8193,37 +8193,10 @@ jobs:
 
   publish-debs-to-repo:
     name: "Download artifacts from ORAS cache"
-    #runs-on: [ repository ]
     runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() && github.event.inputs.targetsFilterInclude == '' && inputs.ref == '' }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
-
-      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
-        uses: armbian/actions/runner-clean@main
-
-      # Prepare dependencies.
-      - name: Install dependencies
-        run: |
-          set -euo pipefail
-
-          pkgs=(gnupg2 reprepro lftp)
-          missing=()
-
-          for p in "${pkgs[@]}"; do
-            dpkg -s "$p" >/dev/null 2>&1 || missing+=("$p")
-          done
-
-          if ((${#missing[@]})); then
-            echo "Installing missing packages: ${missing[*]}"
-
-            sudo flock /var/lib/apt/lists/.lock -c '
-              DEBIAN_FRONTEND=noninteractive apt-get update
-              DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends '"${missing[*]}"'
-            '
-          else
-            echo "All required packages already installed."
-          fi
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
@@ -8233,20 +8206,15 @@ jobs:
           username: "${{ github.repository_owner }}" # GitHub username or org
           password: "${{ secrets.GITHUB_TOKEN }}"    # GitHub actions builtin token. repo has to have pkg access.
 
-      # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
-      - name: Cleanup userpatches repo
-        if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
-        run: rm -rf userpatches.repo
-
       - name: Checkout build repo
-        uses: actions/checkout@v6 # We don't need to clone git, really. A wget would suffice for GH-hosted runners. But using clone is better for Igor-hosted runners.
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
           fetch-depth: 0
-          clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
+          path: build
+          clean: false
 
-      # clone the userpatches repo (`armbian/os`)
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
         uses: actions/checkout@v6
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
@@ -8254,39 +8222,40 @@ jobs:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
           ref: ${{ env.USERPATCHES_REF }}
           fetch-depth: 0
-          clean: false # true is default.
-          path: userpatches.repo
+          clean: false
+          path: os
 
       - name: "Put userpatches in place, and remove userpatches repo"
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: |
-          mkdir -pv userpatches
-          rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
-          #rm -rf userpatches.repo
 
-      # Clean off output/info, if any
-      # Clean off debs and debs-beta
-      - name: Cleanup output/info
-        run: |
-          rm -rfv output/info output/debs output/debs-beta
-          mkdir -pv output
+          rsync -av os/${{env.USERPATCHES_DIR}}/. build/userpatches/
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
         uses: actions/download-artifact@v7
         with:
           name: build-info-json
-          path: output/info
+          path: build/output/info
 
       # List the artifacts we downloaded
       - name: List artifacts
         run: |
-          ls -laht output/info
 
-      - name: Download the debs
-        id: download-debs
+          ls -laht build/output/info
+
+      - name: Run debs-to-repo download
+        env:
+          BETA: ${{ github.event.inputs.nightlybuild == 'true' && 'yes' || 'no' }}
         run: |
-          bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+
+          set -euo pipefail
+          cd build
+          ./compile.sh debs-to-repo-download \
+            REVISION="${{ needs.matrix_prep.outputs.version }}" \
+            BETA="$BETA" \
+            SHARE_LOG=yes \
+            ${{ env.EXTRA_PARAMS_ALL_BUILDS }}
 
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
@@ -8316,7 +8285,7 @@ jobs:
                 --include='debs-beta/**/*.deb' \
                 --exclude='*' \
                 --omit-dir-times \
-                output/ \
+                build/output/ \
                 "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/incoming/${{ env.TARGET_PATH }}"
 
       - name: "Run repository update action"
@@ -8328,8 +8297,6 @@ jobs:
           event-type: "Repository update"
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
-        run: |
-          echo "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
 
     outputs:
 
