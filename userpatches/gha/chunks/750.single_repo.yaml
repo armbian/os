@@ -131,12 +131,13 @@ jobs: # <TEMPLATE-IGNORE>
 
           echo "Sync all parts (only debs***)"
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }} -o StrictHostKeyChecking=accept-new" \
-                -arvc \
-                --include='debs***' \
+                -rvc \
+                --include='*/' \
+                --include='*.deb' \
                 --exclude='*' \
                 --remove-source-files \
                 --omit-dir-times \
-                --delete \
+                --prune-empty-dirs \
                 output/ \
                 "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${{ env.TARGET_PATH }}${TARGET}"
 
