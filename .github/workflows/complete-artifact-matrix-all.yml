@@ -7973,6 +7973,7 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/armbian.github.io
           event-type: "Repository update"
+          client-payload: '{"target": "${{ env.TARGET_PATH }}"}'
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: ':'
