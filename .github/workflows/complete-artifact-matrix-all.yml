@@ -7882,16 +7882,22 @@ jobs:
       # Prepare dependencies.
       - name: Install dependencies
         run: |
+          set -euo pipefail
+
+          pkgs=(gnupg2 reprepro lftp)
           missing=()
 
-          [ -x /usr/bin/gpg ]      || missing+=("gnupg2")
-          [ -x /usr/bin/reprepro ] || missing+=("reprepro")
-          [ -x /usr/bin/lftp ]     || missing+=("lftp")
+          for p in "${pkgs[@]}"; do
+            dpkg -s "$p" >/dev/null 2>&1 || missing+=("$p")
+          done
 
-          if [ ${#missing[@]} -gt 0 ]; then
+          if ((${#missing[@]})); then
             echo "Installing missing packages: ${missing[*]}"
-            sudo apt-get update
-            sudo apt-get install -y "${missing[@]}"
+
+            sudo flock /var/lib/apt/lists/.lock -c '
+              DEBIAN_FRONTEND=noninteractive apt-get update
+              DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends '"${missing[*]}"'
+            '
           else
             echo "All required packages already installed."
           fi
@@ -7959,12 +7965,6 @@ jobs:
         run: |
           bash ./compile.sh debs-to-repo-download REVISION="${{ needs.matrix_prep.outputs.version }}" BETA=${{ github.event.inputs.nightlybuild || 'yes' }} SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_KEY1 }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
-
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -7972,43 +7972,29 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
           if_key_exists: replace
 
-      - name: "Fix permissions and sync artifacts"
+      - name: "Upload artifacts"
         run: |
 
           set -euo pipefail
 
-          #echo "Fix permissions on output/"
-          #sudo chown -R "$USER:$USER" output/.
-
-          # Decide target subfolder
-          TARGET=""
-          #if [ "${{ github.event.inputs.skipImages }}" = "no" ] || [ "'yes'" = "no" ]; then
-          #  echo "Save to user's partial folder"
-          #  TARGET="partial/${{ github.actor }}/"
-          #fi
-
-          #if [ "$GITHUB_WORKFLOW" = "Build All Stable Artifacts (cronjob)" ]; then
-          #    echo "Nightly workflow detected"
-          #    TARGET="stable-daily/"
-          #fi
-
-          #echo "Fix permissions on /incoming"
-          #sudo chown -R "${{ secrets.HOST_UPLOAD_USER }}:${{ secrets.HOST_UPLOAD_USER }}" /incoming/.
-
-          echo "Sync all parts (only debs***)"
+          echo "Sync debs and debs-beta"
           rsync -e "ssh -p ${{ secrets.HOST_UPLOAD_PORT }} -o StrictHostKeyChecking=accept-new" \
                 -rvc \
-                --include='*/' \
-                --include='*.deb' \
-                --exclude='*' \
+                --delete \
                 --remove-source-files \
-                --omit-dir-times \
                 --prune-empty-dirs \
+                --include='debs/' \
+                --include='debs-beta/' \
+                --include='debs/***/' \
+                --include='debs-beta/***/' \
+                --include='debs/*.deb' \
+                --include='debs-beta/*.deb' \
+                --include='debs/**/*.deb' \
+                --include='debs-beta/**/*.deb' \
+                --exclude='*' \
+                --omit-dir-times \
                 output/ \
-                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/${{ env.TARGET_PATH }}${TARGET}"
-
-          echo "Clean up empty directories in output/"
-          find output/. -type d -empty -delete
+                "${{ secrets.HOST_UPLOAD_USER }}@${{ secrets.HOST_UPLOAD }}:storage/incoming/${{ env.TARGET_PATH }}"
 
       - name: "Run repository update action"
         if: ${{ (github.event.inputs.skipImages || 'yes') == 'yes' }}
