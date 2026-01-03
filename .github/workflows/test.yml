@@ -404,18 +404,6 @@ jobs:
           rm -rfv output/info output/debs output/debs-beta
           mkdir -pv output
 
-      # Download the artifacts (output/info) produced by the prepare-matrix job.
-      - name: Download artifacts
-        uses: actions/download-artifact@v7
-        with:
-          name: build-info-json
-          path: output/info
-
-      # List the artifacts we downloaded
-      - name: List artifacts
-        run: |
-          ls -laht output/info
-
       - name: Download the debs
         id: download-debs
         run: |
