@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - repo_fix
         - rkfix
         - update-kernel-configs
         - v25.11
@@ -65,7 +66,6 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
-        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
@@ -8197,7 +8197,8 @@ jobs:
 
   publish-debs-to-repo:
     name: "Download artifacts from ORAS cache"
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: repository
     if: ${{ !failure() && !cancelled() && github.event.inputs.targetsFilterInclude == '' && inputs.ref == '' }} # eg: run if dependencies worked. See https://github.com/orgs/community/discussions/45058#discussioncomment-4817378
     needs: [ "matrix_prep", "all-artifacts-ready" ]
     steps:
