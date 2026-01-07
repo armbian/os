@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - extracting
         - update-kernel-configs
         - rkfix
         - v25.11
@@ -59,7 +60,6 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
-        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
