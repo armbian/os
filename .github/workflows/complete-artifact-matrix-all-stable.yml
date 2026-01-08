@@ -42,7 +42,7 @@ on:
         options:
         # branches
         - main
-        - extracting
+        - update-maintainers
         - rkfix
         - v25.11
         - sunxi
@@ -7977,7 +7977,11 @@ jobs:
           token: ${{ secrets.DISPATCH }}
           repository: armbian/armbian.github.io
           event-type: "Repository update"
-          client-payload: '{"target": "${{ env.TARGET_PATH }}"}'
+          client-payload: >
+            {
+              "target": "${{ env.TARGET_PATH }}",
+              "download_external": true
+            }
 
       - name: "Logs debs-to-repo-download: ${{ steps.download-debs.outputs.logs_url }}"
         run: ':'
