@@ -26,7 +26,7 @@ echo "Customizing $BOARD $BOARD_VENDOR"
 
 echo "Remove MS and GH sources as we ship them via our repo"
 [[ -f /etc/apt/sources.list.d/discord.list ]] && rm -f /etc/apt/sources.list.d/discord.list
-[[ -f /etc/apt/sources.list.d/vscode.list ]] && rm -f /etc/apt/sources.list.d/vscode.list
+[[ -f /etc/apt/sources.list.d/vscode.list ]] && touch /etc/apt/sources.list.d/vscode.list
 [[ -f /etc/apt/sources.list.d/vscode.sources ]] && touch /etc/apt/sources.list.d/vscode.sources
 [[ -f /etc/apt/sources.list.d/githubcli.list ]] && rm -f /etc/apt/sources.list.d/githubcli.list
 [[ -f /etc/apt/preferences.d/99-neon-base-files ]] && rm -f /etc/apt/preferences.d/99-neon-base-files
