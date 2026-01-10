@@ -43,7 +43,8 @@ on:
         options:
         # branches
         - main
-        - visionfive
+        - update-maintainers
+        - feature/new-parallel-repo-architecture
         - rkfix
         - v25.11
         - sunxi
@@ -61,7 +62,6 @@ on:
         - prepre
         - fixper
         - bump-6.15-collab
-        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
