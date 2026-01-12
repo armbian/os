@@ -43,7 +43,10 @@ on:
         options:
         # branches
         - main
+        - singlemode
         - update-maintainers
+        - always
+        - feature/new-parallel-repo-architecture
         - rkfix
         - v25.11
         - sunxi
@@ -59,9 +62,6 @@ on:
         - coderabbitai/docstrings/20bTtA
         - opi5-mainline-uboot-update
         - prepre
-        - fixper
-        - bump-6.15-collab
-        - coderabbitai/docstrings/756dff9
         default: 'main'
       board:
         type: choice
