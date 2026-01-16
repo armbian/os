@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
         - always
         - feature/new-parallel-repo-architecture
@@ -60,7 +61,6 @@ on:
         - coderabbitai/docstrings/20bTtA
         - opi5-mainline-uboot-update
         - prepre
-        - fixper
         default: 'main'
       board:
         type: choice
