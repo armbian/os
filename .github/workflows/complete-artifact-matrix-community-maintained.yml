@@ -2468,6 +2468,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -2561,17 +2569,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -2842,6 +2845,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -2935,17 +2946,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -3216,6 +3222,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -3309,17 +3323,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -3590,6 +3599,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -3683,17 +3700,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -3964,6 +3976,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -4057,17 +4077,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -4338,6 +4353,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -4431,17 +4454,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -4712,6 +4730,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -4805,17 +4831,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -5086,6 +5107,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -5179,17 +5208,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -5460,6 +5484,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -5553,17 +5585,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -5834,6 +5861,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -5927,17 +5962,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -6208,6 +6238,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -6301,17 +6339,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -6582,6 +6615,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -6675,17 +6716,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -6956,6 +6992,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -7049,17 +7093,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -7330,6 +7369,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -7423,17 +7470,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -7704,6 +7746,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -7797,17 +7847,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
@@ -8078,6 +8123,14 @@ jobs:
       - name: "Upload to servers"
         run: |
 
+          # temp workspace for downloaded jsons (auto-cleanup)
+          tmpdir="$(mktemp -d)"
+          trap 'rm -rf "$tmpdir"' EXIT
+
+          curl -fL --retry 10 --retry-delay 5 --retry-all-errors \
+            -o "$tmpdir/cache.jq"  https://github.armbian.com/servers/cache.jq \
+            -o "$tmpdir/upload.jq" https://github.armbian.com/servers/upload.jq
+
           # debug
           echo "=== servers-cache.jq ==="
           jq . output/info/servers-cache.jq || cat output/info/servers-cache.jq
@@ -8171,17 +8224,12 @@ jobs:
 
           effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
-          if [ "$effective_nightlybuild" = "yes" ] || \
-            [ "$RELEASE_REPOSITORY" = "community" ] || \
-            [ "$RELEASE_REPOSITORY" = "distribution" ]; then
-              # Upload to cache servers: only .xz/.sha/.torrent
-              sync_from_json output/info/servers-cache.jq cache
-          fi
+          # Upload to cache servers: only .sha/.asc/.torrent
+          sync_from_json "$tmpdir/cache.jq" cache
 
-          if [ "$effective_nightlybuild" = "no" ] && \
-            [ "$RELEASE_REPOSITORY" = "os" ]; then
-              # Upload to servers: everything except .xz/.sha/.torrent
-              sync_from_json output/info/servers-upload.jq upload
+          if [ "$effective_nightlybuild" = "no" ] && [ "$RELEASE_REPOSITORY" = "os" ]; then
+              # Upload to servers: everything
+              sync_from_json "$tmpdir/upload.jq" upload
           fi
 
       # cleaning self hosted runners
