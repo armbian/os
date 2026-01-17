@@ -43,6 +43,7 @@ on:
         options:
         # branches
         - main
+        - coderabbitai/docstrings/5ccee8c
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
         - always
@@ -61,7 +62,6 @@ on:
         - coderabbitai/utg/20bTtA
         - coderabbitai/docstrings/20bTtA
         - opi5-mainline-uboot-update
-        - prepre
         default: 'main'
       board:
         type: choice
