@@ -108,8 +108,6 @@ lists:
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: orangepi5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pocketbeagle2, BRANCH: vendor }
