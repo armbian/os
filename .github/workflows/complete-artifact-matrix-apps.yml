@@ -671,7 +671,7 @@ jobs:
              git config --global user.email "info@armbian.com"
              git config --global user.name "Armbianworker"
              git config pull.rebase false
-             git pull
+             git pull --rebase
              git add git_sources.json
              git commit git_sources.json --allow-empty -m "Update external GIT commits"
              git push
