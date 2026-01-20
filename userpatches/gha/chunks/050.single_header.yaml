@@ -252,7 +252,7 @@ jobs:
           fi
 
   version_prep:
-    needs: sources_prep
+    needs: team_check
     name: "Bump version"
     runs-on: ubuntu-latest
     steps:
