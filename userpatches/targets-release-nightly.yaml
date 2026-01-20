@@ -130,15 +130,15 @@ lists:
 # automated lists stop
 
 targets:
-  # Debian sid minimal nightly
-  nightly-sid:
+  # Debian forky minimal nightly
+  nightly-forky:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
     build-image: "yes"
     vars:
-      RELEASE: sid
+      RELEASE: forky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
@@ -162,15 +162,15 @@ targets:
       - *nightly-riscv64
       - *nightly-headless
 
-  # Debian sid minimal nightly - RISC-V
-  nightly-sid-riscv:
+  # Debian forky minimal nightly - RISC-V
+  nightly-forky-riscv:
     enabled: yes
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
     build-image: "yes"
     vars:
-      RELEASE: sid
+      RELEASE: forky
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
