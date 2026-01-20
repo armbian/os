@@ -684,7 +684,7 @@ jobs:
           fi
 
   version_prep:
-    needs: sources_prep
+    needs: team_check
     name: "Bump version"
     runs-on: ubuntu-latest
     steps:
@@ -8375,7 +8375,7 @@ jobs:
     name: "Footer"
     runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || 'yes') == 'yes' }}
-    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready" ]
+    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready", "sources_prep"]
     steps:
 
       # Download workflow artifacts
