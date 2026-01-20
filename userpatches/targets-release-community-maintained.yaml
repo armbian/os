@@ -15,11 +15,11 @@ common-gha-configs:
         rootfs-arm64: [ "self-hosted", "Linux", "ARM64" , "fast" ]
         rootfs-amd64: [ "self-hosted", "Linux", "X64", "fast" ]
         rootfs-riscv64: [ "self-hosted", "Linux", "X64", "fast" ]
-        image-arm64: [ "images" ]
-        #image-armhf: [ "ubuntu-24.04-arm" ]
-        image-armhf: [ "images", "X64" ]
+        image-arm64: [ "images", "ARM64" ]
+        image-armhf: [ "ubuntu-24.04-arm" ]
         image-riscv64: [ "images", "X64" ]
         image-amd64: [ "images", "X64" ]
+
 
 lists:
 

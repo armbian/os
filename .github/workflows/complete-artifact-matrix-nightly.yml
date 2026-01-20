@@ -47,7 +47,6 @@ on:
         options:
         # branches
         - main
-        - fix-kernel-headers-modpost-build
         - coderabbitai/docstrings/6245807
         - feature/docker-auto-pull-cronjob
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
@@ -66,6 +65,7 @@ on:
         - igorpecovnik-patch-1
         - logofix
         - coderabbitai/utg/20bTtA
+        - coderabbitai/docstrings/20bTtA
         default: 'main'
       board:
         type: choice
