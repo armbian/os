@@ -1,123 +1,38 @@
 #
-# Armbian release template. Auto-generated from image-info.json
+# Armbian release template for automated generation. DO NOT EDIT .yaml files. Edit .template
 #
+
 common-gha-configs:
-armbian-gha: &armbian-gha
-  runners:
-    default: "ubuntu-latest"
-    by-name:
-      kernel: [ "self-hosted", "Linux", "alfa" ]
-      uboot: [ "self-hosted", "Linux", "fast", "X64" ]
-      armbian-bsp-cli: [ "fast" ]
-    by-name-and-arch:
-      rootfs-armhf: [ "self-hosted", "Linux", "aarch64" ]
-      rootfs-arm64: [ "ubuntu-24.04-arm" ]
-      rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
-      rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
-      rootfs-loong64: [ "self-hosted", "Linux", "X64" ]
-      image-armhf: [ "self-hosted", "Linux", 'aarch64' ]
-      image-arm64: [ "self-hosted", "Linux", 'images' ]
-      image-amd64: [ "self-hosted", "Linux", 'images', "X64" ]
-      image-riscv64: [ "self-hosted", "Linux", 'images', "X64" ]
-      image-loong64: [ "self-hosted", "Linux", 'images', "X64" ]
+  armbian-gha: &armbian-gha
+    runners:
+      default: "fast"
+      by-name:
+        kernel: [ "self-hosted", "Linux", "alfa" ]
+        uboot: [ "self-hosted", "Linux", "fast", "X64" ]
+        armbian-bsp-cli: [ "fast" ]
+      by-name-and-arch:
+        rootfs-armhf: [ "self-hosted", "Linux", "X64" , "fast" ]
+        rootfs-arm64: [ "self-hosted", "Linux", "ARM64", "fast" ]
+        rootfs-amd64: [ "self-hosted", "Linux", "X64", "fast" ]
+        rootfs-riscv64: [ "self-hosted", "Linux", "X64" , "fast" ]
+        image-arm64: [ "images", "ARM64" ]
+        image-armhf: [ "ubuntu-24.04-arm" ]
+        #image-armhf: [ "images", "X64" ]
+        image-riscv64: [ "images", "X64" ]
+        image-amd64: [ "images", "X64" ]
+
 
 lists:
-# Nightly builds - fast HDMI (quad-core+ or modern SoCs)
-  nightly-fast-hdmi: &nightly-fast-hdmi
-  # auto generated section
-    - { BOARD: aml-a311d-cc, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: aml-c400-plus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: aml-s905d3-cc, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapi, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim2plus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim4berry, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim5pro, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bananapim7, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: beaglebone-ai64, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: beagleplay, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: beagley-ai, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bigtreetech-cb1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: bigtreetech-cb2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: helios64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: imb3588, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: khadas-edge2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu,image-output-oowow" }
-    - { BOARD: khadas-vim3, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu,image-output-oowow" }
-    - { BOARD: khadas-vim3l, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu,image-output-oowow" }
-    - { BOARD: mba8mpxl, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: mba8mpxl-ras314, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: mekotronics-r58-4x4, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: mekotronics-r58hd, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopct6, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopi-m5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopi-m6, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopi-r3s-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopi-r6s, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopi-r76s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopik2-s905, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: odroidc1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: odroidc4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: odroidxu4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: oneplus-kebab, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi5, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepione, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: phytiumpi, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: pocketbeagle2, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-cm4-io, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-cm5-io, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-dragon-q6a, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-e24c, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-e25, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-e54c, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: radxa-rock-4d, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-2a, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-2f, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5-itx, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5b-plus, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5c, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rock-5t, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rpi4b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-am62-lp, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-am62-sip, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-am62b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-am62p, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-am68, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-am69, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sk-tda4vm, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: sweet-potato, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: tinkerboard, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: tmds62levm, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: xiaomi-elish, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-  # end of auto generated section
 
-  nightly-riscv64: &nightly-riscv64
-  # auto generated section
+  # automated lists start
+  standard-support-riscv64: &standard-support-riscv64
+    # auto generated section
     - { BOARD: bananapif3, BRANCH: current }
     - { BOARD: musepipro, BRANCH: current }
-  # end of auto generated section
+    # end of auto generated section
 
-  nightly-loongarch: &nightly-loongarch
-  # auto generated section
-    - { BOARD: uefi-loong64, BRANCH: current }
-  # end of auto generated section
-
-  nightly-headless: &nightly-headless
-  # auto generated section
+  standard-support-headless: &standard-support-headless
+    # auto generated section
     - { BOARD: clearfogpro, BRANCH: current }
     - { BOARD: espressobin, BRANCH: current }
     - { BOARD: gateway-gz80x, BRANCH: current }
@@ -129,111 +44,134 @@ lists:
     - { BOARD: rockpi-e, BRANCH: current }
     - { BOARD: rockpi-s, BRANCH: current }
     - { BOARD: sk-am64b, BRANCH: vendor }
-  # end of auto generated section
+    # end of auto generated section
 
-# automated lists stop
+  staging-fast-hdmi: &staging-fast-hdmi
+    # auto generated section
+    - { BOARD: radxa-e24c, BRANCH: edge }
+    # end of auto generated section
+
+  standard-support-fast-hdmi: &standard-support-fast-hdmi
+    # auto generated section
+    - { BOARD: aml-c400-plus, BRANCH: current }
+    - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim4berry, BRANCH: current }
+    - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim5, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: bananapim5pro, BRANCH: edge }
+    - { BOARD: bananapim7, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: beaglebone-ai64, BRANCH: vendor }
+    - { BOARD: beagleplay, BRANCH: vendor }
+    - { BOARD: beagley-ai, BRANCH: vendor }
+    - { BOARD: bigtreetech-cb1, BRANCH: current }
+    - { BOARD: bigtreetech-cb2, BRANCH: current }
+    - { BOARD: imb3588, BRANCH: vendor }
+    - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: khadas-edge2, BRANCH: vendor, ENABLE_EXTENSIONS: "image-output-oowow,v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: khadas-vim1s, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
+    - { BOARD: nanopct6-lts, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopct6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopi-m5, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopi-m6, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopi-r3s-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopi-r6s, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopi-r76s, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: nanopik2-s905, BRANCH: current }
+    - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: odroidc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: phytiumpi, BRANCH: current }
+    - { BOARD: pocketbeagle2, BRANCH: vendor }
+    - { BOARD: radxa-cm4-io, BRANCH: vendor }
+    - { BOARD: radxa-cm5-io, BRANCH: vendor }
+    - { BOARD: radxa-e25, BRANCH: current }
+    - { BOARD: radxa-e54c, BRANCH: vendor }
+    - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
+    - { BOARD: radxa-rock-4d, BRANCH: vendor }
+    - { BOARD: rock-2a, BRANCH: vendor }
+    - { BOARD: rock-2f, BRANCH: vendor }
+    - { BOARD: rock-3a, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5-itx, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5a, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5b-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rock-5t, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rpi4b, BRANCH: current }
+    - { BOARD: sk-am62-lp, BRANCH: vendor }
+    - { BOARD: sk-am62-sip, BRANCH: vendor }
+    - { BOARD: sk-am62b, BRANCH: vendor }
+    - { BOARD: sk-am62p, BRANCH: vendor }
+    - { BOARD: sk-am68, BRANCH: vendor }
+    - { BOARD: sk-am69, BRANCH: vendor }
+    - { BOARD: sk-tda4vm, BRANCH: vendor }
+    - { BOARD: sweet-potato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: tmds62levm, BRANCH: vendor }
+    # end of auto generated section
+
+  standard-support-slow-hdmi: &standard-support-slow-hdmi
+    # auto generated section
+    - { BOARD: bananapim2plus, BRANCH: current }
+    - { BOARD: odroidc1, BRANCH: current }
+    - { BOARD: odroidxu4, BRANCH: current }
+    - { BOARD: orangepione, BRANCH: current }
+    - { BOARD: tinkerboard, BRANCH: current }
+    - { BOARD: uefi-loong64, BRANCH: current }
+    # end of auto generated section
+
+  # automated lists stop
+
+  virtual-boards: &virtual-boards
+    # WSL2 UEFI's, for Windows WSL2 (mostly just interested in the kernel for those)
+    # Qemu with u-boot
+    #- { BOARD: wsl2-arm64, BRANCH: current }
+    #- { BOARD: wsl2-x86, BRANCH: current }
+    - { BOARD: qemu-uboot-arm64, BRANCH: current }
+    - { BOARD: qemu-uboot-x86, BRANCH: current }
 
 targets:
-  # Debian forky minimal nightly
-  nightly-forky:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    build-image: "yes"
-    vars:
-      RELEASE: forky
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *nightly-fast-hdmi
-      - *nightly-riscv64
-      - *nightly-loongarch
-      - *nightly-headless
 
-  # Ubuntu noble minimal nightly
-  nightly-noble:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *nightly-fast-hdmi
-      - *nightly-riscv64
-      - *nightly-loongarch
-      - *nightly-headless
-
-  # Debian forky minimal nightly - RISC-V
-  nightly-forky-riscv:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    build-image: "yes"
-    vars:
-      RELEASE: forky
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *nightly-riscv64
-
-  # Ubuntu noble minimal nightly - RISC-V
-  nightly-noble-riscv:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *nightly-riscv64
-
-  # Debian sid minimal nightly - LoongArch
-  nightly-sid-loongarch:
-    enabled: no
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    build-image: "yes"
-    vars:
-      RELEASE: sid
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *nightly-loongarch
-
-  # Ubuntu noble minimal nightly - LoongArch
-  nightly-noble-loongarch:
-    enabled: yes
-    configs: [ armbian-images ]
-    pipeline:
-      gha: *armbian-gha
-    build-image: "yes"
-    vars:
-      RELEASE: noble
-      BUILD_MINIMAL: "yes"
-      BUILD_DESKTOP: "no"
-    items:
-      - *nightly-loongarch
-
-  # Manual target additions for nightly builds
-  # This content will be appended to the auto-generated targets-release-nightly.yaml
-
-  # Ubuntu unstable minimal cloud
+  # ubuntu stable minimal cloud
   minimal-cli-stable-ubuntu-cloud:
     enabled: yes
     configs: [ armbian-cloud ]
     pipeline:
       gha: *armbian-gha
-    build-image: "yes"
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+
+  # ubuntu stable minimal
+  minimal-cli-stable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *standard-support-slow-hdmi
+
+  # ubuntu unstable minimal cloud
+  minimal-cli-unstable-ubuntu-cloud:
+    enabled: yes
+    configs: [ armbian-cloud ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
     vars:
       RELEASE: plucky
       BUILD_MINIMAL: "yes"
@@ -241,10 +179,27 @@ targets:
     items:
       - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
-      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
 
-  # Debian unstable minimal cloud
+  # ubuntu unstable minimal
+  minimal-cli-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: plucky
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: "aml-s9xx-box" , BRANCH: current }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *standard-support-riscv64
+      - *virtual-boards
+
+  # debian unstable minimal cloud
   minimal-cli-unstable-debian-cloud:
     enabled: yes
     configs: [ armbian-cloud ]
@@ -258,5 +213,111 @@ targets:
     items:
       - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
       - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
-      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
-      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-vhdx" }
+
+  # debian unstable minimal
+  minimal-cli-unstable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: forky
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: "aml-s9xx-box", BRANCH: current }
+      - *standard-support-slow-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-headless
+      - *staging-fast-hdmi
+
+  # debian stable minimal cloud
+  minimal-cli-stable-debian-cloud:
+    enabled: yes
+    configs: [ armbian-cloud ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - { BOARD: uefi-arm64, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+      - { BOARD: uefi-x86, BRANCH: cloud, ENABLE_EXTENSIONS: "image-output-qcow2" }
+
+  # ubuntu unstable without apps
+  xfce-barebone-desktop-unstable-ubuntu:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "xfce"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "none"
+    items:
+      - *standard-support-slow-hdmi
+      - *standard-support-riscv64
+      - *staging-fast-hdmi
+
+  # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
+  kde-neon-desktop-stable-ubuntu:
+    enabled: no
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: noble
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "kde-neon"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,email,programming,remote_desktop"
+    items:
+      - *standard-support-fast-hdmi
+
+  # debian bookworm gnome desktop
+  gnome-desktop-stable-ubuntu:
+    enabled: no
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: bookworm
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *standard-support-fast-hdmi
+      - { BOARD: thinkpad-x13s, BRANCH: sc8280xp }
+      - { BOARD: xiaomi-elish, BRANCH: sm8250 }
+      - { BOARD: wdk2023, BRANCH: wdk2023 }
+
+  # automated section
+  automated-section:
+    enabled: no
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "no"
+    vars:
+      RELEASE: jammy
+      BUILD_MINIMAL: "yes"
+      BUILD_DESKTOP: "no"
+    items:
+      - *standard-support-riscv64
+      - *standard-support-headless
+      - *staging-fast-hdmi
+      - *standard-support-fast-hdmi
+      - *standard-support-slow-hdmi
+  # end of automated-section:
