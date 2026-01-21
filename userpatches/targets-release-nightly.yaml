@@ -53,7 +53,12 @@ lists:
     - { BOARD: mekotronics-r58-4x4, BRANCH: edge, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: mekotronics-r58hd, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EX[🐳|🔨]   Ign:1 http://deb.debian.org/debian-ports forky InRelease
+[🐳|🔨]   Err:2 http://deb.debian.org/debian-ports forky Release
+[🐳|🔨]     404  Not Found [IP: 151.101.130.132 80]
+[🐳|🔨]   Reading package lists...
+[🐳|🔨]   E: The repository 'http://deb.debian.org/debian-ports forky Release' does not have a Release file.
+TENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-m5, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-m6, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopi-r3s-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -198,7 +203,7 @@ targets:
 
   # Debian sid minimal nightly - LoongArch
   nightly-sid-loongarch:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
