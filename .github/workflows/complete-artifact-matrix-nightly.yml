@@ -1205,11 +1205,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1268,11 +1274,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1331,11 +1343,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1394,11 +1412,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1457,11 +1481,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1520,11 +1550,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1583,11 +1619,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1646,11 +1688,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1709,11 +1757,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1772,11 +1826,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1835,11 +1895,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1898,11 +1964,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1961,11 +2033,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2024,11 +2102,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2087,11 +2171,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2150,11 +2240,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2213,11 +2309,17 @@ jobs:
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
 
+      - name: "Run only on GitHub-hosted"
+        if: ${{ runner.environment == 'github-hosted' }}
+        run: |
+          echo "GitHub-hosted runner"
+          sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
+
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
         id: build
         run: |
-          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
