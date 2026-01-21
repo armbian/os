@@ -168,7 +168,7 @@ targets:
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT: "gnome"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,programming"
     items:
       - *nightly-fast-hdmi
 
@@ -185,7 +185,7 @@ targets:
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT: "xfce"
       DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "desktop_tools,internet,languages,multimedia,remote_desktop"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,programming"
     items:
       - *nightly-slow-hdmi
 
