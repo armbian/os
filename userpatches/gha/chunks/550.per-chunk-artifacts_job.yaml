@@ -58,6 +58,7 @@ jobs: # <TEMPLATE-IGNORE>
         run: |
           echo "GitHub-hosted runner"
           sudo ./compile.sh requirements
+          sudo chown -R "$(id -u):$(id -g)" .
 
       - name: Build  ${{matrix.desc}}
         timeout-minutes: 90
