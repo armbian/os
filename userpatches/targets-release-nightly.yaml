@@ -10,7 +10,7 @@ armbian-gha: &armbian-gha
       uboot: [ "self-hosted", "Linux", "fast", "X64" ]
       armbian-bsp-cli: [ "fast" ]
     by-name-and-arch:
-      rootfs-armhf: [ "self-hosted", "Linux", "aarch64" ]
+      rootfs-armhf: [ "ubuntu-latest" ]
       rootfs-arm64: [ "ubuntu-24.04-arm" ]
       rootfs-amd64: [ "self-hosted", "Linux", "X64" ]
       rootfs-riscv64: [ "self-hosted", "Linux", "X64" ]
