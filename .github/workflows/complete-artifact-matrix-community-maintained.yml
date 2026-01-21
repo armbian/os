@@ -1205,6 +1205,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1267,6 +1268,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1329,6 +1331,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1391,6 +1394,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1453,6 +1457,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1515,6 +1520,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1577,6 +1583,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1639,6 +1646,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1701,6 +1709,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1763,6 +1772,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1825,6 +1835,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1887,6 +1898,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -1949,6 +1961,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2011,6 +2024,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2073,6 +2087,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2135,6 +2150,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
@@ -2197,6 +2213,7 @@ jobs:
         timeout-minutes: 90
         id: build
         run: |
+          sudo ./compile.sh requirements
           bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
