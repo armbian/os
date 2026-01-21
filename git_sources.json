@@ -20,14 +20,14 @@
     "sha1": "968464532c566741796ee20f7f2b42d8ff63597e"
   },
   {
-    "source": "https://github.com/armbian/linux-rockchip.git",
-    "branch": "rk-6.1-rkr5.1",
-    "sha1": "3bfbb94a2a7cfd47fafa7df0602325f5e66216ec"
-  },
-  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.12.y",
     "sha1": "f6044d1fd846ed1ae457975738267214b538a222"
+  },
+  {
+    "source": "https://github.com/armbian/linux-rockchip.git",
+    "branch": "rk-6.1-rkr5.1",
+    "sha1": "3bfbb94a2a7cfd47fafa7df0602325f5e66216ec"
   },
   {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
@@ -35,8 +35,28 @@
     "sha1": "b6fe42bc55af3fb17c8c03def2f8a1f7fa907af6"
   },
   {
+    "source": "https://github.com/radxa/u-boot.git",
+    "branch": "next-dev-v2024.10",
+    "sha1": "6c807ac5008722e240f5282229c15a40aba4918f"
+  },
+  {
+    "source": "https://github.com/u-boot/u-boot",
+    "branch": "master",
+    "sha1": "fd871fc6bb497c6ddd7b39622480b89add78f57b"
+  },
+  {
     "source": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git",
     "branch": "linux-6.14.y",
     "sha1": "b9d5d463c216763cec719c04536ea9e14512cad4"
+  },
+  {
+    "source": "https://github.com/SolidRun/u-boot",
+    "branch": "v2018.01-solidrun-a38x",
+    "sha1": "a8004c1f1112ca2f867badccce5a76f052034853"
+  },
+  {
+    "source": "https://github.com/TexasInstruments/ti-u-boot",
+    "branch": "ti-u-boot-2025.01",
+    "sha1": "42cf2abb5f42b4e8dca8b9df584b816d8a0da7fa"
   }
 ]
