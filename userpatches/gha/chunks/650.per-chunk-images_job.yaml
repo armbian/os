@@ -47,12 +47,23 @@ jobs: # <TEMPLATE-IGNORE>
           clean: false # true is default.
           path: userpatches.repo
 
+      - name: Checkout JSON artifacts repository
+        uses: actions/checkout@v6
+        with:
+          repository: armbian.github.io
+          ref: data
+          clean: false
+          path: armbian.github.io
+
       - name: "Put userpatches in place, and remove userpatches repo"
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         run: |
           mkdir -pv userpatches
           rsync -av userpatches.repo/${{env.USERPATCHES_DIR}}/. userpatches/
           rm -rf userpatches.repo
+
+          # Use new release YAML targets
+          rsync -av armbian.github.io/data/release-targets/. userpatches/
 
       - name: "Cleanup leftover output"
         run: |
