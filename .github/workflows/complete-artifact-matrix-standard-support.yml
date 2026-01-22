@@ -808,6 +808,14 @@ jobs:
           clean: false # true is default.
           path: userpatches
 
+      - name: Checkout JSON artifacts repository
+        uses: actions/checkout@v6
+        with:
+          repository: armbian.github.io
+          ref: data
+          clean: false
+          path: armbian.github.io
+
       # clone the torrent lists
       - name: "Checkout torrent lists"
         uses: actions/checkout@v6
@@ -831,6 +839,9 @@ jobs:
 
           mkdir -pv build/userpatches
           rsync -av userpatches/${{env.USERPATCHES_DIR}}/. build/userpatches/
+
+          # Use new release YAML targets
+          rsync -av armbian.github.io/data/release-targets/. build/userpatches/
 
       - name: GitHub cache
         id: cache-restore
