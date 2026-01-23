@@ -7,7 +7,7 @@ jobs: # <TEMPLATE-IGNORE>
     name: "Footer"
     runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() && inputs.ref == '' && (github.event.inputs.nightlybuild || [[nightlybuildDefaults]]) == 'yes' }}
-    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready", "sources_prep"]
+    needs: [ "matrix_prep", "all-artifacts-ready", "all-images-ready"]
     steps:
 
       # Download workflow artifacts
