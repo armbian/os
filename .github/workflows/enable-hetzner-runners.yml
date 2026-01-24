@@ -61,7 +61,7 @@ jobs:
           action: create
           server-type: "${{ env.MACHINE || 'cax41' }}"
           index: "${{ matrix.index }}"
-          delete-existing: "true"
+          delete-existing: "${{ env.DELETE_EXISTING || 'false' }}"
           ssh-key: "UPLOAD"
           hetzner-token: ${{ secrets.HETZNER_ONE }}
           github-token: ${{ secrets.HETZNER_RUNNER }}
