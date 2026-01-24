@@ -1,59 +1,20 @@
 name: Enable Hetzner Runners (admin)
 on:
-  schedule:
-   - cron: '10 8 * * *'
   workflow_dispatch:
-    inputs:
-      period:
-        type: choice
-        description: 'Availability time'
-        options:
-        - 50m
-        - 110m
-        - 170m
-        - 230m
-        default: 110m
-      machine:
-        type: choice
-        description: 'Machine type'
-        options:
-        - cax21
-        - cax31
-        - cax41
-        default: 'cax31'
-      machine_count:
-        type: choice
-        description: 'Number of machines'
-        options:
-        - "1"
-        - "2"
-        - "4"
-        - "8"
-        default: '4'
-      runners_count:
-        type: choice
-        description: 'Runners per machine'
-        options:
-        - "1"
-        - "2"
-        - "4"
-        - "8"
-        - "16"
-        default: '4'
 
 concurrency:
   group: hetzner-runner
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-
+  # Main jobs
   Teamcheck:
     permissions:
       actions: write
-      
-    name: "Check ORG Team Membership"
-    if: ${{ github.repository_owner == 'Armbian' }}
-    runs-on: ubuntu-latest
+    if: |
+      github.repository_owner == 'Armbian' &&
+      github.actor == 'igorpecovnik'
+    runs-on: Linux
     steps:
 
     - name: "Check membership"
@@ -65,76 +26,80 @@ jobs:
 
   Prepare:
     needs: Teamcheck
-    name: "Enable cloud runners"
+    name: "Prepare matrix"
     outputs:
-      matrix: ${{steps.machine-number.outputs.matrix}}
-    runs-on: ubuntu-latest
+      matrix: ${{steps.matrix.outputs.matrix}}
+    runs-on: Linux
     steps:
 
-      - name: "Delete dangling cloud runners"
+      - name: Generate matrix
+        id: matrix
         run: |
-          for runner in $(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/armbian/os/actions/runners | jq -r '.runners[] | .id'); do
-              gh api --method DELETE -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/armbian/os/actions/runners/$runner
-          done
-          
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          count=${{ env.MACHINE_COUNT || '4' }}
+          echo "Generating matrix for ${count} server(s)"
+          matrix=$(seq 0 $(( count - 1 )) | jq -cnR '[inputs | tonumber]')
+          echo "matrix=${matrix}" >> $GITHUB_OUTPUT
+          echo "Matrix: ${matrix}"
 
-      - name: "Enable cloud runners"
-        id: machine-number
-        run: |
-          echo "matrix=$(for x in $(seq -w 0 $(( ${{ github.event.inputs.machine_count || 4 }} - 1 ))); do echo ${x}; done|jq -cnR '[inputs | select(length>0)]' | jq -c)" >> $GITHUB_OUTPUT
-  Enable:
-    name: "Cloud VM"
+  Create:
+    name: "Server ${{ matrix.index }}"
     runs-on: ubuntu-latest
     needs: Prepare
-    if: ${{ needs.Prepare.outputs.matrix != '[]' && needs.Prepare.outputs.matrix != '' }}
+    if: |
+      github.repository_owner == 'Armbian' &&
+      github.actor == 'igorpecovnik'
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        node: ${{fromJson(needs.Prepare.outputs.matrix)}}
+        index: ${{fromJson(needs.Prepare.outputs.matrix)}}
     steps:
 
-      - name: Enable Hetzner Virtual Machines
-        if: ${{ github.repository_owner == 'Armbian' }}
-        uses: armbian/actions/hetzner@1.1
+      - name: Create Hetzner server
+        uses: armbian/actions/hetzner@testing
         with:
-          action-type: enable
-          machine-type: "${{ github.event.inputs.machine || 'cax31' }}"
-          machine-id: "${{ matrix.node }}"          
-          runners-count: "${{ github.event.inputs.runners_count || '4' }}"          
-          machine-count: "${{ github.event.inputs.machine_count || '4' }}"
-          key: ${{ secrets.KEY_TORRENTS }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-          hetzner_id: ${{ secrets.HETZNER_ONE }}
-          github_token: ${{ secrets.ACCESS_TOKEN }}
+          action: create
+          server-type: "${{ env.MACHINE || 'cax41' }}"
+          index: "${{ matrix.index }}"
+          delete-existing: "true"
+          ssh-key: "UPLOAD"
+          hetzner-token: ${{ secrets.HETZNER_ONE }}
+          github-token: ${{ secrets.HETZNER_RUNNER }}
+          runner-count: "${{ env.RUNNER_COUNT || '4' }}"
 
-  sleeping:
-    name: "Sleeping"
-    needs: Enable
-    runs-on: ubuntu-latest
+  Work:
+    name: "Work ${{ matrix.index }}"
+    runs-on: Linux
+    needs: [Prepare, Create]
+    if: |
+      github.repository_owner == 'Armbian' &&
+      github.actor == 'igorpecovnik'
+    strategy:
+      fail-fast: false
+      matrix:
+        index: ${{fromJson(needs.Prepare.outputs.matrix)}}
     steps:
-     
-      - name: Sleeping "${{ github.event.inputs.period }}"
-        run: sleep "${{ github.event.inputs.period || '110m' }}"
- 
-  stop:
-    #if: always()
-    name: "Disable cloud runners"
-    needs: sleeping
+      - name: Sleep until cleanup
+        run: sleep "${{ env.PERIOD || '110m' }}"
+
+  Cleaning:
+    name: "Cleanup ${{ matrix.index }}"
     runs-on: ubuntu-latest
+    needs: [Prepare, Work]
+    if: |
+      always() &&
+      github.repository_owner == 'Armbian' &&
+      github.actor == 'igorpecovnik'
+    strategy:
+      fail-fast: false
+      matrix:
+        index: ${{fromJson(needs.Prepare.outputs.matrix)}}
     steps:
-     
-      - name: Enable Hetzner Virtual Machines
-        if: ${{ always() && github.repository_owner == 'Armbian' }}
-        uses: armbian/actions/hetzner@1.1
+      - name: Delete Hetzner server
+        uses: armbian/actions/hetzner@testing
         with:
-          action-type: disable
-          machine-type: "${{ github.event.inputs.machine || 'cax21' }}"
-          runners-count: "${{ github.event.inputs.runners_count || '2' }}"
-          machine-count: "${{ github.event.inputs.machine_count || '2' }}"
-          key: ${{ secrets.KEY_TORRENTS }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS_TORRENTS }}
-          hetzner_id: ${{ secrets.HETZNER_ONE }}
-          github_token: ${{ secrets.ACCESS_TOKEN }}
+          action: delete
+          server-type: "${{ env.MACHINE || 'cax41' }}"
+          index: "${{ matrix.index }}"
+          ssh-key: "UPLOAD"
+          hetzner-token: ${{ secrets.HETZNER_ONE }}
