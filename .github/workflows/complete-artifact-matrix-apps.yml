@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - rocckc
         - feature/docker-auto-pull-cronjob
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
@@ -59,7 +60,6 @@ on:
         - logofix
         - coderabbitai/utg/20bTtA
         - coderabbitai/docstrings/20bTtA
-        - opi5-mainline-uboot-update
         default: 'main'
       board:
         type: choice
