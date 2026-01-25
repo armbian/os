@@ -1,9 +1,0 @@
-URL=http://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu
-KEY=devel
-RELEASE=oracular
-TARGET=desktop
-METHOD=aptly
-INSTALL=firefox
-GLOB="Name (% firefox*), \$Version (>= 122.0)"
-ARCH=armhf:arm64:amd64
-REPOSITORY=B
