@@ -42,8 +42,8 @@ on:
         options:
         # branches
         - main
-        - update-kernel-configs
         - feature/docker-auto-pull-cronjob
+        - update-kernel-configs
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
         - always
