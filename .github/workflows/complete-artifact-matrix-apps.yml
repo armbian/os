@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - wait-online
         - feature/docker-auto-pull-cronjob
         - update-kernel-configs
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
@@ -59,7 +60,6 @@ on:
         - igorpecovnik-patch-1
         - logofix
         - coderabbitai/utg/20bTtA
-        - coderabbitai/docstrings/20bTtA
         default: 'main'
       board:
         type: choice
