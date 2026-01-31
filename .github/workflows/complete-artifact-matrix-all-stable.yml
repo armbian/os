@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - EvilOlaf-patch-1
         - wait-online
         - feature/docker-auto-pull-cronjob
         - update-kernel-configs
@@ -60,7 +61,6 @@ on:
         - igorpecovnik-patch-2
         - igorpecovnik-patch-1
         - logofix
-        - coderabbitai/utg/20bTtA
         default: 'main'
       board:
         type: choice
