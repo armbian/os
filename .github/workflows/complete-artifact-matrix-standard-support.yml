@@ -41,9 +41,7 @@ on:
         options:
         # branches
         - main
-        - EvilOlaf-patch-1
-        - wait-online
-        - feature/docker-auto-pull-cronjob
+        - amd
         - update-kernel-configs
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
@@ -60,6 +58,8 @@ on:
         - igorpecovnik-patch-2
         - igorpecovnik-patch-1
         - logofix
+        - coderabbitai/utg/20bTtA
+        - coderabbitai/docstrings/20bTtA
         default: 'main'
       board:
         type: choice
