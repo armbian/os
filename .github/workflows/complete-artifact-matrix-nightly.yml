@@ -47,6 +47,9 @@ on:
         options:
         # branches
         - main
+        - dependabot/pip/pip-26.0
+        - dependabot/pip/rich-14.3.2
+        - update-maintainers
         - update-kernel-configs
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
@@ -63,9 +66,6 @@ on:
         - igorpecovnik-patch-2
         - igorpecovnik-patch-1
         - logofix
-        - coderabbitai/utg/20bTtA
-        - coderabbitai/docstrings/20bTtA
-        - opi5-mainline-uboot-update
         default: 'main'
       board:
         type: choice
