@@ -107,7 +107,6 @@ lists:
     - { BOARD: hinlink-hnas, BRANCH: current }
     - { BOARD: hinlink-ht2, BRANCH: vendor }
     - { BOARD: indiedroid-nova, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: jetson-nano, BRANCH: current }
     - { BOARD: jp-tvbox-3566, BRANCH: current }
     - { BOARD: khadas-edge, BRANCH: current }
     - { BOARD: kickpik2b, BRANCH: current }
@@ -137,12 +136,10 @@ lists:
     - { BOARD: numaker-iot-ma35d16f90, BRANCH: vendor }
     - { BOARD: odroidhc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1s, BRANCH: current }
-    - { BOARD: odroidm2, BRANCH: edge }
     - { BOARD: odroidn2l, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
     - { BOARD: orangepi-4a, BRANCH: edge }
     - { BOARD: orangepi-rk3399, BRANCH: current }
-    - { BOARD: orangepi3-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi3, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi3b, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -220,7 +217,6 @@ lists:
     - { BOARD: beelinkx2, BRANCH: current }
     - { BOARD: cubieboard2, BRANCH: current }
     - { BOARD: cubietruck, BRANCH: current }
-    - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: lime, BRANCH: current }
     - { BOARD: lime2, BRANCH: current }
     - { BOARD: luckfox-lyra-plus, BRANCH: vendor }

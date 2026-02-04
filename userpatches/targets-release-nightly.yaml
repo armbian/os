@@ -82,7 +82,9 @@ lists:
     - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: odroidm2, BRANCH: edge }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: orangepi3-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: phytiumpi, BRANCH: current }
