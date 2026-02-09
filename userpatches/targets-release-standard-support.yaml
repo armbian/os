@@ -100,10 +100,12 @@ lists:
     - { BOARD: nanopi-r6s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r76s, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r76s, BRANCH: edge }
+    - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopik2-s905, BRANCH: current }
     - { BOARD: nanopim4v2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidc2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: odroidhc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: odroidm2, BRANCH: current }
     - { BOARD: odroidn2, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -111,6 +113,7 @@ lists:
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: orangepipc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pocketbeagle2, BRANCH: vendor }
@@ -122,6 +125,8 @@ lists:
     - { BOARD: radxa-nio-12l, BRANCH: collabora, ENABLE_EXTENSIONS: "ufs"}
     - { BOARD: radxa-rock-4d, BRANCH: vendor }
     - { BOARD: radxa-zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: radxa-zero3, BRANCH: vendor }
+    - { BOARD: radxa-zero3, BRANCH: current }
     - { BOARD: renegade, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-2a, BRANCH: vendor }
     - { BOARD: rock-2f, BRANCH: vendor }

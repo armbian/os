@@ -130,11 +130,9 @@ lists:
     - { BOARD: nanopi-r5s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopi-r6c, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: nanopia64, BRANCH: current }
-    - { BOARD: nanopik1plus, BRANCH: current }
     - { BOARD: nanopim4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopineo4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: numaker-iot-ma35d16f90, BRANCH: vendor }
-    - { BOARD: odroidhc4, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: odroidm1s, BRANCH: current }
     - { BOARD: odroidn2l, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: olimex-teres-a64, BRANCH: current }
@@ -148,7 +146,6 @@ lists:
     - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepilite2, BRANCH: current }
     - { BOARD: orangepioneplus, BRANCH: current }
-    - { BOARD: orangepipc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepiprime, BRANCH: current }
     - { BOARD: orangepiwin, BRANCH: current }
     - { BOARD: orangepizero2, BRANCH: current }
@@ -165,7 +162,6 @@ lists:
     - { BOARD: radxa-cubie-a5e, BRANCH: edge }
     - { BOARD: radxa-e20c, BRANCH: vendor }
     - { BOARD: radxa-zero2, BRANCH: current }
-    - { BOARD: radxa-zero3, BRANCH: vendor }
     - { BOARD: recore, BRANCH: current }
     - { BOARD: retro-lite-cm5, BRANCH: vendor }
     - { BOARD: rk3318-box, BRANCH: current }
