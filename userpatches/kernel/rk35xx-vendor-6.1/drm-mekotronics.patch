@@ -1,0 +1,186 @@
+From f82f204bcc23e3081c3fd92e22d058b9c929db20 Mon Sep 17 00:00:00 2001
+From: Jianfeng Liu <liujianfeng1994@gmail.com>
+Date: Thu, 25 Sep 2025 16:37:40 +0800
+Subject: [PATCH] drm changes from Mecotronic
+
+---
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c |  8 ++-
+ drivers/gpu/drm/panel/panel-simple.c         |  4 +-
+ drivers/gpu/drm/rockchip/dw-dp.c             | 60 +++++++++++++++++++-
+ drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c  | 17 +++++-
+ drivers/gpu/drm/rockchip/rockchip_drm_drv.c  |  2 +
+ 5 files changed, 82 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+index 2648b7e24ef7b..26505f76be444 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+@@ -2751,7 +2751,9 @@ static int dw_hdmi_connector_get_modes(struct drm_connector *connector)
+ 	if (edid_blob_ptr && edid_blob_ptr->length)
+ 		drm_edid = drm_edid_alloc(edid_blob_ptr->data, edid_blob_ptr->length);
+ 	else
+-		drm_edid = drm_edid_read_ddc(connector, hdmi->ddc);
++	{
++		drm_edid = NULL;//@caco 20250623  drm_edid_read_ddc(connector, hdmi->ddc);
++	}
+ 
+ 	if (drm_edid)
+ 		edid = drm_edid_raw(drm_edid);
+@@ -4712,8 +4714,8 @@ void dw_hdmi_qp_suspend(struct device *dev, struct dw_hdmi_qp *hdmi)
+ 		disable_irq(hdmi->earc_irq);
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
+-	if (!hdmi->next_bridge)
+-		drm_connector_update_edid_property(&hdmi->connector, NULL);
++	//if (!hdmi->next_bridge)
++		//drm_connector_update_edid_property(&hdmi->connector, NULL);
+ }
+ EXPORT_SYMBOL_GPL(dw_hdmi_qp_suspend);
+ 
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index a36e83a0c9131..082a795c5ce00 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -612,12 +612,12 @@ static int panel_simple_prepare(struct drm_panel *panel)
+ 	if (p->desc->delay.prepare)
+ 		panel_simple_msleep(p->desc->delay.prepare);
+ 
+-	gpiod_direction_output(p->reset_gpio, 1);
++	gpiod_direction_output(p->reset_gpio, 0);
+ 
+ 	if (p->desc->delay.reset)
+ 		panel_simple_msleep(p->desc->delay.reset);
+ 
+-	gpiod_direction_output(p->reset_gpio, 0);
++	gpiod_direction_output(p->reset_gpio, 1);
+ 
+ 	if (p->desc->delay.init)
+ 		panel_simple_msleep(p->desc->delay.init);
+diff --git a/drivers/gpu/drm/rockchip/dw-dp.c b/drivers/gpu/drm/rockchip/dw-dp.c
+index 2434cb49a0d39..2aa6936e2d557 100644
+--- a/drivers/gpu/drm/rockchip/dw-dp.c
++++ b/drivers/gpu/drm/rockchip/dw-dp.c
+@@ -270,6 +270,48 @@
+ 
+ #define DPTX_MAX_STREAMS			4
+ 
++
++//fox.luo@2024.03.20 set fixed resolution
++static const struct drm_display_mode dw_dp_default_modes[] = {
++     /* 16 - 1920x1080@60Hz 16:9 */
++	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2008,
++		   2052, 2200, 0, 1080, 1084, 1089, 1125, 0,
++		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
++	/* 2 - 720x480@60Hz 4:3 */
++	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 27000, 720, 736,
++		   798, 858, 0, 480, 489, 495, 525, 0,
++		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
++	/* 4 - 1280x720@60Hz 16:9 */
++	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 1390,
++		   1430, 1650, 0, 720, 725, 730, 750, 0,
++		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
++	/* 31 - 1920x1080@50Hz 16:9 */
++	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 148500, 1920, 2448,
++		   2492, 2640, 0, 1080, 1084, 1089, 1125, 0,
++		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
++	/* 19 - 1280x720@50Hz 16:9 */
++	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74250, 1280, 1720,
++		   1760, 1980, 0, 720, 725, 730, 750, 0,
++		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_16_9, },
++	/* 17 - 720x576@50Hz 4:3 */
++	{ DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
++		   796, 864, 0, 576, 581, 586, 625, 0,
++		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
++	/* 2 - 720x480@60Hz 4:3 */
++	{ DRM_MODE("720x480", DRM_MODE_TYPE_DRIVER, 27000, 720, 736,
++		   798, 858, 0, 480, 489, 495, 525, 0,
++		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
++	  .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
++};
++
++
++
+ enum {
+ 	RK3576_DP,
+ 	RK3588_DP,
+@@ -1441,7 +1483,9 @@ static int dw_dp_connector_get_modes(struct drm_connector *connector)
+ 	struct dw_dp *dp = connector_to_dp(connector);
+ 	struct drm_display_info *di = &connector->display_info;
+ 	struct edid *edid;
++	struct drm_display_mode *mode;
+ 	int num_modes = 0;
++	int i;
+ 
+ 	if (dp->right && dp->right->next_bridge) {
+ 		struct drm_bridge *bridge = dp->right->next_bridge;
+@@ -1462,7 +1506,21 @@ static int dw_dp_connector_get_modes(struct drm_connector *connector)
+ 		edid = drm_bridge_get_edid(&dp->bridge, connector);
+ 		if (edid) {
+ 			drm_connector_update_edid_property(connector, edid);
+-			num_modes = drm_add_edid_modes(connector, edid);
++			//fox.luo@2024.03.20 set fixed resolution
++			//num_modes = drm_add_edid_modes(connector, edid);
++			for (i = 0; i < ARRAY_SIZE(dw_dp_default_modes); i++) {
++			       const struct drm_display_mode *ptr =
++			               &dw_dp_default_modes[i];
++
++			       mode = drm_mode_duplicate(connector->dev, ptr);
++			       if (mode) {
++			               if (!i)
++			                       mode->type = DRM_MODE_TYPE_PREFERRED;
++			               drm_mode_probed_add(connector, mode);
++			               num_modes++;
++
++			       }
++			}
+ 			dw_dp_update_hdr_property(connector);
+ 			kfree(edid);
+ 		}
+diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
+index 1b32ff0b97566..61600341be1cb 100644
+--- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
++++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
+@@ -2719,10 +2719,21 @@ dw_hdmi_rockchip_encoder_atomic_check(struct drm_encoder *encoder,
+ 
+ 	if (hdmi->plat_data->split_mode) {
+ 		s->output_flags |= ROCKCHIP_OUTPUT_DUAL_CHANNEL_LEFT_RIGHT_MODE;
+-		if (hdmi->plat_data->right && hdmi->id)
+-			s->output_flags |= ROCKCHIP_OUTPUT_DATA_SWAP;
++		//@caco 20250625
++		//if (hdmi->plat_data->right && hdmi->id)
++		//	s->output_flags |= ROCKCHIP_OUTPUT_DATA_SWAP;
++		if (device_property_read_bool(hdmi->dev, "rockchip,split-right")) {
++            s->output_flags |= ROCKCHIP_OUTPUT_DATA_SWAP;
++			s->output_if_left_panel |= hdmi->id ? VOP_OUTPUT_IF_HDMI0 : VOP_OUTPUT_IF_HDMI1;
++            dev_info(hdmi->dev, "split Enabling data swap for right display (hdmi%d)\n", hdmi->id);
++        }
++		else {
++		    s->output_flags |= ROCKCHIP_OUTPUT_DATA_SWAP;
++			s->output_if_left_panel |= hdmi->id ? VOP_OUTPUT_IF_HDMI1 : VOP_OUTPUT_IF_HDMI0;
++            dev_info(hdmi->dev, "split Enabling data swap for right display (hdmi%d)\n", hdmi->id);
++		}
+ 		s->output_if |= VOP_OUTPUT_IF_HDMI0 | VOP_OUTPUT_IF_HDMI1;
+-		s->output_if_left_panel |= hdmi->id ? VOP_OUTPUT_IF_HDMI1 : VOP_OUTPUT_IF_HDMI0;
++		
+ 	} else if (hdmi->plat_data->dual_connector_split) {
+ 		s->output_if |= hdmi->id ? VOP_OUTPUT_IF_HDMI1 : VOP_OUTPUT_IF_HDMI0;
+ 		s->output_flags |= ROCKCHIP_OUTPUT_DUAL_CONNECTOR_SPLIT_MODE;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_drv.c b/drivers/gpu/drm/rockchip/rockchip_drm_drv.c
+index a08827cd6ead1..d525319a612fa 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_drv.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_drv.c
+@@ -2229,6 +2229,8 @@ static struct drm_driver rockchip_drm_driver = {
+ 	.lastclose		= rockchip_drm_lastclose,
+ 	.open			= rockchip_drm_open,
+ 	.dumb_create		= rockchip_gem_dumb_create,
++	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
++	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
+ 	.gem_prime_import	= rockchip_drm_gem_prime_import,
+ 	.gem_prime_import_sg_table	= rockchip_gem_prime_import_sg_table,
+ 	.gem_prime_mmap		= drm_gem_prime_mmap,
