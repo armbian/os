@@ -504,7 +504,7 @@ env:
 
   # For easier reuse across the multiple chunks ('armbian/os' repo)
   USERPATCHES_REPOSITORY: "armbian/os"
-  USERPATCHES_REF: "main" # branch or tag or sha1
+  USERPATCHES_REF: "mekotronics" # branch or tag or sha1
   USERPATCHES_DIR: "userpatches" # folder inside USERPATCHES_REPOSITORY
 
   # Github repository for releases. Normally its the one where we executing script
