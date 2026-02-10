@@ -43,8 +43,8 @@ on:
         options:
         # branches
         - main
-        - force_uboot_recomp
         - update-maintainers
+        - force_uboot_recomp
         - update-kernel-configs
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
