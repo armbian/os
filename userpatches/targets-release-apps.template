@@ -64,7 +64,10 @@ lists:
     - { BOARD: aml-c400-plus, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: sk-am64b, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: vendor }
+    - { BOARD: sk-am62-lp, BRANCH: vendor }
+    - { BOARD: sk-am62p, BRANCH: vendor }   
+    - { BOARD: sk-am64b, BRANCH: vendor }
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim2s, BRANCH: current }
@@ -149,8 +152,10 @@ lists:
   openhab: &openhab
     - { BOARD: nanopi-r4s, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
-    - { BOARD: sk-am62b, BRANCH: edge }
-    - { BOARD: sk-am64b, BRANCH: current }
+    - { BOARD: sk-am62b, BRANCH: vendor }
+    - { BOARD: sk-am62-lp, BRANCH: vendor }
+    - { BOARD: sk-am62p, BRANCH: vendor }   
+    - { BOARD: sk-am64b, BRANCH: vendor }
     - { BOARD: bananapicm4io, BRANCH: current }
     - { BOARD: bananapim2pro, BRANCH: current }
     - { BOARD: bananapim2s, BRANCH: current }
@@ -218,6 +223,7 @@ lists:
     - { BOARD: rock-3a, BRANCH: current }
     - { BOARD: rock-5c, BRANCH: vendor }
     - { BOARD: rpi4b, BRANCH: current }
+    - { BOARD: sk-am69, BRANCH: vendor }
     - { BOARD: cm3588-nas, BRANCH: vendor }
     - { BOARD: nanopct4, BRANCH: current }
     - { BOARD: nanopct6, BRANCH: current }
