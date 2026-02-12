@@ -10,7 +10,7 @@ function extension_prepare_config__omv() {
 	EXTRA_IMAGE_SUFFIXES+=("-omv") # global array
 }
 
-function post_repo_customize_image__install_ti_packages(){
+function post_repo_customize_image__install_omv_packages(){
 	display_alert "Adding OpenMediaVault (OMV) package for release ${RELEASE}" "${EXTENSION}" "info"
 	chroot_sdcard "armbian-config --api module_omv install"
 }
