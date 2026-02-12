@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - tirace
         - update-maintainers
         - force_uboot_recomp
         - update-kernel-configs
@@ -60,7 +61,6 @@ on:
         - igorpecovnik-patch-2
         - igorpecovnik-patch-1
         - logofix
-        - coderabbitai/utg/20bTtA
         default: 'main'
       board:
         type: choice
