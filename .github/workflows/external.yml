@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: styfle/cancel-workflow-action@0.12.1
+      - uses: styfle/cancel-workflow-action@0.13.0
         if: ${{ github.event.schedule == '' }}
         with:
           all_but_latest: true
