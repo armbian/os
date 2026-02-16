@@ -42,10 +42,10 @@ on:
         options:
         # branches
         - main
-        - v26.02
-        - update-maintainers
-        - force_uboot_recomp
         - update-kernel-configs
+        - update-maintainers
+        - v26.02
+        - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - singlemode
         - always
