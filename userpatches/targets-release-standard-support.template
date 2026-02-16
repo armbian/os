@@ -174,6 +174,25 @@ targets:
       - { BOARD: mekotronics-r58hd, BRANCH: vendor }
       - { BOARD: mekotronics-r58-4x4, BRANCH: vendor }
 
+  # Full Debian stable GNOME
+  gnome-desktop-stable-debian:
+    enabled: yes
+    configs: [ armbian-images ]
+    pipeline:
+      gha: *armbian-gha
+      build-image: "yes"
+    vars:
+      RELEASE: trixie
+      BUILD_MINIMAL: "no"
+      DESKTOP_ENVIRONMENT: "gnome"
+      BUILD_DESKTOP: "yes"
+      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
+      DESKTOP_APPGROUPS_SELECTED: "browsers,chat,desktop_tools,editors,email,internet,languages,multimedia,office,programming,remote_desktop"
+    items:
+      - *standard-support-slow-hdmi
+      - { BOARD: mekotronics-r58hd, BRANCH: vendor }
+      - { BOARD: mekotronics-r58-4x4, BRANCH: vendor }
+
   # Full Ubuntu Gnome
   gnome-3d-desktop-lts-ubuntu:
     enabled: yes
