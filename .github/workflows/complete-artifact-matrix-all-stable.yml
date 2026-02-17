@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - tabrisnet_x86
         - dependabot/pip/setuptools-82.0.0
         - update-maintainers
         - update-kernel-configs
@@ -60,7 +61,6 @@ on:
         - v25.08
         - v25.05
         - igorpecovnik-patch-2
-        - igorpecovnik-patch-1
         default: 'main'
       board:
         type: choice
