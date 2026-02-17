@@ -42,8 +42,9 @@ on:
         options:
         # branches
         - main
-        - update-kernel-configs
+        - dependabot/pip/setuptools-82.0.0
         - update-maintainers
+        - update-kernel-configs
         - v26.02
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
@@ -60,7 +61,6 @@ on:
         - v25.05
         - igorpecovnik-patch-2
         - igorpecovnik-patch-1
-        - logofix
         default: 'main'
       board:
         type: choice
