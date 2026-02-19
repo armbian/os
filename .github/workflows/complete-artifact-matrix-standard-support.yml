@@ -41,9 +41,9 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - tabrisnet_x86
         - dependabot/pip/setuptools-82.0.0
-        - update-maintainers
         - update-kernel-configs
         - v26.02
         - force_uboot_recomp
