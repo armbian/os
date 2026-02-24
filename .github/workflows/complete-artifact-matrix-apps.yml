@@ -42,6 +42,7 @@ on:
         # branches
         - main
         - update-maintainers
+        - calamares
         - update-kernel-configs
         - dependabot/pip/setuptools-82.0.0
         - v26.02
@@ -59,7 +60,6 @@ on:
         - v25.08
         - v25.05
         - igorpecovnik-patch-2
-        - igorpecovnik-patch-1
         default: 'main'
       board:
         type: choice
