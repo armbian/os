@@ -93,6 +93,8 @@ jobs:
           DELETE_AFTER="22.08"
               delete_packages=(
                     ["discord"]="% *"
+                    ["raspberrypi-sys-mods"]="% *"
+                    ["pi-bluetooth"]="% *"
                     ["homeassistant-supervised"]="% *"
                     ["fastfetch"]="% *"
                     ["test_delete_pkg"]="% *"
