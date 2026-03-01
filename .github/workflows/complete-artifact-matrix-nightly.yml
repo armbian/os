@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - adjust_key
         - update-maintainers
         - last_good
         - update-kernel-configs
@@ -65,7 +66,6 @@ on:
         - revert-8583-fix-atf-compile
         - test
         - v25.08
-        - v25.05
         default: 'main'
       board:
         type: choice
