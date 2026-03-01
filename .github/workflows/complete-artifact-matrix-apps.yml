@@ -41,7 +41,6 @@ on:
         options:
         # branches
         - main
-        - patchfix
         - update-maintainers
         - update-kernel-configs
         - calamares
@@ -60,6 +59,7 @@ on:
         - test
         - v25.08
         - v25.05
+        - igorpecovnik-patch-2
         default: 'main'
       board:
         type: choice
@@ -412,6 +412,7 @@ on:
         - "Janmcha"
         - "JohnTheCoolingFan"
         - "Kreyren"
+        - "Lemon1151"
         - "NicoD-SBC"
         - "PanderMusubi"
         - "Qvy-png"
