@@ -294,7 +294,7 @@ jobs:
           cat "${{ steps.versionfile.outputs.file }}.json" | jq '.version' | sed "s/\"//g" > downloads/version
 
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: assets-for-download-all
           path: downloads
@@ -527,7 +527,7 @@ jobs:
           done
 
       # Store output/info folder in a GitHub Actions artifact
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         name: Upload output/info as GitHub Artifact
         with:
           name: build-info-json
