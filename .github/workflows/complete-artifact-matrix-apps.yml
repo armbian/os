@@ -41,10 +41,12 @@ on:
         options:
         # branches
         - main
-        - adjust_key
         - update-maintainers
-        - last_good
+        - fix/p1a-single-to-double-brackets
+        - fix/p1b-eval-to-declare
         - update-kernel-configs
+        - adjust_key
+        - last_good
         - calamares
         - dependabot/pip/setuptools-82.0.0
         - v26.02
@@ -58,8 +60,6 @@ on:
         - sunxi
         - coderabbitai/docstrings/2e13998
         - revert-8583-fix-atf-compile
-        - test
-        - v25.08
         default: 'main'
       board:
         type: choice
