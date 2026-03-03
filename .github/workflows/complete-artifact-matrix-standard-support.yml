@@ -41,6 +41,10 @@ on:
         options:
         # branches
         - main
+        - dependabot/github_actions/crazy-max/ghaction-github-labeler-6
+        - dependabot/github_actions/crazy-max/ghaction-import-gpg-7
+        - dependabot/github_actions/actions/upload-artifact-7.0.0
+        - dependabot/github_actions/actions/download-artifact-8
         - update-maintainers
         - fix/p1a-single-to-double-brackets
         - fix/p1b-eval-to-declare
@@ -56,10 +60,6 @@ on:
         - always
         - feature/new-parallel-repo-architecture
         - rkfix
-        - v25.11
-        - sunxi
-        - coderabbitai/docstrings/2e13998
-        - revert-8583-fix-atf-compile
         default: 'main'
       board:
         type: choice

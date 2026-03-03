@@ -27,8 +27,8 @@ lists:
   # automated lists start
   staging-riscv64: &staging-riscv64
     # auto generated section
-    - { BOARD: orangepir2s, BRANCH: current }
-    - { BOARD: orangepirv2, BRANCH: current }
+    - { BOARD: orangepir2s, BRANCH: legacy }
+    - { BOARD: orangepirv2, BRANCH: legacy }
     # end of auto generated section
 
   standard-support-riscv64: &standard-support-riscv64
