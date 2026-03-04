@@ -44,7 +44,6 @@ on:
         # branches
         - main
         - bump-7.0-to-rc2
-        - update-maintainers
         - fix/p1a-single-to-double-brackets
         - fix/p1b-eval-to-declare
         - update-kernel-configs
@@ -62,6 +61,7 @@ on:
         - v25.11
         - sunxi
         - coderabbitai/docstrings/2e13998
+        - revert-8583-fix-atf-compile
         default: 'main'
       board:
         type: choice
