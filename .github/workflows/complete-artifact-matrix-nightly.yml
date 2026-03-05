@@ -47,7 +47,11 @@ on:
         options:
         # branches
         - main
-        - bump-7.0-to-rc2
+        - fix/7863-gitignore-pycache
+        - fix/9028-patch-timestamp-max
+        - fix/9201-fstab-double-comma
+        - update-maintainers
+        - labeling_change
         - fix/p1a-single-to-double-brackets
         - fix/p1b-eval-to-declare
         - update-kernel-configs
@@ -62,10 +66,6 @@ on:
         - always
         - feature/new-parallel-repo-architecture
         - rkfix
-        - v25.11
-        - sunxi
-        - coderabbitai/docstrings/2e13998
-        - revert-8583-fix-atf-compile
         default: 'main'
       board:
         type: choice
@@ -90,6 +90,9 @@ on:
         - armsom-w3
         - avaota-a1
         - ayn-odin2
+        - ayn-odin2mini
+        - ayn-odin2portal
+        - ayn-thor
         - bananapi
         - bananapicm4io
         - bananapif3

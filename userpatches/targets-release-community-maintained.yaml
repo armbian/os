@@ -63,7 +63,6 @@ lists:
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
-    - { BOARD: sakurapi-rk3308b, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
     # end of auto generated section
 
@@ -81,6 +80,9 @@ lists:
     - { BOARD: armsom-sige7, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: armsom-w3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: avaota-a1, BRANCH: legacy }
+    - { BOARD: ayn-odin2mini, BRANCH: current }
+    - { BOARD: ayn-odin2portal, BRANCH: current }
+    - { BOARD: ayn-thor, BRANCH: current }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: bestv-r3300-l, BRANCH: current }
