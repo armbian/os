@@ -42,12 +42,9 @@ on:
         options:
         # branches
         - main
-        - fix/7863-gitignore-pycache
-        - fix/9028-patch-timestamp-max
+        - add-vulkan-tools
         - fix/9201-fstab-double-comma
-        - update-maintainers
         - labeling_change
-        - fix/p1a-single-to-double-brackets
         - fix/p1b-eval-to-declare
         - update-kernel-configs
         - adjust_key
@@ -61,6 +58,9 @@ on:
         - always
         - feature/new-parallel-repo-architecture
         - rkfix
+        - v25.11
+        - sunxi
+        - coderabbitai/docstrings/2e13998
         default: 'main'
       board:
         type: choice
