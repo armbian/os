@@ -47,7 +47,6 @@ on:
         options:
         # branches
         - main
-        - add-vulkan-tools
         - fix/9201-fstab-double-comma
         - labeling_change
         - fix/p1b-eval-to-declare
@@ -66,6 +65,7 @@ on:
         - v25.11
         - sunxi
         - coderabbitai/docstrings/2e13998
+        - revert-8583-fix-atf-compile
         default: 'main'
       board:
         type: choice
