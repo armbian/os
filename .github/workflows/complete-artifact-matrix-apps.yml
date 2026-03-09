@@ -41,10 +41,11 @@ on:
         options:
         # branches
         - main
+        - update-kernel-configs
+        - fix/ccache-remote-loopback-host-gateway
         - fix/9201-fstab-double-comma
         - labeling_change
         - fix/p1b-eval-to-declare
-        - update-kernel-configs
         - adjust_key
         - last_good
         - calamares
@@ -59,7 +60,6 @@ on:
         - v25.11
         - sunxi
         - coderabbitai/docstrings/2e13998
-        - revert-8583-fix-atf-compile
         default: 'main'
       board:
         type: choice
