@@ -41,8 +41,9 @@ on:
         options:
         # branches
         - main
-        - update-kernel-configs
         - fix/ccache-remote-loopback-host-gateway
+        - dependabot/github_actions/tj-actions/changed-files-47.0.5
+        - update-kernel-configs
         - fix/9201-fstab-double-comma
         - labeling_change
         - fix/p1b-eval-to-declare
@@ -59,7 +60,6 @@ on:
         - rkfix
         - v25.11
         - sunxi
-        - coderabbitai/docstrings/2e13998
         default: 'main'
       board:
         type: choice
