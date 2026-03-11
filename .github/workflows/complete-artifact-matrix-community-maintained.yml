@@ -43,6 +43,7 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - fix/ccache-remote-loopback-host-gateway
         - dependabot/github_actions/tj-actions/changed-files-47.0.5
         - update-kernel-configs
@@ -61,7 +62,6 @@ on:
         - feature/new-parallel-repo-architecture
         - rkfix
         - v25.11
-        - sunxi
         default: 'main'
       board:
         type: choice
@@ -233,6 +233,7 @@ on:
         - nanopineo4
         - nanopineocore2
         - nanopineoplus2
+        - norco-emb-3531
         - numaker-iot-ma35d16f90
         - odroidc1
         - odroidc2
