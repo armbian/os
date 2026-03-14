@@ -43,6 +43,7 @@ on:
         - main
         - update-maintainers
         - tabrisnet_mmdebstrap
+        - tabrisnet_i386
         - fix/ccache-remote-loopback-host-gateway
         - dependabot/github_actions/tj-actions/changed-files-47.0.5
         - update-kernel-configs
@@ -59,7 +60,6 @@ on:
         - singlemode
         - always
         - feature/new-parallel-repo-architecture
-        - rkfix
         default: 'main'
       board:
         type: choice
