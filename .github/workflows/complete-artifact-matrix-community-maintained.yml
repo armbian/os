@@ -44,6 +44,7 @@ on:
         # branches
         - main
         - update-maintainers
+        - singlemode
         - tabrisnet_mmdebstrap
         - tabrisnet_i386
         - fix/ccache-remote-loopback-host-gateway
@@ -59,7 +60,6 @@ on:
         - v26.02
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
-        - singlemode
         - always
         - feature/new-parallel-repo-architecture
         default: 'main'
@@ -128,9 +128,11 @@ on:
         - cubieboard2
         - cubietruck
         - cyber-aib-rk3588
+        - dg-svr-865-tiny
         - dshanpi-a1
         - dshanpi-r1
         - dusun-dsom-010r
+        - ebyte-ecb41-pge
         - espressobin
         - fine3399
         - firefly-itx-3588j
@@ -740,7 +742,7 @@ jobs:
 
       # Login to ghcr.io, we're gonna do a lot of OCI lookups.
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1057,7 +1059,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1126,7 +1128,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1195,7 +1197,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1264,7 +1266,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1333,7 +1335,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1402,7 +1404,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1471,7 +1473,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1540,7 +1542,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1609,7 +1611,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1678,7 +1680,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1747,7 +1749,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1816,7 +1818,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1885,7 +1887,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -1954,7 +1956,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -2023,7 +2025,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -2092,7 +2094,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -2161,7 +2163,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -8441,7 +8443,7 @@ jobs:
 
       # Login to ghcr.io, for later uploading rootfs to ghcr.io
       - name: Docker Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: "${{ github.repository_owner }}" # GitHub username or org
@@ -8474,7 +8476,7 @@ jobs:
 
       # Download the artifacts (output/info) produced by the prepare-matrix job.
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: build-info-json
           path: build/output/info
@@ -8567,7 +8569,7 @@ jobs:
       # Download workflow artifacts
       - name: "Download all workflow run artifacts"
         if: ${{ (github.event.inputs.skipImages || 'no') != 'yes' }}
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: assets-for-download-stable
           path: downloads
