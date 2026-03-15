@@ -43,6 +43,7 @@ on:
         options:
         # branches
         - main
+        - fixxxp
         - update-maintainers
         - singlemode
         - tabrisnet_mmdebstrap
@@ -61,7 +62,6 @@ on:
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
-        - feature/new-parallel-repo-architecture
         default: 'main'
       board:
         type: choice
