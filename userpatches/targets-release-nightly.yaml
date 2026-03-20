@@ -25,12 +25,6 @@ common-gha-configs:
 lists:
 
   # automated lists start
-  staging-riscv64: &staging-riscv64
-    # auto generated section
-    - { BOARD: orangepir2s, BRANCH: legacy }
-    - { BOARD: orangepirv2, BRANCH: legacy }
-    # end of auto generated section
-
   standard-support-riscv64: &standard-support-riscv64
     # auto generated section
     - { BOARD: bananapif3, BRANCH: current }
@@ -211,7 +205,6 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *standard-support-riscv64
-      - *staging-riscv64
       - *virtual-boards
 
   # debian unstable minimal cloud
@@ -246,7 +239,6 @@ targets:
       - *standard-support-fast-hdmi
       - *standard-support-headless
       - *staging-fast-hdmi
-      - *staging-riscv64
 
   # debian stable minimal cloud
   minimal-cli-stable-debian-cloud:
@@ -281,7 +273,6 @@ targets:
       - *standard-support-slow-hdmi
       - *standard-support-riscv64
       - *staging-fast-hdmi
-      - *staging-riscv64
 
   # Ubuntu old LTS with KDE neon and no office (images will go over 2Gb GH file limit)
   kde-neon-desktop-stable-ubuntu:
@@ -332,7 +323,6 @@ targets:
       BUILD_MINIMAL: "yes"
       BUILD_DESKTOP: "no"
     items:
-      - *staging-riscv64
       - *standard-support-riscv64
       - *standard-support-headless
       - *staging-fast-hdmi

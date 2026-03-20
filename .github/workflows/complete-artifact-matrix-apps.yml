@@ -41,6 +41,8 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
+        - cosmetics
         - singlemode
         - tabrisnet_mmdebstrap
         - tabrisnet_i386
@@ -58,8 +60,6 @@ on:
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
-        - rkfix
-        - v25.11
         default: 'main'
       board:
         type: choice
@@ -302,6 +302,7 @@ on:
         - qemu-uboot-arm64
         - qemu-uboot-x86
         - qemu-uefi-x86
+        - qidi-x6
         - quartz64a
         - quartz64b
         - radxa-cm4-io
@@ -423,6 +424,7 @@ on:
         - "PanderMusubi"
         - "Qvy-png"
         - "SeeleVolleri"
+        - "Shadowrom2020"
         - "StephenGraf"
         - "SuperKali"
         - "The-going"
