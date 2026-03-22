@@ -43,7 +43,6 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
         - cosmetics
         - singlemode
         - tabrisnet_mmdebstrap
@@ -62,6 +61,7 @@ on:
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
+        - rkfix
         default: 'main'
       board:
         type: choice
