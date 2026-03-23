@@ -41,12 +41,13 @@ on:
         options:
         # branches
         - main
+        - dependabot/github_actions/pascalgn/size-label-action-0.5.7
+        - update-kernel-configs
         - cosmetics
         - singlemode
         - tabrisnet_mmdebstrap
         - tabrisnet_i386
         - dependabot/github_actions/tj-actions/changed-files-47.0.5
-        - update-kernel-configs
         - fix/9201-fstab-double-comma
         - labeling_change
         - fix/p1b-eval-to-declare
@@ -59,7 +60,6 @@ on:
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
-        - rkfix
         default: 'main'
       board:
         type: choice
