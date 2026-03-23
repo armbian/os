@@ -41,7 +41,6 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/pascalgn/size-label-action-0.5.7
         - update-kernel-configs
         - cosmetics
         - singlemode
@@ -60,6 +59,7 @@ on:
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
+        - rkfix
         default: 'main'
       board:
         type: choice
@@ -2338,7 +2338,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -2726,7 +2726,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -3114,7 +3114,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -3502,7 +3502,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -3890,7 +3890,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -4278,7 +4278,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -4666,7 +4666,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -5054,7 +5054,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -5442,7 +5442,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -5830,7 +5830,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -6218,7 +6218,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -6606,7 +6606,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -6994,7 +6994,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -7382,7 +7382,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -7770,7 +7770,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
@@ -8158,7 +8158,7 @@ jobs:
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
