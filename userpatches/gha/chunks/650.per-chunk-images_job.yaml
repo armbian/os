@@ -119,7 +119,7 @@ jobs: # <TEMPLATE-IGNORE>
         env:
           GPG_KEY1: ${{ secrets.GPG_KEY1 }}
         if: env.GPG_KEY1 != null
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{ secrets.GPG_KEY1 }}
           passphrase: ${{ secrets.GPG_PASSPHRASE1 }}
