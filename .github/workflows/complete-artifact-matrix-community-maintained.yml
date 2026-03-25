@@ -43,6 +43,8 @@ on:
         options:
         # branches
         - main
+        - arm64stmmac
+        - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
         - singlemode
         - tabrisnet_mmdebstrap
@@ -60,8 +62,6 @@ on:
         - always
         - feature/new-parallel-repo-architecture
         - rkfix
-        - v25.11
-        - sunxi
         default: 'main'
       board:
         type: choice
