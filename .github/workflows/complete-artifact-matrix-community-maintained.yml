@@ -47,7 +47,6 @@ on:
         - singlemode
         - tabrisnet_mmdebstrap
         - tabrisnet_i386
-        - dependabot/github_actions/tj-actions/changed-files-47.0.5
         - fix/9201-fstab-double-comma
         - labeling_change
         - fix/p1b-eval-to-declare
@@ -62,6 +61,7 @@ on:
         - feature/new-parallel-repo-architecture
         - rkfix
         - v25.11
+        - sunxi
         default: 'main'
       board:
         type: choice
