@@ -41,7 +41,7 @@ on:
         options:
         # branches
         - main
-        - arm64stmmac
+        - dependabot/pip/setuptools-82.0.0
         - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
         - singlemode
@@ -53,13 +53,13 @@ on:
         - adjust_key
         - last_good
         - calamares
-        - dependabot/pip/setuptools-82.0.0
         - v26.02
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
         - rkfix
+        - v25.11
         default: 'main'
       board:
         type: choice
