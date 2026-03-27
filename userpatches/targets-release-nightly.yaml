@@ -28,6 +28,7 @@ lists:
   standard-support-riscv64: &standard-support-riscv64
     # auto generated section
     - { BOARD: bananapif3, BRANCH: current }
+    - { BOARD: musebook, BRANCH: legacy }
     - { BOARD: musepipro, BRANCH: current }
     # end of auto generated section
 

@@ -43,7 +43,7 @@ on:
         options:
         # branches
         - main
-        - fixstmac
+        - update-maintainers
         - dependabot/pip/setuptools-82.0.0
         - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
@@ -199,6 +199,7 @@ on:
         - mk808c
         - mksklipad50
         - mkspi
+        - musebook
         - musepipro
         - nanopct4
         - nanopct6
