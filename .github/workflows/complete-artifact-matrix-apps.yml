@@ -41,6 +41,8 @@ on:
         options:
         # branches
         - main
+        - musefix
+        - sunxi-fix-h6-emac-ac200
         - dependabot/pip/setuptools-82.0.0
         - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
@@ -58,8 +60,6 @@ on:
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
-        - rkfix
-        - v25.11
         default: 'main'
       board:
         type: choice
