@@ -42,7 +42,6 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
         - dependabot/pip/setuptools-82.0.0
         - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
@@ -61,6 +60,7 @@ on:
         - always
         - feature/new-parallel-repo-architecture
         - rkfix
+        - v25.11
         default: 'main'
       board:
         type: choice
