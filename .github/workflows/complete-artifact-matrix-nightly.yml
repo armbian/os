@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
         - musefix
         - dependabot/pip/setuptools-82.0.0
         - fix/docker-riscv64-cross-compilers
@@ -65,7 +66,6 @@ on:
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
         - feature/new-parallel-repo-architecture
-        - rkfix
         default: 'main'
       board:
         type: choice
@@ -193,6 +193,7 @@ on:
         - mekotronics-r58-4x4
         - mekotronics-r58-minipc
         - mekotronics-r58hd
+        - mekotronics-r58s2
         - mekotronics-r58x
         - mekotronics-r58x-4g
         - mekotronics-r58x-pro
