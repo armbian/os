@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - nanopct6ltsplus
         - update-maintainers
         - musefix
         - dependabot/pip/setuptools-82.0.0
@@ -59,7 +60,6 @@ on:
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         - always
-        - feature/new-parallel-repo-architecture
         default: 'main'
       board:
         type: choice
