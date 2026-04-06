@@ -41,6 +41,8 @@ on:
         options:
         # branches
         - main
+        - introduced
+        - igorpecovnik-patch-2
         - nanopct6ltsplus
         - musefix
         - dependabot/pip/setuptools-82.0.0
@@ -58,8 +60,6 @@ on:
         - v26.02
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
-        - always
-        - feature/new-parallel-repo-architecture
         default: 'main'
       board:
         type: choice
