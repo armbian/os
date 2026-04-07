@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - xtsm1flash
         - nanopct6ltsplus
         - introduced
         - igorpecovnik-patch-2
@@ -60,7 +61,6 @@ on:
         - calamares
         - v26.02
         - force_uboot_recomp
-        - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
         default: 'main'
       board:
         type: choice
