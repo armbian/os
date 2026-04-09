@@ -47,9 +47,10 @@ on:
         options:
         # branches
         - main
+        - introduced
+        - mate
         - xtsm1flash
         - nanopct6ltsplus
-        - introduced
         - igorpecovnik-patch-2
         - musefix
         - dependabot/pip/setuptools-82.0.0
@@ -65,7 +66,6 @@ on:
         - last_good
         - calamares
         - v26.02
-        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
@@ -79,6 +79,7 @@ on:
         - aml-s905d3-cc
         - aml-s9xx-box
         - aml-t95z-plus
+        - arduino-uno-q
         - armsom-aim7-io
         - armsom-cm5-io
         - armsom-cm5-rpi-cm4-io
