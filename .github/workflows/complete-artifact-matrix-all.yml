@@ -42,6 +42,9 @@ on:
         options:
         # branches
         - main
+        - configfixes
+        - dependabot/pip/dtschema-2026.4
+        - dependabot/github_actions/actions/github-script-9
         - update-maintainers
         - mate
         - xtsm1flash
@@ -58,9 +61,6 @@ on:
         - labeling_change
         - fix/p1b-eval-to-declare
         - adjust_key
-        - last_good
-        - calamares
-        - v26.02
         default: 'main'
       board:
         type: choice
