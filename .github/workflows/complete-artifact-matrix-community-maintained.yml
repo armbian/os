@@ -43,13 +43,9 @@ on:
         options:
         # branches
         - main
-        - configfixes
-        - dependabot/pip/dtschema-2026.4
-        - dependabot/github_actions/actions/github-script-9
-        - update-maintainers
+        - nanopct6ltsplus
         - mate
         - xtsm1flash
-        - nanopct6ltsplus
         - igorpecovnik-patch-2
         - musefix
         - dependabot/pip/setuptools-82.0.0
@@ -62,6 +58,10 @@ on:
         - labeling_change
         - fix/p1b-eval-to-declare
         - adjust_key
+        - last_good
+        - calamares
+        - v26.02
+        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
