@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - fix/grub-splash-verbose
         - nanopct6ltsplus
         - mate
         - xtsm1flash
@@ -65,7 +66,6 @@ on:
         - last_good
         - calamares
         - v26.02
-        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
