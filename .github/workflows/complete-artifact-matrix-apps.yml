@@ -41,9 +41,7 @@ on:
         options:
         # branches
         - main
-        - drop-bsp-desktop-apt-pin
         - fix/grub-splash-verbose
-        - nanopct6ltsplus
         - mate
         - xtsm1flash
         - igorpecovnik-patch-2
@@ -60,6 +58,8 @@ on:
         - adjust_key
         - last_good
         - calamares
+        - v26.02
+        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
