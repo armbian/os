@@ -42,6 +42,9 @@ on:
         options:
         # branches
         - main
+        - fix/kernel-config-trailing-newline
+        - enh/netboot-extension
+        - validate-board-configs
         - fix/grub-splash-verbose
         - mate
         - xtsm1flash
@@ -58,9 +61,6 @@ on:
         - fix/p1b-eval-to-declare
         - adjust_key
         - last_good
-        - calamares
-        - v26.02
-        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
