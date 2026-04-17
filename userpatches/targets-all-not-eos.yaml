@@ -1,6 +1,6 @@
 #
 # This config generates all artefacts except for EOS targets.
-# Also, rootfs/base-files/armbian-desktop for all userspace distros and desktops that are not EOS.
+# Also, rootfs/base-files for all userspace distros and desktops that are not EOS.
 #
 common-gha-configs:
   armbian-gha: &armbian-gha
@@ -23,7 +23,7 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "rootfs" ] # only these artifacts
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
@@ -50,14 +50,14 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "rootfs" ] # only these artifacts
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
         #skip-releases: [ "sid" ] # do NOT include these releases
-        only-releases: [ "noble", "plucky", "trixie", "forky" ] # ONLY include these releases
+        only-releases: [ "noble", "trixie", "forky" ] # ONLY include these releases (plucky is EOS)
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         only-desktops: [ "xfce", "gnome" ] # ONLY include these desktops
         cli: yes # include normal CLI userspace
@@ -72,13 +72,13 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs", "kernel", "uboot" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "rootfs", "kernel", "uboot" ] # only these artifacts
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        only-releases: [ "forky", "plucky" ] # ONLY include these releases
+        only-releases: [ "sid" ] # sid is the only release that declares loong64 in its architectures
         only-desktops: [ "gnome" ] # ONLY include these desktops
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
@@ -92,7 +92,7 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "armbian-desktop", "rootfs" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "rootfs" ] # only these artifacts
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
