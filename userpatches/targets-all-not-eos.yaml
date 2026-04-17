@@ -125,15 +125,17 @@ targets:
       BUILD_MINIMAL: "no"
       BUILD_DESKTOP: "yes"
       DESKTOP_ENVIRONMENT: "xfce"
-      DESKTOP_ENVIRONMENT_CONFIG_NAME: "config_base"
-      DESKTOP_APPGROUPS_SELECTED: "none"
+      DESKTOP_TIER: "mid"
       RELEASE: "noble"
     items-from-inventory:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
       #not-eos: yes # not-eos boards, all branches
-      not-eos-with-video: yes # not-eos boards, all branches, with video out
+      not-eos-with-video: # not-eos boards, all branches, with video out
+        # noble doesn't ship loong64 — uefi-loong64 is covered by the
+        # all-userspace-loong64 group above with its own release set.
+        skip-arches: [ loong64 ]
 
   all-cli:
     enabled: yes
@@ -148,4 +150,6 @@ targets:
       #wip: yes # includes all work-in-progress boards
       #all: yes # includes all available BOARD and BRANCH combinations
       #conf: yes # includes all supported boards
-      not-eos: yes # not-eos boards, all branches
+      not-eos: # not-eos boards, all branches
+        # same loong64 exclusion as all-desktop above
+        skip-arches: [ loong64 ]
