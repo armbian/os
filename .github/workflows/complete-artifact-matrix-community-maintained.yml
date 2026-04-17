@@ -43,25 +43,25 @@ on:
         options:
         # branches
         - main
-        - fix/kernel-config-trailing-newline
-        - enh/netboot-extension
-        - validate-board-configs
-        - fix/grub-splash-verbose
+        - dependabot/github_actions/actions/setup-python-6
+        - dependabot/github_actions/actions/checkout-6
+        - desktop-to-armbian-config
+        - fix/p1b-eval-to-declare
+        - fix/9201-fstab-double-comma
         - mate
         - xtsm1flash
         - igorpecovnik-patch-2
         - musefix
-        - dependabot/pip/setuptools-82.0.0
         - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
         - singlemode
         - tabrisnet_mmdebstrap
         - tabrisnet_i386
-        - fix/9201-fstab-double-comma
         - labeling_change
-        - fix/p1b-eval-to-declare
         - adjust_key
         - last_good
+        - calamares
+        - v26.02
         default: 'main'
       board:
         type: choice
