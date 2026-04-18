@@ -42,14 +42,11 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/actions/setup-python-6
-        - dependabot/github_actions/actions/checkout-6
         - desktop-to-armbian-config
         - fix/p1b-eval-to-declare
         - fix/9201-fstab-double-comma
         - mate
         - xtsm1flash
-        - igorpecovnik-patch-2
         - musefix
         - fix/docker-riscv64-cross-compilers
         - update-kernel-configs
@@ -61,6 +58,9 @@ on:
         - last_good
         - calamares
         - v26.02
+        - force_uboot_recomp
+        - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
+        - always
         default: 'main'
       board:
         type: choice
