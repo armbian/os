@@ -23,7 +23,7 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no
-      #only-artifacts: [ "armbian-base-files", "rootfs" ]
+      only-artifacts: [ "armbian-base-files", "rootfs", "kernel", "uboot" ]
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
@@ -45,7 +45,7 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      #only-artifacts: [ "armbian-base-files", "rootfs" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "rootfs", "kernel", "uboot" ]
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
@@ -63,6 +63,7 @@ targets:
           riscv64: [ { BOARD: "uefi-riscv64", BRANCH: "edge" } ]
 
   all-userspace-loong64:
+    enable: yes
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
@@ -85,7 +86,7 @@ targets:
     configs: [ armbian-images ]
     pipeline:
       build-image: no # don't build images for this
-      only-artifacts: [ "armbian-base-files", "rootfs" ] # only these artifacts
+      only-artifacts: [ "armbian-base-files", "rootfs", "kernel", "uboot" ]
       gha: *armbian-gha
     vars: # common vars, must exist.
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
@@ -105,7 +106,7 @@ targets:
             - { BOARD: "odroidxu4", BRANCH: "current" }
 
   all-desktop:
-    enabled: yes
+    enabled: no
     configs: [ armbian-images ]
     pipeline:
       gha: *armbian-gha
@@ -141,3 +142,4 @@ targets:
       not-eos: # not-eos boards, all branches
         # same loong64 exclusion as all-desktop above
         skip-arches: [ loong64 ]
+        skip-releases: [ sid ]
