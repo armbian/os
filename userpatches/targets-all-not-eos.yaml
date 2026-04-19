@@ -36,6 +36,7 @@ targets:
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops; 'eos' ones are always skipped
+        tiers: [ minimal, mid, full ] # emit a rootfs per tier (armbian-config module_desktops definitions)
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           arm64: [ { BOARD: "uefi-arm64", BRANCH: "current" } ]
           amd64: [ { BOARD: "uefi-x86", BRANCH: "current" } ]
@@ -57,6 +58,7 @@ targets:
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops; 'eos' ones are always skipped
+        tiers: [ minimal, mid, full ] # emit a rootfs per tier (armbian-config module_desktops definitions)
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           riscv64: [ { BOARD: "uefi-riscv64", BRANCH: "edge" } ]
 
@@ -75,6 +77,7 @@ targets:
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops; 'eos' ones are always skipped
+        tiers: [ minimal, mid, full ] # emit a rootfs per tier (armbian-config module_desktops definitions)
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           loong64: [ { BOARD: "uefi-loong64", BRANCH: "edge" } ]
 
@@ -95,6 +98,7 @@ targets:
         cli: yes # include normal CLI userspace
         minimal: yes # include minimal CLI userspace
         desktops: yes # include desktops; 'eos' ones are always skipped
+        tiers: [ minimal, mid, full ] # emit a rootfs per tier (armbian-config module_desktops definitions)
         arches: # wanted architectures, and their "example" BOARD and BRANCH.
           armhf:
             - { BOARD: "tinkerboard", BRANCH: "current" }
