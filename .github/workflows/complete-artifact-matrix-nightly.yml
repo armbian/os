@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - questing-eos
         - desktop-to-armbian-config
         - fix/p1b-eval-to-declare
         - fix/9201-fstab-double-comma
@@ -65,7 +66,6 @@ on:
         - v26.02
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
-        - always
         default: 'main'
       board:
         type: choice
