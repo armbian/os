@@ -43,6 +43,7 @@ on:
         options:
         # branches
         - main
+        - misc-build-cleanup
         - desktop-to-armbian-config
         - docker-prune-optin
         - fix/p1b-eval-to-declare
@@ -61,7 +62,6 @@ on:
         - v26.02
         - force_uboot_recomp
         - update-version-lib/tools/shellcheck.sh-koalaman/shellcheck-null
-        - always
         default: 'main'
       board:
         type: choice
