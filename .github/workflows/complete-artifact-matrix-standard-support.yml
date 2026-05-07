@@ -41,8 +41,8 @@ on:
         options:
         # branches
         - main
-        - action-release-assets-manifest
         - desktop-to-armbian-config
+        - feat/sysrq-serial-trigger
         - feat/native-armhf-on-arm64
         - fix/p1b-eval-to-declare
         - exp/no-docker-privileged
@@ -291,7 +291,6 @@ on:
         - orangepizeroplus
         - orangepizeroplus2-h3
         - orangepizeroplus2-h5
-        - panther-x2
         - pcduino3
         - photonicat2
         - phytiumpi
