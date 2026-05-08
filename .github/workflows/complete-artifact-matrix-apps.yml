@@ -41,9 +41,11 @@ on:
         options:
         # branches
         - main
+        - helios4/uboot-v2026.04
+        - feat/native-armhf-on-arm64
+        - update-maintainers
         - desktop-to-armbian-config
         - feat/sysrq-serial-trigger
-        - feat/native-armhf-on-arm64
         - fix/p1b-eval-to-declare
         - exp/no-docker-privileged
         - docker-prune-optin
@@ -58,8 +60,6 @@ on:
         - adjust_key
         - last_good
         - calamares
-        - v26.02
-        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
