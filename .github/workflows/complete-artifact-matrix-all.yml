@@ -42,10 +42,11 @@ on:
         options:
         # branches
         - main
+        - ls1046a-disable-nxp-ask
+        - desktop-to-armbian-config
         - helios4/uboot-v2026.04
         - feat/native-armhf-on-arm64
         - update-maintainers
-        - desktop-to-armbian-config
         - feat/sysrq-serial-trigger
         - fix/p1b-eval-to-declare
         - exp/no-docker-privileged
@@ -60,7 +61,6 @@ on:
         - labeling_change
         - adjust_key
         - last_good
-        - calamares
         default: 'main'
       board:
         type: choice
