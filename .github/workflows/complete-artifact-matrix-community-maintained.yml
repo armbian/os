@@ -43,10 +43,10 @@ on:
         options:
         # branches
         - main
+        - artifact-uboot-debug-h-divergence
+        - update-maintainers
         - desktop-to-armbian-config
         - feat/native-armhf-on-arm64
-        - action-empty-torrent-urls
-        - update-maintainers
         - ls1046a-disable-nxp-ask
         - feat/sysrq-serial-trigger
         - fix/p1b-eval-to-declare
