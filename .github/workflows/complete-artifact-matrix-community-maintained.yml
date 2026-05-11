@@ -43,11 +43,14 @@ on:
         options:
         # branches
         - main
+        - fix/armbian-leds-active-trigger-brightness
+        - update-kernel-configs
+        - fix/interactive-kernel-desc-case-alt
+        - fix/offline-work-respect-cache
         - feat/native-armhf-on-arm64
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - feat/sysrq-serial-trigger
-        - fix/p1b-eval-to-declare
         - exp/no-docker-privileged
         - docker-prune-optin
         - mate
@@ -59,9 +62,6 @@ on:
         - tabrisnet_i386
         - labeling_change
         - adjust_key
-        - last_good
-        - calamares
-        - v26.02
         default: 'main'
       board:
         type: choice
