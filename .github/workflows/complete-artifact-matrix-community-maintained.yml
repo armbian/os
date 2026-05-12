@@ -43,6 +43,8 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
+        - fix/p2a-for-loop-expansion
         - fix/armbian-leds-active-trigger-brightness
         - update-kernel-configs
         - fix/interactive-kernel-desc-case-alt
@@ -60,8 +62,6 @@ on:
         - singlemode
         - tabrisnet_mmdebstrap
         - tabrisnet_i386
-        - labeling_change
-        - adjust_key
         default: 'main'
       board:
         type: choice
