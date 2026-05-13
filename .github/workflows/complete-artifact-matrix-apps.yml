@@ -41,9 +41,9 @@ on:
         options:
         # branches
         - main
+        - fix/armbian-leds-active-trigger-brightness
         - update-maintainers
         - fix/p2a-for-loop-expansion
-        - fix/armbian-leds-active-trigger-brightness
         - update-kernel-configs
         - fix/interactive-kernel-desc-case-alt
         - fix/offline-work-respect-cache
