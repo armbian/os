@@ -43,8 +43,11 @@ on:
         options:
         # branches
         - main
-        - fix/armbian-leds-active-trigger-brightness
         - update-maintainers
+        - fix/native-armhf-detection
+        - feat/sysrq-serial-trigger
+        - fix/pygments-rich-syntax
+        - fix/armbian-leds-active-trigger-brightness
         - fix/p2a-for-loop-expansion
         - update-kernel-configs
         - fix/interactive-kernel-desc-case-alt
@@ -52,7 +55,6 @@ on:
         - feat/native-armhf-on-arm64
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
-        - feat/sysrq-serial-trigger
         - exp/no-docker-privileged
         - docker-prune-optin
         - mate
@@ -60,8 +62,6 @@ on:
         - musefix
         - fix/docker-riscv64-cross-compilers
         - singlemode
-        - tabrisnet_mmdebstrap
-        - tabrisnet_i386
         default: 'main'
       board:
         type: choice
