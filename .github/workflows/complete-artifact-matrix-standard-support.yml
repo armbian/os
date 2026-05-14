@@ -41,25 +41,25 @@ on:
         options:
         # branches
         - main
-        - fix-imx8m-uboot-binman-hook-conflict
-        - desktop-to-armbian-config
-        - misc-build-cleanup
+        - update-maintainers
+        - fix/native-armhf-detection
+        - feat/sysrq-serial-trigger
+        - fix/pygments-rich-syntax
+        - fix/armbian-leds-active-trigger-brightness
+        - fix/p2a-for-loop-expansion
+        - update-kernel-configs
+        - fix/interactive-kernel-desc-case-alt
+        - fix/offline-work-respect-cache
+        - feat/native-armhf-on-arm64
+        - artifact-uboot-debug-h-divergence
+        - ls1046a-disable-nxp-ask
+        - exp/no-docker-privileged
         - docker-prune-optin
-        - fix/p1b-eval-to-declare
         - mate
         - xtsm1flash
         - musefix
         - fix/docker-riscv64-cross-compilers
-        - update-kernel-configs
         - singlemode
-        - tabrisnet_mmdebstrap
-        - tabrisnet_i386
-        - labeling_change
-        - adjust_key
-        - last_good
-        - calamares
-        - v26.02
-        - force_uboot_recomp
         default: 'main'
       board:
         type: choice
@@ -291,7 +291,6 @@ on:
         - orangepizeroplus
         - orangepizeroplus2-h3
         - orangepizeroplus2-h5
-        - panther-x2
         - pcduino3
         - photonicat2
         - phytiumpi
@@ -417,6 +416,7 @@ on:
         - "ColorfulRhino"
         - "DylanHP"
         - "Grippy98"
+        - "HackingGate"
         - "Heisath"
         - "HeyMeco"
         - "IsMrX"
@@ -441,6 +441,7 @@ on:
         - "alexl83"
         - "amazingfate"
         - "andyshrk"
+        - "baldpope"
         - "brentr"
         - "catalinii"
         - "chainsx"
