@@ -42,7 +42,6 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
         - fix/native-armhf-detection
         - feat/sysrq-serial-trigger
         - fix/pygments-rich-syntax
@@ -61,6 +60,7 @@ on:
         - musefix
         - fix/docker-riscv64-cross-compilers
         - singlemode
+        - tabrisnet_mmdebstrap
         default: 'main'
       board:
         type: choice
