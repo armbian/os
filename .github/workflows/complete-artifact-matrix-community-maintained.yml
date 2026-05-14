@@ -43,6 +43,7 @@ on:
         options:
         # branches
         - main
+        - feat/helios64-cpu-stability-overlay
         - fix/native-armhf-detection
         - feat/sysrq-serial-trigger
         - fix/pygments-rich-syntax
@@ -61,7 +62,6 @@ on:
         - musefix
         - fix/docker-riscv64-cross-compilers
         - singlemode
-        - tabrisnet_mmdebstrap
         default: 'main'
       board:
         type: choice
