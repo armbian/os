@@ -14,8 +14,13 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Check membership"
-        uses: armbian/actions/team-check@main
+        uses: armbian/actions/team-check@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
         with:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,6 +35,11 @@ jobs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
     runs-on: Linux
     steps:
+
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
 
       - name: Get primary mirrors from database
         id: json
@@ -50,6 +60,11 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: Get primary mirrors from database
         id: json
         run: |
@@ -69,6 +84,11 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: Get primary mirrors from database
         id: json
         run: |
@@ -87,6 +107,11 @@ jobs:
       matrix: ${{steps.json.outputs.JSON_CONTENT}}
     runs-on: Linux
     steps:
+
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
 
       - name: Get primary mirrors from database
         id: json
@@ -117,6 +142,11 @@ jobs:
 
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Check"
         run: |
 
@@ -131,7 +161,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: debs-beta
           path: downloads
@@ -153,6 +183,11 @@ jobs:
 
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Check"
         run: |
 
@@ -167,7 +202,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: debs
           path: downloads
@@ -189,6 +224,11 @@ jobs:
 
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Check"
         run: |
 
@@ -203,7 +243,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: archive
           path: downloads
@@ -225,6 +265,11 @@ jobs:
 
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Check"
         run: |
 
@@ -239,7 +284,7 @@ jobs:
           fi
 
       - name: Upload JSON
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: images
           path: downloads
@@ -253,13 +298,18 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Clean"
         run: |
 
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: debs-beta
           path: downloads
@@ -271,7 +321,7 @@ jobs:
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
 
       - name: Test debs
-        uses: armbian/actions/make-yaml-redirector@main
+        uses: armbian/actions/make-yaml-redirector@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
         with:
           variant: debs-beta
           failoverserver: "${{ env.failoverserver }}"
@@ -288,13 +338,18 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Clean"
         run: |
 
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: debs
           path: downloads
@@ -306,7 +361,7 @@ jobs:
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
 
       - name: Test debs
-        uses: armbian/actions/make-yaml-redirector@main
+        uses: armbian/actions/make-yaml-redirector@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
         with:
           variant: debs
           failoverserver: "${{ env.failoverserver }}"
@@ -322,13 +377,18 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Clean"
         run: |
 
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: archive
           path: downloads
@@ -340,7 +400,7 @@ jobs:
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
 
       - name: Test archive
-        uses: armbian/actions/make-yaml-redirector@main
+        uses: armbian/actions/make-yaml-redirector@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
         with:
           variant: archive
           failoverserver: "${{ env.failoverserver }}"
@@ -357,13 +417,18 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Clean"
         run: |
 
           rm -rf downloads/*
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: images
           path: downloads
@@ -375,7 +440,7 @@ jobs:
           echo "failoverserver=$(ls -1 downloads/ | sed ':a; N; s/\n/ /; ta') " >> $GITHUB_ENV
 
       - name: Test images
-        uses: armbian/actions/make-yaml-redirector@main
+        uses: armbian/actions/make-yaml-redirector@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
         with:
           variant: images
           failoverserver: "${{ env.failoverserver }}"
@@ -394,19 +459,24 @@ jobs:
     runs-on: Linux
     steps:
 
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Clean"
         run: |
 
           rm -rf downloads/*
 
-      - uses: robinraju/release-downloader@v1.13
+      - uses: robinraju/release-downloader@28fc21f50d76778e7023361aa1f863e717d3d56f # v1.13
         with:
           repository: "P3TERX/GeoLite.mmdb"
           latest: true
           fileName: "*.mmdb"
 
       - name: "Download artifacts"
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: redirector-config
           path: downloads
@@ -417,7 +487,7 @@ jobs:
           ls -l downloads
           ls -l *.mmdb
 
-      - uses: geekyeggo/delete-artifact@v6
+      - uses: geekyeggo/delete-artifact@176a747ab7e287e3ff4787bf8a148716375ca118 # v6.0.0
         with:
           name: |
             redirector-config
@@ -428,7 +498,7 @@ jobs:
           failOnError: false
 
       - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
+        uses: shimataro/ssh-key-action@87a8f067114a8ce263df83e9ed5c849953548bc3 # v2.8.1
         with:
           key: ${{ secrets.KEY_UPLOAD }}
           known_hosts: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
