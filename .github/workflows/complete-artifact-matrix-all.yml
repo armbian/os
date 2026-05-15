@@ -42,6 +42,7 @@ on:
         options:
         # branches
         - main
+        - drop-irrelevant-rockchip-spi-patches-from-sunxi-6.12
         - fix/armbian-leds-active-trigger-brightness
         - feat/helios64-cpu-stability-overlay
         - fix/native-armhf-detection
@@ -60,7 +61,6 @@ on:
         - xtsm1flash
         - musefix
         - fix/docker-riscv64-cross-compilers
-        - singlemode
         default: 'main'
       board:
         type: choice
