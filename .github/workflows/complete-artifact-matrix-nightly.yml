@@ -47,7 +47,7 @@ on:
         options:
         # branches
         - main
-        - update-version-lib/functions/general/oci-oras.sh-oras-project/oras-1.3.2
+        - fix/docker-riscv64-cross-compilers
         - fix/armbian-leds-active-trigger-brightness
         - feat/helios64-cpu-stability-overlay
         - fix/native-armhf-detection
@@ -65,7 +65,7 @@ on:
         - mate
         - xtsm1flash
         - musefix
-        - fix/docker-riscv64-cross-compilers
+        - singlemode
         default: 'main'
       board:
         type: choice
