@@ -41,6 +41,10 @@ on:
         options:
         # branches
         - main
+        - nvidia-auto-detect-driver-version
+        - rootfs-cache-invalidate-on-configng-change
+        - update-kernel-configs
+        - enh/board-picker-substring-filter-v2
         - fix/docker-riscv64-cross-compilers
         - fix/armbian-leds-active-trigger-brightness
         - feat/helios64-cpu-stability-overlay
@@ -48,7 +52,6 @@ on:
         - feat/sysrq-serial-trigger
         - fix/pygments-rich-syntax
         - fix/p2a-for-loop-expansion
-        - update-kernel-configs
         - fix/interactive-kernel-desc-case-alt
         - fix/offline-work-respect-cache
         - feat/native-armhf-on-arm64
@@ -57,9 +60,6 @@ on:
         - exp/no-docker-privileged
         - docker-prune-optin
         - mate
-        - xtsm1flash
-        - musefix
-        - singlemode
         default: 'main'
       board:
         type: choice
