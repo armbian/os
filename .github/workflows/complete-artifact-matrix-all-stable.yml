@@ -43,8 +43,8 @@ on:
         # branches
         - main
         - nvidia-auto-detect-driver-version
+        - uefi-riscv64-add-cloud-kernel
         - rootfs-cache-invalidate-on-configng-change
-        - update-kernel-configs
         - enh/board-picker-substring-filter-v2
         - fix/docker-riscv64-cross-compilers
         - fix/armbian-leds-active-trigger-brightness
