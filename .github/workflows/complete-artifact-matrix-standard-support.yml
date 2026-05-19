@@ -41,6 +41,8 @@ on:
         options:
         # branches
         - main
+        - breakingtest
+        - fix/build-artifacts-guard-on-forks
         - nvidia-auto-detect-driver-version
         - uefi-riscv64-add-cloud-kernel
         - rootfs-cache-invalidate-on-configng-change
@@ -58,8 +60,6 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - exp/no-docker-privileged
-        - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
