@@ -47,8 +47,8 @@ on:
         options:
         # branches
         - main
+        - artifact-rootfs-fetch-configng
         - breakingtest
-        - fix/build-artifacts-guard-on-forks
         - nvidia-auto-detect-driver-version
         - uefi-riscv64-add-cloud-kernel
         - rootfs-cache-invalidate-on-configng-change
@@ -60,12 +60,12 @@ on:
         - feat/sysrq-serial-trigger
         - fix/pygments-rich-syntax
         - fix/p2a-for-loop-expansion
+        - fix/p1b-eval-to-declare
         - fix/interactive-kernel-desc-case-alt
         - fix/offline-work-respect-cache
         - feat/native-armhf-on-arm64
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
-        - exp/no-docker-privileged
         default: 'main'
       board:
         type: choice
