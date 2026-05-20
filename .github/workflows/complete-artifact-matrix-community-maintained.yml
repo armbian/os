@@ -43,25 +43,25 @@ on:
         options:
         # branches
         - main
+        - fix/offline-work-respect-cache
+        - fix/interactive-kernel-desc-case-alt
+        - fix/p2a-for-loop-expansion
+        - feat/sysrq-serial-trigger
+        - enh/board-picker-substring-filter-v2
         - artifact-rootfs-fetch-configng
         - breakingtest
         - nvidia-auto-detect-driver-version
         - uefi-riscv64-add-cloud-kernel
         - rootfs-cache-invalidate-on-configng-change
-        - enh/board-picker-substring-filter-v2
         - fix/docker-riscv64-cross-compilers
-        - fix/armbian-leds-active-trigger-brightness
-        - feat/helios64-cpu-stability-overlay
-        - fix/native-armhf-detection
-        - feat/sysrq-serial-trigger
-        - fix/pygments-rich-syntax
-        - fix/p2a-for-loop-expansion
-        - fix/p1b-eval-to-declare
-        - fix/interactive-kernel-desc-case-alt
-        - fix/offline-work-respect-cache
         - feat/native-armhf-on-arm64
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
+        - docker-prune-optin
+        - mate
+        - xtsm1flash
+        - musefix
+        - singlemode
         default: 'main'
       board:
         type: choice
