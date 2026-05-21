@@ -48,16 +48,15 @@ on:
         # branches
         - main
         - update-maintainers
+        - seeed
         - fix/offline-work-respect-cache
         - fix/interactive-kernel-desc-case-alt
         - fix/p2a-for-loop-expansion
         - feat/sysrq-serial-trigger
-        - enh/board-picker-substring-filter-v2
         - artifact-rootfs-fetch-configng
         - breakingtest
         - nvidia-auto-detect-driver-version
         - uefi-riscv64-add-cloud-kernel
-        - seeed
         - rootfs-cache-invalidate-on-configng-change
         - fix/docker-riscv64-cross-compilers
         - feat/native-armhf-on-arm64
@@ -66,6 +65,7 @@ on:
         - docker-prune-optin
         - mate
         - xtsm1flash
+        - musefix
         default: 'main'
       board:
         type: choice
