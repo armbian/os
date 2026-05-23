@@ -43,8 +43,9 @@ on:
         options:
         # branches
         - main
-        - fix/docker-riscv64-cross-compilers
+        - fix/sm8250-q706f-duplicate-opp-label
         - fix/docker-unique-image-tag
+        - fix/docker-riscv64-cross-compilers
         - fix/runner-clean-pages-home
         - v26.05
         - feat/native-armhf-on-arm64
@@ -61,7 +62,6 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
