@@ -43,6 +43,9 @@ on:
         options:
         # branches
         - main
+        - fix/docker-riscv64-cross-compilers
+        - fix/docker-unique-image-tag
+        - fix/runner-clean-pages-home
         - v26.05
         - feat/native-armhf-on-arm64
         - fix/offline-work-respect-cache
@@ -55,13 +58,10 @@ on:
         - nvidia-auto-detect-driver-version
         - uefi-riscv64-add-cloud-kernel
         - rootfs-cache-invalidate-on-configng-change
-        - fix/docker-riscv64-cross-compilers
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
         - mate
-        - xtsm1flash
-        - musefix
         default: 'main'
       board:
         type: choice
