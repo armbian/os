@@ -41,8 +41,7 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/github/codeql-action-4.36.0
-        - dependabot/github_actions/plbstl/first-contribution-4.3.1
+        - fix/p2a-for-loop-expansion
         - update-kernel-configs
         - v26.05
         - fix/docker-unique-image-tag
@@ -50,7 +49,6 @@ on:
         - fix/runner-clean-pages-home
         - fix/offline-work-respect-cache
         - fix/interactive-kernel-desc-case-alt
-        - fix/p2a-for-loop-expansion
         - feat/sysrq-serial-trigger
         - seeed
         - artifact-rootfs-fetch-configng
@@ -60,6 +58,8 @@ on:
         - rootfs-cache-invalidate-on-configng-change
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
+        - docker-prune-optin
+        - mate
         default: 'main'
       board:
         type: choice
