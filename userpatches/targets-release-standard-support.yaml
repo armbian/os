@@ -74,6 +74,10 @@ lists:
     - { BOARD: bigtreetech-cb1, BRANCH: current }
     - { BOARD: bigtreetech-cb2, BRANCH: current }
     - { BOARD: dg-svr-865-tiny, BRANCH: current }
+    - { BOARD: easepi-a2, BRANCH: current }
+    - { BOARD: easepi-a2, BRANCH: vendor }
+    - { BOARD: easepi-r2, BRANCH: current }
+    - { BOARD: easepi-r2, BRANCH: vendor }
     - { BOARD: helios64, BRANCH: current }
     - { BOARD: imb3588, BRANCH: vendor }
     - { BOARD: inovato-quadra, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -89,7 +93,11 @@ lists:
     - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
+    - { BOARD: mba8mpxl-ras314, BRANCH: edge }
     - { BOARD: mba8mpxl, BRANCH: current }
+    - { BOARD: mba8mpxl, BRANCH: edge }
+    - { BOARD: mba93xxla-mini, BRANCH: current }
+    - { BOARD: mba93xxla-mini, BRANCH: edge }
     - { BOARD: mekotronics-r58s2, BRANCH: vendor }
     - { BOARD: nanopct6-lts, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: nanopct6-lts, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -159,6 +167,8 @@ lists:
     - { BOARD: sk-tda4vm, BRANCH: vendor }
     - { BOARD: sweet-potato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: tmds62levm, BRANCH: vendor }
+    - { BOARD: tq-smarc2-tqma8mpxs, BRANCH: current }
+    - { BOARD: tq-smarc2-tqma8mpxs, BRANCH: edge }
     - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }

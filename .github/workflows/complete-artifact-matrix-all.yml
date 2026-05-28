@@ -42,9 +42,10 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
+        - fix/p2a-for-loop-expansion
         - feat/sysrq-serial-trigger
         - fix/board-assets-comment
-        - fix/p2a-for-loop-expansion
         - v26.05
         - fix/docker-unique-image-tag
         - fix/docker-riscv64-cross-compilers
@@ -60,7 +61,6 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
@@ -85,6 +85,7 @@ on:
         - "HackingGate"
         - "Heisath"
         - "HeyMeco"
+        - "Ifroncy"
         - "IsMrX"
         - "JackHuang021"
         - "Janmcha"

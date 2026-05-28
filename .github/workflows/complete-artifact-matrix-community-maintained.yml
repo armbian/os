@@ -43,9 +43,10 @@ on:
         options:
         # branches
         - main
+        - update-maintainers
+        - fix/p2a-for-loop-expansion
         - feat/sysrq-serial-trigger
         - fix/board-assets-comment
-        - fix/p2a-for-loop-expansion
         - v26.05
         - fix/docker-unique-image-tag
         - fix/docker-riscv64-cross-compilers
@@ -61,7 +62,6 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
@@ -133,6 +133,8 @@ on:
         - dshanpi-a1
         - dshanpi-r1
         - dusun-dsom-010r
+        - easepi-a2
+        - easepi-r2
         - ebyte-ecb41-pge
         - espressobin
         - fine3399
@@ -188,6 +190,7 @@ on:
         - mangopi-m28k
         - mba8mpxl
         - mba8mpxl-ras314
+        - mba93xxla-mini
         - mekotronics-r58-4x4
         - mekotronics-r58-minipc
         - mekotronics-r58hd
@@ -383,6 +386,7 @@ on:
         - tinkerboard
         - tinkerboard-2
         - tmds62levm
+        - tq-smarc2-tqma8mpxs
         - tritium-h3
         - tritium-h5
         - turing-rk1
@@ -421,6 +425,7 @@ on:
         - "HackingGate"
         - "Heisath"
         - "HeyMeco"
+        - "Ifroncy"
         - "IsMrX"
         - "JackHuang021"
         - "Janmcha"
