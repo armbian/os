@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - dependabot/github_actions/plbstl/first-contribution-4.3.2
         - update-maintainers
         - fix/p2a-for-loop-expansion
         - feat/sysrq-serial-trigger
@@ -65,7 +66,6 @@ on:
         - rootfs-cache-invalidate-on-configng-change
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
-        - docker-prune-optin
         default: 'main'
       board:
         type: choice
