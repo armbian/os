@@ -43,11 +43,9 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/plbstl/first-contribution-4.3.2
         - update-maintainers
         - fix/p2a-for-loop-expansion
         - feat/sysrq-serial-trigger
-        - fix/board-assets-comment
         - v26.05
         - fix/docker-unique-image-tag
         - fix/docker-riscv64-cross-compilers
@@ -62,6 +60,8 @@ on:
         - rootfs-cache-invalidate-on-configng-change
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
+        - docker-prune-optin
+        - mate
         default: 'main'
       board:
         type: choice
