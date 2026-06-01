@@ -47,6 +47,7 @@ on:
         options:
         # branches
         - main
+        - xxxxxxx
         - dependabot/pip/pyelftools-0.33
         - dependabot/pip/pip-26.1.2
         - feat/sysrq-serial-trigger
@@ -65,7 +66,6 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
