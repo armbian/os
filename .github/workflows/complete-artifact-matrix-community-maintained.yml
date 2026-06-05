@@ -44,7 +44,6 @@ on:
         # branches
         - main
         - dependabot/github_actions/actions/checkout-6.0.3
-        - dependabot/github_actions/github/codeql-action-4.36.1
         - xxxxxxx
         - feat/sysrq-serial-trigger
         - v26.05
@@ -62,6 +61,7 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
+        - mate
         default: 'main'
       board:
         type: choice
