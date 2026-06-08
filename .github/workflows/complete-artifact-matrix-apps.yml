@@ -41,8 +41,7 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
-        - dependabot/github_actions/actions/checkout-6.0.3
+        - update-kernel-configs
         - xxxxxxx
         - feat/sysrq-serial-trigger
         - v26.05
@@ -60,6 +59,7 @@ on:
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
+        - mate
         default: 'main'
       board:
         type: choice
