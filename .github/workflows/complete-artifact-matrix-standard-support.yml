@@ -41,15 +41,15 @@ on:
         options:
         # branches
         - main
-        - update-kernel-configs
-        - xxxxxxx
-        - feat/sysrq-serial-trigger
-        - v26.05
-        - fix/docker-unique-image-tag
         - fix/docker-riscv64-cross-compilers
-        - fix/runner-clean-pages-home
+        - feat/sysrq-serial-trigger
         - fix/offline-work-respect-cache
         - fix/interactive-kernel-desc-case-alt
+        - update-kernel-configs
+        - xxxxxxx
+        - v26.05
+        - fix/docker-unique-image-tag
+        - fix/runner-clean-pages-home
         - seeed
         - artifact-rootfs-fetch-configng
         - breakingtest
