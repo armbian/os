@@ -412,11 +412,26 @@ jobs:
 
             echo "Generating $outfile from $url"
 
-            timeout 10 curl -s \
+            # Fetch with retries; curl handles transient failures itself.
+            # --retry-all-errors covers connection timeouts as well as 5xx.
+            response="$(curl -s --fail \
+              --connect-timeout 10 --max-time 30 \
+              --retry 5 --retry-delay 2 --retry-all-errors \
               -H "Authorization: Token ${{ secrets.NETBOX_TOKEN }}" \
               -H "Accept: application/json; indent=4" \
-              "$url" \
-            | jq "$JQ_FILTER" > "$outfile"
+              "$url")"
+
+            echo "$response" | jq "$JQ_FILTER" > "$outfile"
+
+            # Guard against a valid-but-empty result set: NetBox returning no
+            # matching VMs would otherwise produce an empty server list and let
+            # the build proceed with nowhere to upload/download from.
+            count="$(jq 'length' "$outfile")"
+            if [ "$count" -eq 0 ]; then
+              echo "::error::$outfile is empty (NetBox returned no '$kind' servers from $url)"
+              exit 1
+            fi
+            echo "  -> $count server(s)"
 
           done
 
