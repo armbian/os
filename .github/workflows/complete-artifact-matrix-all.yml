@@ -2269,6 +2269,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -2656,6 +2673,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -3045,6 +3079,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -3432,6 +3483,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -3821,6 +3889,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -4208,6 +4293,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -4597,6 +4699,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -4984,6 +5103,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -5373,6 +5509,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -5760,6 +5913,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -6149,6 +6319,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -6536,6 +6723,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -6925,6 +7129,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -7312,6 +7533,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
@@ -7701,6 +7939,23 @@ jobs:
         run: |
           rm -f userpatches/VERSION
 
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
+
       - name: ${{matrix.desc}}
         id: build-one-image
         timeout-minutes: 90
@@ -8088,6 +8343,23 @@ jobs:
       - name: "Cleanup leftover output"
         run: |
           rm -f userpatches/VERSION
+
+      - name: "Runner info for ${{ runner.name }}"
+        run: |
+          info="$(curl -fsSL "https://github.armbian.com/servers/github-runners.jq" \
+            | jq --arg name "${{ runner.name }}" '
+                ($name | sub("-[0-9]+$"; "")) as $base
+                | first(.[] | select((.host | split(".")[0]) == $base)) // {}
+              ')"
+          echo "Runner info for ${{ runner.name }}:"
+          echo "$info"
+          echo "--- Exported environment ---"
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+            key="${map%%:*}"; var="${map##*:}"
+            value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
+            echo "${var}=${value}"
+            echo "${var}=${value}" >> "$GITHUB_ENV"
+          done
 
       - name: ${{matrix.desc}}
         id: build-one-image
