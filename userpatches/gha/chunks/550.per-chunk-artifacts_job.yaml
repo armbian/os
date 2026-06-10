@@ -81,7 +81,12 @@ jobs: # <TEMPLATE-IGNORE>
         timeout-minutes: 90
         id: build
         run: |
-          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # If the runner exported a remote ccache storage, pass it on and enable the ccache-remote extension.
+          declare -a CCACHE_PARAMS=()
+          if [ -n "${CCACHE_REMOTE_STORAGE}" ]; then
+            CCACHE_PARAMS+=( "CCACHE_REMOTE_STORAGE=${CCACHE_REMOTE_STORAGE}" "ENABLE_EXTENSIONS=ccache-remote" )
+          fi
+          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" SHOW_DEBUG=yes SHARE_LOG=yes "${CCACHE_PARAMS[@]}" ${{env.EXTRA_PARAMS_ALL_BUILDS}}
 
       - name: "Logs: ${{ steps.build.outputs.logs_url }}"
         if: always()
