@@ -42,9 +42,9 @@ on:
         options:
         # branches
         - main
+        - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
-        - fix/offline-work-respect-cache
         - update-kernel-configs
         - xxxxxxx
         - v26.05
@@ -805,7 +805,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -896,7 +896,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -987,7 +987,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1078,7 +1078,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1169,7 +1169,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1260,7 +1260,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1351,7 +1351,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1442,7 +1442,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1533,7 +1533,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1624,7 +1624,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1715,7 +1715,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1806,7 +1806,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1897,7 +1897,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -1988,7 +1988,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -2079,7 +2079,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -2170,7 +2170,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
@@ -2261,7 +2261,7 @@ jobs:
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
