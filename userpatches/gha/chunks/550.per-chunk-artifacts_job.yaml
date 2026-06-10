@@ -70,7 +70,7 @@ jobs: # <TEMPLATE-IGNORE>
           echo "Runner info for ${{ runner.name }}:"
           echo "$info"
           echo "--- Exported environment ---"
-          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE; do
+          for map in apt_proxy:APT_PROXY_ADDR oci_cache:GHCR_MIRROR_ADDRESS redis_cache:CCACHE_REMOTE_STORAGE git_proxy:GITPROXY_ADDRESS; do
             key="${map%%:*}"; var="${map##*:}"
             value="$(jq -r --arg k "$key" '.[$k] // ""' <<< "$info")"
             echo "${var}=${value}"
