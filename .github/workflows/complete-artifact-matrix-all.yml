@@ -45,7 +45,6 @@ on:
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
         - fix/offline-work-respect-cache
-        - fix/interactive-kernel-desc-case-alt
         - update-kernel-configs
         - xxxxxxx
         - v26.05
@@ -61,6 +60,7 @@ on:
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
         - mate
+        - xtsm1flash
         default: 'main'
       board:
         type: choice
