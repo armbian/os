@@ -47,13 +47,14 @@ on:
         options:
         # branches
         - main
+        - fix/docker-unique-image-tag
+        - update-maintainers
         - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
         - update-kernel-configs
         - xxxxxxx
         - v26.05
-        - fix/docker-unique-image-tag
         - fix/runner-clean-pages-home
         - seeed
         - artifact-rootfs-fetch-configng
@@ -65,7 +66,6 @@ on:
         - ls1046a-disable-nxp-ask
         - docker-prune-optin
         - mate
-        - xtsm1flash
         default: 'main'
       board:
         type: choice
@@ -79,6 +79,7 @@ on:
         - aml-s905d3-cc
         - aml-s9xx-box
         - aml-t95z-plus
+        - anbernic-rg-ds
         - arduino-uno-q
         - armsom-aim7-io
         - armsom-cm5-io
@@ -392,6 +393,7 @@ on:
         - tinkerboard
         - tinkerboard-2
         - tmds62levm
+        - tmds64evm
         - tq-smarc2-tqma8mpxs
         - tritium-h3
         - tritium-h5
@@ -459,6 +461,7 @@ on:
         - "catalinii"
         - "chainsx"
         - "chraac"
+        - "crackerjacques"
         - "devdotnetorg"
         - "efectn"
         - "eliasbakken"
