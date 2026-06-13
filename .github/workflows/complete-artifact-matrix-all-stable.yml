@@ -42,9 +42,9 @@ on:
         options:
         # branches
         - main
+        - fix/docker-unique-image-tag
         - fix/offline-work-respect-cache
         - update-maintainers
-        - fix/docker-unique-image-tag
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
         - update-kernel-configs
