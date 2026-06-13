@@ -365,8 +365,14 @@ jobs: # <TEMPLATE-IGNORE>
                   for attempt in $(seq 1 "$max_retries"); do
                       echo "[$SERVER_URL] rsync attempt ${attempt}/${max_retries}..."
 
+                      # Timeouts so an unreachable/stalled server fails fast
+                      # instead of hanging the whole attempt:
+                      #   ssh ConnectTimeout    - cap the TCP connect (unreachable host)
+                      #   ssh ServerAlive*      - drop a dead connection mid-transfer (~60s)
+                      #   rsync --timeout       - abort if no data moves for 300s
                       if rsync --progress \
-                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new" \
+                          --timeout=300 \
+                          -e "ssh -p ${SERVER_PORT} -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4" \
                           -rvP \
                           "${RSYNC_FILTER[@]}" \
                           output/images/ \
