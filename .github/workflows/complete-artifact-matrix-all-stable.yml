@@ -43,11 +43,11 @@ on:
         # branches
         - main
         - update-maintainers
-        - fix/docker-unique-image-tag
+        - update-kernel-configs
         - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
-        - update-kernel-configs
+        - fix/docker-unique-image-tag
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
