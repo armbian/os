@@ -42,7 +42,9 @@ on:
         options:
         # branches
         - main
+        - bigtreetech-cb1-uboot-2026.01
         - update-maintainers
+        - dependabot/pip/dtschema-2026.6
         - update-kernel-configs
         - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
@@ -59,8 +61,6 @@ on:
         - rootfs-cache-invalidate-on-configng-change
         - artifact-uboot-debug-h-divergence
         - ls1046a-disable-nxp-ask
-        - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
