@@ -41,8 +41,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+      with:
+        egress-policy: audit
+
     - name: "Check membership"
-      uses: armbian/actions/team-check@main
+      uses: armbian/actions/team-check@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
       with:
         ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

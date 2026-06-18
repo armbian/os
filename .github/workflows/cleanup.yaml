@@ -15,8 +15,13 @@ jobs:
     outputs:
       matrix:  ${{steps.json.outputs.JSON_CONTENT}}
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: "Checkout Armbian build Framework"
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: armbian/build
           ref: ${{ inputs.ref || inputs.branch || 'main' }}
@@ -53,5 +58,10 @@ jobs:
     steps:
 
       # Cleaning self hosted runners
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: Runner clean
-        uses: armbian/actions/runner-clean@main
+        uses: armbian/actions/runner-clean@2fa6c514d602b291fdc4dac1081fe4610ee0b376 # main
