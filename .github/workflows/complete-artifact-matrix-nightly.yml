@@ -47,6 +47,9 @@ on:
         options:
         # branches
         - main
+        - dependabot/github_actions/actions/checkout-7.0.0
+        - khadas-vim2-uboot-blob-0.17.3
+        - fix/artifact-uboot-blob-hash
         - bigtreetech-cb1-uboot-2026.01
         - update-kernel-configs
         - fix/offline-work-respect-cache
@@ -63,9 +66,6 @@ on:
         - uefi-riscv64-add-cloud-kernel
         - rootfs-cache-invalidate-on-configng-change
         - artifact-uboot-debug-h-divergence
-        - ls1046a-disable-nxp-ask
-        - docker-prune-optin
-        - mate
         default: 'main'
       board:
         type: choice
