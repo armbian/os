@@ -47,7 +47,12 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/actions/checkout-7.0.0
+        - fix/docker-unique-image-tag
+        - fix/docker-registry-pull-cron
+        - fix/xz-compress-memory
+        - fix/apt-cacher-ng-fallback
+        - fix/loop-device-mkfs-busy
+        - update-maintainers
         - khadas-vim2-uboot-blob-0.17.3
         - fix/artifact-uboot-blob-hash
         - bigtreetech-cb1-uboot-2026.01
@@ -55,17 +60,12 @@ on:
         - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
-        - fix/docker-unique-image-tag
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
         - seeed
         - artifact-rootfs-fetch-configng
         - breakingtest
-        - nvidia-auto-detect-driver-version
-        - uefi-riscv64-add-cloud-kernel
-        - rootfs-cache-invalidate-on-configng-change
-        - artifact-uboot-debug-h-divergence
         default: 'main'
       board:
         type: choice
@@ -193,6 +193,7 @@ on:
         - luckfox-lyra-zero-w
         - luckfox-pico-max
         - luckfox-pico-mini
+        - luckfox-rk3308b-nova
         - mangopi-m28k
         - mba8mpxl
         - mba8mpxl-ras314
