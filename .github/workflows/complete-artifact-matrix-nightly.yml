@@ -47,12 +47,14 @@ on:
         options:
         # branches
         - main
+        - fix/info-gatherer-too-many-open-files
+        - khadas-vim3-uboot-v2026.04
+        - update-maintainers
         - fix/docker-unique-image-tag
         - fix/docker-registry-pull-cron
         - fix/xz-compress-memory
         - fix/apt-cacher-ng-fallback
         - fix/loop-device-mkfs-busy
-        - update-maintainers
         - khadas-vim2-uboot-blob-0.17.3
         - fix/artifact-uboot-blob-hash
         - bigtreetech-cb1-uboot-2026.01
@@ -64,8 +66,6 @@ on:
         - v26.05
         - fix/runner-clean-pages-home
         - seeed
-        - artifact-rootfs-fetch-configng
-        - breakingtest
         default: 'main'
       board:
         type: choice
@@ -402,6 +402,7 @@ on:
         - turing-rk1
         - udoo
         - uefi-arm64
+        - uefi-arm64-dt
         - uefi-loong64
         - uefi-riscv64
         - uefi-x86
