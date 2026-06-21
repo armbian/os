@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - fix/bleedingedge-7.2-track-master
         - fix/info-gatherer-too-many-open-files
         - khadas-vim3-uboot-v2026.04
         - update-maintainers
@@ -59,7 +60,6 @@ on:
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
-        - seeed
         default: 'main'
       board:
         type: choice
