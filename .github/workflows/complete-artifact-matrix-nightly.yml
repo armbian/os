@@ -47,8 +47,10 @@ on:
         options:
         # branches
         - main
-        - khadas-vim2-uboot-blob-0.17.3
+        - fix/stubble-host-deps-gate
         - update-maintainers
+        - fix/mvebu-gpio-dual-pwm-helios4
+        - khadas-vim2-uboot-blob-0.17.3
         - update-kernel-configs
         - fix/bleedingedge-7.2-track-master
         - khadas-vim3-uboot-v2026.04
@@ -64,8 +66,6 @@ on:
         - fix/runner-clean-pages-home
         - seeed
         - artifact-rootfs-fetch-configng
-        - breakingtest
-        - nvidia-auto-detect-driver-version
         default: 'main'
       board:
         type: choice
@@ -125,6 +125,7 @@ on:
         - bigtreetech-cb2
         - cainiao-cniot-core
         - cherryba-m1
+        - cix-acpi
         - clearfogbase
         - clearfogpro
         - clockworkpi-a06
