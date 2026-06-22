@@ -47,25 +47,25 @@ on:
         options:
         # branches
         - main
-        - fix/bleedingedge-7.2-track-master
-        - fix/info-gatherer-too-many-open-files
-        - khadas-vim3-uboot-v2026.04
+        - khadas-vim2-uboot-blob-0.17.3
         - update-maintainers
+        - update-kernel-configs
+        - fix/bleedingedge-7.2-track-master
+        - khadas-vim3-uboot-v2026.04
         - fix/docker-unique-image-tag
-        - fix/docker-registry-pull-cron
-        - fix/xz-compress-memory
         - fix/apt-cacher-ng-fallback
         - fix/loop-device-mkfs-busy
-        - khadas-vim2-uboot-blob-0.17.3
-        - fix/artifact-uboot-blob-hash
         - bigtreetech-cb1-uboot-2026.01
-        - update-kernel-configs
         - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
+        - seeed
+        - artifact-rootfs-fetch-configng
+        - breakingtest
+        - nvidia-auto-detect-driver-version
         default: 'main'
       board:
         type: choice
@@ -167,6 +167,7 @@ on:
         - jethubj200
         - jethubj80
         - jp-tvbox-3566
+        - k3picoitx
         - khadas-edge
         - khadas-edge2
         - khadas-vim1
