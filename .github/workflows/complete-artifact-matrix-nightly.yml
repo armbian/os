@@ -47,9 +47,8 @@ on:
         options:
         # branches
         - main
-        - fix/stubble-host-deps-gate
         - update-maintainers
-        - fix/mvebu-gpio-dual-pwm-helios4
+        - fix/stubble-host-deps-gate
         - khadas-vim2-uboot-blob-0.17.3
         - update-kernel-configs
         - fix/bleedingedge-7.2-track-master
@@ -66,6 +65,7 @@ on:
         - fix/runner-clean-pages-home
         - seeed
         - artifact-rootfs-fetch-configng
+        - breakingtest
         default: 'main'
       board:
         type: choice
