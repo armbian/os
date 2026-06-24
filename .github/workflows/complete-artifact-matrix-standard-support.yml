@@ -42,11 +42,9 @@ on:
         # branches
         - main
         - update-maintainers
-        - fix/stubble-host-deps-gate
         - khadas-vim2-uboot-blob-0.17.3
         - update-kernel-configs
         - fix/bleedingedge-7.2-track-master
-        - khadas-vim3-uboot-v2026.04
         - fix/docker-unique-image-tag
         - fix/apt-cacher-ng-fallback
         - fix/loop-device-mkfs-busy
@@ -60,6 +58,8 @@ on:
         - seeed
         - artifact-rootfs-fetch-configng
         - breakingtest
+        - nvidia-auto-detect-driver-version
+        - uefi-riscv64-add-cloud-kernel
         default: 'main'
       board:
         type: choice
