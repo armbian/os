@@ -5,7 +5,7 @@ name: "Build All Stable Artifacts (cronjob)"
 
 on:
   schedule:
-   - cron: '0 1 * * *'
+   - cron: '0 2 * * *'
   workflow_call:
     inputs:
       ref:                      # commit id

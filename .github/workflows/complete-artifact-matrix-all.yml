@@ -5,7 +5,8 @@ name: "Build All Artifacts (cronjob)"
 
 on:
   schedule:
-   - cron: '0 */8 * * *'
+   - cron: '0 20-23/2,0-4/2 * * *'
+   - cron: '0 8,14 * * *'
   workflow_call:
     inputs:
       ref:                      # commit id
