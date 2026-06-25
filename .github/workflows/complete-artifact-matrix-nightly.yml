@@ -5,7 +5,7 @@ name: "Build Nightly Images (cronjob)"
 
 on:
   schedule:
-   - cron: '00 8 * * *'
+   - cron: '30 22 * * *'
   push:
     branches:
       - 'main'
