@@ -150,6 +150,7 @@ lists:
     - { BOARD: orangepi3, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi3b, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: orangepi4pro, BRANCH: vendor }
     - { BOARD: orangepi5-max, BRANCH: vendor }
     - { BOARD: orangepi5b, BRANCH: vendor }
     - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
