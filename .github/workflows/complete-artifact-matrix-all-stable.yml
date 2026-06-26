@@ -43,10 +43,9 @@ on:
         # branches
         - main
         - update-maintainers
-        - khadas-vim2-uboot-blob-0.17.3
+        - rootfs-cache-invalidate-on-configng-change
         - update-kernel-configs
         - fix/bleedingedge-7.2-track-master
-        - fix/docker-unique-image-tag
         - fix/apt-cacher-ng-fallback
         - fix/loop-device-mkfs-busy
         - bigtreetech-cb1-uboot-2026.01
@@ -61,6 +60,7 @@ on:
         - breakingtest
         - nvidia-auto-detect-driver-version
         - uefi-riscv64-add-cloud-kernel
+        - artifact-uboot-debug-h-divergence
         default: 'main'
       board:
         type: choice
