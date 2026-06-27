@@ -43,7 +43,7 @@ on:
         options:
         # branches
         - main
-        - update-maintainers
+        - kernel-config-nfs-rootfs-vendor
         - rootfs-cache-invalidate-on-configng-change
         - update-kernel-configs
         - fix/bleedingedge-7.2-track-master
