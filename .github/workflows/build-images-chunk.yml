@@ -1,14 +1,50 @@
-on: # <TEMPLATE-IGNORE>
-  workflow_dispatch:  # <TEMPLATE-IGNORE>
-jobs: # <TEMPLATE-IGNORE>
-  "TEMPLATE-JOB-NAME": # <TEMPLATE-JOB-NAME>
-    needs: [ "matrix_prep", "all-artifacts-ready" ]
+# Reusable: build ONE chunk of images (and sign/torrent/upload them).
+#
+# Called once per chunk by complete-artifact-matrix.yml via a matrix. Holds the
+# image-build job body exactly once. Named secrets must be declared here and passed in
+# by the orchestrator (reusable workflows only auto-inherit GITHUB_TOKEN).
+name: "Build images chunk (reusable)"
+
+on:
+  workflow_call:
+    inputs:
+      chunk_json:              { required: true,  type: string }
+      not_empty:               { required: true,  type: string }
+      version:                 { required: true,  type: string }
+      build_sha1:              { required: true,  type: string }
+      release_repository:      { required: true,  type: string }   # os | community | distribution
+      nightlybuild:            { required: true,  type: string }   # effective 'yes' | 'no'
+      build_repository:        { required: false, type: string, default: "armbian/build" }
+      userpatches_repository:  { required: false, type: string, default: "armbian/os" }
+      userpatches_ref:         { required: false, type: string, default: "main" }
+      userpatches_dir:         { required: false, type: string, default: "userpatches" }
+      extra_params_all_builds: { required: false, type: string, default: "UPLOAD_TO_OCI_ONLY=yes" }
+      extra_params_image:      { required: false, type: string, default: "SHARE_LOG=yes " }
+    secrets:
+      ACCESS_TOKEN:                 { required: true }
+      KEY_UPLOAD:                   { required: true }
+      KNOWN_HOSTS_ARMBIAN_UPLOAD:   { required: true }
+      GPG_KEY1:                     { required: false }
+      GPG_PASSPHRASE1:              { required: false }
+
+env:
+  BUILD_REPOSITORY: ${{ inputs.build_repository }}
+  USERPATCHES_REPOSITORY: ${{ inputs.userpatches_repository }}
+  USERPATCHES_REF: ${{ inputs.userpatches_ref }}
+  USERPATCHES_DIR: ${{ inputs.userpatches_dir }}
+  RELEASE_REPOSITORY: ${{ inputs.release_repository }}
+  EXTRA_PARAMS_ALL_BUILDS: ${{ inputs.extra_params_all_builds }}
+  EXTRA_PARAMS_IMAGE: ${{ inputs.extra_params_image }}
+  GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+jobs:
+  build:
+    if: ${{ github.repository_owner == 'armbian' && inputs.not_empty == 'yes' }}
     timeout-minutes: 240
-    if: ${{ !failure() && !cancelled() && ( github.repository_owner == '[[org]]' ) && ( needs.matrix_prep.outputs.images-chunk-not-empty-[[chunk]] == 'yes' ) }} # <-- HERE: Chunk number.
     strategy:
       fail-fast: false # let other jobs try to complete if one fails
-      matrix: ${{ fromJSON(needs.matrix_prep.outputs.images-chunk-json-[[chunk]]) }} # <-- HERE: Chunk number.
-    name: ${{ matrix.desc || 'Empty I[[chunk]]' }} # <-- HERE: Chunk number.
+      matrix: ${{ fromJSON(inputs.chunk_json) }}
+    name: ${{ matrix.desc || 'Empty image chunk' }}
     runs-on: ${{ matrix.runs_on }}
     steps:
 
@@ -20,7 +56,7 @@ jobs: # <TEMPLATE-IGNORE>
           fi
 
       # cleaning self hosted runners
-      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
+      - name: "Runner clean ${{ inputs.version }}"
         uses: armbian/actions/runner-clean@main
 
       # cleanup the place where we will clone the userpatches repo, to avoid git going insane and cleaning everything later
@@ -32,7 +68,7 @@ jobs: # <TEMPLATE-IGNORE>
         uses: actions/checkout@v6
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
-          ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
+          ref: ${{ inputs.build_sha1 }}
           fetch-depth: ${{ matrix.fdepth }}
           clean: false # true is default. it *will* delete the hosts /dev if mounted inside.
 
@@ -94,7 +130,21 @@ jobs: # <TEMPLATE-IGNORE>
           if [ -z "${ImageOS}" ]; then
           USE_FIXED_LOOP_DEVICE=$(echo ${RUNNER_NAME} | rev | cut -d"-" -f1  | rev | sed 's/^0*//' | sed -e 's/^/\/dev\/loop/')
           fi
-          bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ needs.matrix_prep.outputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ needs.matrix_prep.outputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}
+          # Repeat on failure: retry the image build up to BUILD_ATTEMPTS times to ride out transient
+          # runner/network failures. Replaces the old external watchdog cron job.
+          BUILD_ATTEMPTS="${BUILD_ATTEMPTS:-3}"
+          for attempt in $(seq 1 "$BUILD_ATTEMPTS"); do
+            echo "::group::Build attempt ${attempt}/${BUILD_ATTEMPTS}"
+            if bash ./compile.sh ${{ matrix.invocation }} REVISION="${{ inputs.version }}" USE_FIXED_LOOP_DEVICE="$USE_FIXED_LOOP_DEVICE" SHARE_LOG=yes MAKE_FOLDERS="archive" IMAGE_VERSION=${{ inputs.version }} ${{env.EXTRA_PARAMS_IMAGE}} ${{env.EXTRA_PARAMS_ALL_BUILDS}}; then
+              echo "::endgroup::"
+              exit 0
+            fi
+            echo "::endgroup::"
+            echo "::warning::image build attempt ${attempt}/${BUILD_ATTEMPTS} failed"
+            [ "$attempt" -lt "$BUILD_ATTEMPTS" ] && sleep 30
+          done
+          echo "::error::image build failed after ${BUILD_ATTEMPTS} attempts"
+          exit 1
 
       - name: "Logs: ${{ steps.build-one-image.outputs.logs_url }}"
         if: always()
@@ -194,11 +244,9 @@ jobs: # <TEMPLATE-IGNORE>
             exit 1
           fi
 
-          # Nightly / stable logic (templated)
+          # Nightly / stable logic
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
-          nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="[[nightlybuildDefaults]]"
-          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
+          effective_nightlybuild="${{ inputs.nightlybuild }}"
 
           WEBSEEDS=""
 
@@ -219,12 +267,12 @@ jobs: # <TEMPLATE-IGNORE>
             ##################################################################
             # NIGHTLY BUILDS
             # Use cache mirrors (servers-cache.jq) + GitHub as extra webseed
-            # Path is FIXED: https://SERVER/cache/[[release_repo]]/<version>/<FILE>
+            # Path is FIXED: https://SERVER/cache/<repo>/<version>/<FILE>
             ##################################################################
             WEBSEEDS=$(
               jq -r \
-                --arg repo "[[release_repo]]" \
-                --arg ver "${{ needs.matrix_prep.outputs.version }}" \
+                --arg repo "${{ env.RELEASE_REPOSITORY }}" \
+                --arg ver "${{ inputs.version }}" \
                 --arg file "$FILE" '
                   .[]
                   | "https://\(.host)/cache/\($repo)/\($ver)/\($file)"
@@ -235,7 +283,7 @@ jobs: # <TEMPLATE-IGNORE>
             if [ -n "$WEBSEEDS" ]; then
               WEBSEEDS+=","
             fi
-            WEBSEEDS+="https://github.com/armbian/[[release_repo]]/releases/download/${{ needs.matrix_prep.outputs.version }}/${FILE}"
+            WEBSEEDS+="https://github.com/armbian/${{ env.RELEASE_REPOSITORY }}/releases/download/${{ inputs.version }}/${FILE}"
           fi
 
           echo "WEBSEEDS: $WEBSEEDS"
@@ -274,12 +322,11 @@ jobs: # <TEMPLATE-IGNORE>
 
       - name: "Upload artefacts except .asc, .sha and .torrent"
         timeout-minutes: 60
-        if: ${{ ( github.event.inputs.nightlybuild || [[nightlybuildDefaults]] ) == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
-        #if: ${{ env.RELEASE_REPOSITORY == 'os' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
+        if: ${{ inputs.nightlybuild == 'yes' || env.RELEASE_REPOSITORY == 'community' || env.RELEASE_REPOSITORY == 'distribution' }}
         uses: ncipollo/release-action@v1
         with:
           repo: "${{ env.RELEASE_REPOSITORY }}"
-          tag: "${{ needs.matrix_prep.outputs.version }}"
+          tag: "${{ inputs.version }}"
           artifacts: "output/release/output/images/*/*/Armbian_*.*"
           omitBody: true
           replacesArtifacts: true
@@ -394,11 +441,8 @@ jobs: # <TEMPLATE-IGNORE>
               done < <(jq -c '.[]' "$json_file")
           }
 
-          nightlybuild="${{ github.event.inputs.nightlybuild }}"
-          nightlybuild_default="[[nightlybuildDefaults]]"
+          effective_nightlybuild="${{ inputs.nightlybuild }}"
           RELEASE_REPOSITORY="${{ env.RELEASE_REPOSITORY }}"
-
-          effective_nightlybuild="${nightlybuild:-$nightlybuild_default}"
 
           # Upload to cache servers: only .sha/.asc/.torrent
           sync_from_json "$tmpdir/cache.jq" cache
@@ -409,6 +453,6 @@ jobs: # <TEMPLATE-IGNORE>
           fi
 
       # cleaning self hosted runners
-      - name: "Runner clean ${{ needs.matrix_prep.outputs.version }}"
+      - name: "Runner clean ${{ inputs.version }}"
         if: always()
         uses: armbian/actions/runner-clean@main

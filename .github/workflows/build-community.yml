@@ -1,0 +1,63 @@
+# Track caller: Build Community Images (cronjob). Thin wrapper over complete-artifact-matrix.yml.
+name: "Build Community Images (cronjob)"
+
+on:
+  schedule:
+    - cron: "0 23 * * THU"
+  workflow_dispatch:
+    inputs:
+      skipImages:
+        description: 'Skip building images? no = build images, yes = skip images'
+        type: choice
+        options: [ 'yes', 'no' ]
+        default: 'no'
+      checkOci:
+        description: 'Check OCI for existing artifacts? yes = check OCI, no = always build everything'
+        type: choice
+        options: [ 'yes', 'no' ]
+        default: 'yes'
+      extraParamsAllBuilds:
+        description: 'Extra params for all builds/jobs (eg: DEBUG=yes)'
+        type: string
+        default: ''
+      branch:
+        description: 'Framework build branch'
+        type: string
+        default: 'main'
+      targetsFilterInclude:
+        description: 'TARGETS_FILTER_INCLUDE, example: "BOARD:odroidhc4,BOARD:odroidn2"'
+        type: string
+        default: ''
+      nightlybuild:
+        description: 'yes = nightly, no = stable'
+        type: choice
+        options: [ 'yes', 'no' ]
+        default: 'yes'
+      bumpversion:
+        description: 'Bump version'
+        type: boolean
+        default: true
+      versionOverride:
+        description: 'Version override'
+        type: string
+        default: ''
+
+concurrency:
+  group: ${{ github.run_id }}-unsupportedstable
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/complete-artifact-matrix.yml
+    with:
+      release_repository: "community"
+      target_path: "community/"
+      team: "Release manager"
+      repository_ref: "stable"
+      prepare_config: "armbian-community"
+      targets_filename: "targets-release-community-maintained.yaml"
+      skipimages_default: "no"
+      checkoci_default: "yes"
+      nightlybuild_default: "yes"
+      bumpversion_default: true
+    secrets: inherit
