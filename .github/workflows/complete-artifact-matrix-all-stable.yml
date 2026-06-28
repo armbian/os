@@ -42,6 +42,8 @@ on:
         options:
         # branches
         - main
+        - fix/ayn-boards-inventory-vars
+        - feat/gha-matrix-short-job-name
         - kernel-config-nfs-rootfs-vendor
         - rootfs-cache-invalidate-on-configng-change
         - update-kernel-configs
@@ -59,8 +61,6 @@ on:
         - artifact-rootfs-fetch-configng
         - breakingtest
         - nvidia-auto-detect-driver-version
-        - uefi-riscv64-add-cloud-kernel
-        - artifact-uboot-debug-h-divergence
         default: 'main'
       board:
         type: choice
