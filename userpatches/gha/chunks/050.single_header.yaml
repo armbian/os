@@ -88,7 +88,8 @@ env:
 
   # Armbian envs. Adjust to your needs.
   # This makes builds faster, but only if the Docker images are up-to-date with all dependencies, Python, tools, etc. Otherwise it makes it... slower.
-  DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust that Docker images are up-to-date.
+  #DOCKER_SKIP_UPDATE: "yes" # Do not apt update/install/requirements/etc during Dockerfile build, trust that Docker images are up-to-date.
+  DOCKER_SKIP_UPDATE: "no" # pull & rebuild Dockerfile, should hit cache most of the time, safer
 
   # Added to every build, even the prepare job.
   EXTRA_PARAMS_ALL_BUILDS: "${{ inputs.extraParamsAllBuilds || 'UPLOAD_TO_OCI_ONLY=yes' }}"
