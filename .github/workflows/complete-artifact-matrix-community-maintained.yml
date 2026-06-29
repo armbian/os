@@ -43,12 +43,13 @@ on:
         options:
         # branches
         - main
-        - fix/git-ref2info-gitproxy-source
+        - ci/sunxi64-uboot-2026.07
         - update-maintainers
+        - ci/sunxi-uboot-2026.07
+        - update-kernel-configs
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
         - rootfs-cache-invalidate-on-configng-change
-        - update-kernel-configs
         - fix/bleedingedge-7.2-track-master
         - fix/apt-cacher-ng-fallback
         - fix/loop-device-mkfs-busy
@@ -61,7 +62,6 @@ on:
         - fix/runner-clean-pages-home
         - seeed
         - artifact-rootfs-fetch-configng
-        - breakingtest
         default: 'main'
       board:
         type: choice
