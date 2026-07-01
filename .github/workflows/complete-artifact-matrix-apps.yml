@@ -41,8 +41,10 @@ on:
         options:
         # branches
         - main
-        - ci/sunxi64-uboot-2026.07
         - update-maintainers
+        - ci/sunxi-uboot-2026.07-combined
+        - fix/uboot-pylibfdt-distutils
+        - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
         - update-kernel-configs
         - ci/rock-s0-uboot-2026.07
@@ -58,8 +60,6 @@ on:
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
-        - seeed
-        - artifact-rootfs-fetch-configng
         default: 'main'
       board:
         type: choice
@@ -129,6 +129,7 @@ on:
         - cubieboard
         - cubieboard2
         - cubietruck
+        - cubox-i
         - cyber-aib-rk3588
         - dg-svr-865-tiny
         - dshanpi-a1
@@ -145,6 +146,7 @@ on:
         - fxblox-rk1
         - gateway-dk
         - gateway-gz80x
+        - graperain-g3568-v2
         - h96-tvbox-3566
         - helios4
         - helios64
