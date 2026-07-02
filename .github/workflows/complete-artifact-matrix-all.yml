@@ -43,8 +43,8 @@ on:
         options:
         # branches
         - main
+        - bump/rk-uboot-swig-fleet
         - update-maintainers
-        - ci/sunxi-uboot-2026.07-combined
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07

@@ -47,8 +47,8 @@ on:
         options:
         # branches
         - main
+        - bump/rk-uboot-swig-fleet
         - update-maintainers
-        - ci/sunxi-uboot-2026.07-combined
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
@@ -132,6 +132,7 @@ on:
         - cm3588-nas
         - coolpi-cm5
         - coolpi-genbook
+        - cubie-a7z
         - cubieboard
         - cubieboard2
         - cubietruck
