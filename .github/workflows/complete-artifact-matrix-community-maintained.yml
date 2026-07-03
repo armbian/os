@@ -43,8 +43,9 @@ on:
         options:
         # branches
         - main
-        - bump/rk-uboot-swig-fleet
         - update-maintainers
+        - bump/rk-uboot-swig-fleet
+        - fix/ext-kernel-rust
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
@@ -61,7 +62,6 @@ on:
         - feat/sysrq-serial-trigger
         - xxxxxxx
         - v26.05
-        - fix/runner-clean-pages-home
         default: 'main'
       board:
         type: choice
