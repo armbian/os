@@ -41,12 +41,14 @@ on:
         options:
         # branches
         - main
+        - dependabot/pip/setuptools-83.0.0
+        - update-kernel-configs
         - update-maintainers
+        - fix/firstlogin-adduser-forky
         - bump/rk-uboot-swig-fleet
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
-        - update-kernel-configs
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
         - rootfs-cache-invalidate-on-configng-change
@@ -58,8 +60,6 @@ on:
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
         - xxxxxxx
-        - v26.05
-        - fix/runner-clean-pages-home
         default: 'main'
       board:
         type: choice
