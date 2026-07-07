@@ -43,10 +43,8 @@ on:
         options:
         # branches
         - main
-        - dependabot/pip/setuptools-83.0.0
-        - update-kernel-configs
         - update-maintainers
-        - fix/firstlogin-adduser-forky
+        - update-kernel-configs
         - bump/rk-uboot-swig-fleet
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
@@ -62,6 +60,8 @@ on:
         - fix/docker-riscv64-cross-compilers
         - feat/sysrq-serial-trigger
         - xxxxxxx
+        - v26.05
+        - fix/runner-clean-pages-home
         default: 'main'
       board:
         type: choice
@@ -302,6 +302,7 @@ on:
         - orangepizero2
         - orangepizero2w
         - orangepizero3
+        - orangepizero3w
         - orangepizeroplus
         - orangepizeroplus2-h3
         - orangepizeroplus2-h5
