@@ -47,6 +47,9 @@ on:
         options:
         # branches
         - main
+        - dependabot/github_actions/github/codeql-action/upload-sarif-4.37.0
+        - fix/offline-work-respect-cache
+        - feat/sysrq-serial-trigger
         - update-maintainers
         - bump/rk-uboot-swig-fleet
         - update-kernel-configs
@@ -60,12 +63,9 @@ on:
         - fix/apt-cacher-ng-fallback
         - fix/loop-device-mkfs-busy
         - bigtreetech-cb1-uboot-2026.01
-        - fix/offline-work-respect-cache
         - fix/docker-riscv64-cross-compilers
-        - feat/sysrq-serial-trigger
         - xxxxxxx
         - v26.05
-        - fix/runner-clean-pages-home
         default: 'main'
       board:
         type: choice
