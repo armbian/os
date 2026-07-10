@@ -43,10 +43,9 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/github/codeql-action/upload-sarif-4.37.0
+        - update-maintainers
         - fix/offline-work-respect-cache
         - feat/sysrq-serial-trigger
-        - update-maintainers
         - bump/rk-uboot-swig-fleet
         - update-kernel-configs
         - fix/uboot-pylibfdt-distutils
@@ -62,6 +61,7 @@ on:
         - fix/docker-riscv64-cross-compilers
         - xxxxxxx
         - v26.05
+        - fix/runner-clean-pages-home
         default: 'main'
       board:
         type: choice
