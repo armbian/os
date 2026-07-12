@@ -46,7 +46,6 @@ on:
         - update-maintainers
         - fix/offline-work-respect-cache
         - feat/sysrq-serial-trigger
-        - bump/rk-uboot-swig-fleet
         - update-kernel-configs
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
@@ -62,6 +61,7 @@ on:
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
+        - seeed
         default: 'main'
       board:
         type: choice
@@ -116,6 +116,7 @@ on:
         - "chainsx"
         - "chraac"
         - "crackerjacques"
+        - "deece"
         - "devdotnetorg"
         - "efectn"
         - "eliasbakken"
@@ -139,6 +140,7 @@ on:
         - "kamilsaigol"
         - "krachlatte"
         - "lbmendes"
+        - "lch08"
         - "leggewie"
         - "libiunc"
         - "linhz0hz"
@@ -155,6 +157,7 @@ on:
         - "rpardini"
         - "schmiedelm"
         - "schwar3kat"
+        - "sdeleeuw"
         - "sgjava"
         - "shkolnik"
         - "sicXnull"

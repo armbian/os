@@ -44,7 +44,6 @@ on:
         - update-maintainers
         - fix/offline-work-respect-cache
         - feat/sysrq-serial-trigger
-        - bump/rk-uboot-swig-fleet
         - update-kernel-configs
         - fix/uboot-pylibfdt-distutils
         - ci/sunxi64-uboot-2026.07
@@ -60,6 +59,7 @@ on:
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
+        - seeed
         default: 'main'
       board:
         type: choice
@@ -185,6 +185,7 @@ on:
         - lime2
         - longanpi-3h
         - longanpi-4b
+        - lubancat-5io
         - lubancat2
         - luckfox-core3566
         - luckfox-lyra-plus
@@ -205,6 +206,7 @@ on:
         - mekotronics-r58x-4g
         - mekotronics-r58x-pro
         - melea1000
+        - mellowflyc5
         - mixtile-blade3
         - mixtile-core3588e
         - mixtile-edge2
@@ -468,6 +470,7 @@ on:
         - "chainsx"
         - "chraac"
         - "crackerjacques"
+        - "deece"
         - "devdotnetorg"
         - "efectn"
         - "eliasbakken"
@@ -491,6 +494,7 @@ on:
         - "kamilsaigol"
         - "krachlatte"
         - "lbmendes"
+        - "lch08"
         - "leggewie"
         - "libiunc"
         - "linhz0hz"
@@ -507,6 +511,7 @@ on:
         - "rpardini"
         - "schmiedelm"
         - "schwar3kat"
+        - "sdeleeuw"
         - "sgjava"
         - "shkolnik"
         - "sicXnull"
