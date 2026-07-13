@@ -42,6 +42,7 @@ on:
         # branches
         - main
         - update-maintainers
+        - dependabot/pip/gitpython-3.1.51
         - fix/offline-work-respect-cache
         - feat/sysrq-serial-trigger
         - update-kernel-configs
@@ -59,7 +60,6 @@ on:
         - xxxxxxx
         - v26.05
         - fix/runner-clean-pages-home
-        - seeed
         default: 'main'
       board:
         type: choice
