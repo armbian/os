@@ -44,6 +44,7 @@ on:
         # branches
         - main
         - update-maintainers
+        - enable-f2fs-all-kernels
         - armbian-install-shim
         - fix/offline-work-respect-cache
         - feat/sysrq-serial-trigger
@@ -61,7 +62,6 @@ on:
         - fix/docker-riscv64-cross-compilers
         - xxxxxxx
         - v26.05
-        - fix/runner-clean-pages-home
         default: 'main'
       board:
         type: choice
@@ -773,7 +773,7 @@ jobs:
 
       - name: GitHub cache
         id: cache-restore
-        uses: actions/cache@v6
+        uses: actions/cache@v5
         with:
           path: |
             cache/memoize
