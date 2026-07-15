@@ -41,6 +41,8 @@ on:
         options:
         # branches
         - main
+        - uboot-2026.07-final
+        - k3-sysfw-guard
         - update-maintainers
         - enable-f2fs-all-kernels
         - armbian-install-shim
@@ -58,8 +60,6 @@ on:
         - fix/loop-device-mkfs-busy
         - bigtreetech-cb1-uboot-2026.01
         - fix/docker-riscv64-cross-compilers
-        - xxxxxxx
-        - v26.05
         default: 'main'
       board:
         type: choice
