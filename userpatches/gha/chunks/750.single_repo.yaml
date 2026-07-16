@@ -20,7 +20,7 @@ jobs: # <TEMPLATE-IGNORE>
           password: "${{ secrets.GITHUB_TOKEN }}"    # GitHub actions builtin token. repo has to have pkg access.
 
       - name: Checkout build repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.BUILD_REPOSITORY }}
           ref: ${{ needs.matrix_prep.outputs.build-sha1 }}
@@ -29,7 +29,7 @@ jobs: # <TEMPLATE-IGNORE>
           clean: false
 
       - name: "Checkout userpatches repo: ${{env.USERPATCHES_REPOSITORY}}#${{env.USERPATCHES_REF}}"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         if: ${{ ( env.USERPATCHES_REPOSITORY != '' ) && ( env.USERPATCHES_REF != '' ) }}
         with:
           repository: ${{ env.USERPATCHES_REPOSITORY }}
