@@ -42,15 +42,11 @@ on:
         # branches
         - main
         - update-maintainers
-        - update-version-lib/functions/general/oci-oras.sh-oras-project/oras-1.3.3
         - cli-patch-push-to-git-rebased
-        - fix-board-assets-pr-target-checkout
         - fix/docker-riscv64-cross-compilers
-        - bsp-park-sata-on-shutdown
         - patching-delete-empty-patches-rebased
         - bsp-provide-linux-sysctl-defaults
         - fix/apt-cacher-ng-fallback
-        - resolute-tar-pin-global
         - k3-sysfw-guard
         - enable-f2fs-all-kernels
         - armbian-install-shim
@@ -60,6 +56,10 @@ on:
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
+        - fix/bleedingedge-7.2-track-master
+        - fix/loop-device-mkfs-busy
+        - bigtreetech-cb1-uboot-2026.01
+        - xxxxxxx
         default: 'main'
       board:
         type: choice
