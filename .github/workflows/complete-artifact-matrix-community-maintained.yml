@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - revert-resolute-tar-pin
         - update-maintainers
         - cli-patch-push-to-git-rebased
         - fix/docker-riscv64-cross-compilers
@@ -59,7 +60,6 @@ on:
         - fix/bleedingedge-7.2-track-master
         - fix/loop-device-mkfs-busy
         - bigtreetech-cb1-uboot-2026.01
-        - xxxxxxx
         default: 'main'
       board:
         type: choice
