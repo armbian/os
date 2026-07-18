@@ -4,9 +4,6 @@
 name: "Build Community Images (cronjob)"
 
 on:
-  schedule:
-   - cron: '0 23 * * THU'
-
   workflow_call:
     inputs:
       ref:                      # commit id

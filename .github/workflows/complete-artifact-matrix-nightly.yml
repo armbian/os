@@ -4,13 +4,6 @@
 name: "Build Nightly Images (cronjob)"
 
 on:
-  schedule:
-   - cron: '30 22 * * *'
-  push:
-    branches:
-      - 'main'
-    paths:
-      - 'userpatches/targets-release-nightly.yaml'
   workflow_call:
     inputs:
       ref:                      # commit id
