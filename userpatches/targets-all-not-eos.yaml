@@ -51,7 +51,7 @@ targets:
       USERSPACE_ONLY: "yes" # this does nothing, but some var must exist. might as well be this.
     items-from-inventory:
       userspace: # creates items from userspace inventory automatically... 'eos' distributions are always skipped.
-        skip-releases: [ "jammy", "forky", "questing", "sid" ] # do NOT include these releases
+        skip-releases: [ "jammy", "forky", "questing", "sid", "resolute" ] # do NOT include these releases
         #only-releases: [ "noble", "trixie", "forky" ] # ONLY include these releases (plucky is EOS)
         #skip-desktops: [ "lxde" ] # do NOT include these desktops
         #only-desktops: [ "xfce", "gnome" ] # ONLY include these desktops
