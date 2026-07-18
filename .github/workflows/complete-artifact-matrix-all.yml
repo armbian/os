@@ -4,6 +4,7 @@
 name: "Build All Artifacts (cronjob)"
 
 on:
+  
   workflow_call:
     inputs:
       ref:                      # commit id

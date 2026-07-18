@@ -4,6 +4,7 @@
 name: "Build Community Images (cronjob)"
 
 on:
+  
   workflow_call:
     inputs:
       ref:                      # commit id
