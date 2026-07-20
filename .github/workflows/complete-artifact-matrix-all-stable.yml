@@ -41,7 +41,10 @@ on:
         options:
         # branches
         - main
+        - k3-am62-lpsk-r5-spl-size
         - update-maintainers
+        - update-kernel-configs
+        - arduino-fetch-qcombin-at-build
         - cli-patch-push-to-git-rebased
         - bsp-provide-linux-sysctl-defaults
         - fix/uboot-pylibfdt-distutils
@@ -50,7 +53,6 @@ on:
         - k3-sysfw-guard
         - enable-f2fs-all-kernels
         - armbian-install-shim
-        - update-kernel-configs
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
@@ -58,8 +60,6 @@ on:
         - fix/bleedingedge-7.2-track-master
         - fix/loop-device-mkfs-busy
         - bigtreetech-cb1-uboot-2026.01
-        - xxxxxxx
-        - v26.05
         default: 'main'
       board:
         type: choice
