@@ -41,8 +41,10 @@ on:
         options:
         # branches
         - main
+        - docker-force-pull-switch
         - k3-am62-lpsk-r5-spl-size
         - update-maintainers
+        - chore/update-readme
         - update-kernel-configs
         - arduino-fetch-qcombin-at-build
         - cli-patch-push-to-git-rebased
@@ -58,8 +60,6 @@ on:
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
         - fix/bleedingedge-7.2-track-master
-        - fix/loop-device-mkfs-busy
-        - bigtreetech-cb1-uboot-2026.01
         default: 'main'
       board:
         type: choice
