@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - dependabot/github_actions/ossf/scorecard-action-2.4.4
         - update-maintainers
         - k3-am62-lpsk-r5-spl-size
         - chore/update-readme
@@ -59,7 +60,6 @@ on:
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
         - fix/bleedingedge-7.2-track-master
-        - fix/loop-device-mkfs-busy
         default: 'main'
       board:
         type: choice
