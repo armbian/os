@@ -41,10 +41,9 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/ossf/scorecard-action-2.4.4
         - update-maintainers
-        - k3-am62-lpsk-r5-spl-size
         - chore/update-readme
+        - k3-am62-lpsk-r5-spl-size
         - update-kernel-configs
         - arduino-fetch-qcombin-at-build
         - cli-patch-push-to-git-rebased
@@ -60,6 +59,7 @@ on:
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
         - fix/bleedingedge-7.2-track-master
+        - fix/loop-device-mkfs-busy
         default: 'main'
       board:
         type: choice
@@ -141,6 +141,7 @@ on:
         - "lbmendes"
         - "lch08"
         - "leggewie"
+        - "lexfrei"
         - "libiunc"
         - "linhz0hz"
         - "mahdichi"

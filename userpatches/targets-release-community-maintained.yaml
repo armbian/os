@@ -197,6 +197,8 @@ lists:
     - { BOARD: rockpi-n10, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: smart-am40, BRANCH: current }
+    - { BOARD: sovol-sv08-max, BRANCH: current }
+    - { BOARD: sovol-sv08, BRANCH: current }
     - { BOARD: station-m1, BRANCH: current }
     - { BOARD: station-m2, BRANCH: current }
     - { BOARD: station-m3, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
