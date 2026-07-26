@@ -42,6 +42,12 @@ on:
         # branches
         - main
         - update-maintainers
+        - starfive2-vendor-imgrogue-make44
+        - cix-7.2
+        - realtek-rtd1619b-gcc14-int-conversion
+        - rk35xx-isolate-2024.10-uboot-patches
+        - sovol-fix-cb1-defconfig-shared
+        - meson64-7.1-drop-upstreamed-gpio-cansleep
         - chore/update-readme
         - k3-am62-lpsk-r5-spl-size
         - update-kernel-configs
@@ -54,12 +60,6 @@ on:
         - k3-sysfw-guard
         - enable-f2fs-all-kernels
         - armbian-install-shim
-        - ci/sunxi64-uboot-2026.07
-        - ci/sunxi-uboot-2026.07
-        - ci/rock-s0-uboot-2026.07
-        - ci/rockpi-s-uboot-2026.07
-        - fix/bleedingedge-7.2-track-master
-        - fix/loop-device-mkfs-busy
         default: 'main'
       board:
         type: choice
