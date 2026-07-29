@@ -42,7 +42,6 @@ on:
         # branches
         - main
         - update-maintainers
-        - k3-am62-lpsk-r5-spl-size
         - chore/update-readme
         - ci-wip-label-on-review
         - bsp-provide-linux-sysctl-defaults
@@ -60,6 +59,7 @@ on:
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
         - fix/bleedingedge-7.2-track-master
+        - fix/loop-device-mkfs-busy
         default: 'main'
       board:
         type: choice
