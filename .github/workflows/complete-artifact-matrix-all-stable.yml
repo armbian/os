@@ -41,7 +41,10 @@ on:
         options:
         # branches
         - main
+        - dependabot/pip/pip-26.2
+        - enable-f2fs-all-kernels
         - update-maintainers
+        - singlemode-to-main
         - chore/update-readme
         - ci-wip-label-on-review
         - bsp-provide-linux-sysctl-defaults
@@ -52,14 +55,11 @@ on:
         - patching-delete-empty-patches-rebased
         - fix/apt-cacher-ng-fallback
         - k3-sysfw-guard
-        - enable-f2fs-all-kernels
         - armbian-install-shim
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
-        - fix/bleedingedge-7.2-track-master
-        - fix/loop-device-mkfs-busy
         default: 'main'
       board:
         type: choice
