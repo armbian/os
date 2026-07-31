@@ -36,6 +36,7 @@ lists:
     # auto generated section
     - { BOARD: bananapir4, BRANCH: current }
     - { BOARD: clearfogbase, BRANCH: current }
+    - { BOARD: cubie-a7z, BRANCH: vendor }
     - { BOARD: cubieboard, BRANCH: current }
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: luckfox-rk3308b-nova, BRANCH: current }
@@ -63,10 +64,13 @@ lists:
     - { BOARD: orangepi-r1, BRANCH: current }
     - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepi-r1plus, BRANCH: current }
+    - { BOARD: orangepi4pro, BRANCH: vendor }
+    - { BOARD: orangepizero3w, BRANCH: vendor }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
     - { BOARD: qidi-x6, BRANCH: current }
+    - { BOARD: radxa-cubie-a5e, BRANCH: current }
     - { BOARD: zeropi, BRANCH: current }
     # end of auto generated section
 
@@ -99,7 +103,6 @@ lists:
     - { BOARD: cm3588-nas, BRANCH: edge, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: coolpi-cm5, BRANCH: edge }
     - { BOARD: coolpi-genbook, BRANCH: edge }
-    - { BOARD: cubie-a7z, BRANCH: vendor }
     - { BOARD: cyber-aib-rk3588, BRANCH: vendor }
     - { BOARD: dshanpi-a1, BRANCH: vendor }
     - { BOARD: dshanpi-r1, BRANCH: vendor }
@@ -156,7 +159,6 @@ lists:
     - { BOARD: orangepi3, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi3b, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepi4, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: orangepi4pro, BRANCH: vendor }
     - { BOARD: orangepi5-max, BRANCH: vendor }
     - { BOARD: orangepi5b, BRANCH: vendor }
     - { BOARD: orangepi5pro, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
@@ -167,7 +169,6 @@ lists:
     - { BOARD: orangepizero2, BRANCH: current }
     - { BOARD: orangepizero2w, BRANCH: current }
     - { BOARD: orangepizero3, BRANCH: current }
-    - { BOARD: orangepizero3w, BRANCH: vendor }
     - { BOARD: photonicat2, BRANCH: current }
     - { BOARD: pine64so, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
@@ -176,7 +177,6 @@ lists:
     - { BOARD: pineh64, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: quartz64a, BRANCH: current }
     - { BOARD: quartz64b, BRANCH: current }
-    - { BOARD: radxa-cubie-a5e, BRANCH: current }
     - { BOARD: radxa-e20c, BRANCH: vendor }
     - { BOARD: radxa-zero2, BRANCH: current }
     - { BOARD: recore, BRANCH: current }
