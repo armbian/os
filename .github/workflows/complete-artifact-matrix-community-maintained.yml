@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - fix-imx8ulp-kernelpatchdir
         - update-maintainers
         - rewrite-patches-parallel
         - singlemode-to-main
@@ -59,7 +60,6 @@ on:
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
         - ci/rockpi-s-uboot-2026.07
-        - fix/bleedingedge-7.2-track-master
         default: 'main'
       board:
         type: choice
