@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - add-uefi-iso-extension
         - fix-imx8ulp-kernelpatchdir
         - update-maintainers
         - rewrite-patches-parallel
@@ -59,7 +60,6 @@ on:
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
-        - ci/rockpi-s-uboot-2026.07
         default: 'main'
       board:
         type: choice
