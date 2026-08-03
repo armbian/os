@@ -41,15 +41,14 @@ on:
         options:
         # branches
         - main
-        - add-uefi-iso-extension
-        - fix-imx8ulp-kernelpatchdir
         - update-maintainers
+        - update-kernel-configs
+        - add-uefi-iso-extension
         - rewrite-patches-parallel
         - singlemode-to-main
         - chore/update-readme
         - ci-wip-label-on-review
         - bsp-provide-linux-sysctl-defaults
-        - update-kernel-configs
         - cix-7.2
         - sovol-fix-cb1-defconfig-shared
         - fix/uboot-pylibfdt-distutils
@@ -60,6 +59,7 @@ on:
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
+        - ci/rockpi-s-uboot-2026.07
         default: 'main'
       board:
         type: choice
