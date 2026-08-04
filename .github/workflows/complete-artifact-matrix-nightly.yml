@@ -42,11 +42,11 @@ on:
         # branches
         - main
         - update-maintainers
+        - cloudinit-no-zram-swap-fstab
+        - chore/update-readme
         - update-kernel-configs
-        - add-uefi-iso-extension
         - rewrite-patches-parallel
         - singlemode-to-main
-        - chore/update-readme
         - ci-wip-label-on-review
         - bsp-provide-linux-sysctl-defaults
         - cix-7.2
