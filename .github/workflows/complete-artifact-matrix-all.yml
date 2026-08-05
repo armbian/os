@@ -41,6 +41,7 @@ on:
         options:
         # branches
         - main
+        - bump/version-26.11
         - update-maintainers
         - cloudinit-no-zram-swap-fstab
         - chore/update-readme
@@ -59,7 +60,6 @@ on:
         - ci/sunxi64-uboot-2026.07
         - ci/sunxi-uboot-2026.07
         - ci/rock-s0-uboot-2026.07
-        - ci/rockpi-s-uboot-2026.07
         default: 'main'
       board:
         type: choice
@@ -90,6 +90,7 @@ on:
         - "JohnTheCoolingFan"
         - "Kreyren"
         - "Lemon1151"
+        - "MarusGradinaru"
         - "NicoD-SBC"
         - "PanderMusubi"
         - "Pillar1989"
@@ -136,6 +137,7 @@ on:
         - "jonaswood01"
         - "juanesf"
         - "juanlufont"
+        - "juliovendramini"
         - "kamilsaigol"
         - "krachlatte"
         - "lbmendes"
