@@ -41,8 +41,12 @@ on:
         options:
         # branches
         - main
-        - bump/version-26.11
         - update-maintainers
+        - dependabot/github_actions/github/codeql-action/upload-sarif-4.37.5
+        - fix-uefi-cloud-squashfs
+        - fix-kernel-image-vmlinux-naming
+        - bump/mvebu64-kernels
+        - bump/version-26.11
         - cloudinit-no-zram-swap-fstab
         - chore/update-readme
         - update-kernel-configs
@@ -56,10 +60,6 @@ on:
         - patching-delete-empty-patches-rebased
         - fix/apt-cacher-ng-fallback
         - k3-sysfw-guard
-        - armbian-install-shim
-        - ci/sunxi64-uboot-2026.07
-        - ci/sunxi-uboot-2026.07
-        - ci/rock-s0-uboot-2026.07
         default: 'main'
       board:
         type: choice
