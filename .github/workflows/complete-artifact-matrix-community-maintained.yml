@@ -41,13 +41,9 @@ on:
         options:
         # branches
         - main
-        - dependabot/github_actions/step-security/harden-runner-2.20.1
-        - dependabot/github_actions/github/codeql-action/upload-sarif-4.37.6
         - update-maintainers
-        - armbian-install-shim
-        - fix/odroidm1-clear-spi-env-on-flash
-        - fix/kernel-crc32c-btrfs-mount
-        - fix-kernel-image-vmlinux-naming
+        - rkr7.2
+        - v26.08
         - bump/version-26.11
         - cloudinit-no-zram-swap-fstab
         - chore/update-readme
@@ -60,6 +56,10 @@ on:
         - sovol-fix-cb1-defconfig-shared
         - fix/uboot-pylibfdt-distutils
         - patching-delete-empty-patches-rebased
+        - fix/apt-cacher-ng-fallback
+        - k3-sysfw-guard
+        - ci/sunxi64-uboot-2026.07
+        - ci/sunxi-uboot-2026.07
         default: 'main'
       board:
         type: choice
