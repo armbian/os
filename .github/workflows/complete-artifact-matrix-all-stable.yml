@@ -42,11 +42,12 @@ on:
         # branches
         - main
         - update-maintainers
+        - csc/aml-s905d3-cc
+        - chore/update-readme
         - rkr7.2
         - v26.08
         - bump/version-26.11
         - cloudinit-no-zram-swap-fstab
-        - chore/update-readme
         - update-kernel-configs
         - rewrite-patches-parallel
         - singlemode-to-main
@@ -59,7 +60,6 @@ on:
         - fix/apt-cacher-ng-fallback
         - k3-sysfw-guard
         - ci/sunxi64-uboot-2026.07
-        - ci/sunxi-uboot-2026.07
         default: 'main'
       board:
         type: choice
@@ -75,7 +75,6 @@ on:
         # maintainers
         - "150balbes"
         - "1ubuntuuser"
-        - "AGM1968"
         - "AaronNGray"
         - "CodeChenL"
         - "ColorfulRhino"
@@ -99,6 +98,7 @@ on:
         - "Shadowrom2020"
         - "StephenGraf"
         - "SuperKali"
+        - "TallGuy74"
         - "The-going"
         - "TheSnowfield"
         - "Tonymac32"
@@ -139,7 +139,6 @@ on:
         - "juanlufont"
         - "juliovendramini"
         - "kamilsaigol"
-        - "krachlatte"
         - "lbmendes"
         - "lch08"
         - "leggewie"
@@ -160,7 +159,6 @@ on:
         - "schmiedelm"
         - "schwar3kat"
         - "sdeleeuw"
-        - "sgjava"
         - "shkolnik"
         - "sicXnull"
         - "spendist"

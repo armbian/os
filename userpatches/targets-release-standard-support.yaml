@@ -60,6 +60,7 @@ lists:
     # auto generated section
     - { BOARD: aml-a311d-cc, BRANCH: edge }
     - { BOARD: aml-c400-plus, BRANCH: current }
+    - { BOARD: arduino-uno-q, BRANCH: edge }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -96,6 +97,7 @@ lists:
     - { BOARD: khadas-vim4, BRANCH: legacy, ENABLE_EXTENSIONS: "image-output-oowow" }
     - { BOARD: lafrite, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: lepotato, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: lime-a64, BRANCH: current }
     - { BOARD: mba8mpxl-ras314, BRANCH: current }
     - { BOARD: mba8mpxl-ras314, BRANCH: edge }
     - { BOARD: mba8mpxl, BRANCH: current }
@@ -140,6 +142,8 @@ lists:
     - { BOARD: radxa-dragon-q6a, BRANCH: edge }
     - { BOARD: radxa-dragon-q8b, BRANCH: vendor }
     - { BOARD: radxa-dragon-q8b, BRANCH: edge }
+    - { BOARD: radxa-e24c, BRANCH: edge }
+    - { BOARD: radxa-e24c, BRANCH: vendor }
     - { BOARD: radxa-e25, BRANCH: current }
     - { BOARD: radxa-e54c, BRANCH: vendor }
     - { BOARD: radxa-nio-12l, BRANCH: edge }
@@ -193,11 +197,13 @@ lists:
     # auto generated section
     - { BOARD: bananapi, BRANCH: current }
     - { BOARD: bananapim2plus, BRANCH: current }
+    - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
     - { BOARD: tritium-h3, BRANCH: current }
+    - { BOARD: udoo, BRANCH: current }
     - { BOARD: uefi-loong64, BRANCH: current }
     - { BOARD: uefi-loong64, BRANCH: edge }
     # end of auto generated section
