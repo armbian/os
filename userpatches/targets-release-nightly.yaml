@@ -42,6 +42,7 @@ lists:
     - { BOARD: helios4, BRANCH: current }
     - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: orangepizero3w, BRANCH: vendor }
     - { BOARD: radxa-e52c, BRANCH: current }
     - { BOARD: rock-s0, BRANCH: current }
     - { BOARD: rockpi-e, BRANCH: current }
@@ -99,7 +100,6 @@ lists:
     - { BOARD: orangepi4-lts, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepipc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pocketbeagle2, BRANCH: vendor }
     - { BOARD: radxa-cm4-io, BRANCH: vendor }
     - { BOARD: radxa-cm5-io, BRANCH: vendor }
@@ -121,6 +121,8 @@ lists:
     - { BOARD: rock-5b, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5c, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5t, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
+    - { BOARD: rockpi-4bplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am62-lp, BRANCH: vendor }
     - { BOARD: sk-am62-sip, BRANCH: vendor }
@@ -140,7 +142,6 @@ lists:
 
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
-    - { BOARD: bananapim2plus, BRANCH: current }
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }

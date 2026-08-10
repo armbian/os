@@ -46,6 +46,7 @@ lists:
     - { BOARD: jethubj80, BRANCH: current }
     - { BOARD: mksklipad50, BRANCH: current }
     - { BOARD: nanopi-r4s, BRANCH: current }
+    - { BOARD: orangepizero3w, BRANCH: vendor }
     - { BOARD: radxa-e52c, BRANCH: current }
     - { BOARD: radxa-e52c, BRANCH: edge }
     - { BOARD: rock-s0, BRANCH: current }
@@ -58,11 +59,9 @@ lists:
 
   standard-support-fast-hdmi: &standard-support-fast-hdmi
     # auto generated section
-    - { BOARD: aml-a311d-cc, BRANCH: edge }
     - { BOARD: aml-c400-plus, BRANCH: current }
     - { BOARD: arduino-uno-q, BRANCH: edge }
     - { BOARD: bananapicm4io, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
-    - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim2s, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim4berry, BRANCH: current }
     - { BOARD: bananapim4zero, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -133,7 +132,6 @@ lists:
     - { BOARD: orangepi5-plus, BRANCH: vendor, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: orangepi5-plus, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: orangepipc2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pine64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: pocketbeagle2, BRANCH: vendor }
     - { BOARD: radxa-cm4-io, BRANCH: vendor }
@@ -170,6 +168,8 @@ lists:
     - { BOARD: rock-5c, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5t, BRANCH: vendor, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rock-5t, BRANCH: current }
+    - { BOARD: rockpi-4bplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: rpi4b, BRANCH: current }
     - { BOARD: sk-am62-lp, BRANCH: vendor }
     - { BOARD: sk-am62-sip, BRANCH: vendor }
@@ -183,7 +183,6 @@ lists:
     - { BOARD: tmds62levm, BRANCH: vendor }
     - { BOARD: tq-smarc2-tqma8mpxs, BRANCH: current }
     - { BOARD: tq-smarc2-tqma8mpxs, BRANCH: edge }
-    - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: uefi-arm64-dt, BRANCH: edge }
     - { BOARD: uefi-arm64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: uefi-x86, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -196,13 +195,11 @@ lists:
   standard-support-slow-hdmi: &standard-support-slow-hdmi
     # auto generated section
     - { BOARD: bananapi, BRANCH: current }
-    - { BOARD: bananapim2plus, BRANCH: current }
     - { BOARD: cubox-i, BRANCH: current }
     - { BOARD: odroidc1, BRANCH: current }
     - { BOARD: odroidxu4, BRANCH: current }
     - { BOARD: orangepione, BRANCH: current }
     - { BOARD: tinkerboard, BRANCH: current }
-    - { BOARD: tritium-h3, BRANCH: current }
     - { BOARD: udoo, BRANCH: current }
     - { BOARD: uefi-loong64, BRANCH: current }
     - { BOARD: uefi-loong64, BRANCH: edge }

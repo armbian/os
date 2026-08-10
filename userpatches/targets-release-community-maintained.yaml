@@ -26,6 +26,7 @@ lists:
   # automated lists start
   community-maintained-riscv64: &community-maintained-riscv64
     # auto generated section
+    - { BOARD: milkv-duos-riscv, BRANCH: edge }
     - { BOARD: orangepir2s, BRANCH: legacy }
     - { BOARD: orangepirv2, BRANCH: legacy }
     - { BOARD: uefi-riscv64, BRANCH: edge }
@@ -41,6 +42,7 @@ lists:
     - { BOARD: lime-a33, BRANCH: current }
     - { BOARD: luckfox-rk3308b-nova, BRANCH: current }
     - { BOARD: melea1000, BRANCH: current }
+    - { BOARD: milkv-duos-arm, BRANCH: edge }
     - { BOARD: mk808c, BRANCH: current }
     - { BOARD: mkspi, BRANCH: current }
     - { BOARD: nanopi-r1, BRANCH: current }
@@ -65,7 +67,6 @@ lists:
     - { BOARD: orangepi-r1plus-lts, BRANCH: current }
     - { BOARD: orangepi-r1plus, BRANCH: current }
     - { BOARD: orangepi4pro, BRANCH: vendor }
-    - { BOARD: orangepizero3w, BRANCH: vendor }
     - { BOARD: orangepizeroplus, BRANCH: current }
     - { BOARD: orangepizeroplus2-h5, BRANCH: current }
     - { BOARD: pinecube, BRANCH: current }
@@ -77,6 +78,8 @@ lists:
   community-maintained-fast-hdmi: &community-maintained-fast-hdmi
     # auto generated section
     - { BOARD: 9tripod-x3568-v4, BRANCH: current }
+    - { BOARD: aml-a311d-cc, BRANCH: edge }
+    - { BOARD: aml-s905d3-cc, BRANCH: current }
     - { BOARD: aml-s9xx-box, BRANCH: current }
     - { BOARD: aml-t95z-plus, BRANCH: edge }
     - { BOARD: anbernic-rg-ds, BRANCH: edge }
@@ -92,7 +95,9 @@ lists:
     - { BOARD: avaota-a1, BRANCH: legacy }
     - { BOARD: ayn-odin2mini, BRANCH: current }
     - { BOARD: ayn-odin2portal, BRANCH: current }
+    - { BOARD: ayn-odin3, BRANCH: edge }
     - { BOARD: ayn-thor, BRANCH: current }
+    - { BOARD: bananapim2pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: bananapim64, BRANCH: current }
     - { BOARD: bananapir2pro, BRANCH: current }
     - { BOARD: bestv-r3300-l, BRANCH: current }
@@ -168,6 +173,7 @@ lists:
     - { BOARD: orangepizero2w, BRANCH: current }
     - { BOARD: orangepizero3, BRANCH: current }
     - { BOARD: photonicat2, BRANCH: current }
+    - { BOARD: phytiumpi, BRANCH: current }
     - { BOARD: pine64so, BRANCH: current }
     - { BOARD: pinebook-a64, BRANCH: current }
     - { BOARD: pinebook-pro, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
@@ -190,11 +196,9 @@ lists:
     - { BOARD: rock64, BRANCH: current }
     - { BOARD: rockpi-4a, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-4b, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rockpi-4bplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-4c, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-4cplus, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: rockpi-n10, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
-    - { BOARD: rockpro64, BRANCH: current, ENABLE_EXTENSIONS: "mesa-vpu" }
     - { BOARD: smart-am40, BRANCH: current }
     - { BOARD: sovol-sv08-max, BRANCH: current }
     - { BOARD: sovol-sv08, BRANCH: current }
@@ -207,6 +211,7 @@ lists:
     - { BOARD: tanix-tx6s-axp313, BRANCH: current }
     - { BOARD: tinker-edge-r, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
     - { BOARD: tinkerboard-2, BRANCH: current, ENABLE_EXTENSIONS: "v4l2loopback-dkms,mesa-vpu" }
+    - { BOARD: tritium-h5, BRANCH: current }
     - { BOARD: turing-rk1, BRANCH: vendor }
     - { BOARD: walnutpi-1b-ddr3, BRANCH: current }
     - { BOARD: walnutpi-1b, BRANCH: current }
@@ -225,6 +230,7 @@ lists:
     - { BOARD: aml-s805-mxq, BRANCH: current }
     - { BOARD: armsom-forge1, BRANCH: vendor }
     - { BOARD: bananapim1plus, BRANCH: current }
+    - { BOARD: bananapim2plus, BRANCH: current }
     - { BOARD: bananapim2ultra, BRANCH: current }
     - { BOARD: bananapim2zero, BRANCH: current }
     - { BOARD: bananapim3, BRANCH: current }
@@ -257,6 +263,7 @@ lists:
     - { BOARD: pocketchip-sd, BRANCH: current }
     - { BOARD: rk322x-box, BRANCH: current }
     - { BOARD: sunvell-r69, BRANCH: current }
+    - { BOARD: tritium-h3, BRANCH: current }
     - { BOARD: xt-q8l-v10, BRANCH: current }
     # end of auto generated section
 

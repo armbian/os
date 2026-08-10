@@ -41,8 +41,11 @@ on:
         options:
         # branches
         - main
+        - fix/k3-beaglebadge-eink-both-trees
         - update-maintainers
-        - csc/aml-s905d3-cc
+        - fix/sunxi612-brcmfmac-ap6275p-patch
+        - dependabot/pip/pip-26.2.1
+        - singlemode-to-main
         - chore/update-readme
         - rkr7.2
         - v26.08
@@ -50,7 +53,6 @@ on:
         - cloudinit-no-zram-swap-fstab
         - update-kernel-configs
         - rewrite-patches-parallel
-        - singlemode-to-main
         - ci-wip-label-on-review
         - bsp-provide-linux-sysctl-defaults
         - cix-7.2
@@ -58,8 +60,6 @@ on:
         - fix/uboot-pylibfdt-distutils
         - patching-delete-empty-patches-rebased
         - fix/apt-cacher-ng-fallback
-        - k3-sysfw-guard
-        - ci/sunxi64-uboot-2026.07
         default: 'main'
       board:
         type: choice
@@ -73,60 +73,34 @@ on:
         description: 'Maintainer'
         options:
         # maintainers
-        - "150balbes"
-        - "1ubuntuuser"
-        - "AaronNGray"
         - "CodeChenL"
-        - "ColorfulRhino"
         - "DylanHP"
         - "Grippy98"
-        - "HackingGate"
         - "Heisath"
         - "HeyMeco"
-        - "IsMrX"
         - "JackHuang021"
-        - "Janmcha"
         - "JohnTheCoolingFan"
-        - "Kreyren"
-        - "Lemon1151"
         - "MarusGradinaru"
         - "NicoD-SBC"
         - "PanderMusubi"
         - "Pillar1989"
-        - "Qvy-png"
-        - "SeeleVolleri"
-        - "Shadowrom2020"
         - "StephenGraf"
         - "SuperKali"
-        - "TallGuy74"
         - "The-going"
         - "TheSnowfield"
         - "Tonymac32"
-        - "TuAFBogey"
         - "ZazaBR"
         - "adeepn"
-        - "ahoneybun"
         - "alexl83"
         - "amazingfate"
-        - "andyshrk"
         - "baldpope"
         - "brentr"
         - "catalinii"
         - "chainsx"
-        - "chraac"
-        - "crackerjacques"
-        - "deece"
-        - "devdotnetorg"
         - "efectn"
-        - "eliasbakken"
         - "engineer-80"
         - "fridtjof"
-        - "ginkage"
         - "glneo"
-        - "govindsi"
-        - "hoochiwetech"
-        - "hqnicolas"
-        - "hzyitc"
         - "iav"
         - "ifroncy01"
         - "igorpecovnik"
@@ -135,42 +109,25 @@ on:
         - "joekhoobyar"
         - "jomadeto"
         - "jonaswood01"
-        - "juanesf"
         - "juanlufont"
         - "juliovendramini"
         - "kamilsaigol"
-        - "lbmendes"
-        - "lch08"
         - "leggewie"
         - "lexfrei"
-        - "libiunc"
         - "linhz0hz"
-        - "mahdichi"
-        - "mattx433"
-        - "mhawkins-consultant"
         - "mlegenovic"
         - "paolosabatino"
         - "prahal"
         - "pyavitz"
-        - "rbqvq"
-        - "redrathnure"
-        - "retro98boy"
         - "rpardini"
         - "schmiedelm"
         - "schwar3kat"
         - "sdeleeuw"
         - "shkolnik"
-        - "sicXnull"
-        - "spendist"
-        - "sputnik2019"
-        - "sven-ola"
         - "teknoid"
         - "tomazzaman"
         - "torte71"
-        - "utlark"
         - "vamzii"
-        - "vidplace7"
-        - "wei633"
         - all
         default: 'all'
       targetsFilterInclude:
