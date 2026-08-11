@@ -41,12 +41,9 @@ on:
         options:
         # branches
         - main
-        - fix/k3-beaglebadge-eink-both-trees
         - update-maintainers
-        - fix/sunxi612-brcmfmac-ap6275p-patch
-        - dependabot/pip/pip-26.2.1
-        - singlemode-to-main
         - chore/update-readme
+        - singlemode-to-main
         - rkr7.2
         - v26.08
         - bump/version-26.11
@@ -60,6 +57,9 @@ on:
         - fix/uboot-pylibfdt-distutils
         - patching-delete-empty-patches-rebased
         - fix/apt-cacher-ng-fallback
+        - k3-sysfw-guard
+        - ci/sunxi64-uboot-2026.07
+        - ci/sunxi-uboot-2026.07
         default: 'main'
       board:
         type: choice
