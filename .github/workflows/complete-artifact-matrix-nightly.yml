@@ -41,6 +41,9 @@ on:
         options:
         # branches
         - main
+        - fix/loong64-base-files-main-archive
+        - dependabot/pip/setuptools-84.0.0
+        - dependabot/pip/oras-0.2.43
         - update-maintainers
         - chore/update-readme
         - singlemode-to-main
@@ -57,9 +60,6 @@ on:
         - fix/uboot-pylibfdt-distutils
         - patching-delete-empty-patches-rebased
         - fix/apt-cacher-ng-fallback
-        - k3-sysfw-guard
-        - ci/sunxi64-uboot-2026.07
-        - ci/sunxi-uboot-2026.07
         default: 'main'
       board:
         type: choice
