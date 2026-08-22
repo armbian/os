@@ -134,9 +134,23 @@ jobs:
 
           # prepare feeds
           #A=$(rsync -ar rsync://rsync.armbian.com/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt")
+
+          # Nightly (rolling) images now live in armbian/ci - armbian/os is retired.
+          # That repo also stores clean X.Y.Z stable version markers (which carry no
+          # image assets), and its GitHub "latest" may or may not be a trunk build,
+          # so neither `gh release view` (no tag) nor a blind newest-release pick is
+          # safe - both can land on a 0-asset stable marker and empty the feed.
+          # Resolve the highest X.Y.Z-trunk.N tag that is promoted (not a pre-release)
+          # and actually carries assets, then read that release explicitly.
+          CI_NIGHTLY_TAG=$(gh api --paginate repos/armbian/ci/releases --jq '
+            [ .[] | select((.tag_name|test("-trunk[.]")) and (.prerelease==false) and (.assets|length>0)) ]
+            | max_by(.tag_name | capture("-trunk[.](?<n>[0-9]+)").n | tonumber) | .tag_name')
+          echo "latest nightly (armbian/ci): ${CI_NIGHTLY_TAG:-NONE}"
+          [ -z "$CI_NIGHTLY_TAG" ] && echo "::warning::No armbian/ci -trunk.N release with assets found; nightly feed will be empty"
+
           A=$(rsync -e "ssh -p 10023 -o StrictHostKeyChecking=accept-new" -ar upload@k-space.ee.armbian.com:/storage/www/dl/ | awk '{ print ""$2"|https://dl.armbian.com/"$5"|"$3"T"$4"Z" }' | grep "archive/" | grep -v ".txt\|homeassistant\|openhab\|kali\|omv")
           B=$(gh release view --json assets --repo github.com/armbian/community | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
-          C=$(gh release view --json assets --repo github.com/armbian/os | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
+          C=$(gh release view "$CI_NIGHTLY_TAG" --json assets --repo github.com/armbian/ci | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
           D=$(gh release view --json assets --repo github.com/armbian/distribution | jq '.assets[] | .size, .url, .createdAt' | xargs -n3 -d'\n' | grep -v ".txt" | sed "s/\"//g" | sed -e 's| |\||g')
 
           # debug
@@ -168,13 +182,15 @@ jobs:
               # Clean out application from extension
               FILE_EXTENSION=$(echo $FILE_EXTENSION | sed 's/.*-'$IMAGE_EXTENSION'//g'  | sed -e 's/^\.//g')
 
+              # armbian/{ci,community}/... -> "ci" / "community"; nightlies come
+              # from ci now (was "os"). f5 is the org-repo segment of the asset URL.
               IMAGE_TYPE=$(echo $IMAGE_URL | cut -d"/" -f5)
               IMAGE_CREATED=$(echo $line | cut -d"|" -f3 | sed "s/\//-/g")
               EXPOSED=false
 
               # Assemble redirector link
               PREFIX=""
-              [[ "${IMAGE_TYPE}" == "os" ]] && PREFIX="nightly/"
+              [[ "${IMAGE_TYPE}" == "ci" ]] && PREFIX="nightly/"
               REDI_EXT=$(echo $FILE_EXTENSION | rev | cut -d"." -f1 | rev | sed "s/xz//g")
               REDI_URL="https://dl.armbian.com/${PREFIX}${BOARD,,}/${IMAGE_RELEASE^}_${KERNEL_BRANCH}${IMAGE_TARGET:+_$IMAGE_TARGET}${IMAGE_EXTENSION:+-$IMAGE_EXTENSION}${REDI_EXT:+.$REDI_EXT}"
 
