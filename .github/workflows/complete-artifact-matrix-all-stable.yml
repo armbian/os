@@ -8987,7 +8987,7 @@ jobs:
 
       # Cleaning logs
       - name: "Keep only 30 days of workflow logs"
-        uses: igorjs/gh-actions-clean-workflow@v7
+        uses: igorjs/gh-actions-clean-workflow@v8
         with:
           token: "${{ env.GH_TOKEN }}"
           runs_older_than: 30 # optional
