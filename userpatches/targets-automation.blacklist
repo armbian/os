@@ -14,3 +14,17 @@ mekotronics-r58-4x4
 retroidpocket-rp5
 retroidpocket-rpmini
 orangepi5-ultra
+
+# Superseded by the unified "friendlyelec-rk3588" image (armbian/build#10946),
+# which covers these boards plus M6V2/T6-LTS-Plus via runtime SARADC
+# detection. Kept as independent, unmodified board configs in armbian/build
+# (not sourcing the unified one) per discussion on #10946 - this blacklist
+# only stops CI from publishing new builds under their old slugs; the
+# board_slug-level download pages migrate to armbian.github.io's reusable.yml
+# virtual-board entries (already prepared, commented out) once the old
+# published artifacts age off the mirror.
+nanopi-r6s
+nanopi-r6c
+nanopi-m6
+nanopct6
+nanopct6-lts
