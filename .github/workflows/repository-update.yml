@@ -27,29 +27,8 @@ jobs:
           ORG_MEMBERS: ${{ secrets.ORG_MEMBERS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TEAM: "Release manager"
-
-  external:
-    name: "Download external"
-    needs: Check
-
-    if: ${{ github.repository_owner == 'Armbian' }}
-    uses: armbian/scripts/.github/workflows/download-and-test-external.yml@main
-    with:
-      ACCESS_NAME: armbian
-      BUILD_RUNNER: "ubuntu-latest"
-      HOST_DEPLOY: "repo.armbian.com"
-    secrets:
-      GPG_KEY1: ${{ secrets.GPG_KEY3 }}
-      GPG_KEY2: ${{ secrets.GPG_KEY4 }}
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      KEY_UPLOAD: ${{ secrets.KEY_UPLOAD }}      
-      HOST_UPLOAD: ${{ secrets.HOST_UPLOAD }}
-      HOST_UPLOAD_USER: ${{ secrets.HOST_UPLOAD_USER }}
-      HOST_UPLOAD_PORT: ${{ secrets.HOST_UPLOAD_PORT }}
-      KNOWN_HOSTS_ARMBIAN_UPLOAD: ${{ secrets.KNOWN_HOSTS_ARMBIAN_UPLOAD }}
-
   gradle:
-    needs: external
+    needs: Check
     strategy:
       fail-fast: false
       max-parallel: 8
