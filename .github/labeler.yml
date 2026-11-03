@@ -10,11 +10,6 @@
 #
 # Please keep the labels sorted and deduplicated.
 
-"Software package":
-- all:
-  - changed-files:
-    - any-glob-to-any-file: ['external/*']
-  - base-branch: 'main'
 "Build target":
 - all:
   - changed-files:

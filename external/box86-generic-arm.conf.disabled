@@ -1,9 +1,0 @@
-URL="http://ryanfortner.github.io/box86-debs/debian"
-KEY="./"
-RELEASE=all
-TARGET=utils
-METHOD=aptly
-INSTALL=box86
-GLOB="Name (% box86*), \$Version (>= 0.3.3+2023)"
-ARCH=armhf
-REPOSITORY=BS
