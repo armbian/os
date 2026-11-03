@@ -1,9 +1,0 @@
-URL=http://deb.debian.org/debian
-KEY="unstable main contrib non-free"
-RELEASE=jammy
-TARGET=utils
-METHOD=aptly
-INSTALL=aptly
-GLOB="Name (% aptly)"
-ARCH=armhf:arm64:amd64
-REPOSITORY=BS
